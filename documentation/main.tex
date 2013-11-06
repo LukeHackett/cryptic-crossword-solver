@@ -1,0 +1,29 @@
+\documentclass[12pt]{report}
+\usepackage[round,authoryear]{natbib}
+\usepackage{fullpage}
+\usepackage[margin=3cm]{geometry}
+\usepackage[parfill]{parskip}
+
+% Global Commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
+
+\begin{document}
+
+% Title Page
+\input{title}
+
+% Abstract
+\input{abstract}
+
+% Table of Contents
+\tableofcontents
+
+% Table of Figures
+\listoffigures
+
+
+% Citations
+\bibliographystyle{plainnat}
+\bibliography{citations}
+\end{document}
