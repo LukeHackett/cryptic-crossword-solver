@@ -1,0 +1,116 @@
+\section{Research Areas}
+
+Before undertaking the project an initial review was conducted. The review's 
+objective was to determine the feasibility of the project as a whole. The 
+review also covered whether or not the project has been completed before.
+
+From the outlined background and problem information it is clear that cryptic 
+crosswords are a popular form of entertainment. It is also clear that some 
+clues are particularly difficult to solve, and users may often ask other people
+for help in solving a given clue.
+
+
+\subsection{Cryptic Crosswords}
+
+A review of the national UK newspapers was conducted to determine whether or 
+not there is a pattern in cryptic crosswords. Of all the newspaper's websites 
+that were reviewed (The Guardian, The Times, The Independent and The Mirror) it 
+was clear that the cryptic crosswords are the same style.
+
+Each clue is categorised as being either `across' or `down' with its 
+corresponding grid number. Each clue will also contain the number of letters 
+the answer should be. An example is show below:
+
+\begin{quote}
+12. The seamstress's sensation? (4, 3, 7) =\textgreater  PINS AND NEEDLES
+\end{quote}
+
+The Guardian's website utilises web standard technologies such as HTML and CSS, 
+and also provides an option to solve a clue. The Mirror's website follows a 
+similar approach to the Guardian’s website; however solutions can only be 
+obtained by dialing a premium telephone number.
+
+The Times and the Independent both utilise a different approach and that is to 
+serve a Java applet. Both Java applets allow the user to solve a clue should 
+they get stuck. The Times provides puzzles as part of their paid subscription 
+service.
+
+All of the above newspapers publish cryptic crosswords upon a daily basis, with
+the solutions to the crosswords appearing in the next day's newspaper.
+
+Following from the crossword review, a second review into cryptic crossword 
+solvers was undertaken. The objective of this review was to determine whether 
+or not computerised cryptic crossword solvers exist. The three cryptic 
+crossword solvers that were looked at were One Across, Crossword Tools and 
+Cryptic Solver.
+
+Each of the solvers manages to solve some clues with the same answers, with 
+other clues providing a range of possible answers.
+
+Crossword Tools \citep{crosswordtools} is a paid subscription based service, 
+which allows users to enter a clue and a pattern. A pattern can contain part of
+the answer or the number of letters the answer has. If multiple answers are 
+available, they are displayed. An example is shown below:
+
+\begin{quote}
+Kind of dog (10) =\textgreater the answer is 10 letters long.
+
+Kind of dog (?????????r) =\textgreater the answer is 10 letters long, final 
+letter is `r'.
+\end{quote}
+
+Cryptic Solver \citep{crypticsolver} is a free service that offers the same 
+functionality as Crossword Tools. Although Cryptic Solver does provide the 
+correct answer, it does not necessarily provide the correct answer at the top 
+of the list.
+
+Finally One Across \citep{oneacross} provides all the same functionality as the
+previous two solvers, along with a score. The score is linked to the number of 
+people who have used the given answer (effectively it's a ratings system). One 
+Across uniquely highlights how it has managed to come to the answer, showing 
+the break downs of each sentence. As with Cryptic Solver, One Across is a free 
+service that doesn't require a subscription.
+
+
+\subsection{Natural Language Processing}
+
+In order to correctly solve a clue, some form of natural language processing 
+will be required. It is the natural language processing that will try to deduce 
+the meaning of a clue. It is the meaning that can then be aligned with possible 
+answers.
+
+An example of natural language processing can be found within the One Across 
+application. Given a clue (and a pattern) it will try to provide an accurate 
+solution:
+
+\begin{quote}
+Spin broken shingle (7) =\textgreater  ENGLISH
+\end{quote}
+
+In order for the answer to be obtained, One Across will follow a natural 
+language processing path and will provide it’s trace path. The trace path shows
+how the clue has been broken down to get to the answer. The trace path for the 
+above clue can be found below:
+
+\begin{quote}
+`spin' is the definition.
+
+`broken' means to anagram `shingle' to get ENGLISH.
+
+ENGLISH matches `spin' with confidence score 100\%.
+\end{quote}
+
+\subsection{Application Platform}
+
+The existing products that have been discussed within this problem analysis 
+have all been accessible via a browser. Although this is an acceptable 
+platform, there could be a better platform that allows uses to utilise the 
+technology easier.
+
+As previously mentioned, most crosswords are designed for users who have a few 
+minutes to spare on the move. As many people own a smartphone and/or a tablet, 
+there may be a gap in the market for a high quality mobile cryptic crossword 
+solver.
+
+An in-depth review will need to be conducted in order to deduce the viability 
+of this proposal.
