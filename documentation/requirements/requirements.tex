@@ -1,144 +1,138 @@
-\chapter{Software Specification}
-\label{chap:requirements}
-\citet{cadle10} states that there is a standard hierarchical approach in 
-structuring requirements. Table \ref{table:requirementsCategories} outlines
-the main four categories:
+\chapter{Software Specification} \label{chap:requirements} \citet{cadle10}
+states that there is a standard hierarchical approach in  structuring
+requirements. Table \ref{table:requirementsCategories} outlines the main four
+categories:
 
-\begin{table}[H]
-  \begin{tabular}{|l|l|l|l|}
-    \hline
-    {\bf General} & {\bf Technical} & {\bf Functional} & {\bf Non-Functional} \\ 
-    \hline
-    Business constraints & Hardware & Data entry & Performance \\ 
-    Business policies & Software & Data maintenance & Security \\ 
-    Legal & Interoperability & Procedure & Legal and Access \\ 
-    Branding & Internet & Retrieval & Backup and Recovery \\ 
-    Cultural & ~ & ~ & Archiving and Retention \\ 
-    Language & ~ & ~ & Maintainability \\ 
-    ~ & ~ & ~ & Business Continuity \\ 
-    ~ & ~ & ~ & Availability \\ 
-    ~ & ~ & ~ & Usability \\ 
-    ~ & ~ & ~ & Capacity \\
-    \hline
-  \end{tabular}
-  \label{table:requirementsCategories}
-\end{table}
+\begin{table}[H]   \begin{tabular}{|l|l|l|l|}     \hline     {\bf General} &
+{\bf Technical} & {\bf Functional} & {\bf Non-Functional} \\      \hline
+Business constraints & Hardware & Data entry & Performance \\      Business
+policies & Software & Data maintenance & Security \\      Legal &
+Interoperability & Procedure & Legal and Access \\      Branding & Internet &
+Retrieval & Backup and Recovery \\      Cultural & ~ & ~ & Archiving and
+Retention \\      Language & ~ & ~ & Maintainability \\      ~ & ~ & ~ &
+Business Continuity \\      ~ & ~ & ~ & Availability \\      ~ & ~ & ~ &
+Usability \\      ~ & ~ & ~ & Capacity \\     \hline   \end{tabular}
+\label{table:requirementsCategories} \end{table}
 
-Each of the above categories will form the basis of this requirements chapter,
-along with any additional user requirements, assumptions and a risk assessment.
 
-% Project Drivers
-% Purpose
+Although these are some of the sections usually found in the structure of
+requirements there are several books which state that each section depends on
+the type of project being undertaken. \citet{robertson13} mention that 'a
+requirement is something the product must do to support its owners business, or
+a quality it must have to make it acceptable and attractive to the owner.' The
+aim of gathering the requirements has always been to ensure that all ambiguity
+are ironed out before a product is developed. The following sections have been
+derived from the book by \citep{robertson13}. The book contains a very usefull
+template called the Volere template which aims to recognize as much information
+required when engineering requirements.
+
+
+% Project Drivers % Purpose 
 \newpage
 \input{requirements/project_drivers/purpose}
 
-% Client, customer and stakeholder
+% Client, customer and stakeholder 
 \newpage
 \input{requirements/project_drivers/client_cust_and_stakeholder}
 
-% Project Constraints
-% Mandated Constraints
+% Project Constraints % Mandated Constraints 
 \newpage
 \input{requirements/project_constraints/mandated_constraints}
 
-% Naming_Conventions And Terminology 
+% Naming_Conventions And Terminology  
 \newpage
 \input{requirements/project_constraints/naming_conventions_and_terminology}
 
-% Relevant_Facts_And_Assumptions
+% Relevant_Facts_And_Assumptions 
 \newpage
 \input{requirements/project_constraints/relevant_facts_and_assumptions}
 
-
-% Functional Requirements
-% The Scope of the Work
-\newpage
+% Functional Requirements % The Scope of the Work \newpage
 \input{requirements/functional_requirements/the_scope_of_the_work}
 
-% Business Data Model & Data Dictionary
-\newpage
+% Business Data Model & Data Dictionary 
+\newpage 
 \input{requirements/functional_requirements/business_data_model_&_data_dictionary}
 
-% The Scope of the Product
+% The Scope of the Product 
 \newpage
 \input{requirements/functional_requirements/the_scope_of_the_product}
 
-% Functional Requirements
+% Functional Requirements 
 \newpage
 \input{requirements/functional_requirements/functional_requirements}
 
-%Non-functional Requirements
-%Look and Feel Requirements
+%Non-functional Requirements 
+%Look and Feel Requirements 
 \newpage
 \input{requirements/non_functional_requirements/look_and_feel_requirements}
 
-%Usability and Humanity Requirements
-\newpage
+%Usability and Humanity Requirements 
+\newpage 
 \input{requirements/non_functional_requirements/usability_and_humanity_requirements}
 
-%Performance Requirements
+%Performance Requirements 
 \newpage
 \input{requirements/non_functional_requirements/performance_requirements}
 
-% Operational and Environmental Requirements
-\newpage
+% Operational and Environmental Requirements 
+\newpage 
 \input{requirements/non_functional_requirements/operational_and_environmental_requirements}
 
-
-%Maintainability and Support Requirements
-\newpage
+%Maintainability and Support Requirements 
+\newpage 
 \input{requirements/non_functional_requirements/maintainability_and_support_requirements}
 
-%Security Requirements
+%Security Requirements 
 \newpage
 \input{requirements/non_functional_requirements/security_requirements}
 
-%Cultural Requirements
+%Cultural Requirements 
 \newpage
 \input{requirements/non_functional_requirements/cultural_requirements}
 
-%Legal Requirements
+%Legal Requirements 
 \newpage
 \input{requirements/non_functional_requirements/legal_requirements}
 
-%Project Issues
-%Open Issues
+%Project Issues 
+%Open Issues 
 \newpage
-\input{requirements/project_issues/open_issues}
-%Off-the-Shelf Solutions
+\input{requirements/project_issues/open_issues} 
 
-\newpage
+%Off-the-Shelf Solutions
+\newpage 
 \input{requirements/project_issues/off_the_shelf_solutions}
 
-%New Problems
-\newpage
+%New Problems 
+\newpage 
 \input{requirements/project_issues/new_problems}
 
-%Tasks
-\newpage
+%Tasks 
+\newpage 
 \input{requirements/project_issues/tasks}
 
-%Migration to the New Product
+%Migration to the New Product 
 \newpage
 \input{requirements/project_issues/migration_to_the_new_product}
 
-%Risks
-\newpage
+%Risks 
+\newpage 
 \input{requirements/project_issues/risk_assessment}
 
-%Costs
-\newpage
+%Costs 
+\newpage 
 \input{requirements/project_issues/costs}
 
-%User Documentation and Training
+%User Documentation and Training 
 \newpage
 \input{requirements/project_issues/user_documentation_and_training}
 
-%Waiting Room
-\newpage
+%Waiting Room 
+\newpage 
 \input{requirements/project_issues/waiting_room}
 
-%Ideas for Solutions
+%Ideas for Solutions 
 \newpage
 \input{requirements/project_issues/ideas_for_solutions}
 
