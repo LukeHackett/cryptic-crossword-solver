@@ -1,4 +1,4 @@
-package com.cryptic.config;
+package uk.ac.hud.cryptic.config;
 /**
  * This class provides a number of application wide settings and constants.
  * 

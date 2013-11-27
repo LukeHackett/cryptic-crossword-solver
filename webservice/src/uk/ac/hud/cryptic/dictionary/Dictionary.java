@@ -1,6 +1,7 @@
-package com.cryptic.dictionary;
+package uk.ac.hud.cryptic.dictionary;
 import java.io.*;
-import com.cryptic.config.Settings;
+
+import uk.ac.hud.cryptic.config.Settings;
 /**
  * This class provides a wrapper around the dictionary words file found within
  * Linux systems.

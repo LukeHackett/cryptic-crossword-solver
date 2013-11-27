@@ -1,4 +1,4 @@
-package com.cryptic.solver;
+package uk.ac.hud.cryptic.solver;
 
 /**
  * This class provides a basis for all Solver algorithms to be built upon. All
