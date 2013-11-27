@@ -5,7 +5,7 @@
 	  <meta charset="utf-8">
 	  <title>Cryptic Crossword Solver</title>
 	  <meta name="description" content="A cryptic crossword solver">
-	  <meta name="author" content="Luke Hackett, Mohammand Rahman, Stuart Leader, Leanne Butcher">
+	  <meta name="author" content="Luke Hackett, Mohammad Rahman, Stuart Leader, Leanne Butcher">
 	</head>
 	<body>
 		<h1>A Placeholder for something awesome...</h1>
