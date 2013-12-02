@@ -23,7 +23,7 @@ public class Acrostics extends Solver {
 		a.solve("Those biting heads off tarantulas, eating even tiny hairs", "5");
 		a.solve("What’s seen at start of any road running one way?", "5");
 		a.solve("Starts to serve time in Russian prison", "4");
-		// Gives two answers BAWL and AWL
+		// Gives two answers BAWL and AWLS
 		// TODO make sure definitions are taken into consideration
 		a.solve("Black and white lamb starts to cry", "4");
 	}
