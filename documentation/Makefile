@@ -1,10 +1,11 @@
 compile:
-	rm -rf out/
 	mkdir out/
-	latexmk -C
 	latexmk -bibtex -pdf main
 	cp main.pdf out/report.pdf
+	cp out/report.pdf report.pdf
+	make clean
+
+clean:
+	rm -rf out/
 	latexmk -C
 	rm main.bbl
-	cp out/report.pdf report.pdf
-	rm -rf out/
