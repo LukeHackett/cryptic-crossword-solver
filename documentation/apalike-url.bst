@@ -82,7 +82,7 @@ INTEGERS { hrefform addeprints }
 % Following constants may be adjusted by hand, if desired
 FUNCTION {init.config.constants}
 {
-  "Retrieved from: " 'urlintro :=  % prefix before URL
+  "Retrieved from " 'urlintro :=  % prefix before URL
   "http://arxiv.org/abs/" 'eprinturl :=  % prefix to make URL from eprint ref
   "arXiv:" 'eprintprefix := % text prefix printed before eprint ref
   #0 'addeprints := % 0=no eprints; 1=include eprints
