@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhotwokmg423muz">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<reference referencedUin="design:view:::V-b8dyjihotwp3z3rm9btd">
+			<property name="bounds" value="35,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+		</reference>
+		<reference referencedUin="design:view:::V-jr6xbahou56tdd-yljm1n">
+			<property name="bounds" value="35,115,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V1hexuhhou6m66f-n7ajv2">
+			<property name="bounds" value="35,235,197,141"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhowvb8261ls8fz">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.Thesaurus">
+			<property name="bounds" value="34,35,261,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.util.Thesaurus:instance">
+				<property name="sourceAnchor" value="300,257"/>
+				<property name="targetAnchor" value="296,261"/>
+				<property name="bendpoints" value="329,257,329,290,296,290"/>
+				<property name="smooth_bendpoints" value="329,257,329,290,296,290"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.Dictionary">
+			<property name="bounds" value="355,35,260,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.util.Dictionary:instance">
+				<property name="sourceAnchor" value="620,257"/>
+				<property name="targetAnchor" value="616,261"/>
+				<property name="bendpoints" value="649,257,649,290,616,290"/>
+				<property name="smooth_bendpoints" value="649,257,649,290,616,290"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.WordUtils">
+			<property name="bounds" value="203,355,292,220"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.util.WordUtils:DICT">
+				<property name="sourceAnchor" value="384,360"/>
+				<property name="targetAnchor" value="384,261"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

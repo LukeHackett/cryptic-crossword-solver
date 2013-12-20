@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhou6nbujz9b46t">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Solver">
+			<property name="bounds" value="326,227,160,160"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Clue">
+			<property name="bounds" value="1245,155,200,150"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.solver.Clue:solutions">
+				<property name="sourceAnchor" value="1450,240"/>
+				<property name="targetAnchor" value="1510,240"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Solution">
+			<property name="bounds" value="1235,375,261,360"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:e_method:src:cryptic.solver.Solution.Solution:Solution~\[I">
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:cryptic.solver.Solution:trace">
+				<property name="sourceAnchor" value="1501,489"/>
+				<property name="targetAnchor" value="1600,489"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.SolutionTrace">
+			<property name="bounds" value="1595,435,151,141"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Hidden">
+			<property name="bounds" value="349,575,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Hidden:Solver">
+				<property name="sourceAnchor" value="382,580"/>
+				<property name="targetAnchor" value="382,392"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Pattern">
+			<property name="bounds" value="35,115,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Pattern:Solver">
+				<property name="sourceAnchor" value="153,187"/>
+				<property name="targetAnchor" value="331,273"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Exchange">
+			<property name="bounds" value="609,389,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Exchange:Solver">
+				<property name="sourceAnchor" value="614,407"/>
+				<property name="targetAnchor" value="490,361"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:cryptic.solver.Exchange.run:run">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Acrostics">
+			<property name="bounds" value="227,535,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Acrostics:Solver">
+				<property name="sourceAnchor" value="338,540"/>
+				<property name="targetAnchor" value="338,392"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Anagram">
+			<property name="bounds" value="155,435,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Anagram:Solver">
+				<property name="sourceAnchor" value="262,440"/>
+				<property name="targetAnchor" value="331,381"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Shifting">
+			<property name="bounds" value="395,74,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Shifting:Solver">
+				<property name="sourceAnchor" value="445,161"/>
+				<property name="targetAnchor" value="445,232"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Container">
+			<property name="bounds" value="523,73,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Container:Solver">
+				<property name="sourceAnchor" value="547,160"/>
+				<property name="targetAnchor" value="482,232"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:cryptic.solver.Container.run:run">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.PurelyCryptic">
+			<property name="bounds" value="255,74,125,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.PurelyCryptic:Solver">
+				<property name="sourceAnchor" value="353,161"/>
+				<property name="targetAnchor" value="353,232"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Deletion">
+			<property name="bounds" value="575,275,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Deletion:Solver">
+				<property name="sourceAnchor" value="580,321"/>
+				<property name="targetAnchor" value="491,321"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Reversal">
+			<property name="bounds" value="735,342,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Reversal:Solver">
+				<property name="sourceAnchor" value="739,379"/>
+				<property name="targetAnchor" value="490,361"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Palindrome">
+			<property name="bounds" value="115,227,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:e_method:src:cryptic.solver.Palindrome.run:run">
+			</reference>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Palindrome:Solver">
+				<property name="sourceAnchor" value="233,282"/>
+				<property name="targetAnchor" value="331,282"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Spoonerism">
+			<property name="bounds" value="575,174,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Spoonerism:Solver">
+				<property name="sourceAnchor" value="580,246"/>
+				<property name="targetAnchor" value="491,246"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Lit">
+			<property name="bounds" value="95,14,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Lit:Solver">
+				<property name="sourceAnchor" value="197,101"/>
+				<property name="targetAnchor" value="331,232"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.DoubleDefinition">
+			<property name="bounds" value="555,495,152,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.DoubleDefinition:Solver">
+				<property name="sourceAnchor" value="595,500"/>
+				<property name="targetAnchor" value="489,392"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Substitution">
+			<property name="bounds" value="733,227,118,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Substitution:Solver">
+				<property name="sourceAnchor" value="738,273"/>
+				<property name="targetAnchor" value="491,273"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Homophone">
+			<property name="bounds" value="424,463,115,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Homophone:Solver">
+				<property name="sourceAnchor" value="475,468"/>
+				<property name="targetAnchor" value="475,392"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Charade">
+			<property name="bounds" value="115,329,113,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:cryptic.solver.Charade:Solver">
+				<property name="sourceAnchor" value="233,368"/>
+				<property name="targetAnchor" value="331,368"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.SolutionCollection">
+			<property name="bounds" value="1505,95,281,235"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:e_method:src:cryptic.solver.SolutionCollection.add:add~QSolution;">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.solver.Categoriser">
+			<property name="bounds" value="755,615,112,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>
