@@ -1,10 +1,69 @@
-\begin{table}[H]
-	\centering
-	\small
-    \begin{tabular}{|p{9.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|}
-    \hline
-    \textbf{Functionality} & \textbf{Must} & \textbf{Should} & \textbf{Could} & \textbf{Won't} \\ \hline
+\subsection{Performance}
 
-    \end{tabular}
-    \caption {MoSCoW analysis of the project's non-functional requirements}
-\end{table}
+The performance of the system should be good, however it must be noted that the
+system is intended to run as a web service upon a server. The quality of the 
+connection between the end user and the web service will be out of the scope of
+this project.
+
+
+\subsection{Legal and Access}
+
+Within the project a number of data sources will be used. Firstly an English
+dictionary will need to be accessed in order to allow the system to deduce if a 
+given arrangement of characters formulates an English word.
+
+In order to achieve this, an offline dictionary and an online dictionary will
+need to be used. The offline dictionary is a short dictionary and is provided as
+part of the GNU/Linux operating system under the GNU Licence Agreement. The 
+online dictionary will be used to `fill in' any gaps in the short dictionary.
+*** Offline Dictionary Licence to be added here ***
+
+A number of cryptic crossword clues and solutions have been obtained from the
+Guardian's website. The data will be used as a training set of data, when
+testing the final software. The Guardian has given us permission to use their
+data as long as the project remains within an academic environment, and that no
+profit is made from the project.
+
+
+\subsection{Backup and Recovery}
+
+The project will make use of the git revision control system over a secure shell 
+connection. The service provider is github, who offer a distributed setup to 
+ensure that data is always available. Using a secure revision control system 
+will ensure that:
+
+\begin{enumerate}
+  \item A copy of the project is stored upon a remote, secure server;
+  \item Changes are able to be tracked;
+  \item Issues and comments are able to be raised in a secure environment.
+\end{enumerate}
+
+The above measures will in effect be able to reduce against the loss, damage or 
+theft of all project information.
+
+
+\subsection{Archiving and Retention}
+
+The University will retain a copy of the project (software product and the final
+report) for assessment and evaluation purposes. 
+
+
+\subsection{Maintainability}
+
+The project -- including the software product -- will be maintained up until the
+project hand in deadline: 18th April 2014.
+
+
+\subsection{Availability}
+
+The software will not contain any request or time limitations for users, and 
+thus should be available at all times. However it must be stated that the server
+availability that will be hosting the web service is out of the scope of the 
+project.
+
+
+\subsection{Capacity}
+
+The end product should be able to handle a number of requests from different 
+users at the same time. As the project is only intended as an academic project, 
+large scale user support will be out of the scope of this project.
