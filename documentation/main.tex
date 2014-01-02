@@ -3,7 +3,7 @@
 \usepackage{fullpage}
 \usepackage[margin=2cm]{geometry}
 \usepackage[parfill]{parskip}
-\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{titlesec}
 \usepackage{graphicx}
 \usepackage{pdflscape}
@@ -51,6 +51,11 @@
 % Requirements
 \newpage
 \input{requirements/requirements}
+
+% Glossary of Terms
+\addcontentsline{toc}{chapter}{Glossary of Terms}
+\chapter*{Glossary of Terms}
+\input{requirements/project_constraints/naming_conventions_and_terminology}
 
 % Citations
 \bibliographystyle{apalike-url}
