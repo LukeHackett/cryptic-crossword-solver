@@ -37,7 +37,7 @@ public class Settings {
 	 * @return String
 	 */
 	public String getLocalDictionaryPath() {
-		return "/usr/share/dict/words";
+		return "res/dictionary/words";
 	}
 
 }
