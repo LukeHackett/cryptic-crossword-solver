@@ -1,0 +1,1 @@
+https://raw.github.com/rdeits/cryptics/master/raw_data/abbreviations.json

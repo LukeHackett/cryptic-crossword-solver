@@ -37,7 +37,7 @@ public class Settings {
 	 * @return String
 	 */
 	public String getLocalDictionaryPath() {
-		return "res/dictionary/words";
+		return "res/dictionary/standard/words";
 	}
 
 }
