@@ -242,7 +242,7 @@
 		<property name="$name" value="Cryptic Crossword Solver"/>
 		<node uin="1fuqqphou5eano-oeg7ol">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Submit a new Clue"/>
+			<property name="$name" value="Submit a new clue"/>
 			<link uin="ieje0rhou5eojn-5u9rpv">
 				<property name="$metaclass" value="Include20"/>
 				<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Client"></participant>
@@ -256,11 +256,11 @@
 		</node>
 		<node uin="3ovsg3hou5edqvap6bls">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Specifying Solution Length"/>
+			<property name="$name" value="Specify solution length"/>
 		</node>
 		<node uin="j4iszwhou5flq8-lwio23">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Specifying Solution Pattern"/>
+			<property name="$name" value="Specify solution pattern"/>
 			<link uin="ieje0rhou5gqmc-t7xuwm">
 				<property name="$metaclass" value="Extend20"/>
 				<participant referencedUin="design:node:::j4iszwhou5flq8-lwio23:8krugmhou58egs-mmnoj" role="Client"></participant>
@@ -269,7 +269,7 @@
 		</node>
 		<node uin="u8mvujhou62ux0-aj746j">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Solve Clue"/>
+			<property name="$name" value="Solve clue"/>
 		</node>
 		<node uin="wimmjnhou63lxamx2ew6">
 			<property name="$metaclass" value="UseCase20"/>
@@ -278,11 +278,6 @@
 				<property name="$metaclass" value="Extend20"/>
 				<participant referencedUin="design:node:::wimmjnhou63lxamx2ew6:8krugmhou58egs-mmnoj" role="Client"></participant>
 				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
-			</link>
-			<link uin="ieje0rhou6goln-v8mvwe">
-				<property name="$metaclass" value="Include20"/>
-				<participant referencedUin="design:node:::wimmjnhou63lxamx2ew6:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::gj7tthhou6ehwah88vb7:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 			</link>
 		</node>
 		<node uin="n1980rhou641czv54uge">
@@ -294,18 +289,9 @@
 				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 			</link>
 		</node>
-		<node uin="gj7tthhou6ehwah88vb7">
+		<node uin="gj7tthhq3nagje58qbpm">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Consulting a Dictionary"/>
-		</node>
-		<node uin="gj7tthhou6er5n-m98vw9">
-			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Consulting a Thesaurus"/>
-			<link uin="ieje0rhou6gu03-ui70x8">
-				<property name="$metaclass" value="Extend20"/>
-				<participant referencedUin="design:node:::gj7tthhou6er5n-m98vw9:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::wimmjnhou63lxamx2ew6:8krugmhou58egs-mmnoj" role="Supplier"></participant>
-			</link>
+			<property name="$name" value="Rate a solution"/>
 		</node>
 	</node>
 	<node uin="p6a7y8hou5boizu2lpx6">
@@ -319,6 +305,11 @@
 			<property name="$metaclass" value="KernelAssociation20"/>
 			<participant referencedUin="design:node:::8bho0jhou5atnokr39m3" role="Client"></participant>
 			<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+		</link>
+		<link uin="ieje0rhq3nbhkk-nzz9pr">
+			<property name="$metaclass" value="KernelAssociation20"/>
+			<participant referencedUin="design:node:::8bho0jhou5atnokr39m3" role="Client"></participant>
+			<participant referencedUin="design:node:::gj7tthhq3nagje58qbpm:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 		</link>
 	</node>
 </nodeSet>
