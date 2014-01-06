@@ -120,7 +120,7 @@
 			<property name="$name" value="DecisionNode20"/>
 			<link uin="ieje0rhou42zq5-vrq6fr">
 				<property name="$metaclass" value="ControlFlow20"/>
-				<property name="guard" value="Solution pattern unknown"/>
+				<property name="guard" value="Solution pattern known"/>
 				<participant referencedUin="design:node:::l7v8chotwxc9g-fs501x:-46k66rhotwq7bmk13128" role="Client"></participant>
 				<participant referencedUin="design:node:::-qbjze4hou4210d3gbvbv:-46k66rhotwq7bmk13128" role="Supplier"></participant>
 			</link>
@@ -154,7 +154,7 @@
 			<property name="$name" value="DecisionNode21"/>
 			<link uin="ieje0rhou4duxg-fab333">
 				<property name="$metaclass" value="ControlFlow20"/>
-				<property name="guard" value="Clue can be &quot;categorised&quot;"/>
+				<property name="guard" value="Clue can be categorised"/>
 				<participant referencedUin="design:node:::l7v8chou45r9f-6wn95b:-46k66rhotwq7bmk13128" role="Client"></participant>
 				<participant referencedUin="design:node:::-qbjze4hou4688j3v8t7d:-46k66rhotwq7bmk13128" role="Supplier"></participant>
 			</link>
