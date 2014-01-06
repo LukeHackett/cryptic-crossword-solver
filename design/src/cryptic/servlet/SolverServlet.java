@@ -1,5 +1,6 @@
 package cryptic.servlet;
 import java.io.IOException;
+import cryptic.solver.*;
 @WebServlet("/solve")
 public class SolverServlet extends Servlet {
     // Default Serial ID
