@@ -73,9 +73,9 @@ public class Dictionary {
 	 * @return Dictionary
 	 */
 	public static Dictionary getInstance() {
-		if(instance == null) {
-	         instance = new Dictionary();
-	      }
+		if (instance == null) {
+			instance = new Dictionary();
+		}
 		return instance;
 	}
 

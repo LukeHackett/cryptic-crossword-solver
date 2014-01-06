@@ -22,7 +22,7 @@ public class WordUtils {
 
 	// Will match anything other than [0-9]
 	public static final String REGEX_NON_NUMERIC = "\\D+";
-	
+
 	private static final Dictionary DICT = Dictionary.getInstance();
 
 	/**
@@ -32,7 +32,6 @@ public class WordUtils {
 	 *            - The input text
 	 * @param removeSpaces
 	 *            - true if spaces should be removed, false otherwise
-	 * 
 	 * @return the input string minus any non-alphabetical characters
 	 */
 	public static String removeNonAlphabet(String input, boolean removeSpaces) {
