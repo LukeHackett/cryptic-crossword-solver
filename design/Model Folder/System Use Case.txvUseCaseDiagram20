@@ -97,9 +97,9 @@
 			<property name="$shortcutReference" value="true"/>
 			<reference referencedUin="design:link:::ieje0rhou5hfb7kiq7mt:8bho0jhou5atnokr39m3">
 				<property name="sourceAnchor" value="90,260"/>
-				<property name="targetAnchor" value="303,259"/>
+				<property name="targetAnchor" value="288,258"/>
 				<reference referencedUin="label:supplierCardinality:design:link:::ieje0rhou5hfb7kiq7mt:8bho0jhou5atnokr39m3">
-					<property name="bounds" value="221,235,12,21"/>
+					<property name="bounds" value="226,235,12,21"/>
 				</reference>
 				<reference referencedUin="label:clientCardinality:design:link:::ieje0rhou5hfb7kiq7mt:8bho0jhou5atnokr39m3">
 					<property name="bounds" value="90,236,12,21"/>
