@@ -9,17 +9,16 @@ import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Hidden extends Solver {
 
+	/**
+	 * Entry point to the code for testing purposes
+	 */
 	public static void main(String[] args) {
 		new Thread(new Hidden()).start();
 	}
 
-	/**
-	 * Entry point to the code for testing purposes
-	 */
 	@Override
 	public void run() {
 		Hidden h = new Hidden();
-		long start = System.currentTimeMillis();
 		h.solve("Delia’s pickle contains jelly", "5");
 		h.solve("As seen in jab, reach of pro miserably failing to meet expectations?",
 				"6,2,7");
@@ -42,9 +41,6 @@ public class Hidden extends Solver {
 				"5");
 		h.solve("Cooking equipment taken back from heiress I tormented", "10");
 		h.solve("Drama of mafioso a pope raised", "4,5");
-
-		System.out.println("Time: " + (System.currentTimeMillis() - start)
-				+ " ms");
 	}
 
 	public void solve(String clue, String solutionLength) {

@@ -8,10 +8,14 @@ import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Acrostic extends Solver {
 
+	/**
+	 * Entry point to the code for testing purposes
+	 */
 	public static void main(String[] args) {
 		new Thread(new Acrostic()).start();
 	}
 
+	@Override
 	public void run() {
 		Acrostic a = new Acrostic();
 		a.solve("Some URLs recommended for beginners to explore online", "4");
@@ -19,7 +23,7 @@ public class Acrostic extends Solver {
 		// a.solve("What chiefly hides in Jordan and Bahrain?", "5");
 		a.solve("Those biting heads off tarantulas, eating even tiny hairs",
 				"5");
-		a.solve("What�s seen at start of any road running one way?", "5");
+		a.solve("What's seen at start of any road running one way?", "5");
 		a.solve("Starts to serve time in Russian prison", "4");
 		// Gives two answers BAWL and AWLS
 		// TODO make sure definitions are taken into consideration
@@ -64,4 +68,4 @@ public class Acrostic extends Solver {
 			System.out.println(answer);
 		}
 	}
-}
+} // End of class Acrostic
