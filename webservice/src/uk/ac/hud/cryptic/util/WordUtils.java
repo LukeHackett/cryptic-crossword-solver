@@ -3,7 +3,7 @@ package uk.ac.hud.cryptic.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import uk.ac.hud.cryptic.dictionary.Dictionary;
+import uk.ac.hud.cryptic.resource.Dictionary;
 
 /**
  * A collection of helper methods relating to the manipulation of words and

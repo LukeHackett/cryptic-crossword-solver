@@ -1,4 +1,4 @@
-package uk.ac.hud.cryptic.dictionary;
+package uk.ac.hud.cryptic.resource;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
