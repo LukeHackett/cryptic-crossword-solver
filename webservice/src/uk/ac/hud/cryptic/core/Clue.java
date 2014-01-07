@@ -55,9 +55,16 @@ public class Clue {
 		return solutions;
 	}
 
-	public int getSolutionLength() {
-		// TODO Auto-generated method stub
-		return 0;
+	/**
+	 * Get the best solution for this clue that has been calculated. This is
+	 * determined by the solution with the greatest confidence rating. If there
+	 * is more than one clue with the same highest rating, only one of these
+	 * will be returned.
+	 * 
+	 * @return the solution most likely to be correct
+	 */
+	public Solution getBestSolution() {
+		return solutions.pollLast();
 	}
 
 } // End of class Clue

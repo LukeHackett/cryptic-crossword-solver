@@ -132,4 +132,4 @@ public class SolutionPattern {
 		return pattern;
 	}
 
-} // End of class SolutionStructure
+} // End of class SolutionPattern

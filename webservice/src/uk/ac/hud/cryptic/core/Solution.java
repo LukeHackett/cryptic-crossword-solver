@@ -3,6 +3,8 @@ package uk.ac.hud.cryptic.core;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import uk.ac.hud.cryptic.util.WordUtils;
+
 /**
  * Represents a potential solution for a given clue.
  * 
@@ -11,16 +13,11 @@ import java.util.Collection;
  */
 public class Solution implements Comparable<Solution> {
 
+	private static final int DEFAULT_CONFIDENCE = 50;
+
 	private String solution;
 	private int confidence;
 	private Collection<String> trace;
-
-	/**
-	 * Default constructor
-	 */
-	public Solution() {
-		trace = new ArrayList<>();
-	}
 
 	/**
 	 * Constructor where the solution string is passed in
@@ -30,8 +27,11 @@ public class Solution implements Comparable<Solution> {
 	 *            represented by this class
 	 */
 	public Solution(String solution) {
-		this();
-		this.solution = solution;
+		trace = new ArrayList<>();
+		// Standardise all potential solutions
+		this.solution = WordUtils.removeNonAlphabet(solution, false);
+		// Default confidence rating
+		confidence = DEFAULT_CONFIDENCE;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class Solution implements Comparable<Solution> {
 
 	@Override
 	public int compareTo(Solution o) {
-		int solutionCompare = solution.compareToIgnoreCase(o.getSolution());
+		int solutionCompare = solution.compareTo(o.getSolution());
 		int confidenceCompare = Double.compare(confidence, o.getConfidence());
 
 		if (solutionCompare == 0) {
