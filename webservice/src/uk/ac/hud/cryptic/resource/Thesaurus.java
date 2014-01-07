@@ -9,6 +9,7 @@ import java.util.HashSet;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.util.SolutionPattern;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Thesaurus {
@@ -84,23 +85,50 @@ public class Thesaurus {
 	}
 
 	/**
-	 * Check if a specified word is present in the dictionary being used.
+	 * Check if a given solution (String) matches as a synonym against any of
+	 * the words present in the clue.
 	 * 
-	 * @param word
-	 *            - the word to check against the dictionary
-	 * @return true if the dictionary contains the specified word, false
-	 *         otherwise
+	 * @param clue
+	 *            - the <code>Clue</code> object
+	 * @param solution
+	 *            - the potential solution word
+	 * @return <code>true</code> if the thesaurus contains the specified word,
+	 *         <code>false</code> otherwise
 	 */
-	public boolean match(String clueWord, String solution) {
-		solution = solution.toLowerCase();
-		for (Collection<String> entry : thesaurus) {
-			if (entry.contains(clueWord) && entry.contains(solution)) {
-				return true;
+	public boolean match(Clue clue, String solution) {
+		// Populate an array with the separate words of the clue
+		String[] clueWords = clue.getClueNoPunctuation(false).split(
+				WordUtils.REGEX_WHITESPACE);
+		SolutionPattern pattern = clue.getPattern();
+		boolean multipleWords = pattern.hasMultipleWords();
+
+		// Solution might need to be 're-spaced'
+		String[] solutions = new String[multipleWords ? 2 : 1];
+		solutions[0] = solution.toLowerCase();
+		if (multipleWords) {
+			solutions[1] = pattern.recomposeSolution(solution);
+		}
+		for (String clueWord : clueWords) {
+			for (Collection<String> entry : thesaurus) {
+				if ((entry.contains(clueWord) && entry.contains(solutions[0]))
+						|| (multipleWords && entry.contains(clueWord) && entry
+								.contains(solutions[1]))) {
+					System.out.println("Thesaurus match: " + clueWord + " and "
+							+ solutions[0]);
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Retrieve all synonyms of a given word
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms of the given word
+	 */
 	public Collection<String> getSynonyms(String word) {
 		Collection<String> synonyms = new HashSet<>();
 		for (Collection<String> entry : thesaurus) {

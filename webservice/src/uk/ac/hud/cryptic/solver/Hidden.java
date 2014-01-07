@@ -23,10 +23,10 @@ public class Hidden extends Solver {
 	@Override
 	public void run() {
 		Hidden h = new Hidden();
-		h.solve(new Clue("Delia’s pickle contains jelly", "_____")); // aspic
+		 h.solve(new Clue("Delia’s pickle contains jelly", "_____")); // aspic
 		h.solve(new Clue(
 				"As seen in jab, reach of pro miserably failing to meet expectations?",
-				"_____,__,_______")); // reach of promise
+				"______,__,_______")); // breach of promise
 		h.solve(new Clue("Some forget to get here for gathering",
 				"___-________")); // get-together
 		h.solve(new Clue(
@@ -50,8 +50,6 @@ public class Hidden extends Solver {
 		System.out.print(c.getClue() + ": ");
 		for (Solution s : solutions) {
 			System.out.print(s + ", ");
-			// System.out.println("Matches: "
-			// + THESAURUS.getMatchCount(c.getClue(), s.getSolution()));
 		}
 		System.out.println();
 
@@ -83,7 +81,7 @@ public class Hidden extends Solver {
 		// Remove risk of matching original words
 		strings.removeAll(Arrays.asList(c.getClueNoPunctuation(false).split(
 				WordUtils.REGEX_WHITESPACE)));
-		
+
 		// Remove solutions which don't match the provided pattern
 		Collection<String> toRemove = new ArrayList<>();
 		for (String string : strings) {
@@ -95,6 +93,11 @@ public class Hidden extends Solver {
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(strings, pattern);
+
+		// Match against the thesaurus
+		for (String clueWord : strings) {
+			THESAURUS.match(c, clueWord);
+		}
 
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.

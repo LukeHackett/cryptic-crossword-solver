@@ -102,7 +102,7 @@ public class Dictionary {
 	 * @param solutions
 	 *            - the collection of words to verify against the dictionary
 	 * @param pattern
-	 *            - the SolutionStructure object modelling the characteristics
+	 *            - the SolutionPattern object modelling the characteristics
 	 *            of the solution from the user's provided input
 	 */
 	public void dictionaryFilter(Collection<String> solutions,

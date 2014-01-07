@@ -1,7 +1,7 @@
 package uk.ac.hud.cryptic.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,8 +24,8 @@ public class SolutionPattern {
 	private int wordCount;
 	// Individual word lengths. e.g. [ 5 , 4 , 2 ]
 	private int[] indLengths;
-	// The characters present between words. e.g. [ "," , "-" ]
-	private String[] separators;
+	// The characters present between words. e.g. [ ',' , '-' ]
+	private char[] separators;
 	// Total number of characters in the solution. e.g. For 5,4-2 = 11
 	private int totalLength;
 	// Does the solution comprise of a single or multiple words?
@@ -79,11 +79,14 @@ public class SolutionPattern {
 	private void processSeparators() {
 		Pattern p = Pattern.compile(WordUtils.REGEX_SEPARATORS);
 		Matcher m = p.matcher(pattern);
-		Collection<String> matches = new ArrayList<String>();
+		List<Character> matches = new ArrayList<>();
 		while (m.find()) {
-			matches.add(m.group());
+			matches.add(m.group().charAt(0));
 		}
-		separators = matches.toArray(new String[matches.size()]);
+		separators = new char[matches.size()];
+		for (int i = 0; i < matches.size(); i++) {
+			separators[i] = matches.get(i);
+		}
 	}
 
 	public int getTotalLength() {
@@ -96,7 +99,7 @@ public class SolutionPattern {
 
 	public String recomposeSolution(String solution) {
 		if (!multipleWords) {
-			return solution.toUpperCase();
+			return solution;
 		}
 		// e.g. "THEBIGDIPPER" to "THE BIG-DIPPER"
 		StringBuilder sb = new StringBuilder(solution);
@@ -105,18 +108,15 @@ public class SolutionPattern {
 		int i;
 		for (i = 0; i < separators.length; i++) {
 
-			String separator = separators[i];
-			if (separator.length() > 1) {
-				separator = separator.trim();
-			}
-			if (separator.equals(SolutionPattern.SPACE)) {
-				separator = " ";
+			char separator = separators[i];
+			if (separator == SolutionPattern.SPACE) {
+				separator = ' ';
 			}
 
 			sb.insert(indLengths[i] + offset, separator);
-			offset += indLengths[i] + separator.length();
+			offset += indLengths[i] + 1;
 		}
-		return sb.toString().toUpperCase();
+		return sb.toString();
 	}
 
 	public String[] separateSolution(String solution) {
