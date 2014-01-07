@@ -3,19 +3,11 @@ package uk.ac.hud.cryptic.config;
 /**
  * This class provides a number of application wide settings and constants.
  * 
- * @author Luke Hackett
+ * @author Luke Hackett, Stuart Leader
  * @version 0.1
  */
 public class Settings {
-	// Dictionary Instance
-	private static Settings instance = new Settings();
-
-	/**
-	 * Default Constructor
-	 */
-	private Settings() {
-
-	}
+	private static Settings instance;
 
 	/**
 	 * This method will return the current (and only) instance of the Settings
@@ -31,13 +23,21 @@ public class Settings {
 	}
 
 	/**
-	 * This method will return the absolute path to the dictionary words file
-	 * found in UNIX and Linux operating systems.
+	 * This method will return the path to the dictionary words file.
 	 * 
-	 * @return String
+	 * @return the file path to the dictionary
 	 */
-	public String getLocalDictionaryPath() {
+	public String getDictionaryPath() {
 		return "res/dictionary/standard/words";
+	}
+
+	/**
+	 * This method will return the path to the thesaurus file.
+	 * 
+	 * @return the file path to the thesaurus
+	 */
+	public String getThesaurusPath() {
+		return "res/thesaurus/gutenberg/mthesaur.txt";
 	}
 
 }

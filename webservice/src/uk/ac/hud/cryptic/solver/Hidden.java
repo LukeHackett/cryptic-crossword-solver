@@ -6,7 +6,6 @@ import java.util.HashSet;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Hidden extends Solver {
 
@@ -75,7 +74,7 @@ public class Hidden extends Solver {
 		}
 
 		// Filter out invalid words
-		WordUtils.dictionaryFilter(strings, c.getPattern());
+		DICTIONARY.dictionaryFilter(strings, c.getPattern());
 
 		// Remove risk of matching original words
 		// possibilities.removeAll(Arrays.asList(clue.toLowerCase().split(

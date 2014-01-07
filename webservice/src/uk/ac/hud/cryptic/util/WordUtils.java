@@ -1,8 +1,5 @@
 package uk.ac.hud.cryptic.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import uk.ac.hud.cryptic.resource.Dictionary;
 
 /**
@@ -19,11 +16,6 @@ public class WordUtils {
 
 	// Will match characters used to separate solution patterns
 	public static final String REGEX_SEPARATORS = "(,|-)";
-
-	// Will match anything other than [0-9]
-	public static final String REGEX_NON_NUMERIC = "\\D+";
-	
-	private static final Dictionary DICT = Dictionary.getInstance();
 
 	/**
 	 * Remove any non-alphabetical characters including spaces
@@ -49,42 +41,4 @@ public class WordUtils {
 		return output;
 	}
 
-	/**
-	 * Remove any words from the given collection that are not present in the
-	 * dictionary. This is an effective way to remove words that have being
-	 * constructed by the algorithm which are essentially just an assortment of
-	 * letters which hold no identified meaning.
-	 * 
-	 * @param solutions
-	 *            - the collection of words to verify against the dictionary
-	 * @param pattern
-	 *            - the SolutionStructure object modelling the characteristics
-	 *            of the solution from the user's provided input
-	 */
-	public static void dictionaryFilter(Collection<String> solutions,
-			SolutionPattern pattern) {
-		Collection<String> toRemove = new ArrayList<>();
-		outer: for (String solution : solutions) {
-
-			// Break each potential solution into it's separate word components
-			String[] words;
-			if (pattern.hasMultipleWords()) {
-				words = pattern.separateSolution(solution);
-			} else {
-				words = new String[] { solution };
-			}
-			// Check each component of the solution is a confirmed word
-			// TODO Check against an abbreviations list and other resources
-			for (String word : words) {
-				if (!DICT.isWord(word)) {
-					// Remove solutions which contain at least one word which
-					// isn't in the dictionary
-					toRemove.add(solution);
-					continue outer;
-				}
-			}
-		}
-		// Remove those solutions which contain unconfirmed words
-		solutions.removeAll(toRemove);
-	}
-}
+} // End of class WordUtils

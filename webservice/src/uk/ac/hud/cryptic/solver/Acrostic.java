@@ -6,7 +6,6 @@ import java.util.Collection;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Acrostic extends Solver {
 
@@ -62,7 +61,7 @@ public class Acrostic extends Solver {
 		}
 
 		// Remove words not in the dictionary
-		WordUtils.dictionaryFilter(possibleWords, c.getPattern());
+		DICTIONARY.dictionaryFilter(possibleWords, c.getPattern());
 
 		// TODO Remove - Print out answers
 		for (String answer : possibleWords) {

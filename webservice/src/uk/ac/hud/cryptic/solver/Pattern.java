@@ -7,7 +7,6 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.util.SolutionPattern;
-import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Pattern extends Solver {
 
@@ -88,7 +87,7 @@ public class Pattern extends Solver {
 		}
 
 		// Filter out invalid words
-		WordUtils.dictionaryFilter(possibilities, p);
+		DICTIONARY.dictionaryFilter(possibilities, p);
 
 		// TODO Don't match words that aren't hidden, for example, the word
 		// STEER in Steerer or ALLOW in Allows.
