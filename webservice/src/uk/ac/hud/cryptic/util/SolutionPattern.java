@@ -13,6 +13,11 @@ import java.util.regex.Pattern;
 // to then filter out the potential solutions based on these
 public class SolutionPattern {
 
+	// The constants of a solution pattern
+	public static final char SPACE = ',';
+	public static final char HYPHEN = '-';
+	public static final char UNKNOWN_CHARACTER = '_';
+
 	// As inputted by the user. e.g. "_a__e,___d-__"
 	private final String pattern;
 	// Solution is comprised of this many words
@@ -25,6 +30,8 @@ public class SolutionPattern {
 	private int totalLength;
 	// Does the solution comprise of a single or multiple words?
 	private boolean multipleWords;
+	// The solution patterns for the individual words of the solution
+	private String[] indWordPatterns;
 
 	/**
 	 * Constructor takes in the user input of what is known of the solution
@@ -37,26 +44,26 @@ public class SolutionPattern {
 	 *            solution
 	 */
 	public SolutionPattern(String pattern) {
-		this.pattern = pattern;
+		this.pattern = pattern.toLowerCase();
 		calculate(pattern);
 
 	}
 
-	private void calculate(String rawLength) {
-		// Obtain the individual lengths
-		String[] indWordLengths = rawLength.split(WordUtils.REGEX_SEPARATORS);
-		multipleWords = indWordLengths.length > 1;
+	private void calculate(String pattern) {
+		// Obtain the individual word patterns
+		indWordPatterns = pattern.split(WordUtils.REGEX_SEPARATORS);
+		multipleWords = indWordPatterns.length > 1;
 		if (multipleWords) {
 			processSeparators();
 		}
 
-		wordCount = indWordLengths.length;
+		wordCount = indWordPatterns.length;
 		indLengths = new int[wordCount];
 
 		// Get a cumulative total
 		int i = 0;
 		for (i = 0; i < wordCount; i++) {
-			String indWordLength = indWordLengths[i];
+			String indWordLength = indWordPatterns[i];
 
 			try {
 				int lengthValue = indWordLength.length();
@@ -102,7 +109,7 @@ public class SolutionPattern {
 			if (separator.length() > 1) {
 				separator = separator.trim();
 			}
-			if (separator.equals(",")) {
+			if (separator.equals(SolutionPattern.SPACE)) {
 				separator = " ";
 			}
 
@@ -127,9 +134,42 @@ public class SolutionPattern {
 	public boolean hasMultipleWords() {
 		return multipleWords;
 	}
-	
+
 	public String getPattern() {
 		return pattern;
 	}
 
+	/**
+	 * Determine is a given solution matches against the solution pattern
+	 * provided by the user.
+	 * 
+	 * @param solution
+	 *            - the solution to match against the specified pattern
+	 * @return <code>true</code> if the proposed solution matches the pattern,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean match(String solution) {
+		solution = WordUtils.removeNonAlphabet(solution, true);
+		// Assume a match until proven otherwise
+		boolean match = true;
+
+		if (!(solution.length() == totalLength)) {
+			match = false;
+		} else {
+			int counter = 0;
+			outer: for (String pattern : indWordPatterns) {
+				for (char item : pattern.toCharArray()) {
+					if (item == UNKNOWN_CHARACTER) {
+						counter++;
+					} else {
+						if (item != solution.charAt(counter++)) {
+							match = false;
+							break outer;
+						}
+					}
+				}
+			}
+		}
+		return match;
+	}
 } // End of class SolutionPattern

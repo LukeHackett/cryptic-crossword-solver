@@ -1,7 +1,5 @@
 package uk.ac.hud.cryptic.util;
 
-import uk.ac.hud.cryptic.resource.Dictionary;
-
 /**
  * A collection of helper methods relating to the manipulation of words and
  * sentences.
@@ -16,6 +14,9 @@ public class WordUtils {
 
 	// Will match characters used to separate solution patterns
 	public static final String REGEX_SEPARATORS = "(,|-)";
+	
+	// Will match whitespace characters
+	public static final String REGEX_WHITESPACE = "\\s+";
 
 	/**
 	 * Remove any non-alphabetical characters including spaces

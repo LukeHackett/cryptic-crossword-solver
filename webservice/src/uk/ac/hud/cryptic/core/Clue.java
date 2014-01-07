@@ -17,7 +17,7 @@ public class Clue {
 	private SolutionCollection solutions;
 
 	public Clue(String clue, String pattern) {
-		this.clue = clue;
+		this.clue = clue.toLowerCase(); // Standardise clue
 		this.pattern = new SolutionPattern(pattern);
 		solutions = new SolutionCollection();
 	}

@@ -1,11 +1,15 @@
 package uk.ac.hud.cryptic.solver;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
+import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Hidden extends Solver {
 
@@ -19,15 +23,15 @@ public class Hidden extends Solver {
 	@Override
 	public void run() {
 		Hidden h = new Hidden();
-		h.solve(new Clue("Delia’s pickle contains jelly", "_____"));
+		h.solve(new Clue("Delia’s pickle contains jelly", "_____")); // aspic
 		h.solve(new Clue(
 				"As seen in jab, reach of pro miserably failing to meet expectations?",
-				"_____,__,_______"));
+				"_____,__,_______")); // reach of promise
 		h.solve(new Clue("Some forget to get here for gathering",
-				"___-________"));
+				"___-________")); // get-together
 		h.solve(new Clue(
 				"Guests in the country who use part – i.e. some, but not all",
-				"_____,_______"));
+				"_____,_______")); // house parties
 	}
 
 	public SolutionCollection solve(Clue c) {
@@ -46,6 +50,8 @@ public class Hidden extends Solver {
 		System.out.print(c.getClue() + ": ");
 		for (Solution s : solutions) {
 			System.out.print(s + ", ");
+			// System.out.println("Matches: "
+			// + THESAURUS.getMatchCount(c.getClue(), s.getSolution()));
 		}
 		System.out.println();
 
@@ -57,13 +63,14 @@ public class Hidden extends Solver {
 
 		Collection<String> strings = new HashSet<>();
 		SolutionCollection possibilities = new SolutionCollection();
+		SolutionPattern pattern = c.getPattern();
 
 		String clue = c.getClueNoPunctuation(true);
 		if (reverse) {
 			clue = new StringBuilder(clue).reverse().toString();
 		}
 
-		int totalLength = c.getPattern().getTotalLength();
+		int totalLength = pattern.getTotalLength();
 
 		int limit = clue.length() - totalLength;
 
@@ -73,15 +80,21 @@ public class Hidden extends Solver {
 			strings.add(clue.substring(index, index + totalLength));
 		}
 
-		// Filter out invalid words
-		DICTIONARY.dictionaryFilter(strings, c.getPattern());
-
 		// Remove risk of matching original words
-		// possibilities.removeAll(Arrays.asList(clue.toLowerCase().split(
-		// WordUtils.REGEX_SEPARATORS)));
+		strings.removeAll(Arrays.asList(c.getClueNoPunctuation(false).split(
+				WordUtils.REGEX_WHITESPACE)));
+		
+		// Remove solutions which don't match the provided pattern
+		Collection<String> toRemove = new ArrayList<>();
+		for (String string : strings) {
+			if (!pattern.match(string)) {
+				toRemove.add(string);
+			}
+		}
+		strings.removeAll(toRemove);
 
-		// TODO Don't match words that aren't hidden, for example, the word
-		// STEER in Steerer or ALLOW in Allows.
+		// Filter out invalid words
+		DICTIONARY.dictionaryFilter(strings, pattern);
 
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.

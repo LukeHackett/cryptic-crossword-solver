@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Thesaurus {
 	// Thesaurus Instance
@@ -64,6 +66,23 @@ public class Thesaurus {
 		}
 	}
 
+	public int getMatchCount(Clue clue, String solution) {
+		// Populate an array with the separate words of the clue
+		String[] clueWords = clue.getClueNoPunctuation(false).split(
+				WordUtils.REGEX_WHITESPACE);
+		solution = solution.toLowerCase();
+		// Number of thesaurus matches
+		int count = 0;
+		for (Collection<String> entry : thesaurus) {
+			for (String word : clueWords) {
+				if (entry.contains(word) && entry.contains(solution)) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
 	/**
 	 * Check if a specified word is present in the dictionary being used.
 	 * 
@@ -73,9 +92,9 @@ public class Thesaurus {
 	 *         otherwise
 	 */
 	public boolean match(String clueWord, String solution) {
+		solution = solution.toLowerCase();
 		for (Collection<String> entry : thesaurus) {
-			if (entry.contains(clueWord)
-					&& entry.contains(solution.toLowerCase())) {
+			if (entry.contains(clueWord) && entry.contains(solution)) {
 				return true;
 			}
 		}
