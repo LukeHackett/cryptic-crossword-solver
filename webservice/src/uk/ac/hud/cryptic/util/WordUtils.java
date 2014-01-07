@@ -13,8 +13,9 @@ public class WordUtils {
 	public static final String REGEX_NON_LETTERS = "[^A-Za-z\\s]+";
 
 	// Will match characters used to separate solution patterns
-	public static final String REGEX_SEPARATORS = "(,|-)";
-	
+	public static final String REGEX_SEPARATORS = "(" + SolutionPattern.SPACE
+			+ "|" + SolutionPattern.HYPHEN + ")";
+
 	// Will match whitespace characters
 	public static final String REGEX_WHITESPACE = "\\s+";
 
