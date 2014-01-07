@@ -1,11 +1,12 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import uk.ac.hud.cryptic.resource.Thesaurus;
-import uk.ac.hud.cryptic.util.SolutionStructure;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
+import uk.ac.hud.cryptic.util.SolutionPattern;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Pattern extends Solver {
@@ -20,56 +21,49 @@ public class Pattern extends Solver {
 	@Override
 	public void run() {
 		Pattern p = new Pattern();
-		p.solve("'Pardon me!', I asked, regularly breaking vow", "7"); // Promise
-		p.solve("Beasts in tree sinned, we hear - nothing odd there", "8"); // Reindeer
+		p.solve(new Clue("'Pardon me!', I asked, regularly breaking vow",
+				"_______")); // Promise
+		p.solve(new Clue("Beasts in tree sinned, we hear - nothing odd there",
+				"________")); // Reindeer
 	}
 
-	public Collection<String> solve(String clue, String solutionLength) {
-		// Remove all non-alphabet characters
-		String processedClue = WordUtils.removeNonAlphabet(clue, true);
-
+	public SolutionCollection solve(Clue c) {
 		// TODO Clue length must be greater than or equal to solution length
-		SolutionStructure ss = new SolutionStructure(solutionLength);
 
-		String oddCharacters = getEveryOtherChar(processedClue, false);
-		String evenCharacters = getEveryOtherChar(processedClue, true);
+		SolutionCollection sc = new SolutionCollection();
+
+		String oddCharacters = getEveryOtherChar(c, false);
+		String evenCharacters = getEveryOtherChar(c, true);
 
 		// Even words
-		Collection<String> evenWords = calculateHiddenWords(evenCharacters,
-				solutionLength, ss);
+		sc.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
 
 		// Odd words
-		Collection<String> oddWords = calculateHiddenWords(oddCharacters,
-				solutionLength, ss);
-
-		Collection<String> allWords = new ArrayList<>();
-		allWords.addAll(evenWords);
-		allWords.addAll(oddWords);
+		sc.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
 
 		// Temporary print block
-		System.out.print(clue + ": ");
-		for (String word : evenWords) {
-			System.out.print("<E>" + ss.recomposeSolution(word) + ", ");
-		}
-		for (String word : oddWords) {
-			System.out.print("<O>" + ss.recomposeSolution(word) + ", ");
+		System.out.print(c.getClue() + ": ");
+		for (Solution s : sc) {
+			System.out.print(s);
 		}
 		System.out.println();
-		String clueLower = WordUtils.removeNonAlphabet(clue, false);
-		for (String clueComponent : clueLower.split("\\s")) {
-			for (String possibleSolution : allWords) {
-				if (Thesaurus.match(clueComponent, possibleSolution)) {
-					System.out.println(possibleSolution
-							+ " matches (synonym) with the clue word "
-							+ clueComponent + ".");
-				}
-			}
-		}
-		System.out.println();
-		return allWords;
+
+		// String clueLower = WordUtils.removeNonAlphabet(c.getClue(), false);
+		// for (String clueComponent : clueLower.split("\\s")) {
+		// for (String possibleSolution : allWords) {
+		// if (Thesaurus.match(clueComponent, possibleSolution)) {
+		// System.out.println(possibleSolution
+		// + " matches (synonym) with the clue word "
+		// + clueComponent + ".");
+		// }
+		// }
+		// }
+
+		return sc;
 	}
 
-	private String getEveryOtherChar(String text, boolean even) {
+	private String getEveryOtherChar(Clue c, boolean even) {
+		final String text = c.getClueNoPunctuation(true);
 		String newString = "";
 		int i;
 		for (i = even ? 0 : 1; i < text.length(); i += 2) {
@@ -78,21 +72,23 @@ public class Pattern extends Solver {
 		return newString;
 	}
 
-	private Collection<String> calculateHiddenWords(String clue,
-			String solutionLength, SolutionStructure ss) {
+	private SolutionCollection calculateHiddenWords(String clue,
+			SolutionPattern p) {
+
+		SolutionCollection sc = new SolutionCollection();
 		Collection<String> possibilities = new HashSet<>();
 
-		int limit = clue.length() - ss.getTotalLength();
+		int limit = clue.length() - p.getTotalLength();
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
 			possibilities
-					.add(clue.substring(index, index + ss.getTotalLength()));
+					.add(clue.substring(index, index + p.getTotalLength()));
 		}
 
 		// Filter out invalid words
-		WordUtils.dictionaryFilter(possibilities, ss);
+		WordUtils.dictionaryFilter(possibilities, p);
 
 		// TODO Don't match words that aren't hidden, for example, the word
 		// STEER in Steerer or ALLOW in Allows.
@@ -100,7 +96,11 @@ public class Pattern extends Solver {
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
 
-		return possibilities;
+		for (String string : possibilities) {
+			Solution s = new Solution(string);
+			sc.add(s);
+		}
+		return sc;
 	}
 
 } // End of class Pattern

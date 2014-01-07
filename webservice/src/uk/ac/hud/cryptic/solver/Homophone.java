@@ -1,6 +1,7 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.Collection;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 
 public class Homophone extends Solver {
 
@@ -14,12 +15,12 @@ public class Homophone extends Solver {
 	@Override
 	public void run() {
 		Homophone h = new Homophone();
-		h.solve("a singer sung a single note", "6"); // Tenner
-		h.solve("A declared interest in meat", "5"); // Steak
-		h.solve("Castle engaged in battle, reportedly", "4"); // Fort
+		h.solve(new Clue("a singer sung a single note", "______")); // Tenner
+		h.solve(new Clue("A declared interest in meat", "_____")); // Steak
+		h.solve(new Clue("Castle engaged in battle, reportedly", "____")); // Fort
 	}
 
-	public Collection<String> solve(String clue, String solutionLength) {
+	public SolutionCollection solve(Clue c) {
 		return null;
 	}
 

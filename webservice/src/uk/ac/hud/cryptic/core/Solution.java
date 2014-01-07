@@ -96,7 +96,15 @@ public class Solution implements Comparable<Solution> {
 
 	@Override
 	public int compareTo(Solution o) {
-		return Double.compare(confidence, o.getConfidence());
-	}
+		int solutionCompare = solution.compareToIgnoreCase(o.getSolution());
+		int confidenceCompare = Double.compare(confidence, o.getConfidence());
 
+		if (solutionCompare == 0) {
+			return 0;
+		} else if (confidenceCompare == 0) {
+			return solutionCompare;
+		} else {
+			return confidenceCompare;
+		}
+	}
 } // End of class Solution

@@ -1,6 +1,7 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.Collection;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 
 public class Anagram extends Solver {
 
@@ -14,10 +15,10 @@ public class Anagram extends Solver {
 	@Override
 	public void run() {
 		Anagram a = new Anagram();
-		a.solve("a singer sung a single note", "6"); // Tenner
+		a.solve(new Clue("a singer sung a single note", "______")); // Tenner
 	}
 
-	public Collection<String> solve(String clue, String solutionLength) {
+	public SolutionCollection solve(Clue c) {
 		return null;
 	}
 

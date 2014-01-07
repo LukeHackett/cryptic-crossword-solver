@@ -17,12 +17,12 @@ public class WordUtils {
 	// Will match anything that isn't [A-Z] or [a-z] excluding spaces
 	public static final String REGEX_NON_LETTERS = "[^A-Za-z\\s]+";
 
-	// Will match all characters likely used to separate solution lengths
-	public static final String REGEX_SEPARATORS = "(,|\\.|\\s|-|:|;|\\+)+";
+	// Will match characters used to separate solution patterns
+	public static final String REGEX_SEPARATORS = "(,|-)";
 
 	// Will match anything other than [0-9]
 	public static final String REGEX_NON_NUMERIC = "\\D+";
-
+	
 	private static final Dictionary DICT = Dictionary.getInstance();
 
 	/**
@@ -57,19 +57,19 @@ public class WordUtils {
 	 * 
 	 * @param solutions
 	 *            - the collection of words to verify against the dictionary
-	 * @param ss
+	 * @param pattern
 	 *            - the SolutionStructure object modelling the characteristics
 	 *            of the solution from the user's provided input
 	 */
 	public static void dictionaryFilter(Collection<String> solutions,
-			SolutionStructure ss) {
+			SolutionPattern pattern) {
 		Collection<String> toRemove = new ArrayList<>();
 		outer: for (String solution : solutions) {
 
 			// Break each potential solution into it's separate word components
 			String[] words;
-			if (ss.hasMultipleWords()) {
-				words = ss.separateSolution(solution);
+			if (pattern.hasMultipleWords()) {
+				words = pattern.separateSolution(solution);
 			} else {
 				words = new String[] { solution };
 			}

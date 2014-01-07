@@ -1,9 +1,11 @@
 package uk.ac.hud.cryptic.solver;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import uk.ac.hud.cryptic.util.SolutionStructure;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Acrostic extends Solver {
@@ -18,23 +20,22 @@ public class Acrostic extends Solver {
 	@Override
 	public void run() {
 		Acrostic a = new Acrostic();
-		a.solve("Some URLs recommended for beginners to explore online", "4");
-		// Not solved because answer is HIJAB (not in dictionary)
-		// a.solve("What chiefly hides in Jordan and Bahrain?", "5");
-		a.solve("Those biting heads off tarantulas, eating even tiny hairs",
-				"5");
-		a.solve("What's seen at start of any road running one way?", "5");
-		a.solve("Starts to serve time in Russian prison", "4");
-		// Gives two answers BAWL and AWLS
-		// TODO make sure definitions are taken into consideration
-		a.solve("Black and white lamb starts to cry", "4");
+		a.solve(new Clue(
+				"Some URLs recommended for beginners to explore online", "____")); // surf
+		a.solve(new Clue(
+				"Those biting heads off tarantulas, eating even tiny hairs",
+				"_____")); // teeth
+		a.solve(new Clue("What's seen at start of any road running one way?",
+				"_____")); // arrow
+		a.solve(new Clue("Black and white lamb starts to cry", "____")); // bawl
 	}
 
-	public void solve(String clue, String solutionLength) {
-		SolutionStructure ss = new SolutionStructure(solutionLength);
+	public SolutionCollection solve(Clue c) {
+
+		SolutionCollection sc = new SolutionCollection();
 
 		// Split the clue into array elements
-		String[] words = clue.split("\\s+");
+		String[] words = c.getClue().split("\\s+");
 
 		String termToSearch = "";
 
@@ -44,10 +45,10 @@ public class Acrostic extends Solver {
 			termToSearch += w.substring(0, 1);
 		}
 
-		int lengthOfClue = Integer.parseInt(solutionLength);
+		int lengthOfClue = c.getPattern().getTotalLength();
 		int lengthOfFodder = termToSearch.length();
 
-		List<String> possibleWords = new ArrayList<String>();
+		Collection<String> possibleWords = new ArrayList<String>();
 
 		// Get all possible substrings
 		for (int i = 0; i <= lengthOfFodder - lengthOfClue; i++) {
@@ -61,11 +62,13 @@ public class Acrostic extends Solver {
 		}
 
 		// Remove words not in the dictionary
-		WordUtils.dictionaryFilter(possibleWords, ss);
+		WordUtils.dictionaryFilter(possibleWords, c.getPattern());
 
 		// TODO Remove - Print out answers
 		for (String answer : possibleWords) {
 			System.out.println(answer);
+			sc.add(new Solution(answer));
 		}
+		return null;
 	}
 } // End of class Acrostic

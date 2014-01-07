@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
  */
 // TODO Allow the modelling of known letters, and create a method (in WordUtils)
 // to then filter out the potential solutions based on these
-public class SolutionStructure {
+public class SolutionPattern {
 
-	// As inputted by the user. e.g. "5,4-2"
-	private final String rawLength;
+	// As inputted by the user. e.g. "_a__e,___d-__"
+	private final String pattern;
 	// Solution is comprised of this many words
 	private int wordCount;
 	// Individual word lengths. e.g. [ 5 , 4 , 2 ]
@@ -32,13 +32,13 @@ public class SolutionStructure {
 	 * this data such as the total character length of the solution and the
 	 * number of words it comprises of.
 	 * 
-	 * @param rawLength
+	 * @param pattern
 	 *            - the user input of the known parameters of the clue's
 	 *            solution
 	 */
-	public SolutionStructure(String rawLength) {
-		this.rawLength = rawLength;
-		calculate(rawLength);
+	public SolutionPattern(String pattern) {
+		this.pattern = pattern;
+		calculate(pattern);
 
 	}
 
@@ -59,7 +59,7 @@ public class SolutionStructure {
 			String indWordLength = indWordLengths[i];
 
 			try {
-				int lengthValue = Integer.parseInt(indWordLength);
+				int lengthValue = indWordLength.length();
 				totalLength += lengthValue;
 				indLengths[i] = lengthValue;
 			} catch (NumberFormatException e) {
@@ -70,8 +70,8 @@ public class SolutionStructure {
 	}
 
 	private void processSeparators() {
-		Pattern p = Pattern.compile(WordUtils.REGEX_NON_NUMERIC);
-		Matcher m = p.matcher(rawLength);
+		Pattern p = Pattern.compile(WordUtils.REGEX_SEPARATORS);
+		Matcher m = p.matcher(pattern);
 		Collection<String> matches = new ArrayList<String>();
 		while (m.find()) {
 			matches.add(m.group());
@@ -84,7 +84,7 @@ public class SolutionStructure {
 	}
 
 	public String getRawLength() {
-		return rawLength;
+		return pattern;
 	}
 
 	public String recomposeSolution(String solution) {
@@ -126,6 +126,10 @@ public class SolutionStructure {
 
 	public boolean hasMultipleWords() {
 		return multipleWords;
+	}
+	
+	public String getPattern() {
+		return pattern;
 	}
 
 } // End of class SolutionStructure

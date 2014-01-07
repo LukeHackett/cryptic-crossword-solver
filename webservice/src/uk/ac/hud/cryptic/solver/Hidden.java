@@ -1,10 +1,11 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
-import uk.ac.hud.cryptic.util.SolutionStructure;
+import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Hidden extends Solver {
@@ -19,79 +20,66 @@ public class Hidden extends Solver {
 	@Override
 	public void run() {
 		Hidden h = new Hidden();
-		h.solve("Delia’s pickle contains jelly", "5");
-		h.solve("As seen in jab, reach of pro miserably failing to meet expectations?",
-				"6,2,7");
-		h.solve("Some forget to get here for gathering", "3-8");
-		h.solve("Guests in the country who use part – i.e. some, but not all",
-				"5 7");
-		h.solve("Composition from Bliss on a tape", "6");
-		h.solve("What's in Latin sign, if I can translate, is of no importance",
-				"13");
-		h.solve("How some answers may be found in clues, some of which I'd denoted",
-				"6");
-		h.solve("In Fargo, rig amidst paper craft", "7");
-		h.solve("Stop getting letters from friends", "3");
-		h.solve("Some teachers get hurt", "4");
-		h.solve("Metal concealed by environmentalist", "4");
-		h.solve("Hide in Arthur's kingdom", "4");
-		h.solve("Who means to reveal where the heart is?", "4");
-		h.solve("Pole coming from Pakistan or Thailand", "5");
-		h.solve("Motorcyclist perhaps steered irresponsibly when reversing? Not entirely",
-				"5");
-		h.solve("Cooking equipment taken back from heiress I tormented", "10");
-		h.solve("Drama of mafioso a pope raised", "4,5");
+		h.solve(new Clue("Delia’s pickle contains jelly", "_____"));
+		h.solve(new Clue(
+				"As seen in jab, reach of pro miserably failing to meet expectations?",
+				"_____,__,_______"));
+		h.solve(new Clue("Some forget to get here for gathering",
+				"___-________"));
+		h.solve(new Clue(
+				"Guests in the country who use part – i.e. some, but not all",
+				"_____,_______"));
 	}
 
-	public void solve(String clue, String solutionLength) {
-
-		// Remove all non-alphabet characters
-		String processedClue = WordUtils.removeNonAlphabet(clue, true);
+	public SolutionCollection solve(Clue c) {
 
 		// TODO Clue length must be greater than or equal to solution length
-		SolutionStructure ss = new SolutionStructure(solutionLength);
+
+		SolutionCollection solutions = new SolutionCollection();
 
 		// Hidden words from left-to-right
-		Collection<String> forwardWords = calculateHiddenWords(processedClue,
-				solutionLength, ss);
+		solutions.addAll(calculateHiddenWords(c, false));
 
 		// Hidden words from right-to-left
-		String reverseClue = new StringBuilder(processedClue).reverse()
-				.toString();
-		Collection<String> backwardWords = calculateHiddenWords(reverseClue,
-				solutionLength, ss);
+		solutions.addAll(calculateHiddenWords(c, true));
 
 		// Temporary print block
-		System.out.print(clue + ": ");
-		for (String word : forwardWords) {
-			System.out.print("<F>" + ss.recomposeSolution(word) + ", ");
-		}
-		for (String word : backwardWords) {
-			System.out.print("<B>" + ss.recomposeSolution(word) + ", ");
+		System.out.print(c.getClue() + ": ");
+		for (Solution s : solutions) {
+			System.out.print(s + ", ");
 		}
 		System.out.println();
 
+		return solutions;
+
 	}
 
-	private Collection<String> calculateHiddenWords(String clue,
-			String solutionLength, SolutionStructure ss) {
-		Collection<String> possibilities = new HashSet<>();
+	private Collection<Solution> calculateHiddenWords(Clue c, boolean reverse) {
 
-		int limit = clue.length() - ss.getTotalLength();
+		Collection<String> strings = new HashSet<>();
+		SolutionCollection possibilities = new SolutionCollection();
+
+		String clue = c.getClueNoPunctuation(true);
+		if (reverse) {
+			clue = new StringBuilder(clue).reverse().toString();
+		}
+
+		int totalLength = c.getPattern().getTotalLength();
+
+		int limit = clue.length() - totalLength;
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
-			possibilities
-					.add(clue.substring(index, index + ss.getTotalLength()));
+			strings.add(clue.substring(index, index + totalLength));
 		}
 
 		// Filter out invalid words
-		WordUtils.dictionaryFilter(possibilities, ss);
+		WordUtils.dictionaryFilter(strings, c.getPattern());
 
 		// Remove risk of matching original words
-		possibilities.removeAll(Arrays.asList(clue.toLowerCase().split(
-				WordUtils.REGEX_SEPARATORS)));
+		// possibilities.removeAll(Arrays.asList(clue.toLowerCase().split(
+		// WordUtils.REGEX_SEPARATORS)));
 
 		// TODO Don't match words that aren't hidden, for example, the word
 		// STEER in Steerer or ALLOW in Allows.
@@ -99,7 +87,10 @@ public class Hidden extends Solver {
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
 
+		for (String string : strings) {
+			Solution s = new Solution(string);
+			possibilities.add(s);
+		}
 		return possibilities;
 	}
-
 } // End of class Hidden
