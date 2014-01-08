@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
  * An object modelling the solution to the corresponding clue. This is done
  * using details provided by the user, such as the known word length(s).
  */
-// TODO Allow the modelling of known letters, and create a method (in WordUtils)
-// to then filter out the potential solutions based on these
 public class SolutionPattern {
 
 	// The constants of a solution pattern
