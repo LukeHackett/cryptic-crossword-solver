@@ -84,9 +84,45 @@ jQuery(document).ready(function($){
    * On click event handler for the submit button
    */
   $('#submit').on('click', function(evt){
-    // TODO:
+    // Prevent default actions
+  evt.preventDefault();
+  
+  // Validate input
+  if(inputs_have_errors()){
+    return;
+  }
+  
+  // TODO Send form to the server
   });
   
+  
+  /**
+   * Returns whether or not the form has input errors.
+   */
+  function inputs_have_errors(){
+    var clue = $('#clue');
+    var length = $('#length');
+    var error = false;
+  
+    // Check to ensure the clue has been input
+    if(clue.val() == ""){
+      clue.parents(".form-group").addClass("has-error");
+      error = true;
+    } else {
+      clue.parents(".form-group").removeClass("has-error");
+    }
+    
+    // Check to ensure solution length has been input
+    if(length.val() == "" || !valid_solution_pattern(pattern)){
+      length.parents(".form-group").addClass("has-error");
+      error = false;
+    } else {
+      length.parents(".form-group").removeClass("has-error");
+      error = true;
+    }
+  
+    return error; 
+  }
   
   /**
    * TODO: Complete method.
