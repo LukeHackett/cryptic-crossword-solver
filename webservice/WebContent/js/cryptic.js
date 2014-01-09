@@ -54,18 +54,30 @@ jQuery(document).ready(function($){
    * length input box.
    */
   $('#length').keydown(function(event){
-    // Special key's event codes (inc. commas=188, dashes=109)
-    var special_keys = [8, 9, 13, 27, 46, 109, 188];
-    
+    var self = $(this);
+    // Special key's event codes
+    var special_keys = [8, 9, 13, 27, 46];
+
     // Allow special chars + arrows only 
     if (special_keys.indexOf(event.keyCode) != -1 
         || (event.keyCode == 65 && event.ctrlKey === true) 
         || (event.keyCode >= 35 && event.keyCode <= 39)){
-            return;
+          return;
+    
+    } else if(event.keyCode == 109 || event.keyCode == 188 || event.keyCode == 189) {
+      // Get the last character of the string
+      var last = self.val().charAt(self.val().length-1);
+      // Prevent input if it's the same character
+      if (last == "," || last == "-") {
+        event.preventDefault();
+      } else {
+        return;
+      }
+    
     } else {
       // Reject all other keys (except numbers)
-      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
-          && (event.keyCode < 96 || event.keyCode > 105 )) {
+      if (event.shiftKey || (event.keyCode < 49 || event.keyCode > 57) 
+          && (event.keyCode < 97 || event.keyCode > 105 )) {
             event.preventDefault(); 
       }   
     }
