@@ -2,6 +2,8 @@ package uk.ac.hud.cryptic.core;
 
 import java.util.TreeSet;
 
+import uk.ac.hud.cryptic.util.WordUtils;
+
 /**
  * Maintains a set (no duplicates) of potential solutions to a clue, which are
  * ordered by their associated confidence rating.
@@ -56,6 +58,18 @@ public class SolutionCollection extends TreeSet<Solution> {
 			}
 		}
 		return sc;
+	}
+
+	public boolean contains(String solution) {
+		for (Solution s : this) {
+			String thisSolution = WordUtils.removeNonAlphabet(s.getSolution(),
+					true);
+			String otherSolution = WordUtils.removeNonAlphabet(solution, true);
+			if (thisSolution.equals(otherSolution)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 } // End of class SolutionCollection

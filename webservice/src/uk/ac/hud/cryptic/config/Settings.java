@@ -40,4 +40,34 @@ public class Settings {
 		return "assets/thesaurus/gutenberg/mthesaur.txt";
 	}
 
+	/**
+	 * Get the URL of the cryptic project's MySQL database
+	 * 
+	 * @return the url of the MySQL database
+	 */
+	public String getDBURL() {
+		return "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+	}
+
+	/**
+	 * Get the username of the cryptic project's MySQL database
+	 * 
+	 * @return the username of the MySQL database
+	 */
+	public String getDBUsername() {
+		return "cryptic";
+	}
+
+	/**
+	 * Get the password of the cryptic project's MySQL database. Yes this
+	 * shouldn't be stored in a source file, and yes it shouldn't be stored as
+	 * plain text. Please don't hurt me. Many thanks.
+	 * TODO I'm an idiot.
+	 * 
+	 * @return the password of the MySQL database
+	 */
+	public String getDBPassword() {
+		return "du4hacrEKa";
+	}
+
 }

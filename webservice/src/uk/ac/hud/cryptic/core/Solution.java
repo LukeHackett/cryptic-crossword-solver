@@ -107,4 +107,5 @@ public class Solution implements Comparable<Solution> {
 			return confidenceCompare;
 		}
 	}
+
 } // End of class Solution
