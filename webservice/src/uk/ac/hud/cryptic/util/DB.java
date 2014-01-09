@@ -79,7 +79,7 @@ public class DB {
 					String solution = rs.getString(2);
 					String pattern = SolutionPattern.toPattern(solution);
 
-					clues.add(new Clue(clue, pattern, solution));
+					clues.add(new Clue(clue, pattern, solution, type));
 				}
 			}
 		} catch (SQLException e1) {

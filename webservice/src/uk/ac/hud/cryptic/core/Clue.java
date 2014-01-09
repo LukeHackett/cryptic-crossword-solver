@@ -2,6 +2,7 @@ package uk.ac.hud.cryptic.core;
 
 import uk.ac.hud.cryptic.util.SolutionPattern;
 import uk.ac.hud.cryptic.util.WordUtils;
+import uk.ac.hud.cryptic.solver.Solver.Type;
 
 /**
  * Represents an individual cryptic crossword clue, and maintains a list of
@@ -15,6 +16,7 @@ public class Clue {
 	private final String clue;
 	private final SolutionPattern pattern;
 	private String actualSolution;
+	private Type type;
 	private SolutionCollection solutions;
 
 	/**
@@ -43,10 +45,13 @@ public class Clue {
 	 *            - the solution pattern
 	 * @param solution
 	 *            - the actual solution to the clue
+	 * @param type
+	 *            - the type of clue
 	 */
-	public Clue(String clue, String pattern, String solution) {
+	public Clue(String clue, String pattern, String solution, Type type) {
 		this(clue, pattern);
 		actualSolution = solution.toLowerCase();
+		this.type = type;
 	}
 
 	/**
@@ -101,6 +106,15 @@ public class Clue {
 	 */
 	public String getActualSolution() {
 		return actualSolution;
+	}
+
+	/**
+	 * Get the type of clue this is (if available)
+	 * 
+	 * @return the type of clue
+	 */
+	public Type getType() {
+		return type;
 	}
 
 } // End of class Clue

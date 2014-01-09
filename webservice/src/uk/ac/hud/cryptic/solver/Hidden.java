@@ -94,6 +94,10 @@ public class Hidden extends Solver {
 		// THESAURUS.match(c, clueWord);
 		// }
 
+		// TODO If a solution has been taken from the front of a word of the
+		// clue (e.g. HELL from HELLO), reduce the probability as this doesn't
+		// happen often
+
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
 

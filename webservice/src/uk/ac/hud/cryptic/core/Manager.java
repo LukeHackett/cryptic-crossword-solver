@@ -71,7 +71,8 @@ public class Manager {
 			System.out.println("Results summary: "
 					+ (found ? "[[PASS]]" : "[[FAIL]]"));
 			System.out.println("\"" + clue.getClue() + "\" ("
-					+ clue.getActualSolution() + ")");
+					+ clue.getActualSolution() + "), Type: "
+					+ clue.getType().getDBName());
 			for (Solution s : allSolutions) {
 				System.out.println(s);
 			}
