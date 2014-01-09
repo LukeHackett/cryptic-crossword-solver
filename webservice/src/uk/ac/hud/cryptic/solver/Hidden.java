@@ -23,15 +23,15 @@ public class Hidden extends Solver {
 	@Override
 	public void run() {
 		Hidden h = new Hidden();
-		 h.solve(new Clue("Delia’s pickle contains jelly", "_____")); // aspic
+		 h.solve(new Clue("Delia’s pickle contains jelly", "?????")); // aspic
 		h.solve(new Clue(
 				"As seen in jab, reach of pro miserably failing to meet expectations?",
-				"______,__,_______")); // breach of promise
+				"??????,??,???????")); // breach of promise
 		h.solve(new Clue("Some forget to get here for gathering",
-				"___-________")); // get-together
+				"???-????????")); // get-together
 		h.solve(new Clue(
 				"Guests in the country who use part – i.e. some, but not all",
-				"_____,_______")); // house parties
+				"?????,???????")); // house parties
 	}
 
 	public SolutionCollection solve(Clue c) {

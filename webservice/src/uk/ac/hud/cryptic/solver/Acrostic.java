@@ -20,13 +20,13 @@ public class Acrostic extends Solver {
 	public void run() {
 		Acrostic a = new Acrostic();
 		a.solve(new Clue(
-				"Some URLs recommended for beginners to explore online", "____")); // surf
+				"Some URLs recommended for beginners to explore online", "????")); // surf
 		a.solve(new Clue(
 				"Those biting heads off tarantulas, eating even tiny hairs",
-				"_____")); // teeth
+				"?????")); // teeth
 		a.solve(new Clue("What's seen at start of any road running one way?",
-				"_____")); // arrow
-		a.solve(new Clue("Black and white lamb starts to cry", "____")); // bawl
+				"?????")); // arrow
+		a.solve(new Clue("Black and white lamb starts to cry", "????")); // bawl
 	}
 
 	public SolutionCollection solve(Clue c) {

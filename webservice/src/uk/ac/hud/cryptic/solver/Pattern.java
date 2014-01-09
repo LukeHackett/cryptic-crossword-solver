@@ -21,9 +21,9 @@ public class Pattern extends Solver {
 	public void run() {
 		Pattern p = new Pattern();
 		p.solve(new Clue("'Pardon me!', I asked, regularly breaking vow",
-				"_______")); // Promise
+				"???????")); // Promise
 		p.solve(new Clue("Beasts in tree sinned, we hear - nothing odd there",
-				"________")); // Reindeer
+				"????????")); // Reindeer
 	}
 
 	public SolutionCollection solve(Clue c) {

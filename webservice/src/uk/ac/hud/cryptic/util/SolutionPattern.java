@@ -14,7 +14,7 @@ public class SolutionPattern {
 	// The constants of a solution pattern
 	public static final char SPACE = ',';
 	public static final char HYPHEN = '-';
-	public static final char UNKNOWN_CHARACTER = '_';
+	public static final char UNKNOWN_CHARACTER = '?';
 
 	// As inputted by the user. e.g. "_a__e,___d-__"
 	private final String pattern;

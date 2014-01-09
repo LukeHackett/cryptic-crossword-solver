@@ -15,7 +15,8 @@ public class Anagram extends Solver {
 	@Override
 	public void run() {
 		Anagram a = new Anagram();
-		a.solve(new Clue("a singer sung a single note", "______")); // Tenner
+		a.solve(new Clue("Manger apt to be shown transformed by star", "?????????")); // pentagram
+		a.solve(new Clue("Not straight, with future too unsettled", "???,??,????"));
 	}
 
 	public SolutionCollection solve(Clue c) {

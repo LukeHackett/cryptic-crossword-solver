@@ -15,9 +15,9 @@ public class Homophone extends Solver {
 	@Override
 	public void run() {
 		Homophone h = new Homophone();
-		h.solve(new Clue("a singer sung a single note", "______")); // Tenner
-		h.solve(new Clue("A declared interest in meat", "_____")); // Steak
-		h.solve(new Clue("Castle engaged in battle, reportedly", "____")); // Fort
+		h.solve(new Clue("a singer sung a single note", "??????")); // Tenner
+		h.solve(new Clue("A declared interest in meat", "?????")); // Steak
+		h.solve(new Clue("Castle engaged in battle, reportedly", "????")); // Fort
 	}
 
 	public SolutionCollection solve(Clue c) {
