@@ -65,7 +65,7 @@ public class Servlet extends HttpServlet {
 	 */
 	protected boolean isJSONRequest(HttpServletRequest request) {
 		String accept = request.getHeader("accept");
-		return accept != null && accept.contains("json") ? true : false;
+		return accept != null && accept.contains("json");
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class Servlet extends HttpServlet {
 	 */
 	protected boolean isXMLRequest(HttpServletRequest request) {
 		String accept = request.getHeader("accept");
-		return accept != null && accept.contains("xml") ? true : false;
+		return accept != null && accept.contains("xml");
 	}
 
 }

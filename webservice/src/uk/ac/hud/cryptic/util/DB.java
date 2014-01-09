@@ -88,4 +88,26 @@ public class DB {
 		return clues;
 	}
 
+	/**
+	 * Obtain a specified number of records for each of the clue types that have
+	 * been specified as parameters. These are bundled up in a single
+	 * <code>Collection</code> to be returned.
+	 * 
+	 * @param n
+	 *            - the number of records to acquire for each clue type
+	 * @param types
+	 *            - the types of clue to obtain test data for
+	 * @return a collection containing the requested data, if it is present in
+	 *         the database
+	 */
+	public static Collection<Clue> getTestClues(int n, Type... types) {
+		// Will hold the example (test) clues
+		Collection<Clue> clues = new ArrayList<>();
+		// Get n number of records for each declared type
+		for (Type t : types) {
+			clues.addAll(getTestClues(t, n));
+		}
+		return clues;
+	}
+
 } // End of class DB

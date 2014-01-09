@@ -11,19 +11,28 @@ import uk.ac.hud.cryptic.util.SolutionPattern;
 public class Pattern extends Solver {
 
 	/**
+	 * Default constructor for solver class
+	 * 
+	 * @param clue
+	 *            - the clue to be solved
+	 */
+	public Pattern(Clue clue) {
+		super(clue);
+	}
+
+	/**
+	 * Private (no-arg) constructor currently used to test the solver
+	 */
+	private Pattern() {
+		super();
+	}
+
+	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		new Thread(new Pattern()).start();
-	}
-
-	@Override
-	public void run() {
 		Pattern p = new Pattern();
-		p.solve(new Clue("'Pardon me!', I asked, regularly breaking vow",
-				"???????")); // Promise
-		p.solve(new Clue("Beasts in tree sinned, we hear - nothing odd there",
-				"????????")); // Reindeer
+		p.testSolver(p, Type.PATTERN);
 	}
 
 	public SolutionCollection solve(Clue c) {
@@ -39,13 +48,6 @@ public class Pattern extends Solver {
 
 		// Odd words
 		sc.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
-
-		// Temporary print block
-		System.out.print(c.getClue() + ": ");
-		for (Solution s : sc) {
-			System.out.print(s);
-		}
-		System.out.println();
 
 		// String clueLower = WordUtils.removeNonAlphabet(c.getClue(), false);
 		// for (String clueComponent : clueLower.split("\\s")) {

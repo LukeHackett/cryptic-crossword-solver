@@ -6,27 +6,33 @@ import java.util.Collection;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Acrostic extends Solver {
+
+	/**
+	 * Default constructor for solver class
+	 * 
+	 * @param clue
+	 *            - the clue to be solved
+	 */
+	public Acrostic(Clue clue) {
+		super(clue);
+	}
+
+	/**
+	 * Private (no-arg) constructor currently used to test the solver
+	 */
+	private Acrostic() {
+		super();
+	}
 
 	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		new Thread(new Acrostic()).start();
-	}
-
-	@Override
-	public void run() {
 		Acrostic a = new Acrostic();
-		a.solve(new Clue(
-				"Some URLs recommended for beginners to explore online", "????")); // surf
-		a.solve(new Clue(
-				"Those biting heads off tarantulas, eating even tiny hairs",
-				"?????")); // teeth
-		a.solve(new Clue("What's seen at start of any road running one way?",
-				"?????")); // arrow
-		a.solve(new Clue("Black and white lamb starts to cry", "????")); // bawl
+		a.testSolver(a, Type.ACROSTIC);
 	}
 
 	public SolutionCollection solve(Clue c) {
@@ -34,7 +40,7 @@ public class Acrostic extends Solver {
 		SolutionCollection sc = new SolutionCollection();
 
 		// Split the clue into array elements
-		String[] words = c.getClue().split("\\s+");
+		String[] words = c.getClue().split(WordUtils.REGEX_WHITESPACE);
 
 		String termToSearch = "";
 
@@ -47,7 +53,7 @@ public class Acrostic extends Solver {
 		int lengthOfClue = c.getPattern().getTotalLength();
 		int lengthOfFodder = termToSearch.length();
 
-		Collection<String> possibleWords = new ArrayList<String>();
+		Collection<String> possibleWords = new ArrayList<>();
 
 		// Get all possible substrings
 		for (int i = 0; i <= lengthOfFodder - lengthOfClue; i++) {
@@ -65,9 +71,10 @@ public class Acrostic extends Solver {
 
 		// TODO Remove - Print out answers
 		for (String answer : possibleWords) {
-			System.out.println(answer);
+			// System.out.println(answer);
 			sc.add(new Solution(answer));
 		}
-		return null;
+		return sc;
 	}
+
 } // End of class Acrostic

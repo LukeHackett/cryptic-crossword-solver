@@ -6,21 +6,34 @@ import uk.ac.hud.cryptic.core.SolutionCollection;
 public class Anagram extends Solver {
 
 	/**
+	 * Default constructor for solver class
+	 * 
+	 * @param clue
+	 *            - the clue to be solved
+	 */
+	public Anagram(Clue clue) {
+		super(clue);
+	}
+
+	/**
+	 * Private (no-arg) constructor currently used to test the solver
+	 */
+	private Anagram() {
+		super();
+	}
+
+	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		new Thread(new Anagram()).start();
-	}
-
-	@Override
-	public void run() {
 		Anagram a = new Anagram();
-		a.solve(new Clue("Manger apt to be shown transformed by star", "?????????")); // pentagram
-		a.solve(new Clue("Not straight, with future too unsettled", "???,??,????")); // out of true
+		a.testSolver(a, Type.ANAGRAM);
 	}
 
 	public SolutionCollection solve(Clue c) {
-		return null;
+		SolutionCollection sc = new SolutionCollection();
+		// Do the solving here
+		return sc;
 	}
 
 } // End of class Anagram

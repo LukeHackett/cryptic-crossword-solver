@@ -1,6 +1,7 @@
 package uk.ac.hud.cryptic.solver;
 
 import java.util.Collection;
+import java.util.concurrent.Callable;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -16,7 +17,7 @@ import uk.ac.hud.cryptic.util.DB;
  * @author Luke Hackett, Stuart Leader
  * @version 0.1
  */
-public abstract class Solver implements Runnable {
+public abstract class Solver implements Callable<SolutionCollection> {
 
 	/**
 	 * An Enum representing the distinct cryptic crossword categories. Each of
@@ -58,6 +59,26 @@ public abstract class Solver implements Runnable {
 	protected static final Dictionary DICTIONARY = Dictionary.getInstance();
 	protected static final Thesaurus THESAURUS = Thesaurus.getInstance();
 
+	// The clue to solve
+	protected Clue clue;
+
+	/**
+	 * Constructor for class Solver. Takes the clue which is to be solved.
+	 * 
+	 * @param clue
+	 *            - the clue to be solved
+	 */
+	protected Solver(Clue clue) {
+		this.clue = clue;
+	}
+
+	/**
+	 * No-arg constructor
+	 */
+	protected Solver() {
+
+	}
+
 	/**
 	 * The solve method will provide the core functionality of the cryptic
 	 * crossword solver application. It will take a clue object and return a
@@ -68,6 +89,16 @@ public abstract class Solver implements Runnable {
 	 * @return a <code>Collection</code> of potential solutions
 	 */
 	public abstract SolutionCollection solve(Clue c);
+
+	/**
+	 * Required by the Callable interface. Similar to the framework used by
+	 * Runnable, but this allows a variable (<code>SolutionCollection</code>) to
+	 * be returned
+	 */
+	@Override
+	public SolutionCollection call() throws Exception {
+		return solve(clue);
+	}
 
 	/**
 	 * Test a solver implementation using test clues from the database. Results
@@ -85,7 +116,7 @@ public abstract class Solver implements Runnable {
 
 		// Counter of clues where solution was found
 		int correctCount = 0;
-		
+
 		for (Clue clue : clues) {
 			// Call the implementation's solve method
 			SolutionCollection sc = s.solve(clue);

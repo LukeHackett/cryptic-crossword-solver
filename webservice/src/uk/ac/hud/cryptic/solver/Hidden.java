@@ -14,15 +14,28 @@ import uk.ac.hud.cryptic.util.WordUtils;
 public class Hidden extends Solver {
 
 	/**
+	 * Default constructor for solver class
+	 * 
+	 * @param clue
+	 *            - the clue to be solved
+	 */
+	public Hidden(Clue clue) {
+		super(clue);
+	}
+
+	/**
+	 * Private (no-arg) constructor currently used to test the solver
+	 */
+	private Hidden() {
+		super();
+	}
+
+	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		new Thread(new Hidden()).start();
-	}
-
-	@Override
-	public void run() {
-		testSolver(this, Type.HIDDEN);
+		Hidden h = new Hidden();
+		h.testSolver(h, Type.HIDDEN);
 	}
 
 	public SolutionCollection solve(Clue c) {
