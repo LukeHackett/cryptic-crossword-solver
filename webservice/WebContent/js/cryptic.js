@@ -54,9 +54,9 @@ jQuery(document).ready(function($){
    * length input box.
    */
   $('#length').keydown(function(event){
-	  // Special key's event codes
-	  var special_keys = [8, 9, 13, 27, 46];
-	  
+    // Special key's event codes
+    var special_keys = [8, 9, 13, 27, 46];
+    
       // Allow special chars + arrows only 
       if (special_keys.indexOf(event.keyCode) != -1 
           || (event.keyCode == 65 && event.ctrlKey === true) 
@@ -65,7 +65,7 @@ jQuery(document).ready(function($){
       }else {
           // Reject all other keys (except numbers)
           if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
-        		  && (event.keyCode < 96 || event.keyCode > 105 )) {
+              && (event.keyCode < 96 || event.keyCode > 105 )) {
               event.preventDefault(); 
           }   
       }
