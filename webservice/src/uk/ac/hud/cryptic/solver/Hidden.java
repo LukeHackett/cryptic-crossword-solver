@@ -22,20 +22,10 @@ public class Hidden extends Solver {
 
 	@Override
 	public void run() {
-		Hidden h = new Hidden();
-		 h.solve(new Clue("Delia’s pickle contains jelly", "?????")); // aspic
-		h.solve(new Clue(
-				"As seen in jab, reach of pro miserably failing to meet expectations?",
-				"??????,??,???????")); // breach of promise
-		h.solve(new Clue("Some forget to get here for gathering",
-				"???-????????")); // get-together
-		h.solve(new Clue(
-				"Guests in the country who use part – i.e. some, but not all",
-				"?????,???????")); // house parties
+		testSolver(this, Type.HIDDEN);
 	}
 
 	public SolutionCollection solve(Clue c) {
-
 		// TODO Clue length must be greater than or equal to solution length
 
 		SolutionCollection solutions = new SolutionCollection();
@@ -46,15 +36,7 @@ public class Hidden extends Solver {
 		// Hidden words from right-to-left
 		solutions.addAll(calculateHiddenWords(c, true));
 
-		// Temporary print block
-		System.out.print(c.getClue() + ": ");
-		for (Solution s : solutions) {
-			System.out.print(s + ", ");
-		}
-		System.out.println();
-
 		return solutions;
-
 	}
 
 	private Collection<Solution> calculateHiddenWords(Clue c, boolean reverse) {
@@ -95,9 +77,9 @@ public class Hidden extends Solver {
 		DICTIONARY.dictionaryFilter(strings, pattern);
 
 		// Match against the thesaurus
-		for (String clueWord : strings) {
-			THESAURUS.match(c, clueWord);
-		}
+		// for (String clueWord : strings) {
+		// THESAURUS.match(c, clueWord);
+		// }
 
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
@@ -108,4 +90,5 @@ public class Hidden extends Solver {
 		}
 		return possibilities;
 	}
+
 } // End of class Hidden

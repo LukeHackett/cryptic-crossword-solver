@@ -113,8 +113,9 @@ public class Thesaurus {
 				if ((entry.contains(clueWord) && entry.contains(solutions[0]))
 						|| (multipleWords && entry.contains(clueWord) && entry
 								.contains(solutions[1]))) {
-					System.out.println("Thesaurus match: " + clueWord + " and "
-							+ solutions[0]);
+					// System.out.println("Thesaurus match: " + clueWord +
+					// " and "
+					// + solutions[0]);
 					return true;
 				}
 			}

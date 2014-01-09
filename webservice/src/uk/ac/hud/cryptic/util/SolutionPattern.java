@@ -52,7 +52,7 @@ public class SolutionPattern {
 		indWordPatterns = pattern.split(WordUtils.REGEX_SEPARATORS);
 		multipleWords = indWordPatterns.length > 1;
 		if (multipleWords) {
-			processSeparators();
+			separators = processSeparators(pattern, WordUtils.REGEX_SEPARATORS);
 		}
 
 		wordCount = indWordPatterns.length;
@@ -74,17 +74,18 @@ public class SolutionPattern {
 		}
 	}
 
-	private void processSeparators() {
-		Pattern p = Pattern.compile(WordUtils.REGEX_SEPARATORS);
-		Matcher m = p.matcher(pattern);
+	private static char[] processSeparators(String text, String matchOn) {
+		Pattern p = Pattern.compile(matchOn);
+		Matcher m = p.matcher(text);
 		List<Character> matches = new ArrayList<>();
 		while (m.find()) {
 			matches.add(m.group().charAt(0));
 		}
-		separators = new char[matches.size()];
+		char[] separators = new char[matches.size()];
 		for (int i = 0; i < matches.size(); i++) {
 			separators[i] = matches.get(i);
 		}
+		return separators;
 	}
 
 	public int getTotalLength() {
@@ -169,5 +170,39 @@ public class SolutionPattern {
 			}
 		}
 		return match;
+	}
+
+	public static String toPattern(String solution) {
+		final String separatorRegEx = "(\\s+|-+)";
+		String[] words = solution.split(separatorRegEx);
+		boolean multipleWords = words.length > 1;
+		char[] separators = processSeparators(solution, separatorRegEx);
+
+		String pattern = "";
+		for (int i = 0; i < words.length; i++) {
+			String word = WordUtils.removeNonAlphabet(words[i], false);
+			for (int j = 0; j < word.length(); j++) {
+				pattern += UNKNOWN_CHARACTER;
+			}
+			if (multipleWords && i < words.length - 1) {
+				switch (separators[i]) {
+					case ' ':
+						pattern += SPACE;
+						break;
+					case '-':
+						pattern += HYPHEN;
+						break;
+					default:
+						pattern += SPACE;
+						break;
+				}
+			}
+		}
+		return pattern;
+	}
+
+	@Override
+	public String toString() {
+		return pattern;
 	}
 } // End of class SolutionPattern

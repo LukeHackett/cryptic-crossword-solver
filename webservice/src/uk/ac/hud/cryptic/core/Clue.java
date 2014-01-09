@@ -14,12 +14,39 @@ public class Clue {
 
 	private final String clue;
 	private final SolutionPattern pattern;
+	private String actualSolution;
 	private SolutionCollection solutions;
 
+	/**
+	 * Constructor for Clue. Takes the clue text and a pattern which corresponds
+	 * to the format of the solution, along with any known characters.
+	 * 
+	 * @param clue
+	 *            - the crossword clue text
+	 * @param pattern
+	 *            - the solution pattern
+	 */
 	public Clue(String clue, String pattern) {
 		this.clue = clue.toLowerCase(); // Standardise clue
 		this.pattern = new SolutionPattern(pattern);
 		solutions = new SolutionCollection();
+	}
+
+	/**
+	 * For testing purposes, the solution to the clue may be provided. This
+	 * allows generated solutions to be evaluated on whether they contain the
+	 * actual solution.
+	 * 
+	 * @param clue
+	 *            - the crossword clue text
+	 * @param pattern
+	 *            - the solution pattern
+	 * @param solution
+	 *            - the actual solution to the clue
+	 */
+	public Clue(String clue, String pattern, String solution) {
+		this(clue, pattern);
+		actualSolution = solution.toLowerCase();
 	}
 
 	/**
@@ -65,6 +92,15 @@ public class Clue {
 	 */
 	public Solution getBestSolution() {
 		return solutions.pollLast();
+	}
+
+	/**
+	 * Retrieve the known solution of the clue
+	 * 
+	 * @return the solution to the clue
+	 */
+	public String getActualSolution() {
+		return actualSolution;
 	}
 
 } // End of class Clue
