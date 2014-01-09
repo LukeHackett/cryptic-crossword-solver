@@ -29,11 +29,11 @@ jQuery(document).ready(function($){
     clean_pattern_input();
 
     // Ensure the user has entered a valid string
-    if(!valid_solution_pattern(pattern)){
+    if(pattern === "" || !valid_solution_pattern(pattern)){
       // TODO: display error
       return;
     }
-    
+        
     // Show the clue pattern input area
     $("#clue-pattern").show();
     
@@ -88,14 +88,22 @@ jQuery(document).ready(function($){
 
   
   /**
-   * Returns whether or no the given solution length input is valid or not.
+   * Returns whether or no the given solution length input is valid or not. 
+   * This is based upon whether or not the solution length is 15 characters 
+   * or less, and if it matches the correct solution pattern
    */
   function valid_solution_pattern(input){
-    var pattern = /\d((,|-)\d)*/gi;
-    var compare = input.match(pattern);
-
+    // Check to ensure the solution pattern is correctly enter
+    var compare = input.match(/[1-9]+((,|-)[1-9])*/gi);
+    var pattern_match = compare[0] == input;
+    
+    // Check to ensure each number is less than 15
+    var compare2 = input.match(/[1-9]+/gi);
+    var largest = Math.max.apply(Math, compare2);
+    var largest_match = largest <= 15;
+    
     // Check for matches
-    return compare[0] == input;
+    return pattern_match && largest_match;
   }
 
   
