@@ -54,21 +54,21 @@ jQuery(document).ready(function($){
    * length input box.
    */
   $('#length').keydown(function(event){
-    // Special key's event codes
-    var special_keys = [8, 9, 13, 27, 46];
+    // Special key's event codes (inc. commas=188, dashes=109)
+    var special_keys = [8, 9, 13, 27, 46, 109, 188];
     
-      // Allow special chars + arrows only 
-      if (special_keys.indexOf(event.keyCode) != -1 
-          || (event.keyCode == 65 && event.ctrlKey === true) 
-          || (event.keyCode >= 35 && event.keyCode <= 39)){
-              return;
-      }else {
-          // Reject all other keys (except numbers)
-          if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
-              && (event.keyCode < 96 || event.keyCode > 105 )) {
-              event.preventDefault(); 
-          }   
-      }
+    // Allow special chars + arrows only 
+    if (special_keys.indexOf(event.keyCode) != -1 
+        || (event.keyCode == 65 && event.ctrlKey === true) 
+        || (event.keyCode >= 35 && event.keyCode <= 39)){
+            return;
+    } else {
+      // Reject all other keys (except numbers)
+      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
+          && (event.keyCode < 96 || event.keyCode > 105 )) {
+            event.preventDefault(); 
+      }   
+    }
   });
   
   
@@ -85,14 +85,14 @@ jQuery(document).ready(function($){
    */
   $('#submit').on('click', function(evt){
     // Prevent default actions
-  evt.preventDefault();
-  
-  // Validate input
-  if(inputs_have_errors()){
-    return;
-  }
-  
-  // TODO Send form to the server
+    evt.preventDefault();
+    
+    // Validate input
+    if(inputs_have_errors()){
+      return;
+    }
+    
+    // TODO Send form to the server
   });
   
   
