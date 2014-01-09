@@ -40,7 +40,8 @@ public class Acrostic extends Solver {
 		SolutionCollection sc = new SolutionCollection();
 
 		// Split the clue into array elements
-		String[] words = c.getClue().split(WordUtils.REGEX_WHITESPACE);
+		String[] words = WordUtils.removeNonAlphabet(c.getClue(), false).split(
+				WordUtils.REGEX_WHITESPACE);
 
 		String termToSearch = "";
 

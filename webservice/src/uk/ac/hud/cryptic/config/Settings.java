@@ -28,7 +28,8 @@ public class Settings {
 	 * @return the file path to the dictionary
 	 */
 	public String getDictionaryPath() {
-		return "assets/dictionary/standard/words";
+		return "assets/dictionary/acd/UKACD.txt";
+		// return "assets/dictionary/standard/words";
 	}
 
 	/**
@@ -61,8 +62,7 @@ public class Settings {
 	/**
 	 * Get the password of the cryptic project's MySQL database. Yes this
 	 * shouldn't be stored in a source file, and yes it shouldn't be stored as
-	 * plain text. Please don't hurt me. Many thanks.
-	 * TODO I'm an idiot.
+	 * plain text. Please don't hurt me. Many thanks. TODO I'm an idiot.
 	 * 
 	 * @return the password of the MySQL database
 	 */
