@@ -30,10 +30,14 @@ jQuery(document).ready(function($){
 
     // Ensure the user has entered a valid string
     if(pattern === "" || !valid_solution_pattern(pattern)){
-      // TODO: display error
+      // Make text input red denoting an error
+      self.parents(".form-group").addClass("has-error");
       return;
     }
-        
+    
+    // Remove the error class
+    self.parents(".form-group").removeClass("has-error");
+    
     // Show the clue pattern input area
     $("#clue-pattern").show();
     
