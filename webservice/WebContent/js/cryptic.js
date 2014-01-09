@@ -64,8 +64,8 @@ jQuery(document).ready(function($){
             return;
     } else {
       // Reject all other keys (except numbers)
-      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
-          && (event.keyCode < 96 || event.keyCode > 105 )) {
+      if (event.shiftKey || (event.keyCode < 49 || event.keyCode > 57) 
+          && (event.keyCode < 97 || event.keyCode > 105 )) {
             event.preventDefault(); 
       }   
     }
