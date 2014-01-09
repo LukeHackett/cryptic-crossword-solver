@@ -28,7 +28,7 @@ public class Settings {
 	 * @return the file path to the dictionary
 	 */
 	public String getDictionaryPath() {
-		return "res/dictionary/standard/words";
+		return "assets/dictionary/standard/words";
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Settings {
 	 * @return the file path to the thesaurus
 	 */
 	public String getThesaurusPath() {
-		return "res/thesaurus/gutenberg/mthesaur.txt";
+		return "assets/thesaurus/gutenberg/mthesaur.txt";
 	}
 
 }
