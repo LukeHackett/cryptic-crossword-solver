@@ -16,8 +16,24 @@ import uk.ac.hud.cryptic.solver.Solver;
 import uk.ac.hud.cryptic.solver.Solver.Type;
 import uk.ac.hud.cryptic.util.DB;
 
+/**
+ * I'd expect the contents of this class will be temporary until a more
+ * permanent solution is implemented. This class can currently take a
+ * <code>Clue</code> object and distribute it to many of the <code>Solver</code>
+ * implementations. The <code>SolutionCollection</code>s from each of these are
+ * then combined into a single collection object.
+ * 
+ * @author Stuart Leader
+ * @version 0.1
+ */
 public class Manager {
 
+	/**
+	 * A entry point to the class in order to test, in particular, the
+	 * concurrent nature of the solver algorithms. This little test will obtain
+	 * a number of test clues from the database and pass these to several solver
+	 * algorithms simultaneously for solving.
+	 */
 	public static void main(String[] args) {
 		// The clues to solve
 		Collection<Clue> clues = DB.getTestClues(10, Type.HIDDEN,
@@ -26,41 +42,10 @@ public class Manager {
 		// Will record the success rate
 		int successes = 0;
 
-		for (Clue clue : clues) {
+		for (final Clue clue : clues) {
 
-			// Create a thread pool to execute the solvers
-			ExecutorService executor = Executors.newFixedThreadPool(5);
-			// This will hold the returned data from the solvers
-			Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
-
-			// TODO Something design-patterny should take the place of this
-			Collection<Solver> solvers = new ArrayList<>();
-			solvers.add(new Hidden(clue));
-			solvers.add(new Acrostic(clue));
-			solvers.add(new Anagram(clue));
-			solvers.add(new Homophone(clue));
-			solvers.add(new Pattern(clue));
-
-			// Fire off each solver to find that magic solution
-			for (Solver s : solvers) {
-				Future<SolutionCollection> future = executor.submit(s);
-				solutions.add(future);
-			}
-
-			// This will hold all solutions that have been returned
-			SolutionCollection allSolutions = new SolutionCollection();
-
-			// Now we need to 'unpack' the SolutionCollections
-			for (Future<SolutionCollection> future : solutions) {
-				try {
-					allSolutions.addAll(future.get());
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
-			}
-
-			// All finished
-			executor.shutdown();
+			Manager m = new Manager();
+			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
 
 			boolean found;
 			// If found, mark as a success
@@ -80,6 +65,54 @@ public class Manager {
 		}
 		System.out.println("The solution has been found " + successes
 				+ " out of " + clues.size() + " times.");
+	}
+
+	/**
+	 * This method could take some input from the Servlet / Controller in the
+	 * form of a <code>Clue</code> object and return a
+	 * <code>SolutionCollection</code> of the potential solutions that have been
+	 * calculated.
+	 * 
+	 * @param clue
+	 *            - the <code>Clue</code> object to get solutions for
+	 * @return the calculated solutions to the given clue
+	 */
+	public SolutionCollection distributeAndSolveClue(Clue clue) {
+		// Create a thread pool to execute the solvers
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		// This will hold the returned data from the solvers
+		Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
+
+		// TODO Something design-patterny should take the place of this
+		Collection<Solver> solvers = new ArrayList<>();
+		solvers.add(new Hidden(clue));
+		solvers.add(new Acrostic(clue));
+		solvers.add(new Anagram(clue));
+		solvers.add(new Homophone(clue));
+		solvers.add(new Pattern(clue));
+
+		// Fire off each solver to find that magic solution
+		for (Solver s : solvers) {
+			Future<SolutionCollection> future = executor.submit(s);
+			solutions.add(future);
+		}
+
+		// This will hold all solutions that have been returned
+		SolutionCollection allSolutions = new SolutionCollection();
+
+		// Now we need to 'unpack' the SolutionCollections
+		for (Future<SolutionCollection> future : solutions) {
+			try {
+				allSolutions.addAll(future.get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// All finished
+		executor.shutdown();
+
+		return allSolutions;
 	}
 
 } // End of class manager
