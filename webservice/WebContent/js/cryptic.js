@@ -27,9 +27,9 @@ jQuery(document).ready(function($){
 
     // Clean up
     clean_pattern_input();
-
+    
     // Ensure the user has entered a valid string
-    if(pattern === "" || !valid_solution_pattern(pattern)){
+    if(!valid_solution_pattern(pattern)){
       // Make text input red denoting an error
       self.parents(".form-group").addClass("has-error");
       return;
@@ -37,6 +37,11 @@ jQuery(document).ready(function($){
     
     // Remove the error class
     self.parents(".form-group").removeClass("has-error");
+    
+    // Do nothing if empty
+    if(pattern === ""){
+      return;
+    }
     
     // Show the clue pattern input area
     $("#clue-pattern").show();
