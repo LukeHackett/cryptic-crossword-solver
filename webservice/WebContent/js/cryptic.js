@@ -114,7 +114,7 @@ jQuery(document).ready(function($){
   function inputs_have_errors(){
     var clue = $('#clue');
     var length = $('#length');
-    var error = false;
+    var error = true;
   
     // Check to ensure the clue has been input
     if(clue.val() == ""){
@@ -125,12 +125,12 @@ jQuery(document).ready(function($){
     }
     
     // Check to ensure solution length has been input
-    if(length.val() == "" || !valid_solution_pattern(pattern)){
+    if(length.val() == "" || !valid_solution_pattern(length.val())){
       length.parents(".form-group").addClass("has-error");
-      error = false;
+      error = true;
     } else {
       length.parents(".form-group").removeClass("has-error");
-      error = true;
+      error = false;
     }
   
     return error; 
