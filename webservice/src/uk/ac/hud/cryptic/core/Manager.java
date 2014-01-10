@@ -78,8 +78,6 @@ public class Manager {
 	 * @return the calculated solutions to the given clue
 	 */
 	public SolutionCollection distributeAndSolveClue(Clue clue) {
-		// Create a thread pool to execute the solvers
-		ExecutorService executor = Executors.newFixedThreadPool(5);
 		// This will hold the returned data from the solvers
 		Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
 
@@ -90,6 +88,9 @@ public class Manager {
 		solvers.add(new Anagram(clue));
 		solvers.add(new Homophone(clue));
 		solvers.add(new Pattern(clue));
+
+		// Create a thread pool to execute the solvers
+		ExecutorService executor = Executors.newFixedThreadPool(solvers.size());
 
 		// Fire off each solver to find that magic solution
 		for (Solver s : solvers) {
