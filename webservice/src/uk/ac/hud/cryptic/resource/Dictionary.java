@@ -1,7 +1,6 @@
 package uk.ac.hud.cryptic.resource;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,14 +36,12 @@ public class Dictionary {
 	 * Load the dictionary into a HashSet to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		// BufferReader to read the file
-		BufferedReader br;
 		// Path to local dictionary path
 		String dictionaryPath = settings.getDictionaryPath();
 
-		try {
+		try (BufferedReader br = new BufferedReader(new FileReader(
+				dictionaryPath))) {
 			// Open the dictionary
-			br = new BufferedReader(new FileReader(dictionaryPath));
 			String line = null;
 
 			// Instantiate the dictionary object
@@ -55,15 +52,7 @@ public class Dictionary {
 				dictionary.add(line.toLowerCase());
 			}
 
-			// Close the stream
-			br.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -102,14 +91,14 @@ public class Dictionary {
 	 * @param solutions
 	 *            - the collection of words to verify against the dictionary
 	 * @param pattern
-	 *            - the SolutionPattern object modelling the characteristics
-	 *            of the solution from the user's provided input
+	 *            - the SolutionPattern object modelling the characteristics of
+	 *            the solution from the user's provided input
 	 */
 	public void dictionaryFilter(Collection<String> solutions,
 			SolutionPattern pattern) {
 		Collection<String> toRemove = new ArrayList<>();
 		outer: for (String solution : solutions) {
-	
+
 			// Break each potential solution into it's separate word components
 			String[] words;
 			if (pattern.hasMultipleWords()) {

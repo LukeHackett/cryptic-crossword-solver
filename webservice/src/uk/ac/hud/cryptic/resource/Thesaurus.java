@@ -44,13 +44,11 @@ public class Thesaurus {
 	 * Load the thesaurus into a HashSet to allow for much faster access
 	 */
 	private void populateThesaurusFromFile() {
-		// BufferReader to read the file
-		BufferedReader br;
 		// Path to local dictionary path
 		String thesaurusPath = settings.getThesaurusPath();
 
-		try {
-			br = new BufferedReader(new FileReader(thesaurusPath));
+		try (BufferedReader br = new BufferedReader(new FileReader(
+				thesaurusPath))) {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				String[] words = line.split(",");
@@ -61,7 +59,6 @@ public class Thesaurus {
 				}
 				thesaurus.add(entry);
 			}
-			br.close();
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");
 		}
