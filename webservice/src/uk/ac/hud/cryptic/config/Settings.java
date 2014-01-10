@@ -1,5 +1,9 @@
 package uk.ac.hud.cryptic.config;
 
+import java.io.InputStream;
+
+import javax.servlet.ServletContext;
+
 /**
  * This class provides a number of application wide settings and constants.
  * 
@@ -8,6 +12,8 @@ package uk.ac.hud.cryptic.config;
  */
 public class Settings {
 	private static Settings instance;
+	// Context if application is executed as a servlet
+	private ServletContext context;
 
 	/**
 	 * This method will return the current (and only) instance of the Settings
@@ -27,9 +33,15 @@ public class Settings {
 	 * 
 	 * @return the file path to the dictionary
 	 */
-	public String getDictionaryPath() {
-		return "assets/dictionary/acd/UKACD.txt";
-		// return "assets/dictionary/standard/words";
+	public InputStream getDictionaryPath() {
+		if (context == null) {
+			String path = "/dictionary/acd/UKACD.txt";
+			// return "/dictionary/standard/words";
+			return Settings.class.getResourceAsStream(path);
+		} else {
+			String path = "/WEB-INF/assets/dictionary/acd/UKACD.txt";
+			return context.getResourceAsStream(path);
+		}
 	}
 
 	/**
@@ -37,8 +49,15 @@ public class Settings {
 	 * 
 	 * @return the file path to the thesaurus
 	 */
-	public String getThesaurusPath() {
-		return "assets/thesaurus/gutenberg/mthesaur.txt";
+	public InputStream getThesaurusPath() {
+		if (context == null) {
+			// Local
+			String path = "/thesaurus/gutenberg/mthesaur.txt";
+			return Settings.class.getResourceAsStream(path);
+		} else {
+			String path = "/WEB-INF/assets/thesaurus/gutenberg/mthesaur.txt";
+			return context.getResourceAsStream(path);
+		}
 	}
 
 	/**
@@ -68,6 +87,14 @@ public class Settings {
 	 */
 	public String getDBPassword() {
 		return "du4hacrEKa";
+	}
+
+	public void setServletContext(ServletContext sc) {
+		context = sc;
+	}
+
+	public ServletContext getServletContext() {
+		return context;
 	}
 
 }

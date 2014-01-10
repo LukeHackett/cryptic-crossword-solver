@@ -1,8 +1,9 @@
 package uk.ac.hud.cryptic.resource;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,11 +37,9 @@ public class Dictionary {
 	 * Load the dictionary into a HashSet to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		// Path to local dictionary path
-		String dictionaryPath = settings.getDictionaryPath();
+		InputStream is = settings.getDictionaryPath();
 
-		try (BufferedReader br = new BufferedReader(new FileReader(
-				dictionaryPath))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			// Open the dictionary
 			String line = null;
 

@@ -1,8 +1,9 @@
 package uk.ac.hud.cryptic.resource;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -44,11 +45,9 @@ public class Thesaurus {
 	 * Load the thesaurus into a HashSet to allow for much faster access
 	 */
 	private void populateThesaurusFromFile() {
-		// Path to local dictionary path
-		String thesaurusPath = settings.getThesaurusPath();
+		InputStream is = settings.getThesaurusPath();
 
-		try (BufferedReader br = new BufferedReader(new FileReader(
-				thesaurusPath))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				String[] words = line.split(",");
