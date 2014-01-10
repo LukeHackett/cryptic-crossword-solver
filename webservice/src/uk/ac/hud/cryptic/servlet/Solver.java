@@ -15,15 +15,15 @@ import javax.xml.ws.http.HTTPException;
  * @author Luke Hackett
  * @version 0.1
  */
-@WebServlet("/solver/hidden")
-public class HiddenServlet extends Servlet {
+@WebServlet("/solver")
+public class Solver extends Servlet {
 	// Default Serial ID
 	private static final long serialVersionUID = -7066687691201583586L;
 
 	/**
 	 * Default Constructor
 	 */
-	public HiddenServlet() {
+	public Solver() {
 		super();
 	}
 
