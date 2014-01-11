@@ -14,6 +14,10 @@ public class Settings {
 	private static Settings instance;
 	// Context if application is executed as a servlet
 	private ServletContext context;
+	// Pre-path for Server environment
+	private static final String SERVER_PRE_PATH = "/WEB-INF/assets/";
+	// Pre-path for local environment
+	private static final String LOCAL_PRE_PATH = "/";
 
 	/**
 	 * This method will return the current (and only) instance of the Settings
@@ -34,14 +38,8 @@ public class Settings {
 	 * @return the file path to the dictionary
 	 */
 	public InputStream getDictionaryPath() {
-		if (context == null) {
-			String path = "/dictionary/acd/UKACD.txt";
-			// return "/dictionary/standard/words";
-			return Settings.class.getResourceAsStream(path);
-		} else {
-			String path = "/WEB-INF/assets/dictionary/acd/UKACD.txt";
-			return context.getResourceAsStream(path);
-		}
+		// Location of the resource
+		return getPath("dictionary/acd/UKACD.txt");
 	}
 
 	/**
@@ -50,14 +48,40 @@ public class Settings {
 	 * @return the file path to the thesaurus
 	 */
 	public InputStream getThesaurusPath() {
-		if (context == null) {
-			// Local
-			String path = "/thesaurus/gutenberg/mthesaur.txt";
-			return Settings.class.getResourceAsStream(path);
-		} else {
-			String path = "/WEB-INF/assets/thesaurus/gutenberg/mthesaur.txt";
-			return context.getResourceAsStream(path);
-		}
+		// Location of the resource
+		return getPath("thesaurus/gutenberg/mthesaur.txt");
+	}
+
+	/**
+	 * This method will return the path to the pronouncing dictionary file.
+	 * 
+	 * @return the file path to the pronouncing dictionary
+	 */
+	public InputStream getPronouncingDictionaryPath() {
+		// Location of the resource
+		return getPath("homophones/cmudict.0.7a");
+
+	}
+
+	/**
+	 * Get the InputStream for the given path to a resource. The exact location
+	 * depends on whether the application is being run from a local or server
+	 * environment.
+	 * 
+	 * @param resource
+	 *            - the path of the resource to use
+	 * @return the <code>InputStream</code> of the requested resource
+	 */
+	private InputStream getPath(String resource) {
+		// Am I being called from a Servlet?
+		boolean server = context != null;
+		// Path to the dictionary resource
+		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
+		// InputStream to resource
+		InputStream is = server ? context.getResourceAsStream(path)
+				: Settings.class.getResourceAsStream(path);
+
+		return is;
 	}
 
 	/**
