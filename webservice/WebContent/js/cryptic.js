@@ -140,17 +140,18 @@ jQuery(document).ready(function($){
         $('#pattern_recieved').html("<b> Pattern:</b> " + data.pattern);
         
         // Remove old results
-        var results = $('#results');
-        results.children().remove();
-
-        // Print out each of the solutions
-        $.each(data.solution, function(index, solution){
-          // Format a new row
-          var row = "Answer: " + solution.value + 
-                    " (" + solution.confidence + "%)";
-          // Append to the text area
-          results.append("<li>" + row + "</li>");
-        });       
+        $('#results').children().remove();
+                
+        // Loop over if array
+        if($.isArray(data.solution)){ 
+          // Print out each of the solutions
+          $.each(data.solution, function(index, solution){
+            print_row(solution);
+          });           
+        } else {
+          // Print single row for object
+          print_row(data.solution);
+        }
       },
       fail: function(jqXHR, textStatus) {
         // TODO: Error handling
@@ -160,6 +161,19 @@ jQuery(document).ready(function($){
   });
   
   
+  /**
+   * Outputs the given solution to the results list
+   */
+  function print_row(solution){
+  // Format a new row
+    var row = "Answer: " + solution.value + 
+              " (" + solution.confidence + "%)";
+    
+    // Append to the text area
+    $('#results').append("<li>" + row + "</li>");
+  }
+  
+
   /**
    * Returns whether or not the form has input errors.
    */
