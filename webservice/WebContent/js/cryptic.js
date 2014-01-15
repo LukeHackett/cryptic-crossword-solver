@@ -335,8 +335,8 @@ jQuery(document).ready(function($){
    */
   function create_pattern_input(pattern_model){
     // Loop over each word
-    for(var w = 0; w < pattern_model.length; w++){
-      var word = pattern_model[w];
+    for(var w = 1; w <= pattern_model.length; w++){
+      var word = pattern_model[w-1];
 
       // Easy access
       $('#clue-split-pattern').append('<div class="word"></div>');
@@ -345,17 +345,17 @@ jQuery(document).ready(function($){
       // Check for a hyphenated word 
       if($.isArray(word)){        
       // Loop over each sub-hyphenated word
-        for(var h = 0; h < word.length; h++){     
+        for(var h = 1; h <= word.length; h++){     
           pattern.append('<div class="sub-word"></div>');  
           subpattern = pattern.children('.sub-word').last();
             
           // Append the label to the form
           var label = $("<label>").addClass("col-sm-3 control-label");
-          label.text("word " + w + ", sub-word " + h);
+          label.text("Word " + w + ", Sub-Word " + h);
           subpattern.append(label);
           
           // Create each of the text inputs
-          for(var c = 0; c < word[h]; c++){
+          for(var c = 0; c < word[h-1]; c++){
             // Create the text input
             var input = $('<input type="text">').attr({maxlength: '1', size: '1'});
             
@@ -371,7 +371,7 @@ jQuery(document).ready(function($){
         
         // Append the label to the form
         var label = $("<label>").addClass("col-sm-3 control-label");
-        label.text("word " + w);
+        label.text("Word " + w);
         pattern.append(label);
 
         for(c = 0; c < word; c++){
