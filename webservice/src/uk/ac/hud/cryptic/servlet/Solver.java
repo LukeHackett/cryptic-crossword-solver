@@ -61,15 +61,70 @@ public class Solver extends Servlet {
 
 		// Obtain the input requests
 		String clueString = request.getParameter("clue");
+		String solutionString = request.getParameter("length");
 		String patternString = request.getParameter("pattern");
 
 		// Ensure that the inputs have been sent
-		if (clueString == null || patternString == null) {
+		if (!valid_inputs(clueString, solutionString, patternString)) {
 			// TODO log exceptions
 			throw new HTTPException(HttpServletResponse.SC_BAD_REQUEST);
 		}
 
-		// Encapsulate the clueString in an object and solve it!
+		// Solve the clue
+		String data = solveClue(clueString, patternString);
+
+		// Send the response
+		boolean json = isJSONRequest(request);
+		sendResponse(response, data, json);
+	}
+
+	/**
+	 * This method ensures that the given inputs are present and valid.
+	 * 
+	 * @param clueString
+	 *            The clue to be solved
+	 * @param solutionString
+	 *            The required length of the solution
+	 * @param patternString
+	 *            The solution pattern
+	 * @return whether or not the inputs are valid
+	 */
+	private boolean valid_inputs(String clueString, String solutionString,
+			String patternString) {
+
+		// Clue validator
+		if (clueString == null || clueString.isEmpty()) {
+			return false;
+		}
+
+		// Solution length validator
+		if (solutionString == null || solutionString.isEmpty()) {
+			// TODO: Improve Validation
+			return false;
+		}
+
+		// Solution pattern validator
+		if (patternString == null || patternString.isEmpty()) {
+			// TODO: Improve Validation
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * This method provides a simple entry point to solving a given clue
+	 * utilising the supplied pattern. A well formated XML String is returned
+	 * with any given results.
+	 * 
+	 * @param clueString
+	 *            The clue to be solved
+	 * @param patternString
+	 *            The solution pattern
+	 * @return XML String of results
+	 */
+	private String solveClue(String clueString, String patternString) {
+		// Encapsulate the clueString in an object and solve it
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
@@ -77,22 +132,19 @@ public class Solver extends Servlet {
 		// Needed to correct the output of the solution(s)
 		final SolutionPattern pattern = clue.getPattern();
 
-		// Format some test data
+		// Format the data
+		// TODO: Use of library
 		String data = "";
-		data += "<response>";
-		data += "<clue_recieved>" + clueString + "</clue_recieved>";
-		data += "<pattern_recieved>" + patternString + "</pattern_recieved>";
+		data += "<clue>" + clueString + "</clue>";
+		data += "<pattern>" + patternString + "</pattern>";
 		for (Solution s : solutions) {
 			String solution = pattern.recomposeSolution(s.getSolution());
 			data += "<solution>";
-			data += "<text>" + solution + "</text>";
+			data += "<value>" + solution + "</value>";
 			data += "<confidence>" + s.getConfidence() + "</confidence>";
 			data += "</solution>";
 		}
-		data += "</response>";
 
-		// Send the response
-		boolean json = isJSONRequest(request);
-		sendResponse(response, data, json);
+		return data;
 	}
 }

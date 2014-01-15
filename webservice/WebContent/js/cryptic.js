@@ -1,4 +1,8 @@
 jQuery(document).ready(function($){
+  var BLANK = "?";
+  var HYPHEN = "-";
+  var SEPARATOR = ",";
+  
   
   // Remove the non-js pattern input style
   clean_pattern_input();
@@ -28,6 +32,11 @@ jQuery(document).ready(function($){
     // Clean up
     clean_pattern_input();
     
+    // Do nothing if empty
+    if(pattern === ""){
+      return;
+    }
+    
     // Ensure the user has entered a valid string
     if(!valid_solution_pattern(pattern)){
       // Make text input red denoting an error
@@ -38,13 +47,8 @@ jQuery(document).ready(function($){
     // Remove the error class
     self.parents(".form-group").removeClass("has-error");
     
-    // Do nothing if empty
-    if(pattern === ""){
-      return;
-    }
-    
     // Show the clue pattern input area
-    $("#clue-pattern").show();
+    $("#clue-split-pattern").show();
     
     // Create a 'pattern model'
     pattern_model = split_solution(pattern);
@@ -81,8 +85,8 @@ jQuery(document).ready(function($){
     
     } else {
       // Reject all other keys (except numbers)
-      if (event.shiftKey || (event.keyCode < 49 || event.keyCode > 57) 
-          && (event.keyCode < 97 || event.keyCode > 105 )) {
+      if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) 
+          && (event.keyCode < 96 || event.keyCode > 105 )) {
             event.preventDefault(); 
       }   
     }
@@ -93,7 +97,13 @@ jQuery(document).ready(function($){
    * On click event handler for the reset button.
    */
   $('#reset').on('click', function(evt){
+  // Clear the input area
     clean_pattern_input();
+    
+    // Clear the results area
+    $('#clue_recieved').html("");
+    $('#pattern_recieved').html("");
+    $('#results').children().remove();
   });
 
   
@@ -101,6 +111,9 @@ jQuery(document).ready(function($){
    * On click event handler for the submit button
    */
   $('#submit').on('click', function(evt){
+    var self = $(this);
+    var form = self.parents("form");
+    
     // Prevent default actions
     evt.preventDefault();
     
@@ -109,7 +122,41 @@ jQuery(document).ready(function($){
       return;
     }
     
-    // TODO Send form to the server
+    // Combine the pattern
+    pattern = combine_pattern();
+    $('#pattern').val(pattern);
+    
+    // Do some AJAX fancy magic 
+    $.ajax({
+      url: form.attr("action"),
+      type: 'POST',
+      data: form.serialize(),
+      dataType: "json",
+      success: function(data) {
+        // State the clue received
+        $('#clue_recieved').html("<b> Clue:</b> " + data.clue);
+        
+        // State the clue pattern received
+        $('#pattern_recieved').html("<b> Pattern:</b> " + data.pattern);
+        
+        // Remove old results
+        var results = $('#results');
+        results.children().remove();
+
+        // Print out each of the solutions
+        $.each(data.solution, function(index, solution){
+          // Format a new row
+          var row = "Answer: " + solution.value + 
+                    " (" + solution.confidence + "%)";
+          // Append to the text area
+          results.append("<li>" + row + "</li>");
+        });       
+      },
+      fail: function(jqXHR, textStatus) {
+        // TODO: Error handling
+        console.log( "Request failed: " + textStatus );
+      }
+    });
   });
   
   
@@ -141,17 +188,66 @@ jQuery(document).ready(function($){
     return error; 
   }
   
+
   /**
-   * TODO: Complete method.
-   *       - add word separators
+   * Combines all separate input boxes into a single String, separated by the
+   * separated value. Hyphenated words are fully supported, and separated by the
+   * hyphenated separator value.
    */
   function combine_pattern(){
     var pattern = "";
+    var words = $('#clue-split-pattern .word');
     
     // Get each character and combine
-    $('#clue-pattern label[for!="pattern"]').each(function(i, input){
-      pattern += $(input).val();
+    words.each(function(i, row){
+      var self = $(row);
+      var subwords = self.children('.sub-word');
+      
+      if(subwords.length == 0){
+        // Single Word
+        pattern += input_to_pattern(self);          
+      } else {
+        // Hyphen word
+        subwords.each(function(s, subword){
+          // Append the new words to the pattern
+          pattern += input_to_pattern($(subword));
+          // Append a hyphen if required
+          if(s != subwords.length-1){
+            pattern += HYPHEN;
+          }
+        });
+      }
+      
+      // Append the word separator if required
+      if(i != words.length-1){
+        pattern += SEPARATOR;
+      }
+        
     });
+      
+    return pattern;
+  }
+  
+
+  /**
+   * Merges a div of input box values into a a single string value
+   */
+  function input_to_pattern(div){
+    var pattern = '';
+    
+    // Loop over all inputs
+    div.find('input[type="text"]').each(function(i, input){
+      var value = input.value;
+      
+      // Replace with required blank value  
+      if(value == "" || value == " "){
+        pattern += BLANK;
+      } else {
+        pattern += value;
+      }
+    });
+  
+    return pattern;
   }
   
   
@@ -159,11 +255,15 @@ jQuery(document).ready(function($){
    * Removes all unneeded input boxes, and hides the entire wrapping div 
    */
   function clean_pattern_input(){
+    // Hide and disable original input
+    $("#clue-pattern").hide();
+    $('#clue-pattern input[type="text"]').attr("readonly", "true");
+    
     // Remove all content (apart from span)
-    $("#clue-pattern > :not(span)").remove();
+    $("#clue-split-pattern > :not(span)").remove();
     
     // hide what's left (the span)
-    $("#clue-pattern").hide();    
+    $("#clue-split-pattern").hide();    
   }
 
   
@@ -173,17 +273,23 @@ jQuery(document).ready(function($){
    * or less, and if it matches the correct solution pattern
    */
   function valid_solution_pattern(input){
-    // Check to ensure the solution pattern is correctly enter
-    var compare = input.match(/[1-9]+((,|-)[1-9])*/gi);
+    // Check to ensure the solution pattern is correctly entered
+    var compare = input.match(/[0-9]+((,|-)[0-9])*/gi);
     var pattern_match = compare[0] == input;
     
+    // Get all numbers
+    var compare2 = input.match(/[0-9]+/gi);
+    
     // Check to ensure each number is less than 15
-    var compare2 = input.match(/[1-9]+/gi);
     var largest = Math.max.apply(Math, compare2);
     var largest_match = largest <= 15;
     
+    // Check to ensure each number is larger than 0
+    var smallest = Math.min.apply(Math, compare2);
+    var smallest_match = smallest > 0;
+    
     // Check for matches
-    return pattern_match && largest_match;
+    return pattern_match && largest_match && smallest_match;
   }
 
   
@@ -207,7 +313,7 @@ jQuery(document).ready(function($){
     return words;
   }
   
-
+  
   /**
    * Creates a series of text input boxes, based upon the clue solution 
    * pattern - i.e. whether or not it is a hyphenated word, how many letters 
@@ -219,31 +325,30 @@ jQuery(document).ready(function($){
       var word = pattern_model[w];
 
       // Easy access
-      var pattern = $('#clue-pattern');
-
+      $('#clue-split-pattern').append('<div class="word"></div>');
+      pattern = $('#clue-split-pattern .word').last();
+      
       // Check for a hyphenated word 
-      if($.isArray(word)){
-        // Loop over each sub-hyphenated word
+      if($.isArray(word)){        
+      // Loop over each sub-hyphenated word
         for(var h = 0; h < word.length; h++){     
+          pattern.append('<div class="sub-word"></div>');  
+          subpattern = pattern.children('.sub-word').last();
+            
           // Append the label to the form
           var label = $("<label>").addClass("col-sm-3 control-label");
           label.text("word " + w + ", sub-word " + h);
-          pattern.append(label);
+          subpattern.append(label);
           
           // Create each of the text inputs
           for(var c = 0; c < word[h]; c++){
             // Create the text input
-            var name = 'w' + w + 'h' + h + 'c' + c;
-            var input = $('<input type="text">').attr({
-              maxlength: '1', 
-              size: '1',
-              name: name, 
-              id: name  
-            });
+            var input = $('<input type="text">').attr({maxlength: '1', size: '1'});
             
             // Append the text input to the
-            pattern.append(input);
+            subpattern.append(input);
           }
+          
           // TODO: Currently a hack. Will need to CSS this baby up.
           pattern.append("<br><br>");
         }
@@ -257,13 +362,7 @@ jQuery(document).ready(function($){
 
         for(c = 0; c < word; c++){
           // Create a new text input  
-          var name = 'w' + w + '[' + c + ']';
-          var input = $('<input type="text">').attr({
-            maxlength: '1', 
-            size: '1',
-            name: name, 
-            id: name  
-          });
+          var input = $('<input type="text">').attr({maxlength: '1', size: '1'});
           
           // Append
           pattern.append(input);

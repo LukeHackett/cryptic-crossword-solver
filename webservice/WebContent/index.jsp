@@ -16,7 +16,7 @@
   <!-- Form -->
   <div class="row">
     <div class="col-md-8">
-      <form class="form-horizontal" role="form">
+      <form class="form-horizontal" role="form" action="/cryptic/solver" method="post">
         <div id="clue-input">
           <div class="form-group">
             <label for="clue" class="col-sm-3 control-label">Cryptic
@@ -37,21 +37,31 @@
             </div>
           </div>
         </div>
-        <hr>
         <div id="clue-pattern" class="form-group">
-          <span class="help-block">Provide any known characters below:</span>
           <label for="pattern" class="col-sm-3 control-label">Solution
             Pattern</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" id="pattern"
               name="pattern">
+            <span class="help-block">Provide any known characters, unknown 
+            characters (?), word separators (comma) and hyphens (-).</span>
           </div>
         </div>
+        <div id="clue-split-pattern" class="form-group"></div>
         <div class="form-actions">
           <button type="reset" class="btn btn-default" id="reset" >Clear</button>
           <button type="submit" class="btn btn-primary" id="submit">Submit</button>
         </div>
       </form>
+    </div>
+  </div>
+  <!-- Results -->
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Results</h3>
+      <p id="clue_recieved"></p>
+      <p id="pattern_recieved"></p>
+      <ul id="results"></ul>
     </div>
   </div>
 </t:crypticpage>
