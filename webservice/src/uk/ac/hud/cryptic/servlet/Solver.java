@@ -135,6 +135,7 @@ public class Solver extends Servlet {
 		// Format the data
 		// TODO: Use of library
 		String data = "";
+		data += "<solver>";
 		data += "<clue>" + clueString + "</clue>";
 		data += "<pattern>" + patternString + "</pattern>";
 		for (Solution s : solutions) {
@@ -144,6 +145,7 @@ public class Solver extends Servlet {
 			data += "<confidence>" + s.getConfidence() + "</confidence>";
 			data += "</solution>";
 		}
+		data += "</solver>";
 
 		return data;
 	}
