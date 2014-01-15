@@ -13,10 +13,13 @@ import uk.ac.hud.cryptic.util.WordUtils;
  */
 public class Solution implements Comparable<Solution> {
 
+	// Each generated solution will start with this confidence score
 	private static final int DEFAULT_CONFIDENCE = 50;
-
+	// A text representation of the solution
 	private String solution;
+	// The confidence score for this generated solution
 	private int confidence;
+	// A log of the steps involved to arrive at this solution
 	private Collection<String> trace;
 
 	/**
@@ -62,7 +65,7 @@ public class Solution implements Comparable<Solution> {
 	public String getSolution() {
 		return solution;
 	}
-
+	
 	/**
 	 * Get the confidence score associated with this potential solution
 	 * 
@@ -89,21 +92,38 @@ public class Solution implements Comparable<Solution> {
 		return valid;
 	}
 
+	/**
+	 * Return a human readable representation of <code>Solution</code>
+	 */
 	@Override
 	public String toString() {
 		return solution + " [" + confidence + "%]";
 	}
 
+	/**
+	 * Allows <code>Solution</code>s which are held in a sorted collected to be
+	 * sorted based on their confidence score. For example, those with a greater
+	 * confidence score will be found at the top of the collection. This method
+	 * override also needs to ensure that multiple instances of the same
+	 * solution cannot exist.
+	 */
 	@Override
 	public int compareTo(Solution o) {
 		int solutionCompare = solution.compareTo(o.getSolution());
 		int confidenceCompare = Double.compare(confidence, o.getConfidence());
 
 		if (solutionCompare == 0) {
+			// Compare the actual solution text. If they are the same, return
+			// this!
 			return 0;
 		} else if (confidenceCompare == 0) {
+			// If two solutions have the same confidence, return a comparison of
+			// the solution text. This cannot be equal (0) at this point.
 			return solutionCompare;
 		} else {
+			// Otherwise if the solutions and confidences of the two given
+			// solutions are different, just compare them based on their
+			// confidence.
 			return confidenceCompare;
 		}
 	}

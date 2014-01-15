@@ -113,12 +113,16 @@ public class Settings {
 		return "du4hacrEKa";
 	}
 
+	/**
+	 * Set the <code>ServletContext</code> object, which should be done when the
+	 * application is run in a server environment to indicate this is the case
+	 * 
+	 * @param sc
+	 *            - the corresponding servlet context object to the deployed
+	 *            service
+	 */
 	public void setServletContext(ServletContext sc) {
 		context = sc;
 	}
 
-	public ServletContext getServletContext() {
-		return context;
-	}
-
-}
+} // End of class Settings

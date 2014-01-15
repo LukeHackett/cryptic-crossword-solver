@@ -63,6 +63,15 @@ public class Clue {
 		return clue;
 	}
 
+	/**
+	 * Obtain a clue with any punctuation removed. Spaces between the words may
+	 * optionally be removed.
+	 * 
+	 * @param removeSpaces
+	 *            - <code>true</code> if spaces should be removed from the clue,
+	 *            <code>false</code> otherwise
+	 * @return the clue with no punctuation
+	 */
 	public String getClueNoPunctuation(boolean removeSpaces) {
 		return WordUtils.removeNonAlphabet(clue, removeSpaces);
 	}
