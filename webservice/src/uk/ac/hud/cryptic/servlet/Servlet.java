@@ -13,7 +13,7 @@ import org.json.XML;
 
 /**
  * The Servlet class extends the main HttpServlet class and provides some
- * additional functionality for easily sending repsonses back to the client. For
+ * additional functionality for easily sending responses back to the client. For
  * consistency, all Servlets should extend this class.
  * 
  * @author Luke Hackett
@@ -53,6 +53,19 @@ public class Servlet extends HttpServlet {
 			throw new HTTPException(
 					HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	/**
+	 * This method returns whether or not the x-requested-with header found
+	 * within the request object states an AJAX request.
+	 * 
+	 * @param request
+	 *            the HTTP request object
+	 * @return true if x-requested-with header contains "xmlhttprequest"
+	 */
+	protected boolean isAjaxRequest(HttpServletRequest request) {
+		String ajax = request.getHeader("x-requested-with");
+		return ajax != null && ajax.toLowerCase().contains("xmlhttprequest");
 	}
 
 	/**
