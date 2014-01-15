@@ -133,31 +133,27 @@ jQuery(document).ready(function($){
       data: form.serialize(),
       dataType: "json",
       success: function(data) {
-        // State the clue received
-        $('#clue_recieved').html("<b> Clue:</b> " + data.clue);
-        
-        // State the clue pattern received
-        $('#pattern_recieved').html("<b> Pattern:</b> " + data.pattern);
-        
-        // Remove old results
-        $('#results').children().remove();
-                
-        // Loop over if array
-        if($.isArray(data.solution)){ 
-          // Print out each of the solutions
-          $.each(data.solution, function(index, solution){
-            print_row(solution);
-          });           
-        } else {
-          // Print single row for object
-          print_row(data.solution);
+        if(data.solver){
+          // Realign align
+          data = data.solver;
+          // State the clue received
+          $('#clue_recieved').html("<b> Clue:</b> " + data.clue);
+          // State the clue pattern received
+          $('#pattern_recieved').html("<b> Pattern:</b> " + data.pattern);
+          // Remove old results
+          $('#results').children().remove();
+          // Loop over if array
+          if($.isArray(data.solution)){ 
+            // Print out each of the solutions
+            $.each(data.solution, function(index, solution){         
+              print_row(solution);       
+            });           
+          } else {
+            // Print single row for object
+            print_row(data.solution);
+          }
         }
-      },
-      fail: function(jqXHR, textStatus) {
-        // TODO: Error handling
-        console.log( "Request failed: " + textStatus );
       }
-    });
   });
   
   
