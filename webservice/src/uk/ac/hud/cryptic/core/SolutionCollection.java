@@ -60,11 +60,23 @@ public class SolutionCollection extends TreeSet<Solution> {
 		return sc;
 	}
 
+	/**
+	 * Determine if the <code>SolutionCollection</code> contains the given
+	 * solution string
+	 * 
+	 * @param solution
+	 *            - the solution to check exists in the collection
+	 * @return <code>true</code> if the solution is contained,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean contains(String solution) {
 		for (Solution s : this) {
+			// Standardise each solution of the collection
 			String thisSolution = WordUtils.removeNonAlphabet(s.getSolution(),
 					true);
+			// Standardise the given solution
 			String otherSolution = WordUtils.removeNonAlphabet(solution, true);
+			// Check if they match!
 			if (thisSolution.equals(otherSolution)) {
 				return true;
 			}

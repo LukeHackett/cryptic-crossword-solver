@@ -120,4 +120,4 @@ public class Dictionary {
 		solutions.removeAll(toRemove);
 	}
 
-}
+} // End of class Dictionary

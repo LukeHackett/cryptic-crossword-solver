@@ -47,15 +47,19 @@ public class Thesaurus {
 	private void populateThesaurusFromFile() {
 		InputStream is = settings.getThesaurusPath();
 
+		// Try-with-resources. Readers are automatically closed after use
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			String line = null;
+			// For each entry of the thesaurus
 			while ((line = br.readLine()) != null) {
+				// Separate the individual words
 				String[] words = line.split(",");
-
+				// Add words to a list
 				Collection<String> entry = new ArrayList<>();
 				for (String word : words) {
 					entry.add(word.toLowerCase());
 				}
+				// And add them to the dictionary
 				thesaurus.add(entry);
 			}
 		} catch (IOException e) {
@@ -63,6 +67,18 @@ public class Thesaurus {
 		}
 	}
 
+	/**
+	 * See how closely matched a clue is with a proposed solution by the number
+	 * of entries in the thesaurus which contain both words. This may not be
+	 * very useful in practice, but we'll see
+	 * 
+	 * @param clue
+	 *            - the clue being solved
+	 * @param solution
+	 *            - the proposed solution string
+	 * @return the number of entries which exist in the thesaurus containing
+	 *         both words
+	 */
 	public int getMatchCount(Clue clue, String solution) {
 		// Populate an array with the separate words of the clue
 		String[] clueWords = clue.getClueNoPunctuation(false).split(
@@ -96,6 +112,7 @@ public class Thesaurus {
 		String[] clueWords = clue.getClueNoPunctuation(false).split(
 				WordUtils.REGEX_WHITESPACE);
 		SolutionPattern pattern = clue.getPattern();
+		// More than one word in the solution?
 		boolean multipleWords = pattern.hasMultipleWords();
 
 		// Solution might need to be 're-spaced'
@@ -109,9 +126,6 @@ public class Thesaurus {
 				if ((entry.contains(clueWord) && entry.contains(solutions[0]))
 						|| (multipleWords && entry.contains(clueWord) && entry
 								.contains(solutions[1]))) {
-					// System.out.println("Thesaurus match: " + clueWord +
-					// " and "
-					// + solutions[0]);
 					return true;
 				}
 			}
@@ -127,12 +141,14 @@ public class Thesaurus {
 	 * @return the synonyms of the given word
 	 */
 	public Collection<String> getSynonyms(String word) {
+		// Use of HashSet prevents duplicates
 		Collection<String> synonyms = new HashSet<>();
 		for (Collection<String> entry : thesaurus) {
 			if (entry.contains(word)) {
 				synonyms.addAll(entry);
 			}
 		}
+		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
 	}

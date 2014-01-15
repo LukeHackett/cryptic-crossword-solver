@@ -44,6 +44,7 @@ public class Manager {
 
 		for (final Clue clue : clues) {
 
+			// Instantiate the manager and fire off the clue to the solvers
 			Manager m = new Manager();
 			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
 
@@ -53,6 +54,7 @@ public class Manager {
 				successes++;
 			}
 
+			// Print block for results
 			System.out.println("Results summary: "
 					+ (found ? "[[PASS]]" : "[[FAIL]]"));
 			System.out.println("\"" + clue.getClue() + "\" ("
