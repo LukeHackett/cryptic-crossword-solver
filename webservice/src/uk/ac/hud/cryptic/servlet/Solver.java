@@ -1,12 +1,15 @@
 package uk.ac.hud.cryptic.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.http.HTTPException;
+
+import org.apache.catalina.connector.Response;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
@@ -60,18 +63,21 @@ public class Solver extends Servlet {
 		settings.setServletContext(this.getServletConfig().getServletContext());
 
 		// Obtain the input requests
-		String clueString = request.getParameter("clue");
-		String solutionString = request.getParameter("length");
-		String patternString = request.getParameter("pattern");
+		String clue = request.getParameter("clue");
+		String solution = request.getParameter("length");
+		String pattern = request.getParameter("pattern");
 
-		// Ensure that the inputs have been sent
-		if (!valid_inputs(clueString, solutionString, patternString)) {
-			// TODO log exceptions
-			throw new HTTPException(HttpServletResponse.SC_BAD_REQUEST);
+		// Validate Inputs
+		String[] errors = validateInputs(clue, solution, pattern);
+
+		// Send errors and cancel the current request if required
+		if (errors.length > 0) {
+			sendError(request, response, errors, Response.SC_BAD_REQUEST);
+			return;
 		}
 
 		// Solve the clue
-		String data = solveClue(clueString, patternString);
+		String data = solveClue(clue, pattern);
 
 		// Send the response
 		boolean json = isJSONRequest(request);
@@ -79,36 +85,168 @@ public class Solver extends Servlet {
 	}
 
 	/**
-	 * This method ensures that the given inputs are present and valid.
+	 * This method will validate this given clue, solution and pattern against
+	 * various aspects to ensure that the inputs are valid. The method will
+	 * return a list of error messages, should one or more of the inputs fail
+	 * the validation.
 	 * 
-	 * @param clueString
-	 *            The clue to be solved
-	 * @param solutionString
-	 *            The required length of the solution
-	 * @param patternString
-	 *            The solution pattern
-	 * @return whether or not the inputs are valid
+	 * @param clue
+	 *            the clue to be validated
+	 * @param solution
+	 *            the solution format to be validated
+	 * @param pattern
+	 *            the solution pattern format to be validated
+	 * @return A String array of errors if errors are detected
 	 */
-	private boolean valid_inputs(String clueString, String solutionString,
-			String patternString) {
+	private String[] validateInputs(String clue, String solution, String pattern) {
+		// List of error messages to be displayed to the client
+		ArrayList<String> messages = new ArrayList<String>();
 
-		// Clue validator
-		if (clueString == null || clueString.isEmpty()) {
+		// Ensure the clue is valid.
+		if (!isClueValid(clue)) {
+			messages.add("Please enter a clue to solve.");
+		}
+
+		// Ensure the solution format is valid
+		if (!isSolutionValid(solution)) {
+			messages.add("Please enter a valid solution format.");
+		}
+
+		// Ensure the pattern format is valid
+		if (!isPatternValid(pattern)) {
+			messages.add("Please enter a valid pattern format.");
+		}
+
+		// Ensure that the solution format matches the pattern format
+		if (!isValidMatch(solution, pattern)) {
+			messages.add("Please ensure the solution format matches the pattern format.");
+		}
+
+		return messages.toArray(new String[messages.size()]);
+	}
+
+	/**
+	 * This method will validate the given clue
+	 * 
+	 * @param clue
+	 *            the clue to be validated
+	 * @return true if clue is valid
+	 */
+	private boolean isClueValid(String clue) {
+		// Ensure the clue is present
+		return (clue == null || clue.isEmpty()) ? false : true;
+	}
+
+	/**
+	 * This method will validate the given solution, based upon a well-formed
+	 * regular expression.
+	 * 
+	 * @param solution
+	 *            the solution to be validated
+	 * @return true if the solution is valid
+	 */
+	private boolean isSolutionValid(String solution) {
+		// Solution string regular expression
+		String regex = "[0-9]+((,|-)[0-9])*";
+		boolean match = Pattern.matches(regex, solution);
+
+		// Solution String must be present and of a valid format
+		return isPresent(solution) && match;
+	}
+
+	/**
+	 * This method will validate the given solution pattern, based upon a
+	 * well-formed regular expression.
+	 * 
+	 * @param pattern
+	 *            the solution pattern to be validated
+	 * @return true if the solution pattern format is valid
+	 */
+	private boolean isPatternValid(String pattern) {
+		// Pattern string regular expression
+		String regex = "[0-9a-zA-Z\\?]+(,|-)*";
+		boolean match = Pattern.matches(regex, pattern);
+
+		// Pattern String must be present and of a valid format
+		return isPresent(pattern) && match;
+	}
+
+	/**
+	 * This method will validate the given solution format against the given
+	 * pattern string.
+	 * 
+	 * @param solutionString
+	 * @param patternString
+	 * @return true if the solution format matches the solution pattern format
+	 */
+	private boolean isValidMatch(String solutionString, String patternString) {
+		// String constants
+		String wordSeperator = ",";
+		String subwordSeperator = "-";
+
+		// Split the format and pattern based upon the word separator
+		String[] solutions = solutionString.split(wordSeperator);
+		String[] patterns = patternString.split(wordSeperator);
+
+		// Ensure the solution and pattern strings align with each other
+		if (solutions.length != patterns.length) {
 			return false;
 		}
 
-		// Solution length validator
-		if (solutionString == null || solutionString.isEmpty()) {
-			// TODO: Improve Validation
+		// Analyse each of the expected words
+		for (int i = 0; i < solutions.length; i++) {
+			// Get the solution format and pattern format at the same index
+			String solution = solutions[i];
+			String pattern = patterns[i];
+
+			// Check to see if a sub-spit is required
+			if (solution.contains(subwordSeperator)) {
+				// Split word into the sub-words (i.e. hyphenated answers)
+				String[] innerSolutions = solution.split(subwordSeperator);
+				String[] innerPatterns = pattern.split(subwordSeperator);
+
+				// Compare all sub-word lengths against actual lengths
+				for (int j = 0; j < innerSolutions.length; j++) {
+					// Break the look if validation has failed
+					if (!hasSameLength(innerSolutions[j], innerPatterns[i])) {
+						return false;
+					}
+				}
+			} else {
+				// false if validation has failed
+				if (!hasSameLength(solution, pattern)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * This method will compare a string length against a given pattern.
+	 * 
+	 * @param length
+	 *            the expected length of the pattern format
+	 * @param pattern
+	 *            the pattern format
+	 * @return true if length of the pattern is equal to the pattern format
+	 *         length
+	 */
+	private boolean hasSameLength(String length, String pattern) {
+		// Compare current word length against actual length
+		try {
+			// Obtain integer value of solution
+			int solLen = Integer.parseInt(length);
+
+			// Compare solution format number against pattern format
+			// e.g. 3 => ???
+			if (solLen != pattern.length()) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			// An error has occurred therefore error
 			return false;
 		}
-
-		// Solution pattern validator
-		if (patternString == null || patternString.isEmpty()) {
-			// TODO: Improve Validation
-			return false;
-		}
-
 		return true;
 	}
 
