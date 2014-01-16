@@ -16,7 +16,7 @@
   <!-- Form -->
   <div class="row">
     <div class="col-md-8">
-      <form class="form-horizontal" role="form" action="/cryptic/solver" method="post">
+      <form class="form-horizontal" role="form" action="solver" method="post">
         <div id="clue-input">
           <div class="form-group">
             <label for="clue" class="col-sm-3 control-label">Cryptic
