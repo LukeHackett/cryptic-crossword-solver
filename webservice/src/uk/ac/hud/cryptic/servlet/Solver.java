@@ -2,6 +2,7 @@ package uk.ac.hud.cryptic.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
@@ -100,7 +101,7 @@ public class Solver extends Servlet {
 	 */
 	private String[] validateInputs(String clue, String solution, String pattern) {
 		// List of error messages to be displayed to the client
-		ArrayList<String> messages = new ArrayList<String>();
+		Collection<String> messages = new ArrayList<>();
 
 		// Ensure the clue is valid.
 		if (!isClueValid(clue)) {
@@ -134,7 +135,7 @@ public class Solver extends Servlet {
 	 */
 	private boolean isClueValid(String clue) {
 		// Ensure the clue is present
-		return (clue == null || clue.isEmpty()) ? false : true;
+		return !(clue == null || clue.isEmpty());
 	}
 
 	/**

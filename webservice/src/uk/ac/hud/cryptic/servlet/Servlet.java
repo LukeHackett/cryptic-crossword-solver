@@ -146,6 +146,6 @@ public class Servlet extends HttpServlet {
 	 * @return true if is not empty or null
 	 */
 	protected boolean isPresent(String value) {
-		return (value == null || value.isEmpty()) ? false : true;
+		return !(value == null || value.isEmpty());
 	}
 }
