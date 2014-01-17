@@ -1,11 +1,12 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 public class Acrostic extends Solver {
 
@@ -37,6 +38,7 @@ public class Acrostic extends Solver {
 	public SolutionCollection solve(Clue c) {
 
 		SolutionCollection sc = new SolutionCollection();
+		final SolutionPattern pattern = c.getPattern();
 
 		// Split the clue into array elements
 		String[] words = c.getClueWords();
@@ -52,7 +54,7 @@ public class Acrostic extends Solver {
 		int lengthOfClue = c.getPattern().getTotalLength();
 		int lengthOfFodder = termToSearch.length();
 
-		Collection<String> possibleWords = new ArrayList<>();
+		Collection<String> possibleWords = new HashSet<>();
 
 		// Get all possible substrings
 		for (int i = 0; i <= lengthOfFodder - lengthOfClue; i++) {
@@ -65,8 +67,11 @@ public class Acrostic extends Solver {
 			possibleWords.add(subStr);
 		}
 
+		// Remove solutions which don't match the provided pattern
+		pattern.filterStrings(possibleWords);
+
 		// Remove words not in the dictionary
-		DICTIONARY.dictionaryFilter(possibleWords, c.getPattern());
+		DICTIONARY.dictionaryFilter(possibleWords, pattern);
 
 		// TODO Remove - Print out answers
 		for (String answer : possibleWords) {

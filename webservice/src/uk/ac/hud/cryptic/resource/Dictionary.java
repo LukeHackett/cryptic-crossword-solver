@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import uk.ac.hud.cryptic.config.Settings;
-import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
  * This class provides a wrapper around the dictionary words file found within

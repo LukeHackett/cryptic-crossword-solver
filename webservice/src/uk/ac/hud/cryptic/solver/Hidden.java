@@ -1,6 +1,5 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,7 +7,7 @@ import java.util.HashSet;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 public class Hidden extends Solver {
 
@@ -76,13 +75,7 @@ public class Hidden extends Solver {
 		strings.removeAll(Arrays.asList(c.getClueWords()));
 
 		// Remove solutions which don't match the provided pattern
-		Collection<String> toRemove = new ArrayList<>();
-		for (String string : strings) {
-			if (!pattern.match(string)) {
-				toRemove.add(string);
-			}
-		}
-		strings.removeAll(toRemove);
+		pattern.filterStrings(strings);
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(strings, pattern);

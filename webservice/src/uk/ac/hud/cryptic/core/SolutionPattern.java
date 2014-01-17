@@ -1,9 +1,12 @@
-package uk.ac.hud.cryptic.util;
+package uk.ac.hud.cryptic.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * An object modelling the solution to the corresponding clue. This is done
@@ -281,6 +284,29 @@ public class SolutionPattern {
 			}
 		}
 		return pattern;
+	}
+
+	/**
+	 * Remove words from a collection of strings that don't match against the
+	 * <code>SolutionPattern</code>
+	 * 
+	 * @param solutions
+	 *            - the collection of solutions (as <code>String</code>s to
+	 *            filter
+	 * @param pattern
+	 *            - the <code>SolutionPattern</code> to match against TODO This
+	 *            might have a better home somewhere else
+	 */
+	public void filterStrings(Collection<String> solutions) {
+		Collection<String> toRemove = new ArrayList<>();
+		// For each proposed solution
+		for (String string : solutions) {
+			// If it doesn't match the pattern, throw it out
+			if (!match(string)) {
+				toRemove.add(string);
+			}
+		}
+		solutions.removeAll(toRemove);
 	}
 
 	/**

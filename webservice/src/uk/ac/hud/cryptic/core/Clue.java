@@ -1,6 +1,5 @@
 package uk.ac.hud.cryptic.core;
 
-import uk.ac.hud.cryptic.util.SolutionPattern;
 import uk.ac.hud.cryptic.util.WordUtils;
 import uk.ac.hud.cryptic.solver.Solver.Type;
 

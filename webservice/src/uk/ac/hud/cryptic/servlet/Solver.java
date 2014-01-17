@@ -17,7 +17,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Manager;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
  * This class provides a servlet to provide an interface to the application.

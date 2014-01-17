@@ -6,7 +6,7 @@ import java.util.HashSet;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 public class Pattern extends Solver {
 
@@ -72,20 +72,32 @@ public class Pattern extends Solver {
 		return newString;
 	}
 
-	private SolutionCollection calculateHiddenWords(String clue,
+	/**
+	 * Search in the provided text for words which match against the dictionary.
+	 * 
+	 * @param text
+	 *            - the text in which to search for words
+	 * @param p
+	 *            - the <code>SolutionPattern</code> to match against
+	 * @return a collection of words which match against the solution pattern
+	 */
+	private SolutionCollection calculateHiddenWords(String text,
 			SolutionPattern p) {
 
 		SolutionCollection sc = new SolutionCollection();
 		Collection<String> possibilities = new HashSet<>();
 
-		int limit = clue.length() - p.getTotalLength();
+		int limit = text.length() - p.getTotalLength();
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
 			possibilities
-					.add(clue.substring(index, index + p.getTotalLength()));
+					.add(text.substring(index, index + p.getTotalLength()));
 		}
+
+		// Remove solutions which don't match the provided pattern
+		p.filterStrings(possibilities);
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(possibilities, p);

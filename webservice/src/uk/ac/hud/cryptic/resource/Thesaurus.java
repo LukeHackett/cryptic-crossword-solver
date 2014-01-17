@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
-import uk.ac.hud.cryptic.util.SolutionPattern;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 
 public class Thesaurus {
 	// Thesaurus Instance

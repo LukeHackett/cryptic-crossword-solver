@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.solver.Solver.Type;
 
 /**

@@ -137,5 +137,5 @@ public abstract class Solver implements Callable<SolutionCollection> {
 		System.out.println(correctCount + " out of " + clues.size()
 				+ " successfully found.");
 	}
-	
+
 } // End of class Solver

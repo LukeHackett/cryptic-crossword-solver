@@ -1,5 +1,7 @@
 package uk.ac.hud.cryptic.util;
 
+import uk.ac.hud.cryptic.core.SolutionPattern;
+
 /**
  * A collection of helper methods relating to the manipulation of words and
  * sentences.
