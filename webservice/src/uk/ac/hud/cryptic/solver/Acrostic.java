@@ -6,7 +6,6 @@ import java.util.Collection;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Acrostic extends Solver {
 
@@ -40,8 +39,7 @@ public class Acrostic extends Solver {
 		SolutionCollection sc = new SolutionCollection();
 
 		// Split the clue into array elements
-		String[] words = WordUtils.removeNonAlphabet(c.getClue(), false).split(
-				WordUtils.REGEX_WHITESPACE);
+		String[] words = c.getClueWords();
 
 		String termToSearch = "";
 

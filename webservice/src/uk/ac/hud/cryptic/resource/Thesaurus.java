@@ -11,7 +11,6 @@ import java.util.HashSet;
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.util.SolutionPattern;
-import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Thesaurus {
 	// Thesaurus Instance
@@ -84,8 +83,7 @@ public class Thesaurus {
 	 */
 	public int getMatchCount(Clue clue, String solution) {
 		// Populate an array with the separate words of the clue
-		String[] clueWords = clue.getClueNoPunctuation(false).split(
-				WordUtils.REGEX_WHITESPACE);
+		String[] clueWords = clue.getClueWords();
 		solution = solution.toLowerCase();
 		// Number of thesaurus matches
 		int count = 0;
@@ -112,8 +110,7 @@ public class Thesaurus {
 	 */
 	public boolean match(Clue clue, String solution) {
 		// Populate an array with the separate words of the clue
-		String[] clueWords = clue.getClueNoPunctuation(false).split(
-				WordUtils.REGEX_WHITESPACE);
+		String[] clueWords = clue.getClueWords();
 		SolutionPattern pattern = clue.getPattern();
 		// More than one word in the solution?
 		boolean multipleWords = pattern.hasMultipleWords();

@@ -29,7 +29,7 @@ public class Clue {
 	 *            - the solution pattern
 	 */
 	public Clue(String clue, String pattern) {
-		this.clue = clue.toLowerCase(); // Standardise clue
+		this.clue = clue.toLowerCase().trim(); // Standardise clue
 		this.pattern = new SolutionPattern(pattern);
 		solutions = new SolutionCollection();
 	}
@@ -74,6 +74,18 @@ public class Clue {
 	 */
 	public String getClueNoPunctuation(boolean removeSpaces) {
 		return WordUtils.removeNonAlphabet(clue, removeSpaces);
+	}
+
+	/**
+	 * Get the clue as an array of its words
+	 * 
+	 * @return a <code>String</code> array of the words of the clue
+	 */
+	public String[] getClueWords() {
+		// Remove unwanted characters
+		String clue = getClueNoPunctuation(false).trim();
+		// Split around whitespace
+		return clue.split(WordUtils.REGEX_WHITESPACE);
 	}
 
 	/**

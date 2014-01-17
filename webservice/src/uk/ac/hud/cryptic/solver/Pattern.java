@@ -49,8 +49,7 @@ public class Pattern extends Solver {
 		// Odd words
 		sc.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
 
-		// String clueLower = WordUtils.removeNonAlphabet(c.getClue(), false);
-		// for (String clueComponent : clueLower.split("\\s")) {
+		// for (String clueComponent : c.getClueWords()) {
 		// for (String possibleSolution : allWords) {
 		// if (Thesaurus.match(clueComponent, possibleSolution)) {
 		// System.out.println(possibleSolution
