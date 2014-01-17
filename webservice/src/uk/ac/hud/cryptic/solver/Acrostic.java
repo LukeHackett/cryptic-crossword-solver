@@ -37,7 +37,14 @@ public class Acrostic extends Solver {
 
 	public SolutionCollection solve(Clue c) {
 
-		SolutionCollection sc = new SolutionCollection();
+		SolutionCollection solutions = new SolutionCollection();
+
+		// Number of clue words must be >= solution length
+		if (c.getClueWords().length < c.getPattern()
+				.getTotalLength()) {
+			return solutions;
+		}
+
 		final SolutionPattern pattern = c.getPattern();
 
 		// Split the clue into array elements
@@ -76,9 +83,9 @@ public class Acrostic extends Solver {
 		// TODO Remove - Print out answers
 		for (String answer : possibleWords) {
 			// System.out.println(answer);
-			sc.add(new Solution(answer));
+			solutions.add(new Solution(answer));
 		}
-		return sc;
+		return solutions;
 	}
 
 } // End of class Acrostic

@@ -37,9 +37,14 @@ public class Hidden extends Solver {
 	}
 
 	public SolutionCollection solve(Clue c) {
-		// TODO Clue length must be greater than or equal to solution length
-
+		
 		SolutionCollection solutions = new SolutionCollection();
+
+		// Clue length must be greater than solution length
+		if (c.getClueNoPunctuation(true).length() <= c.getPattern()
+				.getTotalLength()) {
+			return solutions;
+		}
 
 		// Hidden words from left-to-right
 		solutions.addAll(calculateHiddenWords(c, false));

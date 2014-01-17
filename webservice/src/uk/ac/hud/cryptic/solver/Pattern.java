@@ -36,18 +36,23 @@ public class Pattern extends Solver {
 	}
 
 	public SolutionCollection solve(Clue c) {
-		// TODO Clue length must be greater than or equal to solution length
+		SolutionCollection solutions = new SolutionCollection();
 
-		SolutionCollection sc = new SolutionCollection();
+		// (Clue length / 2) must be greater than solution length
+		int maxLength = (int) Math.ceil((double) c.getClueNoPunctuation(true)
+				.length() / 2);
+		if (c.getPattern().getTotalLength() > maxLength) {
+			return solutions;
+		}
 
 		String oddCharacters = getEveryOtherChar(c, false);
 		String evenCharacters = getEveryOtherChar(c, true);
 
 		// Even words
-		sc.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
+		solutions.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
 
 		// Odd words
-		sc.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
+		solutions.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
 
 		// for (String clueComponent : c.getClueWords()) {
 		// for (String possibleSolution : allWords) {
@@ -59,7 +64,7 @@ public class Pattern extends Solver {
 		// }
 		// }
 
-		return sc;
+		return solutions;
 	}
 
 	private String getEveryOtherChar(Clue c, boolean even) {
