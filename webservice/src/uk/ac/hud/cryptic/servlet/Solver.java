@@ -148,7 +148,7 @@ public class Solver extends Servlet {
 	 */
 	private boolean isSolutionValid(String solution) {
 		// Solution string regular expression
-		String regex = "[0-9]+((,|-)[0-9])*";
+		final String regex = "[0-9]+((,|-)[0-9]+)*";
 		boolean match = Pattern.matches(regex, solution);
 
 		// Solution String must be present and of a valid format
@@ -165,7 +165,7 @@ public class Solver extends Servlet {
 	 */
 	private boolean isPatternValid(String pattern) {
 		// Pattern string regular expression
-		String regex = "[0-9a-zA-Z\\?]+(,|-)*";
+		final String regex = "[0-9A-Za-z?]+((,|-)[0-9A-Za-z?]+)*";
 		boolean match = Pattern.matches(regex, pattern);
 
 		// Pattern String must be present and of a valid format
@@ -182,8 +182,8 @@ public class Solver extends Servlet {
 	 */
 	private boolean isValidMatch(String solutionString, String patternString) {
 		// String constants
-		String wordSeperator = ",";
-		String subwordSeperator = "-";
+		final String wordSeperator = ",";
+		final String subwordSeperator = "-";
 
 		// Split the format and pattern based upon the word separator
 		String[] solutions = solutionString.split(wordSeperator);
@@ -209,7 +209,7 @@ public class Solver extends Servlet {
 				// Compare all sub-word lengths against actual lengths
 				for (int j = 0; j < innerSolutions.length; j++) {
 					// Break the look if validation has failed
-					if (!hasSameLength(innerSolutions[j], innerPatterns[i])) {
+					if (!hasSameLength(innerSolutions[j], innerPatterns[j])) {
 						return false;
 					}
 				}
