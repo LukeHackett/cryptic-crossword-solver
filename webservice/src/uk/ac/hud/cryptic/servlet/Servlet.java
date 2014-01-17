@@ -56,6 +56,49 @@ public class Servlet extends HttpServlet {
 	}
 
 	/**
+	 * Sends the given error messages to the client based upon the response
+	 * information. The method is able to send both XML and JSON responses, and
+	 * if a non-javascript request is made, then the first error message will be
+	 * returned along with the server's default error page.
+	 * 
+	 * @param response
+	 *            HTTP response information
+	 * @param payload
+	 *            the data to send to the client
+	 * @param errors
+	 *            the array of error messages to be displayed
+	 * @param errorCode
+	 *            the HTML status code to be associated with the response
+	 */
+	protected void sendError(HttpServletRequest request,
+			HttpServletResponse response, String[] errors, int errorCode) {
+
+		try {
+			// Only send raw data if original request was made via ajax
+			if (isAjaxRequest(request)) {
+				// Create the XML error message list
+				String xml = "<errors>";
+				for (String msg : errors) {
+					xml += "<message>" + msg + "</message>";
+				}
+				xml += "</errors>";
+
+				// Send the error
+				response.setStatus(errorCode);
+				boolean json = isJSONRequest(request);
+				sendResponse(response, xml, json);
+			} else {
+				// Send a default server error using the first error message
+				response.sendError(errorCode, errors[0]);
+			}
+		} catch (IOException | NullPointerException
+				| ArrayIndexOutOfBoundsException e) {
+			throw new HTTPException(
+					HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
 	 * This method returns whether or not the x-requested-with header found
 	 * within the request object states an AJAX request.
 	 * 
@@ -94,4 +137,15 @@ public class Servlet extends HttpServlet {
 		return accept != null && accept.contains("xml");
 	}
 
+	/**
+	 * This method returns whether or not the given String value is non-empty
+	 * and it's not null.
+	 * 
+	 * @param value
+	 *            the string value
+	 * @return true if is not empty or null
+	 */
+	protected boolean isPresent(String value) {
+		return (value == null || value.isEmpty()) ? false : true;
+	}
 }
