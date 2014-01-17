@@ -230,7 +230,8 @@ public class SolutionPattern {
 						// If a known character given by the user conflicts with
 						// a character of the proposed solution, this is not a
 						// match
-						if (item != solution.charAt(counter++)) {
+						if (Character.toLowerCase(item) != Character
+								.toLowerCase(solution.charAt(counter++))) {
 							match = false;
 							break outer;
 						}
