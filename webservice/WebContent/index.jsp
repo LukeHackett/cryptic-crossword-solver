@@ -16,6 +16,9 @@
   <!-- Form -->
   <div class="row">
     <div class="col-md-8">
+      <!-- Form Alerts -->
+      <div id="form-alerts"></div>
+      <!-- Solver Form -->
       <form class="form-horizontal" role="form" action="solver" method="post">
         <div id="clue-input">
           <div class="form-group">

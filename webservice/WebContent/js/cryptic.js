@@ -122,6 +122,9 @@ jQuery(document).ready(function($){
       return;
     }
     
+    // Clear any existing errors
+	clear_alerts();
+	  
     // Combine the pattern
     pattern = combine_pattern();
     $('#pattern').val(pattern);
@@ -153,6 +156,29 @@ jQuery(document).ready(function($){
             print_row(data.solution);
           }
         }
+      },
+      error: function(err){
+    	  // Clear any existing errors
+    	  clear_form_alerts();
+    	  
+    	  // Display new errors if available
+    	  if(err.responseJSON){
+    		  // Sanity purposes
+    		  errors = err.responseJSON.errors;
+    		  
+              // Loop over if array
+              if($.isArray(errors)){ 
+                // Display each of the error messages
+                $.each(errors, function(index, error){  
+                	message = "<b>On Snap!</b> " + error.message;
+                	issue_form_alert("danger", message);       
+                });           
+              } else {
+                // Display the error message
+            	message = "<b>On Snap!</b> " + errors.message;
+            	issue_form_alert("danger", message); 
+              }
+    	  }        
       }
     });
   });
@@ -382,5 +408,31 @@ jQuery(document).ready(function($){
         pattern.append("<br><br>");
       }
     }
+  }
+  
+  
+  /**
+   * Creates a new form alert (at the top of the form) with the type being one 
+   * of (success, info, warning, danger), and the message to be displayed.
+   */
+  function issue_form_alert(type, message){
+	  var alert = $('<div>').addClass('alert alert-' + type).html(message);
+	  $('#form-alerts').append(alert);
+  }
+  
+  
+  /**
+   * Clears all alerts upon the page.
+   */
+  function clear_alerts(){
+    clear_form_alerts();
+  }
+  
+  
+  /**
+   * Clears all form alerts from the page.
+   */
+  function clear_form_alerts(){
+	  $("#form-alerts").children().remove();
   }
 });
