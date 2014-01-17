@@ -8,7 +8,7 @@ jQuery(document).ready(function($){
   clean_pattern_input();
 
   // Hide the input helpers by default
-  $('#clue-input input[type="text"]').next().hide();
+  $('#clue-input input[type="text"]').next().css('visibility', 'hidden');
   
   
   /**
@@ -16,9 +16,9 @@ jQuery(document).ready(function($){
    */
   $('#clue-input input[type="text"]')
     .focusin(function() {
-      $(this).next().slideDown(250);
+      $(this).next().css('visibility', 'visible');
     }).focusout(function() {
-      $(this).next().slideUp(250);
+      $(this).next().css('visibility', 'hidden');
     });
   
   
