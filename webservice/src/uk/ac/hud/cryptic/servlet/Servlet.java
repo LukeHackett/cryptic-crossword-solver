@@ -11,12 +11,16 @@ import javax.xml.ws.http.HTTPException;
 import org.json.JSONObject;
 import org.json.XML;
 
+import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.resource.Dictionary;
+import uk.ac.hud.cryptic.resource.Thesaurus;
+
 /**
  * The Servlet class extends the main HttpServlet class and provides some
  * additional functionality for easily sending responses back to the client. For
  * consistency, all Servlets should extend this class.
  * 
- * @author Luke Hackett
+ * @author Luke Hackett, Stuart Leader
  * @version 0.1
  */
 public class Servlet extends HttpServlet {
@@ -147,5 +151,16 @@ public class Servlet extends HttpServlet {
 	 */
 	protected boolean isPresent(String value) {
 		return !(value == null || value.isEmpty());
+	}
+
+	/**
+	 * Initialise resources at servlet creation rather than during the first
+	 * clue call to the service
+	 */
+	@Override
+	public void init() {
+		Dictionary.getInstance();
+		Thesaurus.getInstance();
+		Settings.getInstance();
 	}
 }
