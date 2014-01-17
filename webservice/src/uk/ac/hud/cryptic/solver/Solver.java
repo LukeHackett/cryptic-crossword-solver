@@ -31,7 +31,8 @@ public abstract class Solver implements Callable<SolutionCollection> {
 				"double definition"), EXCHANGE("exchange"), HIDDEN("hidden"), HOMOPHONE(
 				"homophone"), PALINDROME("palindrome"), PATTERN("pattern"), PURELY_CRYPTIC(
 				"purely cryptic"), REVERSAL("reversal"), SHIFTING("shifting"), SPOONERISM(
-				"spoonerism"), SUBSTITUTION("substitution");
+				"spoonerism"), SUBSTITUTION("substitution"), UNCATEGORISED(
+				"uncategorised");
 
 		private final String dbName;
 
@@ -60,7 +61,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	protected static final Thesaurus THESAURUS = Thesaurus.getInstance();
 
 	// The clue to solve
-	protected Clue clue;
+	private Clue clue;
 
 	/**
 	 * Constructor for class Solver. Takes the clue which is to be solved.
@@ -136,5 +137,5 @@ public abstract class Solver implements Callable<SolutionCollection> {
 		System.out.println(correctCount + " out of " + clues.size()
 				+ " successfully found.");
 	}
-
-}
+	
+} // End of class Solver

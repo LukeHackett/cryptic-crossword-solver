@@ -65,12 +65,17 @@ public class DB {
 				SETTINGS.getDBUsername(), SETTINGS.getDBPassword());
 				Statement stmt = conn.createStatement()) {
 
-			// Construct the query
-			String query = "SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` = '"
-					+ type.getDBName()
-					+ "' ORDER BY RAND() LIMIT "
-					+ records
-					+ ";";
+			// Construct the query string
+			String query;
+			if (type == Type.UNCATEGORISED) {
+				query = "SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` IS NULL "
+						+ "ORDER BY RAND() LIMIT " + records + ";";
+			} else {
+				query = "SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` = '"
+						+ type.getDBName()
+						+ "' ORDER BY RAND() LIMIT "
+						+ records + ";";
+			}
 
 			// Retrieve and process the results
 			try (ResultSet rs = stmt.executeQuery(query)) {
