@@ -170,12 +170,12 @@ jQuery(document).ready(function($){
               if($.isArray(errors)){ 
                 // Display each of the error messages
                 $.each(errors, function(index, error){  
-                	message = "<b>On Snap!</b> " + error.message;
+                	message = "<b>Oh, snap!</b> " + error.message;
                 	issue_form_alert("danger", message);       
                 });           
               } else {
                 // Display the error message
-            	message = "<b>On Snap!</b> " + errors.message;
+            	message = "<b>Oh, snap!</b> " + errors.message;
             	issue_form_alert("danger", message); 
               }
     	  }        
