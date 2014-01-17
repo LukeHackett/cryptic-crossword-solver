@@ -58,10 +58,12 @@
       </form>
     </div>
   </div>
+  <hr>
   <!-- Results -->
   <div class="row">
     <div class="col-md-8">
       <h3>Results</h3>
+      <div id="result-alerts"></div>
       <p id="clue_recieved"></p>
       <p id="pattern_recieved"></p>
       <ul id="results"></ul>

@@ -97,8 +97,11 @@ jQuery(document).ready(function($){
    * On click event handler for the reset button.
    */
   $('#reset').on('click', function(evt){
-  // Clear the input area
+    // Clear the input area
     clean_pattern_input();
+    
+    // Clear any existing alerts
+    clear_alerts();
     
     // Clear the results area
     $('#clue_recieved').html("");
@@ -122,7 +125,7 @@ jQuery(document).ready(function($){
       return;
     }
     
-    // Clear any existing errors
+    // Clear any existing alerts
 	clear_alerts();
 	  
     // Combine the pattern
@@ -135,8 +138,12 @@ jQuery(document).ready(function($){
       type: 'POST',
       data: form.serialize(),
       dataType: "json",
+      beforeSend: function(){
+    	// Clear any existing results
+        clear_results();  
+      },
       success: function(data){
-        if(data.solver){
+        if(data.solver.solution){
           // Realign align
           data = data.solver;
           // State the clue received
@@ -155,6 +162,11 @@ jQuery(document).ready(function($){
             // Print single row for object
             print_row(data.solution);
           }
+        } else {
+          // No data was returned
+          var message = "<b>Heads up! </b> the solver returned no results. " +
+                        "Using more blanks in the solution pattern may help.";
+          issue_result_alert("info", message);
         }
       },
       error: function(err){
@@ -410,6 +422,19 @@ jQuery(document).ready(function($){
     }
   }
   
+  /**
+   * This method will clear all results and alerts from the results area. 
+   */
+  function clear_results(){
+	  // Clear any alerts
+	  clear_result_alerts();
+	  
+	  // Clear returned data
+	  $("#clue_recieved").text("");
+	  $("#pattern_recieved").text("");
+	  $("#results").children().remove();
+  }
+  
   
   /**
    * Creates a new form alert (at the top of the form) with the type being one 
@@ -422,10 +447,21 @@ jQuery(document).ready(function($){
   
   
   /**
+   * Creates a new result alert with the type being one  of (success, info, 
+   * warning, danger), and the message to be displayed.
+   */
+  function issue_result_alert(type, message){
+	  var alert = $('<div>').addClass('alert alert-' + type).html(message);
+	  $('#result-alerts').append(alert);
+  } 
+  
+  
+  /**
    * Clears all alerts upon the page.
    */
   function clear_alerts(){
     clear_form_alerts();
+    clear_result_alerts();
   }
   
   
@@ -434,5 +470,13 @@ jQuery(document).ready(function($){
    */
   function clear_form_alerts(){
 	  $("#form-alerts").children().remove();
+  }
+  
+  
+  /**
+   * Clears all result alerts from the page.
+   */
+  function clear_result_alerts(){
+	  $("#result-alerts").children().remove();
   }
 });
