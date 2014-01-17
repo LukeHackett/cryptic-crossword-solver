@@ -2,7 +2,6 @@ package uk.ac.hud.cryptic.solver;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -37,7 +36,7 @@ public class Hidden extends Solver {
 	}
 
 	public SolutionCollection solve(Clue c) {
-		
+
 		SolutionCollection solutions = new SolutionCollection();
 
 		// Clue length must be greater than solution length
@@ -55,35 +54,48 @@ public class Hidden extends Solver {
 		return solutions;
 	}
 
+	/**
+	 * Search the clue in the direction specific for words which could be
+	 * potential solutions
+	 * 
+	 * @param c
+	 *            - the <code>Clue</code> in which to search for the solution
+	 * @param reverse
+	 *            <code>true</code> to search right-to-left and
+	 *            <code>false</code> to search from left-to-right
+	 * @return a collection of potential solutions which have been found
+	 */
 	private Collection<Solution> calculateHiddenWords(Clue c, boolean reverse) {
 
-		Collection<String> strings = new HashSet<>();
-		SolutionCollection possibilities = new SolutionCollection();
-		SolutionPattern pattern = c.getPattern();
+		SolutionCollection solutions = new SolutionCollection();
+		final SolutionPattern pattern = c.getPattern();
 
 		String clue = c.getClueNoPunctuation(true);
+		// Reverse the clue as searching will still be from left-to-right
 		if (reverse) {
 			clue = new StringBuilder(clue).reverse().toString();
 		}
 
 		int totalLength = pattern.getTotalLength();
-
+		// How far into the clue to search before there is a lack of characters
+		// available
 		int limit = clue.length() - totalLength;
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
-			strings.add(clue.substring(index, index + totalLength));
+			solutions.add(new Solution(clue.substring(index, index
+					+ totalLength)));
 		}
 
 		// Remove risk of matching original words
-		strings.removeAll(Arrays.asList(c.getClueWords()));
+		solutions.removeAllStrings(Arrays.asList(c.getClueWords()));
 
 		// Remove solutions which don't match the provided pattern
-		pattern.filterStrings(strings);
+		pattern.filterSolutions(solutions);
 
 		// Filter out invalid words
-		DICTIONARY.dictionaryFilter(strings, pattern);
+		DICTIONARY.dictionaryFilter(solutions, pattern);
 
 		// Match against the thesaurus
 		// for (String clueWord : strings) {
@@ -97,11 +109,7 @@ public class Hidden extends Solver {
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
 
-		for (String string : strings) {
-			Solution s = new Solution(string);
-			possibilities.add(s);
-		}
-		return possibilities;
+		return solutions;
 	}
 
 	private void calculateConfidence() {

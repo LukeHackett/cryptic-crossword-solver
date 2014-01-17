@@ -1,8 +1,5 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -82,30 +79,29 @@ public class Pattern extends Solver {
 	 * 
 	 * @param text
 	 *            - the text in which to search for words
-	 * @param p
+	 * @param pattern
 	 *            - the <code>SolutionPattern</code> to match against
 	 * @return a collection of words which match against the solution pattern
 	 */
 	private SolutionCollection calculateHiddenWords(String text,
-			SolutionPattern p) {
+			SolutionPattern pattern) {
 
-		SolutionCollection sc = new SolutionCollection();
-		Collection<String> possibilities = new HashSet<>();
+		SolutionCollection solutions = new SolutionCollection();
 
-		int limit = text.length() - p.getTotalLength();
+		int limit = text.length() - pattern.getTotalLength();
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
-			possibilities
-					.add(text.substring(index, index + p.getTotalLength()));
+			solutions.add(new Solution(text.substring(index,
+					index + pattern.getTotalLength())));
 		}
 
 		// Remove solutions which don't match the provided pattern
-		p.filterStrings(possibilities);
+		pattern.filterSolutions(solutions);
 
 		// Filter out invalid words
-		DICTIONARY.dictionaryFilter(possibilities, p);
+		DICTIONARY.dictionaryFilter(solutions, pattern);
 
 		// TODO Don't match words that aren't hidden, for example, the word
 		// STEER in Steerer or ALLOW in Allows.
@@ -113,11 +109,7 @@ public class Pattern extends Solver {
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
 
-		for (String string : possibilities) {
-			Solution s = new Solution(string);
-			sc.add(s);
-		}
-		return sc;
+		return solutions;
 	}
 
 } // End of class Pattern

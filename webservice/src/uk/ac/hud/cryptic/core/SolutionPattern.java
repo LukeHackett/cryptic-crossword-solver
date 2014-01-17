@@ -288,8 +288,8 @@ public class SolutionPattern {
 	}
 
 	/**
-	 * Remove words from a collection of strings that don't match against the
-	 * <code>SolutionPattern</code>
+	 * Remove words from a collection of <code>Solution</code>s that don't match
+	 * against the <code>SolutionPattern</code>
 	 * 
 	 * @param solutions
 	 *            - the collection of solutions (as <code>String</code>s to
@@ -298,13 +298,13 @@ public class SolutionPattern {
 	 *            - the <code>SolutionPattern</code> to match against TODO This
 	 *            might have a better home somewhere else
 	 */
-	public void filterStrings(Collection<String> solutions) {
-		Collection<String> toRemove = new ArrayList<>();
+	public void filterSolutions(SolutionCollection solutions) {
+		Collection<Solution> toRemove = new ArrayList<>();
 		// For each proposed solution
-		for (String string : solutions) {
+		for (Solution solution : solutions) {
 			// If it doesn't match the pattern, throw it out
-			if (!match(string)) {
-				toRemove.add(string);
+			if (!match(solution.getSolution())) {
+				toRemove.add(solution);
 			}
 		}
 		solutions.removeAll(toRemove);

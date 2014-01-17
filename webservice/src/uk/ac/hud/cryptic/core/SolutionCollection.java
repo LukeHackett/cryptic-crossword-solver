@@ -1,5 +1,6 @@
 package uk.ac.hud.cryptic.core;
 
+import java.util.Collection;
 import java.util.TreeSet;
 
 import uk.ac.hud.cryptic.util.WordUtils;
@@ -82,6 +83,16 @@ public class SolutionCollection extends TreeSet<Solution> {
 			}
 		}
 		return false;
+	}
+
+	public void removeAllStrings(Collection<String> solutions) {
+		for (String solution : solutions) {
+			// Check if it is contained
+			if (contains(solution)) {
+				remove(new Solution(solution));
+			}
+
+		}
 	}
 
 } // End of class SolutionCollection

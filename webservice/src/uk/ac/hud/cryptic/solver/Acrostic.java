@@ -1,8 +1,5 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -38,14 +35,12 @@ public class Acrostic extends Solver {
 	public SolutionCollection solve(Clue c) {
 
 		SolutionCollection solutions = new SolutionCollection();
+		final SolutionPattern pattern = c.getPattern();
 
 		// Number of clue words must be >= solution length
-		if (c.getClueWords().length < c.getPattern()
-				.getTotalLength()) {
+		if (c.getClueWords().length < pattern.getTotalLength()) {
 			return solutions;
 		}
-
-		final SolutionPattern pattern = c.getPattern();
 
 		// Split the clue into array elements
 		String[] words = c.getClueWords();
@@ -58,33 +53,25 @@ public class Acrostic extends Solver {
 			termToSearch += w.substring(0, 1);
 		}
 
-		int lengthOfClue = c.getPattern().getTotalLength();
+		int solutionLength = pattern.getTotalLength();
 		int lengthOfFodder = termToSearch.length();
 
-		Collection<String> possibleWords = new HashSet<>();
-
 		// Get all possible substrings
-		for (int i = 0; i <= lengthOfFodder - lengthOfClue; i++) {
+		for (int i = 0; i <= lengthOfFodder - solutionLength; i++) {
 			String subStr = "";
 
-			for (int y = i; y < i + lengthOfClue; y++) {
-				subStr += termToSearch.substring(y, y + 1);
+			for (int j = i; j < i + solutionLength; j++) {
+				subStr += termToSearch.substring(j, j + 1);
 			}
-
-			possibleWords.add(subStr);
+			solutions.add(new Solution(subStr));
 		}
 
 		// Remove solutions which don't match the provided pattern
-		pattern.filterStrings(possibleWords);
+		pattern.filterSolutions(solutions);
 
 		// Remove words not in the dictionary
-		DICTIONARY.dictionaryFilter(possibleWords, pattern);
+		DICTIONARY.dictionaryFilter(solutions, pattern);
 
-		// TODO Remove - Print out answers
-		for (String answer : possibleWords) {
-			// System.out.println(answer);
-			solutions.add(new Solution(answer));
-		}
 		return solutions;
 	}
 

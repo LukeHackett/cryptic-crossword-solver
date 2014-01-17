@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
@@ -97,17 +99,17 @@ public class Dictionary {
 	 *            - the SolutionPattern object modelling the characteristics of
 	 *            the solution from the user's provided input
 	 */
-	public void dictionaryFilter(Collection<String> solutions,
+	public void dictionaryFilter(SolutionCollection solutions,
 			SolutionPattern pattern) {
-		Collection<String> toRemove = new ArrayList<>();
-		outer: for (String solution : solutions) {
+		Collection<Solution> toRemove = new ArrayList<>();
+		outer: for (Solution solution : solutions) {
 
 			// Break each potential solution into it's separate word components
 			String[] words;
 			if (pattern.hasMultipleWords()) {
-				words = pattern.separateSolution(solution);
+				words = pattern.separateSolution(solution.getSolution());
 			} else {
-				words = new String[] { solution };
+				words = new String[] { solution.getSolution() };
 			}
 			// Check each component of the solution is a confirmed word
 			// TODO Check against an abbreviations list and other resources
