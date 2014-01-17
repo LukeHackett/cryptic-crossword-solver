@@ -19,7 +19,7 @@ public class Thesaurus {
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
 	// Actual thesaurus data structure
-	private Collection<Collection<String>> thesaurus = new HashSet<>();
+	private Collection<Collection<String>> thesaurus;
 
 	/**
 	 * Default Constructor
@@ -46,6 +46,9 @@ public class Thesaurus {
 	 */
 	private void populateThesaurusFromFile() {
 		InputStream is = settings.getThesaurusPath();
+
+		// Instantiate the thesaurus object
+		thesaurus = new HashSet<>();
 
 		// Try-with-resources. Readers are automatically closed after use
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {

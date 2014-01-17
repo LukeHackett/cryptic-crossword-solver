@@ -108,4 +108,10 @@ public class Hidden extends Solver {
 		return possibilities;
 	}
 
+	private void calculateConfidence() {
+		// TODO If solution starts with a word of the clue (e.g. "capita" for
+		// clue word "capital") reduce confidence.
+		// TODO Increase confidence using thesaurus matching
+	}
+
 } // End of class Hidden

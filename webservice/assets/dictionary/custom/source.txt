@@ -1,0 +1,2 @@
+Our own custom dictionary.
+Current words taken from solutions of Guardian crosswords, which are not present in the standard dictionary.

@@ -41,6 +41,16 @@ public class Settings {
 		// Location of the resource
 		return getPath("dictionary/acd/UKACD.txt");
 	}
+	
+	/**
+	 * This method will return the path to the custom dictionary words file.
+	 * 
+	 * @return the file path to the custom dictionary
+	 */
+	public InputStream getCustomDictionaryPath() {
+		// Location of the resource
+		return getPath("dictionary/custom/custom-dict.txt");
+	}
 
 	/**
 	 * This method will return the path to the thesaurus file.

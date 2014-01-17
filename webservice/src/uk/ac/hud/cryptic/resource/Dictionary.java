@@ -37,22 +37,26 @@ public class Dictionary {
 	 * Load the dictionary into a HashSet to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		InputStream is = settings.getDictionaryPath();
+		InputStream[] is = { settings.getDictionaryPath(),
+				settings.getCustomDictionaryPath() };
 
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-			// Open the dictionary
-			String line = null;
+		// Instantiate the dictionary object
+		dictionary = new HashSet<>();
 
-			// Instantiate the dictionary object
-			dictionary = new HashSet<>();
+		for (int i = 0; i < is.length; i++) {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(
+					is[i]))) {
+				// Open the dictionary
+				String line = null;
 
-			// Loop over every line
-			while ((line = br.readLine()) != null) {
-				dictionary.add(line.toLowerCase());
+				// Loop over every line
+				while ((line = br.readLine()) != null) {
+					dictionary.add(line.toLowerCase());
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
