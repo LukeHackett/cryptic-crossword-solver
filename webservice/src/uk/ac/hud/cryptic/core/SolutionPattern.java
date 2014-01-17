@@ -33,6 +33,8 @@ public class SolutionPattern {
 	private boolean multipleWords;
 	// The solution patterns for the individual words of the solution
 	private String[] indWordPatterns;
+	// True if no characters have been specified
+	private boolean allUnknown;
 
 	/**
 	 * Constructor takes in the user input of what is known of the solution
@@ -66,6 +68,10 @@ public class SolutionPattern {
 			// Separators won't be present in a single-word solution
 			separators = processSeparators(pattern, WordUtils.REGEX_SEPARATORS);
 		}
+
+		// Are all characters unknown?
+		final String regex = "\\?+";
+		allUnknown = Pattern.matches(regex, pattern);
 
 		// For 5-4,2 this will be 3
 		wordCount = indWordPatterns.length;
@@ -218,6 +224,8 @@ public class SolutionPattern {
 		// The lengths have to match
 		if (!(solution.length() == totalLength)) {
 			match = false;
+		} else if (allUnknown) {
+			match = true;
 		} else {
 			int counter = 0;
 			// For the patterns representing each individual word

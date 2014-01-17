@@ -88,6 +88,28 @@ public class Dictionary {
 	}
 
 	/**
+	 * Get all word matches for a given solution pattern. This means words of
+	 * the correct length, with the correct characters where these have been
+	 * specified by the user
+	 * 
+	 * @param pattern
+	 *            - the pattern to match against
+	 * @return a list of words from the dictionary which match against the
+	 *         pattern provided
+	 */
+	public Collection<String> getMatches(SolutionPattern pattern) {
+		Collection<String> matches = new HashSet<>();
+		// Go through each word in the dictionary
+		for (String word : dictionary) {
+			// Return it if it matches the pattern
+			if (pattern.match(word)) {
+				matches.add(word);
+			}
+		}
+		return matches;
+	}
+
+	/**
 	 * Remove any words from the given collection that are not present in the
 	 * dictionary. This is an effective way to remove words that have being
 	 * constructed by the algorithm which are essentially just an assortment of

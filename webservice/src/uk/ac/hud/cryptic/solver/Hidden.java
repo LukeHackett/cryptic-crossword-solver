@@ -8,6 +8,12 @@ import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
+/**
+ * Hidden solver algorithm
+ * 
+ * @author Stuart Leader
+ * @version 0.1
+ */
 public class Hidden extends Solver {
 
 	/**
@@ -97,25 +103,16 @@ public class Hidden extends Solver {
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
 
-		// Match against the thesaurus
-		// for (String clueWord : strings) {
-		// THESAURUS.match(c, clueWord);
-		// }
+		// TODO Assign confidences to each. This could try to use the
+		// word definition component of the clue.
+
+		// TODO Increase confidence using thesaurus matching
 
 		// TODO If a solution has been taken from the front of a word of the
 		// clue (e.g. HELL from HELLO), reduce the probability as this doesn't
 		// happen often
 
-		// TODO Assign probabilities to each. This could try to use the
-		// word definition component of the clue.
-
 		return solutions;
-	}
-
-	private void calculateConfidence() {
-		// TODO If solution starts with a word of the clue (e.g. "capita" for
-		// clue word "capital") reduce confidence.
-		// TODO Increase confidence using thesaurus matching
 	}
 
 } // End of class Hidden

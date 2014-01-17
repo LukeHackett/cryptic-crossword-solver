@@ -5,6 +5,12 @@ import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
+/**
+ * Acrostic solver algorithm
+ * 
+ * @author Leanne Butcher, Stuart Leader
+ * @version 0.1
+ */
 public class Acrostic extends Solver {
 
 	/**
