@@ -317,6 +317,22 @@ public class SolutionPattern {
 		}
 		solutions.removeAll(toRemove);
 	}
+	
+	public String[] getKnownLetters()
+	{
+		String[] patternArray = pattern.toString().split("");
+		ArrayList<String> knownLetters = new ArrayList<String>();
+		
+		for(String s : patternArray)
+		{
+			if(s.matches("[A-Za-z]"))
+			{
+				knownLetters.add(s);
+			}
+		}
+		
+		return (String[]) knownLetters.toArray();
+	}
 
 	/**
 	 * A human readable representation of the <code>SolutionPattern</code>
