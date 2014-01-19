@@ -65,54 +65,8 @@ public class Anagram extends Solver {
 		// Get length of words in clue
 		int[] wordLengths = new int[words.length];
 		
-		// Fill array with word lengths
-		for(int i = 0; i < words.length; i++)
-		{
-			wordLengths[i] = words[i].length();
-		}
-		
-		// Structure for potential fodder
-		ArrayList<String> possibleFodder = new ArrayList<String>();
-		
-		// Find word lengths which add up to clue answer
-		for(int i = 0; i < wordLengths.length; i++)
-		{	
-			int length = wordLengths[i];
-			
-			for(int j = i + 1; j < wordLengths.length; j++)
-			{	
-				// If a single word makes up the length of the fodder
-				if(words[i].length() == lengthOfFodder)
-				{
-					// Add single word
-					possibleFodder.add(words[i]);
-				}
-				else
-				{
-					// Increment length of potential fodder by next word
-					length += wordLengths[j];
-					
-					// If length is equal to the length of fodder
-					if(length == lengthOfFodder)
-					{
-						// Add words within potential fodder to list
-						String possible = "";
-						
-						for(int x = i; x <= j; x++)
-						{
-							possible += words[x];
-						}
-					
-						possibleFodder.add(possible);
-					}
-					// If length has exceeded, stop
-					else if(length > lengthOfFodder)
-					{
-						break;
-					}
-				}
-			}
-		}
+		// Get possible fodder
+		ArrayList<String> possibleFodder = getPossibleFodder(words, wordLengths, lengthOfFodder);
 		
 		// For each potential fodder, find all potential solutions
 		for(String p : possibleFodder)
@@ -131,6 +85,58 @@ public class Anagram extends Solver {
 		DICTIONARY.dictionaryFilter(solutions, pattern);	
 
 		return solutions;
+	}
+	
+	public ArrayList<String> getPossibleFodder(String[] words, int[] wordLengths, int lengthOfFodder)
+	{	
+		// Fill array with word lengths
+		for(int i = 0; i < words.length; i++)
+		{
+			wordLengths[i] = words[i].length();
+		}
+				
+		// Structure for potential fodder
+		ArrayList<String> possibleFodder = new ArrayList<String>();
+				
+		// Find word lengths which add up to clue answer
+		for(int i = 0; i < wordLengths.length; i++)
+		{	
+			int length = wordLengths[i];
+					
+			for(int j = i + 1; j < wordLengths.length; j++)
+			{	
+				// If a single word makes up the length of the fodder
+				if(words[i].length() == lengthOfFodder)
+				{
+					// Add single word
+					possibleFodder.add(words[i]);
+				}
+				else
+				{
+					// Increment length of potential fodder by next word
+					length += wordLengths[j];
+						
+					// If length is equal to the length of fodder
+					if(length == lengthOfFodder)
+					{
+						// Add words within potential fodder to list
+						String possible = "";
+								
+						for(int x = i; x <= j; x++)
+						{
+						possible += words[x];
+						}		
+						possibleFodder.add(possible);
+					}
+					// If length has exceeded, stop
+					else if(length > lengthOfFodder)
+					{
+						break;
+					}
+				}
+			}
+		}
+		return possibleFodder;
 	}
 	
 	public void swap(char[] fodderEntry, int pos1, int pos2)
