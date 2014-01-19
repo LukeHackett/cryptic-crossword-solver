@@ -108,11 +108,36 @@ public class Hidden extends Solver {
 
 		// TODO Increase confidence using thesaurus matching
 
-		// TODO If a solution has been taken from the front of a word of the
-		// clue (e.g. HELL from HELLO), reduce the probability as this doesn't
-		// happen often
+		// Remove solutions which aren't really hidden at all
+		markNonHiddenWords(c, solutions);
 
 		return solutions;
+	}
+
+	/**
+	 * Reduce the confidence of solutions which have been generated and aren't
+	 * really hidden in the clue. I.e. words either start or end with the entire
+	 * solution.
+	 * 
+	 * @param c
+	 *            - the clue being worked on
+	 * @param solutions
+	 *            - the solutions to filter
+	 */
+	private void markNonHiddenWords(Clue c, SolutionCollection solutions) {
+		// If a solution has been taken from the front of a word of the
+		// clue (e.g. HELL from HELLO), reduce the probability as this doesn't
+		// happen often
+		final String[] words = c.getClueWords();
+		for (Solution s : solutions) {
+			for (String w : words) {
+				if (w.startsWith(s.getSolution())
+						|| w.endsWith(s.getSolution())) {
+					// TODO Average chance of this happening is 2.46%... Here
+					// the confidence should be lowered accordingly?
+				}
+			}
+		}
 	}
 
 } // End of class Hidden
