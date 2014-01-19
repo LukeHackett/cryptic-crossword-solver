@@ -317,21 +317,26 @@ public class SolutionPattern {
 		}
 		solutions.removeAll(toRemove);
 	}
-	
-	public String[] getKnownLetters()
-	{
-		String[] patternArray = pattern.toString().split("");
-		ArrayList<String> knownLetters = new ArrayList<String>();
-		
-		for(String s : patternArray)
-		{
-			if(s.matches("[A-Za-z]"))
-			{
+
+	/**
+	 * Return an array of all the known characters of the solution inputted by
+	 * the users
+	 * 
+	 * @return an array of the known characters of the solution
+	 */
+	public String[] getKnownCharacters() {
+		// Get the individual characters of the solution's pattern
+		String[] chars = pattern.split("");
+		Collection<String> knownLetters = new ArrayList<>();
+
+		for (String s : chars) {
+			// We only want the letters here, not other characters
+			if (s.matches(WordUtils.REGEX_LETTER)) {
 				knownLetters.add(s);
 			}
 		}
-		
-		return (String[]) knownLetters.toArray();
+
+		return knownLetters.toArray(new String[knownLetters.size()]);
 	}
 
 	/**

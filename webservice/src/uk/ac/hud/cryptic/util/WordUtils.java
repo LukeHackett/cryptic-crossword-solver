@@ -7,6 +7,9 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  * sentences.
  */
 public class WordUtils {
+	
+	// Will match anything that is [A-Z] or [a-z] (a single letter) excluding spaces
+	public static final String REGEX_LETTER = "[A-Za-z]";
 
 	// Will match anything that isn't [A-Z] or [a-z] including spaces
 	public static final String REGEX_NON_LETTERS_SPACES = "(\\W|_|[0-9])+";
