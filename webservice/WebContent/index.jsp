@@ -83,10 +83,11 @@
         <p><b>Pattern Recieved:</b> <x:out select="$doc/solver/pattern"/></p>
         <x:choose>
           <x:when select="$doc/solver//solution">
-            <ul>
+            <ul class="list-group">
               <x:forEach select="$doc/solver/solution" var="solution">
-                <li><x:out select="$solution/value"/> 
-                    (<x:out select="$solution/confidence"/> &#37;)
+                <li class="list-group-item">
+                  <span class="badge"><x:out select="$solution/confidence"/> &#37;</span>
+                  <x:out select="$solution/value"/>
                 </li>
               </x:forEach>
             </ul>
