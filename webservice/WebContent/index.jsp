@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
-<t:crypticpage>
+<t:application>
   <div class="row">
     <div class="col-md-12">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -69,4 +69,4 @@
       <ul id="results"></ul>
     </div>
   </div>
-</t:crypticpage>
+</t:application>
