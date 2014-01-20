@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,54 @@ public class Solver extends Servlet {
 		super();
 	}
 
+	/**
+	 * This method will allow for three parameters to be sent via a GET request
+	 * -- clue, length and pattern. Clue refers to the original clue, and the 
+	 * length reference to the length of the solution, whilst pattern refers to
+	 * the format of the answer. This method will automatically return the user 
+	 * back to the main index page.
+	 * 
+	 * @param request
+	 *            HTTP request information
+	 * @param response
+	 *            HTTP response information
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		// ServletContext is required to locate resource (e.g. dictionary)
+		// TODO This could perhaps be implemented more elegantly?
+		Settings settings = Settings.getInstance();
+		// When settings has this "context", it knows to load resources from
+		// somewhere else
+		settings.setServletContext(this.getServletConfig().getServletContext());
+		
+		// Obtain the input requests
+		String clue = request.getParameter("clue");
+		String length = request.getParameter("length");
+		String pattern = request.getParameter("pattern");
+		
+		// Set the return values to the input values
+		request.setAttribute("clue", clue);
+		request.setAttribute("length", length);
+		request.setAttribute("pattern", pattern);
+		
+		// Validate Inputs
+		String[] errors = validateInputs(clue, length, pattern);
+		
+		// Check to see if there are any errors 
+		if (errors.length > 0) {
+			// Validation has failed -> inform end user
+			request.setAttribute("errors", errors);
+		}
+		
+		// Forward request and response onto the view
+		request.getRequestDispatcher("index.jsp").forward(request, response);
+	}
+	
 	/**
 	 * This method will allow for two parameters to be posted -- clue and
 	 * length. Clue refers to the original clue, and the solutionLength refers

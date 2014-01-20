@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <t:application>
   <div class="row">
@@ -17,26 +18,38 @@
   <div class="row">
     <div class="col-md-8">
       <!-- Form Alerts -->
-      <div id="form-alerts"></div>
+      <div id="form-alerts">
+        <c:if test="${errors != null}">
+          <div class="alert alert-danger">
+            <b>Oh snap!</b> Change a few things up and try submitting again.
+            <ol>
+              <c:forEach var="message" items="${errors}">
+                <li>${message}</li>
+              </c:forEach>
+            </ol>
+          </div>
+        </c:if>
+      </div>
       <!-- Solver Form -->
-      <form class="form-horizontal" role="form" action="solver" method="post">
+      <form class="form-horizontal" role="form" action="solver" method="get">
         <div id="clue-input">
           <div class="form-group">
             <label for="clue" class="col-sm-3 control-label">Cryptic
               Clue</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="clue" name="clue">
-              <span class="help-block">Punctuation can also be included.</span>
+              <input type="text" class="form-control" id="clue" name="clue"
+                value="${clue}"> <span class="help-block">Punctuation
+                can also be included.</span>
             </div>
           </div>
           <div class="form-group">
             <label for="length" class="col-sm-3 control-label">Solution
               Length</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="length" name="length">
-              <span class="help-block">Any combination of single words
-                (e.g. 3), multiple words (e.g. 3,5) or hyphenated words (e.g.
-                3-5) can be entered.</span>
+              <input type="text" class="form-control" id="length" name="length"
+                value="${length}"> <span class="help-block">Any
+                combination of single words (e.g. 3), multiple words (e.g. 3,5)
+                or hyphenated words (e.g. 3-5) can be entered.</span>
             </div>
           </div>
         </div>
@@ -45,14 +58,14 @@
             Pattern</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" id="pattern"
-              name="pattern">
-            <span class="help-block">Provide any known characters, unknown 
-            characters (?), word separators (comma) and hyphens (-).</span>
+              name="pattern" value="${pattern}"> <span
+              class="help-block">Provide any known characters, unknown
+              characters (?), word separators (comma) and hyphens (-).</span>
           </div>
         </div>
         <div id="clue-split-pattern" class="form-group"></div>
         <div class="form-actions">
-          <button type="reset" class="btn btn-default" id="reset" >Clear</button>
+          <button type="reset" class="btn btn-default" id="reset">Clear</button>
           <button type="submit" class="btn btn-primary" id="submit">Submit</button>
         </div>
       </form>
