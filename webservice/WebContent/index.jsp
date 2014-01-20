@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x"%>
 
 <t:application>
   <div class="row">
@@ -70,16 +71,35 @@
         </div>
       </form>
     </div>
-  </div>
-  <hr>
-  <!-- Results -->
-  <div class="row">
-    <div class="col-md-8">
-      <h3>Results</h3>
-      <div id="result-alerts"></div>
-      <p id="clue_recieved"></p>
-      <p id="pattern_recieved"></p>
-      <ul id="results"></ul>
+  </div> 
+  <c:if test="${results != null}">
+    <x:parse var="doc" doc="${results}"/>
+    <hr>
+    <!-- Results -->
+    <div class="row">
+      <div class="col-md-8">
+        <h3>Results</h3>
+        <p><b>Clue Recieved:</b> <x:out select="$doc/solver/clue"/></p>
+        <p><b>Pattern Recieved:</b> <x:out select="$doc/solver/pattern"/></p>
+        <x:choose>
+          <x:when select="$doc/solver//solution">
+            <ul>
+              <x:forEach select="$doc/solver/solution" var="solution">
+                <li><x:out select="$solution/value"/> 
+                    (<x:out select="$solution/confidence"/> &#37;)
+                </li>
+              </x:forEach>
+            </ul>
+          </x:when>
+          <x:otherwise>
+            <div class="alert alert-info">
+              <b>Heads up!</b> The solvers have been unable to find a solution
+              to your clue. Try widening your solution pattern by using more 
+              unknown characters (?).
+            </div>
+          </x:otherwise>
+        </x:choose>
+      </div>
     </div>
-  </div>
+  </c:if>
 </t:application>
