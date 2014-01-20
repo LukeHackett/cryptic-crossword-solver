@@ -18,7 +18,7 @@
   </head>
 
   <body>
-    <div class="container">
+    <div id="container" class="container">
       <!-- Static navbar -->
       <div class="navbar navbar-default">
         <div class="navbar-header">

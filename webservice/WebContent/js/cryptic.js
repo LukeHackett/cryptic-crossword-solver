@@ -106,7 +106,7 @@ jQuery(document).ready(function($){
     // Clear the results area
     $('#clue_recieved').html("");
     $('#pattern_recieved').html("");
-    $('#results').children().remove();
+    $('#results-list').children().remove();
   });
 
   
@@ -126,8 +126,8 @@ jQuery(document).ready(function($){
     }
     
     // Clear any existing alerts
-	clear_alerts();
-	  
+  clear_alerts();
+    
     // Combine the pattern
     pattern = combine_pattern();
     $('#pattern').val(pattern);
@@ -139,7 +139,11 @@ jQuery(document).ready(function($){
       data: form.serialize(),
       dataType: "json",
       beforeSend: function(){
-    	// Clear any existing results
+        // Setup the results area
+        setupResults($('#container'));
+        // Set as Pending
+        $('#results h3').append(' <span class="label label-info"><i>pending</i></span>');
+        // Clear any existing results
         clear_results();  
       },
       success: function(data){
@@ -151,7 +155,7 @@ jQuery(document).ready(function($){
           // State the clue pattern received
           $('#pattern_recieved').html("<b> Pattern:</b> " + data.pattern);
           // Remove old results
-          $('#results').children().remove();
+          $('#results-list').children().remove();
           // Loop over if array
           if($.isArray(data.solution)){ 
             // Print out each of the solutions
@@ -164,48 +168,72 @@ jQuery(document).ready(function($){
           }
         } else {
           // No data was returned
-          var message = "<b>Heads up! </b> the solver returned no results. " +
-                        "Using more blanks in the solution pattern may help.";
+          var message = "<b>Heads up!</b> The solvers have been unable to " +
+              "find a solution to your clue. Try widening your solution " +
+              "pattern by using more unknown characters (?).";
           issue_result_alert("info", message);
         }
       },
       error: function(err){
-    	  // Clear any existing errors
-    	  clear_form_alerts();
-    	  
-    	  // Display new errors if available
-    	  if(err.responseJSON){
-    		  // Sanity purposes
-    		  errors = err.responseJSON.errors;
-    		  
-              // Loop over if array
-              if($.isArray(errors)){ 
-                // Display each of the error messages
-                $.each(errors, function(index, error){  
-                	message = "<b>Oh, snap!</b> " + error.message;
-                	issue_form_alert("danger", message);       
-                });           
-              } else {
-                // Display the error message
-            	message = "<b>Oh, snap!</b> " + errors.message;
-            	issue_form_alert("danger", message); 
-              }
-    	  }        
+        // Clear any existing errors
+        clear_form_alerts();
+        
+        // Display new errors if available
+        if(err.responseJSON){
+          // Sanity purposes
+          errors = err.responseJSON.errors;
+          // Loop over if array
+          if($.isArray(errors)){ 
+            // Display each of the error messages
+            $.each(errors, function(index, error){  
+              message = "<b>Oh, snap!</b> " + error.message;
+              issue_form_alert("danger", message);       
+            });           
+          } else {
+            // Display the error message
+            message = "<b>Oh, snap!</b> " + errors.message;
+            issue_form_alert("danger", message); 
+          }
+        }        
+      },
+      complete: function(){
+        // Remove the pending state
+        $('#results h3 span').remove();
       }
     });
   });
+
+
+  /**
+   * This function will setup the results area, if it has already not been 
+   * added to the DOM.
+   */
+  function setupResults(container){
+    // Only setup if not done before
+    if(container.find('#results .col-md-8').length === 0){
+      // Append the outer structure
+      container.append('<div class="row"> <div id="results" class="col-md-8">');
+      // Append the inner structure
+      var results = container.find('#results'); 
+      results.append('<h3>Results</h3>');
+      results.append('<p id="clue_recieved">');
+      results.append('<p id="pattern_recieved">');
+      results.append('<ul id="results-list" class="list-group">');
+    }
+  }
   
-  
+
   /**
    * Outputs the given solution to the results list
    */
   function print_row(solution){
-  // Format a new row
-    var row = "Answer: " + solution.value + 
-              " (" + solution.confidence + "%)";
-    
+    // Solution Confidence rating
+    var span = '<span class="badge">' + solution.confidence + '</span>';
+    // List Element
+    var li = $('<li class="list-group-item">');
+    li.html(span + solution.value);
     // Append to the text area
-    $('#results').append("<li>" + row + "</li>");
+    $('#results-list').append(li);
   }
   
 
@@ -287,7 +315,6 @@ jQuery(document).ready(function($){
     // Loop over all inputs
     div.find('input[type="text"]').each(function(i, input){
       var value = input.value;
-      
       // Replace with required blank value  
       if(value == "" || value == " "){
         pattern += BLANK;
@@ -379,7 +406,7 @@ jQuery(document).ready(function($){
       
       // Check for a hyphenated word 
       if($.isArray(word)){        
-      // Loop over each sub-hyphenated word
+        // Loop over each sub-hyphenated word
         for(var h = 1; h <= word.length; h++){     
           pattern.append('<div class="sub-word"></div>');  
           subpattern = pattern.children('.sub-word').last();
@@ -426,13 +453,7 @@ jQuery(document).ready(function($){
    * This method will clear all results and alerts from the results area. 
    */
   function clear_results(){
-	  // Clear any alerts
-	  clear_result_alerts();
-	  
-	  // Clear returned data
-	  $("#clue_recieved").text("");
-	  $("#pattern_recieved").text("");
-	  $("#results").children().remove();
+    $("#results").parent().remove();
   }
   
   
@@ -441,8 +462,8 @@ jQuery(document).ready(function($){
    * of (success, info, warning, danger), and the message to be displayed.
    */
   function issue_form_alert(type, message){
-	  var alert = $('<div>').addClass('alert alert-' + type).html(message);
-	  $('#form-alerts').append(alert);
+    var alert = $('<div>').addClass('alert alert-' + type).html(message);
+    $('#form-alerts').append(alert);
   }
   
   
@@ -451,8 +472,8 @@ jQuery(document).ready(function($){
    * warning, danger), and the message to be displayed.
    */
   function issue_result_alert(type, message){
-	  var alert = $('<div>').addClass('alert alert-' + type).html(message);
-	  $('#result-alerts').append(alert);
+    var alert = $('<div>').addClass('alert alert-' + type).html(message);
+    $('#results').append(alert);
   } 
   
   
@@ -469,7 +490,7 @@ jQuery(document).ready(function($){
    * Clears all form alerts from the page.
    */
   function clear_form_alerts(){
-	  $("#form-alerts").children().remove();
+    $("#form-alerts").children().remove();
   }
   
   
@@ -477,6 +498,6 @@ jQuery(document).ready(function($){
    * Clears all result alerts from the page.
    */
   function clear_result_alerts(){
-	  $("#result-alerts").children().remove();
+    $("#result-alerts").children().remove();
   }
 });
