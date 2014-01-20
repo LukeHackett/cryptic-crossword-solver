@@ -75,6 +75,12 @@ public class Solver extends Servlet {
 		request.setAttribute("length", length);
 		request.setAttribute("pattern", pattern);
 		
+		// Check for a new request
+		if(clue == null && length == null && pattern == null){
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+			return;
+		}
+		
 		// Validate Inputs
 		String[] errors = validateInputs(clue, length, pattern);
 		
