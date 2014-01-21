@@ -66,8 +66,8 @@
         </div>
         <div id="clue-split-pattern" class="form-group"></div>
         <div class="form-actions">
-          <button type="reset" class="btn btn-default" id="reset">Clear</button>
-          <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+          <input type="reset" class="btn btn-default" id="reset" value="Clear"/>
+          <input type="submit" class="btn btn-primary" id="submit" value="Submit"/>
         </div>
       </form>
     </div>
