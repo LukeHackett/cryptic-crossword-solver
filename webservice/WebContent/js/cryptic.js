@@ -139,12 +139,12 @@ jQuery(document).ready(function($){
       data: form.serialize(),
       dataType: "json",
       beforeSend: function(){
+    	// Clear any existing results
+        clear_results();  
         // Setup the results area
         setupResults($('#container'));
         // Set as Pending
         $('#results h3').append(' <span class="label label-info"><i>pending</i></span>');
-        // Clear any existing results
-        clear_results();  
       },
       success: function(data){
         if(data.solver.solution){
