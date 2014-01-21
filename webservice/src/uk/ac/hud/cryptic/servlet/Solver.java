@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -57,46 +56,20 @@ public class Solver extends Servlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// ServletContext is required to locate resource (e.g. dictionary)
-		// TODO This could perhaps be implemented more elegantly?
-		Settings settings = Settings.getInstance();
-		// When settings has this "context", it knows to load resources from
-		// somewhere else
-		settings.setServletContext(this.getServletConfig().getServletContext());
-
 		// Obtain the input requests
 		String clue = request.getParameter("clue");
 		String length = request.getParameter("length");
 		String pattern = request.getParameter("pattern");
-
-		// Set the return values to the input values
-		request.setAttribute("clue", clue);
-		request.setAttribute("length", length);
-		request.setAttribute("pattern", pattern);
-
+		
 		// Check for a new request
 		if (clue == null && length == null && pattern == null) {
 			request.getRequestDispatcher("index.jsp")
 					.forward(request, response);
 			return;
 		}
-
-		// Validate Inputs
-		String[] errors = validateInputs(clue, length, pattern);
-
-		// Check to see if there are any errors
-		if (errors.length > 0) {
-			// Validation has failed -> inform end user
-			request.setAttribute("errors", errors);
-		} else {
-			// Validation has passed -> present results
-			String data = solveClue(clue, pattern);
-			request.setAttribute("results", data);
-		}
-
-		// Forward request and response onto the view
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		
+		// Do the GET request as a POST request
+		doPost(request, response);
 	}
 
 	/**
@@ -131,18 +104,40 @@ public class Solver extends Servlet {
 		// Validate Inputs
 		String[] errors = validateInputs(clue, solution, pattern);
 
-		// Send errors and cancel the current request if required
-		if (errors.length > 0) {
-			sendError(request, response, errors, Response.SC_BAD_REQUEST);
-			return;
+		// Check to see if a page needs to be rendered server-side
+		if (isAjaxRequest(request)){
+			// Send errors and cancel the current request if required
+			if (errors.length > 0) {
+				sendError(request, response, errors, Response.SC_BAD_REQUEST);
+				return;
+			}
+
+			// Solve the clue
+			String data = solveClue(clue, pattern);
+
+			// Send the response
+			boolean json = isJSONRequest(request);
+			sendResponse(response, data, json);
+			
+		} else {
+			// Server-side page rendering is required
+			request.setAttribute("clue", clue);
+			request.setAttribute("length", solution);
+			request.setAttribute("pattern", pattern);
+			
+			// Check to see if there are any errors
+			if (errors.length > 0) {
+				// Validation has failed -> inform end user
+				request.setAttribute("errors", errors);
+			} else {
+				// Validation has passed -> present results
+				String data = solveClue(clue, pattern);
+				request.setAttribute("results", data);
+			}
+			
+			// Forward request and response onto the view
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
-
-		// Solve the clue
-		String data = solveClue(clue, pattern);
-
-		// Send the response
-		boolean json = isJSONRequest(request);
-		sendResponse(response, data, json);
 	}
 
 	/**
