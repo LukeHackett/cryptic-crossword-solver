@@ -32,7 +32,7 @@
         </c:if>
       </div>
       <!-- Solver Form -->
-      <form class="form-horizontal" role="form" action="solver" method="get">
+      <form class="form-horizontal" role="form" action="solver" method="post">
         <div id="clue-input">
           <div class="form-group">
             <label for="clue" class="col-sm-3 control-label">Cryptic
