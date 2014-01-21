@@ -42,3 +42,7 @@ local.properties
 #*.jar
 *.war
 *.ear
+
+# Assets
+WebContent/WEB-INF/assets
+WebContent/WEB-INF/classes/*
