@@ -1,7 +1,7 @@
 package uk.ac.hud.cryptic.core;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -12,7 +12,7 @@ import uk.ac.hud.cryptic.util.WordUtils;
  * @author Stuart Leader
  * @version 0.1
  */
-public class SolutionCollection extends TreeSet<Solution> {
+public class SolutionCollection extends HashSet<Solution> {
 
 	private static final long serialVersionUID = -4860282004897560415L;
 
@@ -53,10 +53,12 @@ public class SolutionCollection extends TreeSet<Solution> {
 			if (s.getConfidence() < confidence) {
 				// Confidence score is lower, return it
 				sc.add(s);
-			} else {
-				// As Collection is ordered, no more matches
-				break;
 			}
+			// this is from when SolutionCollection was a TreeSet
+			// else {
+			// // As Collection is ordered, no more matches
+			// break;
+			// }
 		}
 		return sc;
 	}
@@ -91,8 +93,27 @@ public class SolutionCollection extends TreeSet<Solution> {
 			if (contains(solution)) {
 				remove(new Solution(solution));
 			}
-
 		}
+	}
+
+	public Solution getBestSolution() {
+		Solution best;
+
+		// Populate the first solution (to be compared to)
+		if (isEmpty()) {
+			return null;
+		} else {
+			best = this.iterator().next();
+		}
+
+		// Check the rest
+		for (Solution s : this) {
+			// Check if it is contained
+			if (s.getConfidence() > best.getConfidence()) {
+				best = s;
+			}
+		}
+		return best;
 	}
 
 } // End of class SolutionCollection

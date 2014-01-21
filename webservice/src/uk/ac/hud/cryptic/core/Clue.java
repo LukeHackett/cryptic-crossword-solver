@@ -116,7 +116,7 @@ public class Clue {
 	 * @return the solution most likely to be correct
 	 */
 	public Solution getBestSolution() {
-		return solutions.pollLast();
+		return solutions.getBestSolution();
 	}
 
 	/**

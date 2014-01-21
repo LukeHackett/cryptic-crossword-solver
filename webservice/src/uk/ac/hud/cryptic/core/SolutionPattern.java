@@ -340,6 +340,15 @@ public class SolutionPattern {
 	}
 
 	/**
+	 * Get an array of the individual word lengths of the solution
+	 * 
+	 * @return an array of the individual word lengths of the solution
+	 */
+	public int[] getIndividualWordLengths() {
+		return indLengths;
+	}
+
+	/**
 	 * A human readable representation of the <code>SolutionPattern</code>
 	 */
 	@Override
