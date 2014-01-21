@@ -42,13 +42,7 @@ public class Anagram extends Solver {
 	 */
 	public static void main(String[] args) {
 		Anagram a = new Anagram();
-		// a.testSolver(a, Type.ANAGRAM);
-		Clue c = new Clue("Manger apt to be shown transformed by star",
-				"?????????");
-		SolutionCollection sc = a.solve(c);
-		for (Solution s : sc) {
-			System.out.println(s);
-		}
+		a.testSolver(a, Type.ANAGRAM);
 	}
 
 	public SolutionCollection solve(Clue c) {
@@ -130,7 +124,8 @@ public class Anagram extends Solver {
 
 					// If length is equal to the length of fodder (or just
 					// above)
-					// TODO == is the general rule, not >=, but isn't set in concrete
+					// TODO == is the general rule, not >=, but isn't set in
+					// concrete
 					if (length == solutionLength) {
 						// Add words within potential fodder to list
 						String possible = "";
