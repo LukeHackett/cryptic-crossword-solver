@@ -1,11 +1,12 @@
-package uk.ac.hud.cryptic;
+package uk.ac.hud.cryptic.core;
 /**
  * This JUnit Test Suite tests all test's in their individual classes for
- * the package uk.hud.ac.cryptic.resource
+ * the package uk.hud.ac.cryptic.core
  */
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import uk.ac.hud.cryptic.core.ClueTest;
 
 /**
  * @author Mohammad Rahman
@@ -14,11 +15,14 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { 
-		//TestDictionary.class,
-		//TestThesaurus.class
+		ClueTest.class
+		//ManagerTest.class,
+		//SolutionTest.class,
+		//SolutionCollectionTest.class,
+		//SolutionPatternTest.class
 		})
 
-public class ResourceSuite {
+public class CoreSuite {
 
 }
 

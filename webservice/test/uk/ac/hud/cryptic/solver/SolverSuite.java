@@ -1,4 +1,4 @@
-package uk.ac.hud.cryptic;
+package uk.ac.hud.cryptic.solver;
 /**
  * This JUnit Test Suite tests all test's in their individual classes for
  * the package uk.hud.ac.cryptic.solver
