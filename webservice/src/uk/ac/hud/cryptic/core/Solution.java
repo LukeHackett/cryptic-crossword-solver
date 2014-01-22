@@ -32,7 +32,7 @@ public class Solution implements Comparable<Solution> {
 	public Solution(String solution) {
 		trace = new ArrayList<>();
 		// Standardise all potential solutions
-		this.solution = WordUtils.removeNonAlphabet(solution, false);
+		this.solution = WordUtils.normaliseInput(solution, false);
 		// Default confidence rating
 		confidence = DEFAULT_CONFIDENCE;
 	}

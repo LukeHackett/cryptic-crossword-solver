@@ -229,7 +229,7 @@ public class SolutionPattern {
 	 *         <code>false</code> otherwise
 	 */
 	public boolean match(String solution) {
-		solution = WordUtils.removeNonAlphabet(solution, true);
+		solution = WordUtils.removeSpacesAndHyphens(solution);
 		// Assume a match until proven otherwise
 		boolean match = true;
 
@@ -321,10 +321,9 @@ public class SolutionPattern {
 		String pattern = "";
 		// For each individual word of the solution
 		for (int i = 0; i < words.length; i++) {
-			String word = WordUtils.removeNonAlphabet(words[i], false);
 			// Add a '?' for each character
-			for (int j = 0; j < word.length(); j++) {
-				pattern += unknown ? UNKNOWN_CHARACTER : word.charAt(j);
+			for (int j = 0; j < words[i].length(); j++) {
+				pattern += unknown ? UNKNOWN_CHARACTER : words[i].charAt(j);
 			}
 			// Insert the correct separators where necessary in the pattern
 			if (multipleWords && i < words.length - 1) {

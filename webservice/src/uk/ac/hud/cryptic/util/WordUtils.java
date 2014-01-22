@@ -31,7 +31,8 @@ public class WordUtils {
 	public static final String REGEX_WHITESPACE = "\\s+";
 
 	/**
-	 * Remove any non-alphabetical characters including spaces
+	 * Remove any non-alphabetical characters including spaces. This should be
+	 * used from input coming from the user, such as the Clue and Solution text.
 	 * 
 	 * @param input
 	 *            - The input text
@@ -39,7 +40,7 @@ public class WordUtils {
 	 *            - true if spaces should be removed, false otherwise
 	 * @return the input string minus any non-alphabetical characters
 	 */
-	public static String removeNonAlphabet(String input, boolean removeSpaces) {
+	public static String normaliseInput(String input, boolean removeSpaces) {
 		// Select the appropriate REGEX pattern depending on parameters
 		String regex = removeSpaces ? REGEX_NON_LETTERS_SPACES
 				: REGEX_NON_LETTERS;
@@ -55,7 +56,7 @@ public class WordUtils {
 		output = output.replaceAll(regex, " ");
 
 		if (removeSpaces) {
-			output = output.replaceAll("\\s+", "");
+			output = removeSpacesAndHyphens(output);
 		} else {
 			// Replace multiple spaces with just one
 			output = output.replaceAll("\\s+", " ");
@@ -68,6 +69,17 @@ public class WordUtils {
 		output = output.toLowerCase();
 
 		return output;
+	}
+
+	/**
+	 * Removes spaces and hyphens from a given String
+	 * 
+	 * @param input
+	 *            - the input to remove spaces and hyphens from
+	 * @return the text with no spaces or hyphens
+	 */
+	public static String removeSpacesAndHyphens(String input) {
+		return input.replaceAll("(\\s+|-)", "");
 	}
 
 	/**

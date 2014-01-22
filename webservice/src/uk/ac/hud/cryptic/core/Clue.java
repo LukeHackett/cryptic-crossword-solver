@@ -72,7 +72,7 @@ public class Clue {
 	 * @return the clue with no punctuation
 	 */
 	public String getClueNoPunctuation(boolean removeSpaces) {
-		return WordUtils.removeNonAlphabet(clue, removeSpaces);
+		return WordUtils.normaliseInput(clue, removeSpaces);
 	}
 
 	/**

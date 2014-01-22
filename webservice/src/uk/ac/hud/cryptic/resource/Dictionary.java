@@ -192,17 +192,16 @@ public class Dictionary {
 	 *         prefix
 	 */
 	public Collection<String> getMatchesWithPrefix(String prefix, int length) {
-		// Standarise the given prefix
+		// Standardise the given prefix
 		prefix = prefix.toLowerCase().trim();
 
 		Collection<String> matches = new HashSet<>();
 		// Have the manually check all dictionary words for all matches
 		for (String w : dictionary) {
 			// Get rid of punctuation and spaces
-			String word = WordUtils.removeNonAlphabet(w, true);
 			// Return it if it matches the pattern
-			if (word.length() == length && word.startsWith(prefix)) {
-				matches.add(word);
+			if (w.length() == length && w.startsWith(prefix)) {
+				matches.add(w);
 			}
 		}
 		return matches;
@@ -224,7 +223,7 @@ public class Dictionary {
 		// For each given prefix String
 		for (Solution p : prefixes) {
 			// Standardise it
-			String prefix = WordUtils.removeNonAlphabet(p.getSolution(), true);
+			String prefix = WordUtils.removeSpacesAndHyphens(p.getSolution());
 			// If the dictionary can't find any words beginning with this letter
 			// combination, remove it
 			if (!prefixMatch(prefix)) {
