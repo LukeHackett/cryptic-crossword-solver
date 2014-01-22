@@ -228,7 +228,7 @@ jQuery(document).ready(function($){
    */
   function print_row(solution){
     // Solution Confidence rating
-    var span = '<span class="badge">' + solution.confidence + '</span>';
+    var span = '<span class="badge">' + solution.confidence + ' &#37;</span>';
     // List Element
     var li = $('<li class="list-group-item">');
     li.html(span + solution.value);
