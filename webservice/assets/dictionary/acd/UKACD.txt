@@ -1,4 +1,5 @@
 a
+aa
 Aachen
 aardvark
 aardvarks
@@ -2789,6 +2790,7 @@ adzes
 adzuki
 adzuki bean
 adzuki beans
+ae
 aecia
 aecidia
 aecidiospore
@@ -9593,6 +9595,7 @@ Aquinas
 Aquino
 Aquitaine
 a-quiver
+ar
 Ara
 Arab
 araba
@@ -13629,6 +13632,7 @@ awrong
 awry
 aws
 aw-shucks
+ax
 axe
 axe-breaker
 axe-breakers
@@ -13798,6 +13802,8 @@ azymite
 azymites
 azymous
 azyms
+b
+ba'
 baa
 baaed
 baaing
@@ -21885,6 +21891,7 @@ B movies
 BMX
 BMX bike
 BMX bikes
+bo
 boa
 boa-constrictor
 boa-constrictors
@@ -27594,6 +27601,8 @@ Byzantinist
 Byzantinists
 Byzantium
 byzants
+c
+ca'
 Caaba
 caaing-whale
 caatinga
@@ -33091,6 +33100,7 @@ Ceylonese
 ceylonite
 Ceylon moss
 Cezanne
+ch
 cha
 chabazite
 Chablis
@@ -50108,6 +50118,7 @@ Cuzco
 cwm
 Cwmbran
 cwms
+Cy
 cyan
 cyanamide
 cyanamides
@@ -50528,6 +50539,8 @@ Czechoslovakians
 Czechoslovaks
 Czech Republic
 Czechs
+d
+da
 dab
 dabbed
 dabber
@@ -64961,6 +64974,7 @@ dziggetai
 dziggetais
 dzo
 dzos
+e
 ea
 each
 each other
@@ -65955,6 +65969,7 @@ Edward the Elder
 Edwin
 Edwina
 Edwin Drood
+ee
 ee bah gum
 eejit
 eejits
@@ -65982,6 +65997,7 @@ eerily
 eeriness
 eery
 Eeyore
+ef
 eff
 effable
 efface
@@ -66440,6 +66456,7 @@ eklogite
 ekphrasis
 ekpwele
 ekuele
+el
 e-la
 elaborate
 elaborated
@@ -67244,6 +67261,7 @@ elytron
 elytrons
 elytrum
 Elzevir
+em
 emaciate
 emaciated
 emaciates
@@ -68126,6 +68144,7 @@ emus
 emu-wren
 emydes
 emys
+en
 Ena
 enable
 enabled
@@ -70025,6 +70044,7 @@ enzymic
 enzymologist
 enzymologists
 enzymology
+Eo
 eoan
 Eoanthropus
 Eocene
@@ -70821,6 +70841,7 @@ equivoque
 equivoques
 Equuleus
 Equus
+er
 era
 eradiate
 eradiated
@@ -71165,6 +71186,7 @@ erythrophobia
 erythropoiesis
 erythropoietin
 Erziehungsroman
+es
 Esau
 escadrille
 escadrilles
@@ -74619,6 +74641,8 @@ Eytie
 Eyties
 Ezekiel
 Ezra
+f
+fa
 fa'ard
 fab
 fabaceous
@@ -84409,6 +84433,7 @@ fuzzy
 fuzzy-haired
 fuzzy logic
 Fuzzypeg
+fy
 fyke
 fykes
 Fylde
@@ -84421,6 +84446,7 @@ fyrds
 fys
 fytte
 fyttes
+g
 gab
 gabardine
 gabardines
@@ -86113,6 +86139,7 @@ Gazza
 G-clef
 Gdansk
 g'day
+Ge
 geal
 gealed
 gealing
@@ -87382,6 +87409,7 @@ ghoulishness
 ghouls
 ghyll
 ghylls
+gi
 Giacometti
 Giacomo
 giambeux
@@ -92288,6 +92316,7 @@ G-string
 G-strings
 G-suit
 G-suits
+gu
 guacamole
 guacamoles
 guacharo
@@ -93232,6 +93261,8 @@ gyve
 gyved
 gyves
 gyving
+h
+ha
 haaf
 haaf-net
 haaf-nets
@@ -111744,6 +111775,7 @@ Izvestiya
 izzard
 izzards
 izzat
+j
 jab
 Jabalpur
 jabbed
@@ -113061,6 +113093,7 @@ jiving
 jizz
 jizzes
 jnana
+jo
 Joab
 Joachim
 Joan
@@ -114192,6 +114225,9 @@ jymold
 jynx
 jynxes
 j'y suis, j'y reste
+k
+ka
+Kaa
 Kaaba
 kaama
 kaamas
@@ -116645,6 +116681,7 @@ Knussen
 knut
 knuts
 Knutsford
+ko
 koa
 koala
 koala bear
@@ -117064,6 +117101,7 @@ KwaZulu/Natal
 Kweichow
 kwela
 Kwok's disease
+ky
 kyang
 kyangs
 kyanise
@@ -117117,6 +117155,8 @@ kything
 kyu
 kyus
 Kyzyl Kum
+l
+la
 laager
 laagered
 laagering
@@ -120805,6 +120845,7 @@ Lhasa
 lhasa apso
 lhasa apsos
 lherzolite
+li
 liabilities
 liability
 liable
@@ -125272,6 +125313,7 @@ lytta
 lyttas
 Lyttleton
 Lytton
+m
 ma
 maa
 maaed
@@ -131615,6 +131657,7 @@ mho
 mhorr
 mhorrs
 mhos
+mi
 Mia
 Miami
 mia-mia
@@ -134500,6 +134543,7 @@ mnemotechnic
 mnemotechnics
 mnemotechnist
 mnemotechnists
+mo
 moa
 Moab
 Moabite
@@ -139021,6 +139065,7 @@ mzee
 mzees
 mzungu
 mzungus
+n
 na
 Naafi
 naam
@@ -144174,6 +144219,7 @@ nuzzle
 nuzzled
 nuzzles
 nuzzling
+ny
 nyaff
 nyaffed
 nyaffing
@@ -144254,6 +144300,7 @@ nystagmoid
 nystagmus
 nystatin
 Nyx
+o
 oaf
 oafish
 oafishly
@@ -144326,6 +144373,7 @@ oatmeals
 oats
 oaves
 Oaxaca
+ob
 oba
 Obadiah
 Oban
@@ -145186,6 +145234,7 @@ oculist
 oculists
 oculomotor
 oculus
+od
 oda
 odal
 odalique
@@ -145350,6 +145399,7 @@ Odysseus
 odyssey
 odysseys
 odzooks
+oe
 oecist
 oecists
 oecology
@@ -146169,6 +146219,7 @@ Olympic Games
 olympics
 Olympic torch
 Olympus
+om
 omadhaun
 omadhauns
 Omagh
@@ -146776,6 +146827,7 @@ on your marks
 onyx
 onyxes
 onyx-marble
+oo
 oobit
 oobits
 oocyte
@@ -148235,6 +148287,7 @@ oryx
 oryxes
 Oryza
 orzo
+os
 Osage
 Osage orange
 Osages
@@ -148588,6 +148641,7 @@ Ottomite
 ottos
 ottrelite
 Otway
+ou
 ouabain
 ouabains
 Ouagadougou
@@ -151189,6 +151243,7 @@ Ozymandias
 Ozzie
 Ozzies
 Ozzy
+p
 pa
 pa'anga
 Pablo
@@ -162631,6 +162686,7 @@ pneumonokoniosis
 pneumonoultramicroscopicsilicovolcanoconiosis
 pneumothorax
 Pnyx
+po
 poa
 poaceous
 poach
@@ -172054,6 +172110,7 @@ pyxidium
 pyxing
 pyxis
 pzazz
+q
 qabalah
 qabalahs
 Qaddafi
@@ -172086,6 +172143,7 @@ Q-celt
 Q-celtic
 Qeshm
 Q fever
+qi
 qibla
 qiblas
 qi gong
@@ -173466,6 +173524,8 @@ Qwaqwa
 QWERTY
 qwerty keyboard
 qwerty keyboards
+r
+Ra
 rabanna
 rabat
 rabatine
@@ -175302,6 +175362,7 @@ razzles
 razzmatazz
 razzmatazzes
 RBMK reactor
+re
 reabsorb
 reabsorbed
 reabsorbing
@@ -181742,6 +181803,7 @@ rezone
 rezoned
 rezones
 rezoning
+Rh
 rhabdoid
 rhabdoids
 rhabdolith
@@ -185870,6 +185932,7 @@ rype
 rypeck
 rypecks
 ryper
+s
 sa'
 Saab
 Saam
@@ -194292,6 +194355,7 @@ sgian-dubh
 sgian-dubhs
 sgraffiti
 sgraffito
+sh
 shabbier
 shabbiest
 shabbily
@@ -196524,6 +196588,7 @@ shyly
 shyness
 shyster
 shysters
+si
 sial
 sialagogic
 sialagogue
@@ -206229,6 +206294,7 @@ Sri Lanka
 Sri Lankan
 Sri Lankans
 Srinagar
+st
 stab
 Stabat Mater
 stabbed
@@ -215558,6 +215624,7 @@ syzygy
 Szechwan
 Szell
 Szymanowski
+t
 ta
 taal
 tab
@@ -217681,6 +217748,7 @@ tchicks
 tchoukball
 T-cloth
 T-cross
+te
 tea
 TEA and Sympathy
 tea-bag
@@ -222214,6 +222282,7 @@ thysanuran
 thysanurans
 thysanurous
 thyself
+ti
 Tia Maria
 Tiananmen Square
 Tianjin
@@ -229983,6 +230052,7 @@ tziganes
 tziganies
 tzigany
 tzimmes
+u
 uakari
 uakaris
 U-bend
@@ -230037,6 +230107,7 @@ ufologist
 ufologists
 ufology
 ufos
+ug
 Uganda
 Ugandan
 Ugandans
@@ -230253,6 +230324,7 @@ ululations
 Uluru
 ulva
 Ulysses
+um
 Umar
 umbel
 umbellar
@@ -236922,6 +236994,7 @@ upwound
 upwrap
 upwrought
 up yours
+ur
 urachus
 urachuses
 uracil
@@ -237031,6 +237104,7 @@ urdee
 urds
 Urdu
 urdy
+ure
 urea
 ureal
 uredia
@@ -237335,9 +237409,11 @@ usurps
 usury
 usus loquendi
 usward
+ut
 Utah
 utas
 ut dictum
+Ute
 utensil
 utensils
 uterectomies
@@ -237494,6 +237570,7 @@ Uzbekistan
 Uzbeks
 Uzi
 Uzis
+v
 Vaal
 Vaasa
 vac
@@ -241502,6 +241579,7 @@ vulvo-uterine
 vum
 vying
 vyingly
+w
 wa'
 Waac
 Waaf
@@ -246701,6 +246779,7 @@ wiziers
 wiz kid
 wiz kids
 wizzes
+wo
 woad
 woaded
 woads
@@ -247922,6 +248001,7 @@ wry-necked
 wrynecks
 wryness
 wrythen
+Wu
 wu cycle
 wud
 wudded
@@ -247999,6 +248079,7 @@ wytes
 wyting
 wyvern
 wyverns
+x
 Xanadu
 xantham
 xantham gum
@@ -248139,6 +248220,7 @@ x-heights
 Xhosa
 Xhosan
 Xhosas
+xi
 Xian
 Xians
 Ximenean
@@ -248188,6 +248270,7 @@ X-ray telescopes
 X-ray therapy
 X-ray tube
 X-ray tubes
+xu
 Xuzhou
 xylem
 xylene
@@ -248258,6 +248341,7 @@ xystos
 xysts
 xystus
 XYY syndrome
+y
 yabber
 yabbered
 yabbering
@@ -249163,6 +249247,7 @@ yttrium
 yttro-cerite
 yttro-columbite
 yttro-tantalite
+yu
 yuan
 yuca
 yucas
@@ -249247,6 +249332,7 @@ Yves
 Yvette
 Yvonne
 ywis
+z
 zabaglione
 zabagliones
 zabaione
@@ -249800,6 +249886,7 @@ zizzes
 zizzing
 zloty
 zlotys
+zo
 zoa
 Zoantharia
 zoantharian

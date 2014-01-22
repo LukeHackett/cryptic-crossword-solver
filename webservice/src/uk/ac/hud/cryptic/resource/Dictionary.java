@@ -41,26 +41,53 @@ public class Dictionary {
 	 * Load the dictionary into a HashSet to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		InputStream[] is = { settings.getDictionaryPath(),
-				settings.getCustomDictionaryPath() };
+		InputStream[] is = { settings.getDictionaryPath() };
 
 		// Instantiate the dictionary object
 		dictionary = new HashSet<>();
 
+		// Read specified dictionary to internal data structure
 		for (InputStream element : is) {
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(
-					element))) {
-				// Open the dictionary
-				String line = null;
+			readFile(element, true);
+		}
 
-				// Loop over every line
-				while ((line = br.readLine()) != null) {
+		// Remove specified exclusions
+		InputStream exclusions = settings.getDictionaryExclusionsPath();
+		readFile(exclusions, false);
+
+		// Now add custom dictionary (takes precedence over exclusions)
+		InputStream customWords = settings.getCustomDictionaryPath();
+		readFile(customWords, true);
+	}
+
+	/**
+	 * Read an <code>InputStream</code> and either add or remove the contents
+	 * from the dictionary depending on which flag is passed.
+	 * 
+	 * @param element
+	 *            - the Stream to read in
+	 * @param add
+	 *            - <code>true</code> to add the found words to the dictionary,
+	 *            <code>false</code> to remove them
+	 */
+	private void readFile(InputStream element, boolean add) {
+
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				element))) {
+			// Open the dictionary
+			String line = null;
+
+			// Loop over every line
+			while ((line = br.readLine()) != null) {
+				if (add) {
 					dictionary.add(line.toLowerCase().trim());
+				} else {
+					dictionary.remove(line.toLowerCase().trim());
 				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

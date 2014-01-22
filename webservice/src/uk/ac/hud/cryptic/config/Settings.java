@@ -41,7 +41,7 @@ public class Settings {
 		// Location of the resource
 		return getPath("dictionary/acd/UKACD.txt");
 	}
-	
+
 	/**
 	 * This method will return the path to the custom dictionary words file.
 	 * 
@@ -50,6 +50,19 @@ public class Settings {
 	public InputStream getCustomDictionaryPath() {
 		// Location of the resource
 		return getPath("dictionary/custom/custom-dict.txt");
+	}
+
+	/**
+	 * This method will return the path to the dictionary exclusions words file.
+	 * This contains words which are present in the large dictionaries which we
+	 * don't want. Having a separate exclusions file allow us to replace the
+	 * dictionaries with newer versions without losing our modifications.
+	 * 
+	 * @return the file path to the dictionary exclusions
+	 */
+	public InputStream getDictionaryExclusionsPath() {
+		// Location of the resource
+		return getPath("dictionary/custom/exclusions.txt");
 	}
 
 	/**
