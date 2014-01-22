@@ -42,6 +42,9 @@ public class Servlet extends HttpServlet {
 	protected void sendResponse(HttpServletResponse response, String data,
 			boolean json) {
 		try {
+			// Use HTML values for ampersands
+			data = data.replace("&", "&amp;");
+
 			// Convert to JSON if needed
 			if (json) {
 				JSONObject jobj = XML.toJSONObject(data);
@@ -53,7 +56,7 @@ public class Servlet extends HttpServlet {
 				// Set the content type to XML
 				response.setContentType("application/xml");
 			}
-				
+
 			// Flush the output to the network
 			OutputStream out = response.getOutputStream();
 			out.write(data.getBytes());
