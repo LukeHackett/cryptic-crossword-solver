@@ -9,6 +9,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import uk.ac.hud.cryptic.config.ConfigSuite;
+import uk.ac.hud.cryptic.core.CoreSuite;
+import uk.ac.hud.cryptic.resource.ResourceSuite;
+import uk.ac.hud.cryptic.servlet.ServletSuite;
+import uk.ac.hud.cryptic.solver.SolverSuite;
+import uk.ac.hud.cryptic.util.UtilSuite;
+
+
 
 /**
  * @author Mohammad Rahman
