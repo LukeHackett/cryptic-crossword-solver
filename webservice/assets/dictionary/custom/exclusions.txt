@@ -29,6 +29,7 @@ ax
 ay
 ays
 ayu
+b
 ba'
 bey
 bez
@@ -39,6 +40,7 @@ bor
 bos
 bur
 bys
+c
 ca'
 cee
 cel
@@ -51,6 +53,7 @@ coz
 cud
 cuz
 cwm
+d
 dae
 dag
 dak
@@ -62,6 +65,7 @@ dos
 dso
 dun
 dzo
+e
 ea
 ean
 eas
@@ -84,6 +88,7 @@ ers
 eth
 euk
 ewk
+f
 fah
 fas
 faw
@@ -102,6 +107,7 @@ fud
 fum
 fy
 fys
+g
 gae
 gau
 ge
@@ -119,6 +125,7 @@ goy
 gu
 gue
 gur
+h
 hae
 hah
 hap
@@ -141,6 +148,7 @@ jeu
 jo
 jor
 jud
+k
 ka
 kaa
 kae
@@ -160,6 +168,7 @@ kon
 kop
 ky
 kyu
+l
 lac
 lar
 lev
@@ -176,6 +185,7 @@ lur
 luv
 luz
 lym
+m
 ma
 mak
 mes
@@ -198,6 +208,7 @@ mu
 mun
 mux
 mys
+n
 na
 nae
 nah
@@ -214,6 +225,7 @@ nu
 nur
 ny
 n�e
+o
 ob
 och
 od
@@ -265,7 +277,9 @@ puy
 pya
 pyx
 qat
+q
 qi
+r
 rah
 rai
 rax
@@ -285,6 +299,7 @@ roo
 ruc
 rud
 rya
+s
 sa'
 sae
 sai
@@ -302,6 +317,7 @@ sud
 suk
 suq
 swy
+t
 tae
 tao
 tas
@@ -315,6 +331,7 @@ tui
 twa
 twp
 tyg
+u
 udo
 uds
 uey
@@ -332,6 +349,7 @@ ute
 uts
 utu
 uva
+v
 vae
 vas
 vau
@@ -341,6 +359,7 @@ vly
 voe
 vug
 vum
+w
 wa'
 wae
 waw
@@ -356,8 +375,10 @@ wu
 wud
 wus
 wyn
+x
 xi
 xu
+y
 yep
 yex
 ygo
