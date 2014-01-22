@@ -8,6 +8,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * Anagram solver algorithm
@@ -16,9 +17,6 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  * @version 0.1
  */
 public class Anagram extends Solver {
-
-	// The potential solutions found
-	private SolutionCollection solutions;
 
 	/**
 	 * Default constructor for solver class
@@ -41,13 +39,21 @@ public class Anagram extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
+		// Anagram a = new Anagram();
+		// a.testSolver(a, Type.ANAGRAM);
+		temp();
+	}
+
+	public static void temp() {
 		Anagram a = new Anagram();
 		a.testSolver(a, Type.ANAGRAM);
 	}
 
+	@Override
 	public SolutionCollection solve(Clue c) {
-		// Solution collection
-		solutions = new SolutionCollection();
+
+		SolutionCollection solutions = new SolutionCollection();
+
 		// Get clue pattern
 		final SolutionPattern pattern = c.getPattern();
 		// Get length of full answer
@@ -61,28 +67,21 @@ public class Anagram extends Solver {
 			return solutions;
 		}
 
-		// Get words in clue
-		String[] words = c.getClueWords();
-
 		// Get possible fodder
-		Collection<String> possibleFodder = getPossibleFodder(words,
+		Collection<String> possibleFodder = getPossibleFodder(c.getClueWords(),
 				solutionLength);
 
 		// For each potential fodder, find all potential solutions
-		for (String p : possibleFodder) {
-			char[] fodderEntry = p.toCharArray();
-			generateAnagrams(fodderEntry, 0);
+		for (String characters : possibleFodder) {
+			solutions.addAll(anagram(characters, pattern));
 		}
 
 		// Remove risk of matching original words
 		solutions.removeAllStrings(Arrays.asList(c.getClueWords()));
 
-		// TODO Do we need this with the new method?
-		// Remove solutions which don't match the provided pattern
-		pattern.filterSolutions(solutions);
+		// Don't "pattern.filterSolutions() as it's handled by anagram()
 
-		// Filter out invalid words
-		DICTIONARY.dictionaryFilter(solutions, pattern);
+		// Don't dictionary filter as it's handled by anagram()
 
 		return solutions;
 	}
@@ -98,9 +97,9 @@ public class Anagram extends Solver {
 	 * @param words
 	 *            - all the words present in the clue
 	 * @param solutionLength
-	 *            - the target length of the solution
+	 *            - the target character length of the complete solution
 	 * @return a collection of all terms present in the clue which match up with
-	 *         the length of the soluton
+	 *         the length of the solution
 	 */
 	public Collection<String> getPossibleFodder(String[] words,
 			int solutionLength) {
@@ -125,7 +124,7 @@ public class Anagram extends Solver {
 					// If length is equal to the length of fodder (or just
 					// above)
 					// TODO == is the general rule, not >=, but isn't set in
-					// concrete
+					// concrete. (UPDATE: Now I'm not so sure...)
 					if (length == solutionLength) {
 						// Add words within potential fodder to list
 						String possible = "";
@@ -145,21 +144,75 @@ public class Anagram extends Solver {
 		return possibleFodder;
 	}
 
-	public void swap(char[] fodderEntry, int pos1, int pos2) {
-		// Swap array entries
-		char temp = fodderEntry[pos1];
-		fodderEntry[pos1] = fodderEntry[pos2];
-		fodderEntry[pos2] = temp;
-		// Add word to solution list
-		String swapped = new String(fodderEntry);
-		solutions.add(new Solution(swapped));
+	/**
+	 * Entry point to the main anagram algorithm. This method will return a list
+	 * of all anagrams from the given input, which match with the specific
+	 * pattern.
+	 * 
+	 * @param input
+	 *            - a <code>String</code> of the available input characters.
+	 *            Each of these must be used only once in the generation of
+	 *            solutions.
+	 * @param pattern
+	 *            - The <code>SolutionPattern</code> to match the proposed
+	 *            solutions against
+	 * @return A collection of anagrams, if any, which apply to the given input
+	 */
+	private SolutionCollection anagram(String input, SolutionPattern pattern) {
+		// Collection to be returned
+		SolutionCollection anagrams = new SolutionCollection();
+		// Break the solution pattern down into the separate words
+		String[] wordPatterns = pattern.splitPattern();
+		// Go find anagrams!
+		anagram("", input, wordPatterns, anagrams);
+		return anagrams;
 	}
 
-	public void generateAnagrams(char[] fodderEntry, int start) {
-		for (int i = start; i < fodderEntry.length; i++) {
-			swap(fodderEntry, start, i);
-			generateAnagrams(fodderEntry, start + 1);
-			swap(fodderEntry, start, i);
+	/**
+	 * Beware of recursive algorithms, "cos they play with your mind" - Leanne
+	 * Butcher, 2014.
+	 * 
+	 * @param str
+	 *            - an empty String please, which will act as the starting point
+	 *            to anagram creation
+	 * @param characters
+	 *            - the pool of characters available to use, as a
+	 *            <code>String</code>
+	 * @param patterns
+	 *            - an array of the solution patterns for each word of the
+	 *            solution
+	 * @param anagrams
+	 */
+	private void anagram(String str, String characters, String[] patterns,
+			SolutionCollection anagrams) {
+		// The base case. If there are no more patterns left, the last word of
+		// the solution has been found
+		if (patterns.length == 0) {
+			// If you're here, a potential solution has been found
+			anagrams.add(new Solution(str));
+		} else {
+			// Get all words matching the specified pattern
+			Collection<String> words = DICTIONARY.getMatchingWords(patterns[0]);
+			// Remove the current pattern from the front of the remaining
+			// word patterns
+			String[] remainingPatterns = Arrays.copyOfRange(patterns, 1,
+					patterns.length);
+			// For each matching word
+			for (String word : words) {
+				// Check if the characters are available to create this word
+				if (WordUtils.hasCharacters(word, characters)) {
+					// If so, remove these from the pool of available chars for
+					// the next word
+					String remainingCharacters = characters;
+					for (char c : word.toCharArray()) {
+						remainingCharacters = remainingCharacters.replaceFirst(
+								String.valueOf(c), "");
+					}
+					// Round and around we go! Anyone else getting dizzy?
+					anagram(str + word, remainingCharacters, remainingPatterns,
+							anagrams);
+				}
+			}
 		}
 	}
 

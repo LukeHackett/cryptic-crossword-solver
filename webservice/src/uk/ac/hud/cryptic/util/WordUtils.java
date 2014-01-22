@@ -1,5 +1,8 @@
 package uk.ac.hud.cryptic.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
@@ -7,8 +10,9 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  * sentences.
  */
 public class WordUtils {
-	
-	// Will match anything that is [A-Z] or [a-z] (a single letter) excluding spaces
+
+	// Will match anything that is [A-Z] or [a-z] (a single letter) excluding
+	// spaces
 	public static final String REGEX_LETTER = "[A-Za-z]";
 
 	// Will match anything that isn't [A-Z] or [a-z] including spaces
@@ -46,6 +50,38 @@ public class WordUtils {
 		output = output.toLowerCase();
 
 		return output;
+	}
+
+	/**
+	 * Determine whether a specified word can be create by using the characters
+	 * present in a pool of available characters.
+	 * 
+	 * @param targetWord
+	 *            - the word to attempt to create using the supplied characters
+	 * @param characters
+	 *            - a pool of characters that can be used to build the target
+	 *            word
+	 * @return <code>true</code> if the target word can be built the set (or a
+	 *         subset of) the characters present in this String,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean hasCharacters(String targetWord, String characters) {
+		// This list will be reduced as characters are consumed
+		Collection<Character> remaining = new ArrayList<>();
+		for (char c : characters.toCharArray()) {
+			remaining.add(c);
+		}
+
+		// For each character of the target word
+		for (char c : targetWord.toCharArray()) {
+			// If the char isn't available in the pool of remining characters,
+			// abort mission
+			if (!remaining.remove(c)) {
+				return false;
+			}
+		}
+		// If you've reached here, the target word can indeed be built
+		return true;
 	}
 
 } // End of class WordUtils

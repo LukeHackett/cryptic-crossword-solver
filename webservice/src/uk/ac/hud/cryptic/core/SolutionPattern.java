@@ -174,12 +174,24 @@ public class SolutionPattern {
 		return sb.toString();
 	}
 
+	/**
+	 * Take a proposed <code>Solution</code> and separate this into its separate
+	 * word components, if it is a multi-word solution. Otherwise return an
+	 * array of length one with the single word.
+	 * 
+	 * @param solution
+	 *            - the solution to separate
+	 * @return an array of the individual word components of the given solution
+	 */
 	public String[] separateSolution(String solution) {
+		// Array of length corresponding to the number of words in the solution
 		String[] indWords = new String[wordCount];
 
 		int pos = 0;
 		int i;
+		// For each word that the solution should have
 		for (i = 0; i < wordCount; i++) {
+			// Add to an array. Easy!
 			indWords[i] = solution.substring(pos, pos + indLengths[i]);
 			pos += indLengths[i];
 		}
@@ -251,6 +263,40 @@ public class SolutionPattern {
 	}
 
 	/**
+	 * Determine if a specified pattern (for a single word and represented as a
+	 * String rather than a SolutionPattern) matches against a provided word.
+	 * 
+	 * @param pattern
+	 *            - the pattern to match against for this single word
+	 * @param word
+	 *            - the word to verify against the supplied pattern
+	 * @return <code>true</code> if the word matches with the given pattern,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean match(String pattern, String word) {
+		// Quick check that lengths are the same
+		if (word.length() != pattern.length()) {
+			return false;
+		}
+		// Assume match
+		boolean match = true;
+		// Get chars of both inputs
+		char[] targetChars = word.toCharArray();
+		char[] patternChars = pattern.toCharArray();
+
+		int i;
+		for (i = 0; i < word.length(); i++) {
+			// If two corresponding chars of each don't match up
+			boolean isUnknownCharacter = patternChars[i] == UNKNOWN_CHARACTER;
+			if (!isUnknownCharacter && targetChars[i] != patternChars[i]) {
+				match = false;
+				break;
+			}
+		}
+		return match;
+	}
+
+	/**
 	 * Generate a solution pattern which maps to the known solution which is
 	 * passed in.
 	 * 
@@ -316,6 +362,19 @@ public class SolutionPattern {
 			}
 		}
 		solutions.removeAll(toRemove);
+	}
+
+	/**
+	 * Split the solution pattern into an array of the separate words. For
+	 * example, <code>"???,??-????"</code> becomes
+	 * <code>[ "???" , "??" , "????" ]</code>. TODO Should hyphenated words be
+	 * kept as one?
+	 * 
+	 * @return an array of the patterns representing the individual words of the
+	 *         solution
+	 */
+	public String[] splitPattern() {
+		return pattern.split(WordUtils.REGEX_SEPARATORS);
 	}
 
 	/**

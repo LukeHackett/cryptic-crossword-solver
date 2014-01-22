@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Solution;
@@ -46,9 +47,9 @@ public class Dictionary {
 		// Instantiate the dictionary object
 		dictionary = new HashSet<>();
 
-		for (int i = 0; i < is.length; i++) {
+		for (InputStream element : is) {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(
-					is[i]))) {
+					element))) {
 				// Open the dictionary
 				String line = null;
 
@@ -86,6 +87,28 @@ public class Dictionary {
 	 */
 	public boolean isWord(String word) {
 		return dictionary.contains(word.toLowerCase().trim());
+	}
+
+	/**
+	 * Return a collection of dictionary words which match against the specified
+	 * pattern
+	 * 
+	 * @param pattern
+	 *            - the solution pattern, in the form of a string ("?h??"),
+	 *            representing a single word of what may be a larger solution
+	 *            pattern
+	 * @return a list of words which match against the specified pattern
+	 */
+	public Collection<String> getMatchingWords(String pattern) {
+		Set<String> words = new HashSet<>();
+		// Go through all words of the dictionary
+		for (String w : dictionary) {
+			// If the dictionary word matches the pattern, return it
+			if (SolutionPattern.match(pattern, w)) {
+				words.add(w);
+			}
+		}
+		return words;
 	}
 
 	/**
@@ -136,10 +159,12 @@ public class Dictionary {
 	 * 
 	 * @param prefix
 	 *            - the prefix of the matches to return
+	 * @param length
+	 *            - the length of the target word
 	 * @return a list of words from the dictionary which match with the given
 	 *         prefix
 	 */
-	public Collection<String> getMatchesWithPrefix(String prefix) {
+	public Collection<String> getMatchesWithPrefix(String prefix, int length) {
 		// Standarise the given prefix
 		prefix = prefix.toLowerCase().trim();
 
@@ -149,7 +174,7 @@ public class Dictionary {
 			// Get rid of punctuation and spaces
 			String word = WordUtils.removeNonAlphabet(w, true);
 			// Return it if it matches the pattern
-			if (word.startsWith(prefix)) {
+			if (word.length() == length && word.startsWith(prefix)) {
 				matches.add(word);
 			}
 		}
@@ -166,9 +191,15 @@ public class Dictionary {
 	 *            - the collection of words to verify against the dictionary
 	 */
 	public void dictionaryPrefixFilter(SolutionCollection prefixes) {
+		// List of prefixes which don't match the beginnings of known word, and
+		// so will be removed
 		Collection<Solution> toRemove = new ArrayList<>();
+		// For each given prefix String
 		for (Solution p : prefixes) {
+			// Standardise it
 			String prefix = WordUtils.removeNonAlphabet(p.getSolution(), true);
+			// If the dictionary can't find any words beginning with this letter
+			// combination, remove it
 			if (!prefixMatch(prefix)) {
 				toRemove.add(p);
 			}
