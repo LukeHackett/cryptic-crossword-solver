@@ -47,8 +47,13 @@ public class Servlet extends HttpServlet {
 				JSONObject jobj = XML.toJSONObject(data);
 				// Indent to 3 levels
 				data = jobj.toString(3);
+				// Set the content type to JSON
+				response.setContentType("application/json");
+			} else {
+				// Set the content type to XML
+				response.setContentType("application/xml");
 			}
-
+				
 			// Flush the output to the network
 			OutputStream out = response.getOutputStream();
 			out.write(data.getBytes());
@@ -81,11 +86,11 @@ public class Servlet extends HttpServlet {
 			// Only send raw data if original request was made via ajax
 			if (isAjaxRequest(request)) {
 				// Create the XML error message list
-				String xml = "<errors>";
+				String xml = "<solver><errors>";
 				for (String msg : errors) {
 					xml += "<message>" + msg + "</message>";
 				}
-				xml += "</errors>";
+				xml += "</errors></solver>";
 
 				// Send the error
 				response.setStatus(errorCode);
