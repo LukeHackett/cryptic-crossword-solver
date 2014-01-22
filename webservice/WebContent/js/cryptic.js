@@ -181,7 +181,7 @@ jQuery(document).ready(function($){
         // Display new errors if available
         if(err.responseJSON){
           // Sanity purposes
-          errors = err.responseJSON.errors;
+          errors = err.responseJSON.solver.errors;
           // Loop over if array
           if($.isArray(errors)){ 
             // Display each of the error messages
