@@ -39,12 +39,6 @@ public class Anagram extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		// Anagram a = new Anagram();
-		// a.testSolver(a, Type.ANAGRAM);
-		temp();
-	}
-
-	public static void temp() {
 		Anagram a = new Anagram();
 		a.testSolver(a, Type.ANAGRAM);
 	}
