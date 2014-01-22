@@ -180,6 +180,7 @@ ashbourne
 ashplant
 ashtray
 ashtrays
+asia
 asiago
 asicansee
 asinico
@@ -315,6 +316,7 @@ bfcycle
 bicester
 bieber
 biginthis
+bihar
 billabongs
 billericay
 billycan
@@ -528,6 +530,7 @@ chickpea
 chickpeas
 childminder
 childs
+chili
 chillax
 chilterns
 chinaware
@@ -538,6 +541,7 @@ choirstall
 choirstalls
 cholmondeley
 choo
+chufa
 churchgoer
 cire
 clabby
@@ -649,6 +653,7 @@ cro
 crockfords
 cronus
 croque
+crossing
 crosskeys
 croute
 crouton
@@ -698,6 +703,7 @@ daybed
 dayboy
 daytona
 dazur
+de
 deadbolts
 deadeye
 deadpan
@@ -930,6 +936,7 @@ esme
 espoo
 estragon
 estridge
+et
 etagere
 etageres
 ethan
@@ -942,6 +949,7 @@ etude
 etui
 eucla
 eudoxus
+euler
 eurocratic
 eurogeddon
 europhobe
@@ -1013,6 +1021,7 @@ feng
 fermats
 fernando
 fete
+fi
 fiance
 fiancee
 fidel
@@ -1054,6 +1063,7 @@ fleshpot
 fleshpots
 flightpath
 flimflam
+fling
 flowerbed
 flykick
 flysheet
@@ -1089,6 +1099,7 @@ froufrou
 fruitbun
 ftse
 fubgous
+fuchsia
 fuego
 fule
 fyne
@@ -1154,6 +1165,7 @@ goldeneye
 goldenrod
 goldstein
 goldwater
+gone
 goodbye
 gooders
 goodfellow
@@ -1295,6 +1307,7 @@ herge
 heston
 hexham
 hhuse
+hi
 hidebound
 hidey
 higgs
@@ -1364,6 +1377,7 @@ icicled
 icknield
 icle
 iden
+ides
 idlewild
 iggy
 iguanodons
@@ -1385,6 +1399,7 @@ imran
 inbuilt
 inc
 inchworm
+indicium
 ineefable
 infinitum
 infrared
@@ -1447,8 +1462,10 @@ jael
 jailbird
 jailbreak
 jalapeno
+jamaica
 janeiro
 janjaweed
+jape
 jehovahs
 jennyanydots
 jenson
@@ -1962,6 +1979,7 @@ ocasey
 oclock
 oconnell
 octangle
+octroi
 oddson
 odotte
 oercome
@@ -2009,6 +2027,7 @@ osama
 oscar
 osman
 ossett
+ostrich
 oswestry
 otho
 otley
@@ -2088,6 +2107,7 @@ pickpocket
 picts
 pieda
 pieta
+pilau
 piltdown
 pimpmobile
 pina
@@ -2580,6 +2600,7 @@ squillion
 sreeper
 srilanka
 ssarecrops
+sssi
 stableboy
 stablemen
 stagehand
@@ -2680,6 +2701,7 @@ sutch
 sutcombe
 suva
 suzie
+swan
 swanage
 swann
 swansong
@@ -2697,6 +2719,7 @@ synoptists
 tablecloth
 tabletop
 tableware
+tacit
 tadema
 tafari
 tailboard
@@ -2880,6 +2903,7 @@ turtledove
 turvy
 tusculum
 tutamen
+tutored
 tutte
 tv
 twankey
