@@ -113,7 +113,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	 */
 	protected void testSolver(Solver s, Type t) {
 		// Obtain some test data from the database
-		Collection<Clue> clues = DB.getTestClues(t);
+		Collection<Clue> clues = DB.getTestClues(t, true);
 
 		// Counter of clues where solution was found
 		int correctCount = 0;
@@ -129,7 +129,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 			}
 
 			// Print results to console
-			System.out.print((found) ? "[Found] " : "[Not Found] ");
+			System.out.print(found ? "[Found] " : "[Not Found] ");
 			System.out.print(clue.getClue() + ": (");
 			System.out.println(clue.getActualSolution() + ")");
 		}

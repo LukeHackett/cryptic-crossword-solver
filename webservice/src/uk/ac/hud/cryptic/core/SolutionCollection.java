@@ -73,12 +73,14 @@ public class SolutionCollection extends HashSet<Solution> {
 	 *         <code>false</code> otherwise
 	 */
 	public boolean contains(String solution) {
+		// Standardise the given solution
+		String otherSolution = WordUtils.removeNonAlphabet(solution, true);
+
 		for (Solution s : this) {
 			// Standardise each solution of the collection
 			String thisSolution = WordUtils.removeNonAlphabet(s.getSolution(),
 					true);
-			// Standardise the given solution
-			String otherSolution = WordUtils.removeNonAlphabet(solution, true);
+
 			// Check if they match!
 			if (thisSolution.equals(otherSolution)) {
 				return true;

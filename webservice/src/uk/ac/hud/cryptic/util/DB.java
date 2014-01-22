@@ -32,7 +32,7 @@ public class DB {
 	 */
 	public static void main(String[] args) {
 		// Get a default number of Hidden-type clue/solutions.
-		Collection<Clue> clues = getTestClues(Type.HIDDEN);
+		Collection<Clue> clues = getTestClues(Type.HIDDEN, true);
 		// Print the results
 		for (Clue c : clues) {
 			System.out.println(c.getClue() + ", " + c.getPattern());
@@ -49,6 +49,11 @@ public class DB {
 	 * @param type
 	 *            - the type of clue to obtain. e.g. <code>Type.HIDDEN</code> as
 	 *            defined by <code>uk.ac.hud.cryptic.solver.Solver.Type</code>
+	 * @param unknownCharacters
+	 *            - <code>true</code> if characters of the solution should be
+	 *            marked with the unknown character symbol, or
+	 *            <code>false</code> if the actual character should be written
+	 *            to the solution pattern (useful for fast solving)
 	 * @param maxRecords
 	 *            - an option parameter defining the maximum number of records
 	 *            to obtain. This is limited by the marked records of this clue
@@ -56,7 +61,8 @@ public class DB {
 	 *            default number (10) of clues is retrieved
 	 * @return a collection of text records of the length specified (or not)
 	 */
-	public static Collection<Clue> getTestClues(Type type, int... maxRecords) {
+	public static Collection<Clue> getTestClues(Type type,
+			boolean unknownCharacters, int... maxRecords) {
 		// Will hold the example (test) clues
 		Collection<Clue> clues = new ArrayList<>();
 		// How many records to retrieve? Default: 10
@@ -83,7 +89,8 @@ public class DB {
 				while (rs.next()) {
 					String clue = rs.getString(1);
 					String solution = rs.getString(2);
-					String pattern = SolutionPattern.toPattern(solution, true);
+					String pattern = SolutionPattern.toPattern(solution,
+							unknownCharacters);
 
 					clues.add(new Clue(clue, pattern, solution, type));
 				}
@@ -101,17 +108,23 @@ public class DB {
 	 * 
 	 * @param n
 	 *            - the number of records to acquire for each clue type
+	 * @param unknownCharacters
+	 *            - <code>true</code> if characters of the solution should be
+	 *            marked with the unknown character symbol, or
+	 *            <code>false</code> if the actual character should be written
+	 *            to the solution pattern (useful for fast solving)
 	 * @param types
 	 *            - the types of clue to obtain test data for
 	 * @return a collection containing the requested data, if it is present in
 	 *         the database
 	 */
-	public static Collection<Clue> getTestClues(int n, Type... types) {
+	public static Collection<Clue> getTestClues(int n,
+			boolean unknownCharacters, Type... types) {
 		// Will hold the example (test) clues
 		Collection<Clue> clues = new ArrayList<>();
 		// Get n number of records for each declared type
 		for (Type t : types) {
-			clues.addAll(getTestClues(t, n));
+			clues.addAll(getTestClues(t, unknownCharacters, n));
 		}
 		return clues;
 	}

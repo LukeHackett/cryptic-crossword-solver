@@ -36,7 +36,7 @@ public class Manager {
 	 */
 	public static void main(String[] args) {
 		// The clues to solve
-		Collection<Clue> clues = DB.getTestClues(10, Type.HIDDEN,
+		Collection<Clue> clues = DB.getTestClues(10, true, Type.HIDDEN,
 				Type.ACROSTIC, Type.PATTERN);
 
 		// Will record the success rate

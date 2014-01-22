@@ -1,5 +1,7 @@
 package uk.ac.hud.cryptic.util;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,7 +43,23 @@ public class WordUtils {
 		// Select the appropriate REGEX pattern depending on parameters
 		String regex = removeSpaces ? REGEX_NON_LETTERS_SPACES
 				: REGEX_NON_LETTERS;
-		String output = input.replaceAll(regex, "");
+
+		// First replace apostrophes with nothing - not a space please
+		String output = input.replaceAll("'", "");
+
+		// Get rid of accented characters
+		output = Normalizer.normalize(output, Form.NFD).replaceAll(
+				"\\p{InCombiningDiacriticalMarks}+", "");
+
+		// Replace punctuation with a space
+		output = output.replaceAll(regex, " ");
+
+		if (removeSpaces) {
+			output = output.replaceAll("\\s+", "");
+		} else {
+			// Replace multiple spaces with just one
+			output = output.replaceAll("\\s+", " ");
+		}
 
 		// Trim any excess
 		output = output.trim();

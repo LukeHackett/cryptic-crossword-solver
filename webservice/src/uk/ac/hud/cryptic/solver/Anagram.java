@@ -54,10 +54,10 @@ public class Anagram extends Solver {
 		int solutionLength = pattern.getTotalLength();
 
 		// Get clue with no punctuation
-		String fodder = c.getClueNoPunctuation(true);
+		String condensedClue = c.getClueNoPunctuation(true);
 
 		// Clue length must be greater than solution length
-		if (fodder.length() < solutionLength) {
+		if (condensedClue.length() < solutionLength) {
 			return solutions;
 		}
 
@@ -196,11 +196,13 @@ public class Anagram extends Solver {
 				// Check if the characters are available to create this word
 				if (WordUtils.hasCharacters(word, characters)) {
 					// If so, remove these from the pool of available chars for
-					// the next word
+					// the next word - only if needed
 					String remainingCharacters = characters;
-					for (char c : word.toCharArray()) {
-						remainingCharacters = remainingCharacters.replaceFirst(
-								String.valueOf(c), "");
+					if (remainingPatterns.length > 0) {
+						for (char c : word.toCharArray()) {
+							remainingCharacters = remainingCharacters
+									.replaceFirst(String.valueOf(c), "");
+						}
 					}
 					// Round and around we go! Anyone else getting dizzy?
 					anagram(str + word, remainingCharacters, remainingPatterns,
