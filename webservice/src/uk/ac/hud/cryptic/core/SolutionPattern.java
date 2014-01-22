@@ -20,7 +20,7 @@ public class SolutionPattern {
 	public static final char UNKNOWN_CHARACTER = '?';
 
 	// As inputted by the user. e.g. "?a??e,???d-??"
-	private final String pattern;
+	private String pattern;
 	// Solution is comprised of this many words
 	private int wordCount;
 	// Individual word lengths. e.g. [ 5 , 4 , 2 ]
@@ -302,9 +302,12 @@ public class SolutionPattern {
 	 * 
 	 * @param solution
 	 *            - the solution to generate a pattern for
+	 * @param unknown
+	 *            - <code>true</code> if the characters solution should be
+	 *            marked as unknown characters, <code>false</code>
 	 * @return a solution pattern mapping to the given solution
 	 */
-	public static String toPattern(String solution) {
+	public static String toPattern(String solution, boolean unknown) {
 		// Solution separated by '-' and ' ', rather than '-' and ','
 		final String separatorRegEx = "(\\s+|-+)";
 		// Split the solution into its separate word components
@@ -321,7 +324,7 @@ public class SolutionPattern {
 			String word = WordUtils.removeNonAlphabet(words[i], false);
 			// Add a '?' for each character
 			for (int j = 0; j < word.length(); j++) {
-				pattern += UNKNOWN_CHARACTER;
+				pattern += unknown ? UNKNOWN_CHARACTER : word.charAt(j);
 			}
 			// Insert the correct separators where necessary in the pattern
 			if (multipleWords && i < words.length - 1) {

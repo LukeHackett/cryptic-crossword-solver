@@ -83,7 +83,7 @@ public class DB {
 				while (rs.next()) {
 					String clue = rs.getString(1);
 					String solution = rs.getString(2);
-					String pattern = SolutionPattern.toPattern(solution);
+					String pattern = SolutionPattern.toPattern(solution, true);
 
 					clues.add(new Clue(clue, pattern, solution, type));
 				}
