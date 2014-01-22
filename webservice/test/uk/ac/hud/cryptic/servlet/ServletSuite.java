@@ -1,8 +1,5 @@
 package uk.ac.hud.cryptic.servlet;
-/**
- * This JUnit Test Suite tests all test's in their individual classes for
- * the package uk.hud.ac.cryptic.servlet
- */
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -10,17 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import uk.ac.hud.cryptic.servlet.SolverTest;
 
 /**
- * @author Mohammad Rahman
+ * This test suite will test all Servlets found within the servlet package.
+ * 
+ * @author Mohammad Rahman, Luke Hackett
  * @version 0.1
  */
-
 @RunWith(value = Suite.class)
-@SuiteClasses(value = { 
-		SolverTest.class
-		//ServletTest.class
-		})
-
+@SuiteClasses(value = { SolverTest.class })
 public class ServletSuite {
 
 }
-
