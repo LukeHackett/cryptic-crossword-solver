@@ -1,23 +1,20 @@
 package uk.ac.hud.cryptic.config;
-/**
- * This JUnit Test Suite tests all test's in their individual classes for
- * the package uk.hud.ac.cryptic.config
- */
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * @author Mohammad Rahman
+ * This test suite will test all configuration classes found within the config 
+ * package.
+ * 
+ * @author Mohammad Rahman, Luke Hackett
  * @version 0.1
  */
 
 @RunWith(value = Suite.class)
-@SuiteClasses(value = { 
-		//TestSettings.class
-		})
+@SuiteClasses(value = { SettingsTest.class })
 
 public class ConfigSuite {
 
 }
-
