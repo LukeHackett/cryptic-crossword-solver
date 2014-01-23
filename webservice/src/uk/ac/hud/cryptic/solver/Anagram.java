@@ -29,18 +29,10 @@ public class Anagram extends Solver {
 	}
 
 	/**
-	 * Private (no-arg) constructor currently used to test the solver
-	 */
-	private Anagram() {
-		super();
-	}
-
-	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		Anagram a = new Anagram();
-		a.testSolver(a, Type.ANAGRAM);
+		testSolver(Anagram.class, Type.ANAGRAM);
 	}
 
 	@Override

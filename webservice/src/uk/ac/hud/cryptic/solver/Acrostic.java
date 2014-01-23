@@ -24,18 +24,10 @@ public class Acrostic extends Solver {
 	}
 
 	/**
-	 * Private (no-arg) constructor currently used to test the solver
-	 */
-	private Acrostic() {
-		super();
-	}
-
-	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		Acrostic a = new Acrostic();
-		a.testSolver(a, Type.ACROSTIC);
+		testSolver(Acrostic.class, Type.ACROSTIC);
 	}
 
 	public SolutionCollection solve(Clue c) {

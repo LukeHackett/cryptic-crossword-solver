@@ -1,7 +1,13 @@
 package uk.ac.hud.cryptic.solver;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -111,31 +117,84 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	 * @param t
 	 *            - the type of test clues to retreive from the database
 	 */
-	protected void testSolver(Solver s, Type t) {
+	protected static void testSolver(final Class<? extends Solver> solver,
+			Type t) {
 		// Obtain some test data from the database
 		Collection<Clue> clues = DB.getTestClues(t, true);
 
-		// Counter of clues where solution was found
-		int correctCount = 0;
+		// Solve 1 clue on each thread available
+		int processors = Runtime.getRuntime().availableProcessors();
+		// Create a thread pool to execute the solvers
+		ExecutorService executor = Executors.newFixedThreadPool(processors);
 
-		for (Clue clue : clues) {
-			// Call the implementation's solve method
-			SolutionCollection sc = s.solve(clue);
+		// Will hold final results
+		Collection<Future<Boolean>> results = new ArrayList<>();
 
-			// See if the solution has been found
-			boolean found = sc.contains(clue.getActualSolution());
-			if (found) {
-				correctCount++;
-			}
+		// Timer of entire process
+		long timeStart = System.currentTimeMillis();
 
-			// Print results to console
-			System.out.print(found ? "[Found] " : "[Not Found] ");
-			System.out.print(clue.getClue() + ": (");
-			System.out.println(clue.getActualSolution() + ")");
+		// Fire off each solver to find that magic solution
+		for (final Clue clue : clues) {
+			results.add(executor.submit(new Callable<Boolean>() {
+				public Boolean call() {
+					boolean found = false;
+					try {
+						// Solve time measurement
+						long timeStart = System.currentTimeMillis();
+						// Invoke the constructor of the passed class' name
+						Constructor<?> con = solver.getConstructor(Clue.class);
+						Solver s = (Solver) con
+								.newInstance(new Object[] { clue });
+
+						// Call the implementation's solve method
+						SolutionCollection sc = s.solve(clue);
+
+						// See if the solution has been found
+						found = sc.contains(clue.getActualSolution());
+
+						// Output results all at once
+						String output = "";
+						// Print results to console
+						output = found ? "[Found] " : "[Not Found] ";
+						output += clue.getClue() + ": (";
+						output += clue.getActualSolution() + ")";
+						output += " ["
+								+ (System.currentTimeMillis() - timeStart)
+								+ "ms]";
+						System.out.println(output);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return found;
+				}
+			}));
 		}
-		// Summary of results
-		System.out.println(correctCount + " out of " + clues.size()
-				+ " successfully found.");
-	}
 
+		// All finished
+		executor.shutdown();
+
+		// Now we need to 'unpack' the results
+		int count = 0;
+		for (Future<Boolean> future : results) {
+			try {
+				// Was it successful in finding the solution?
+				boolean result = future.get();
+				if (result) {
+					count++;
+				}
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Some time statistics
+		long timeTotal = System.currentTimeMillis() - timeStart;
+		long timeAvg = timeTotal / clues.size();
+
+		// Summary of results
+		System.out.println(count + " out of " + clues.size()
+				+ " successfully found.");
+		System.out.println("Total time: " + timeTotal + "ms. Average time: "
+				+ timeAvg + "ms.");
+	}
 } // End of class Solver

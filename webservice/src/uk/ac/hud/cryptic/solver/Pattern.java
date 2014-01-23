@@ -24,18 +24,10 @@ public class Pattern extends Solver {
 	}
 
 	/**
-	 * Private (no-arg) constructor currently used to test the solver
-	 */
-	private Pattern() {
-		super();
-	}
-
-	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		Pattern p = new Pattern();
-		p.testSolver(p, Type.PATTERN);
+		testSolver(Pattern.class, Type.PATTERN);
 	}
 
 	public SolutionCollection solve(Clue c) {

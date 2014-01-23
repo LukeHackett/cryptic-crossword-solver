@@ -27,18 +27,10 @@ public class Hidden extends Solver {
 	}
 
 	/**
-	 * Private (no-arg) constructor currently used to test the solver
-	 */
-	private Hidden() {
-		super();
-	}
-
-	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		Hidden h = new Hidden();
-		h.testSolver(h, Type.HIDDEN);
+		testSolver(Hidden.class, Type.HIDDEN);
 	}
 
 	public SolutionCollection solve(Clue c) {
