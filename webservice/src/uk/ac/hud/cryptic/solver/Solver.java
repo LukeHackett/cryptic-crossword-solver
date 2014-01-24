@@ -184,12 +184,14 @@ public abstract class Solver implements Callable<SolutionCollection> {
 		// Some time statistics
 		long timeTotal = System.currentTimeMillis() - timeStart;
 		long timeAvg = timeTotal / clues.size();
+		boolean multiThreaded = processors > 1;
 
 		// Summary of results
 		System.out.println(count + " out of " + clues.size()
 				+ " successfully found.");
-		System.out.println("Total time: " + timeTotal + "ms. Average time: "
-				+ timeAvg + "ms.");
+		System.out.println("Total time is " + timeTotal
+				+ "ms and average time is " + timeAvg + "ms, solving over "
+				+ processors + (multiThreaded ? " separate" : "") + " thread"
+				+ (multiThreaded ? "s" : "") + ".");
 	}
-
 } // End of class Solver
