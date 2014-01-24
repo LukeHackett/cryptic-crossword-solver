@@ -17,6 +17,52 @@ public class SolutionCollection extends HashSet<Solution> {
 	private static final long serialVersionUID = -4860282004897560415L;
 
 	/**
+	 * Determine if the <code>SolutionCollection</code> contains the given
+	 * solution string
+	 * 
+	 * @param solution
+	 *            - the solution to check exists in the collection
+	 * @return <code>true</code> if the solution is contained,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean contains(String solution) {
+		// Standardise the given solution
+		String otherSolution = WordUtils.removeSpacesAndHyphens(solution);
+
+		for (Solution s : this) {
+			// Standardise each solution of the collection
+			String thisSolution = WordUtils.removeSpacesAndHyphens(s
+					.getSolution());
+
+			// Check if they match!
+			if (thisSolution.equals(otherSolution)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Solution getBestSolution() {
+		Solution best;
+
+		// Populate the first solution (to be compared to)
+		if (isEmpty()) {
+			return null;
+		} else {
+			best = iterator().next();
+		}
+
+		// Check the rest
+		for (Solution s : this) {
+			// Check if it is contained
+			if (s.getConfidence() > best.getConfidence()) {
+				best = s;
+			}
+		}
+		return best;
+	}
+
+	/**
 	 * Get all solutions with a confidence score greater than that which is
 	 * specified
 	 * 
@@ -63,31 +109,6 @@ public class SolutionCollection extends HashSet<Solution> {
 		return sc;
 	}
 
-	/**
-	 * Determine if the <code>SolutionCollection</code> contains the given
-	 * solution string
-	 * 
-	 * @param solution
-	 *            - the solution to check exists in the collection
-	 * @return <code>true</code> if the solution is contained,
-	 *         <code>false</code> otherwise
-	 */
-	public boolean contains(String solution) {
-		// Standardise the given solution
-		String otherSolution = WordUtils.removeSpacesAndHyphens(solution);
-
-		for (Solution s : this) {
-			// Standardise each solution of the collection
-			String thisSolution = WordUtils.removeSpacesAndHyphens(s.getSolution());
-
-			// Check if they match!
-			if (thisSolution.equals(otherSolution)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void removeAllStrings(Collection<String> solutions) {
 		for (String solution : solutions) {
 			// Check if it is contained
@@ -95,26 +116,6 @@ public class SolutionCollection extends HashSet<Solution> {
 				remove(new Solution(solution));
 			}
 		}
-	}
-
-	public Solution getBestSolution() {
-		Solution best;
-
-		// Populate the first solution (to be compared to)
-		if (isEmpty()) {
-			return null;
-		} else {
-			best = this.iterator().next();
-		}
-
-		// Check the rest
-		for (Solution s : this) {
-			// Check if it is contained
-			if (s.getConfidence() > best.getConfidence()) {
-				best = s;
-			}
-		}
-		return best;
 	}
 
 } // End of class SolutionCollection

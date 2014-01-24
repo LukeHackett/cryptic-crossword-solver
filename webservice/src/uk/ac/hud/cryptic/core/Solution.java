@@ -48,59 +48,6 @@ public class Solution implements Comparable<Solution> {
 	}
 
 	/**
-	 * Get this solution's stack trace, representing the process followed to
-	 * arrive at this potential solution
-	 * 
-	 * @return the trace list for this solution
-	 */
-	public Collection<String> getSolutionTrace() {
-		return trace;
-	}
-
-	/**
-	 * Get the solution text
-	 * 
-	 * @return the solution text
-	 */
-	public String getSolution() {
-		return solution;
-	}
-	
-	/**
-	 * Get the confidence score associated with this potential solution
-	 * 
-	 * @return the confidence score of this solution
-	 */
-	public double getConfidence() {
-		return confidence;
-	}
-
-	/**
-	 * Set the confidence value for this solution. This must reside between 0 -
-	 * 100 inclusive.
-	 * 
-	 * @param value
-	 *            - the confidence rating
-	 * @return <code>true</code> if successfully assigned, <code>false</code>
-	 *         otherwise
-	 */
-	public boolean setConfidence(int value) {
-		boolean valid;
-		if (valid = (value >= 0 && value <= 100)) {
-			confidence = value;
-		}
-		return valid;
-	}
-
-	/**
-	 * Return a human readable representation of <code>Solution</code>
-	 */
-	@Override
-	public String toString() {
-		return solution + " [" + confidence + "%]";
-	}
-
-	/**
 	 * Allows <code>Solution</code>s which are held in a sorted collected to be
 	 * sorted based on their confidence score. For example, those with a greater
 	 * confidence score will be found at the top of the collection. This method
@@ -128,36 +75,95 @@ public class Solution implements Comparable<Solution> {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Solution other = (Solution) obj;
+		if (solution == null) {
+			if (other.solution != null) {
+				return false;
+			}
+		} else if (!solution.equals(other.solution)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get the confidence score associated with this potential solution
+	 * 
+	 * @return the confidence score of this solution
+	 */
+	public double getConfidence() {
+		return confidence;
+	}
+
+	/**
+	 * Get the solution text
+	 * 
+	 * @return the solution text
+	 */
+	public String getSolution() {
+		return solution;
+	}
+
+	/**
+	 * Get this solution's stack trace, representing the process followed to
+	 * arrive at this potential solution
+	 * 
+	 * @return the trace list for this solution
+	 */
+	public Collection<String> getSolutionTrace() {
+		return trace;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((solution == null) ? 0 : solution.hashCode());
+		result = prime * result + (solution == null ? 0 : solution.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * Set the confidence value for this solution. This must reside between 0 -
+	 * 100 inclusive.
+	 * 
+	 * @param value
+	 *            - the confidence rating
+	 * @return <code>true</code> if successfully assigned, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean setConfidence(int value) {
+		boolean valid;
+		if (valid = value >= 0 && value <= 100) {
+			confidence = value;
+		}
+		return valid;
+	}
+
+	/**
+	 * Return a human readable representation of <code>Solution</code>
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Solution other = (Solution) obj;
-		if (solution == null) {
-			if (other.solution != null)
-				return false;
-		} else if (!solution.equals(other.solution))
-			return false;
-		return true;
+	public String toString() {
+		return solution + " [" + confidence + "%]";
 	}
 
 } // End of class Solution

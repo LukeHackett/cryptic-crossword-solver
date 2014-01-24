@@ -10,8 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Response;
-
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Manager;
@@ -60,14 +58,14 @@ public class Solver extends Servlet {
 		String clue = request.getParameter("clue");
 		String length = request.getParameter("length");
 		String pattern = request.getParameter("pattern");
-		
+
 		// Check for a new request
 		if (clue == null && length == null && pattern == null) {
 			request.getRequestDispatcher("index.jsp")
 					.forward(request, response);
 			return;
 		}
-		
+
 		// Do the GET request as a POST request
 		doPost(request, response);
 	}
@@ -94,7 +92,7 @@ public class Solver extends Servlet {
 		Settings settings = Settings.getInstance();
 		// When settings has this "context", it knows to load resources from
 		// somewhere else
-		settings.setServletContext(this.getServletConfig().getServletContext());
+		settings.setServletContext(getServletConfig().getServletContext());
 
 		// Obtain the input requests
 		String clue = request.getParameter("clue");
@@ -105,10 +103,11 @@ public class Solver extends Servlet {
 		String[] errors = validateInputs(clue, solution, pattern);
 
 		// Check to see if a page needs to be rendered server-side
-		if (isAjaxRequest(request)){
+		if (isAjaxRequest(request)) {
 			// Send errors and cancel the current request if required
 			if (errors.length > 0) {
-				sendError(request, response, errors, Response.SC_BAD_REQUEST);
+				sendError(request, response, errors,
+						HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
 
@@ -118,13 +117,13 @@ public class Solver extends Servlet {
 			// Send the response
 			boolean json = isJSONRequest(request);
 			sendResponse(response, data, json);
-			
+
 		} else {
 			// Server-side page rendering is required
 			request.setAttribute("clue", clue);
 			request.setAttribute("length", solution);
 			request.setAttribute("pattern", pattern);
-			
+
 			// Check to see if there are any errors
 			if (errors.length > 0) {
 				// Validation has failed -> inform end user
@@ -134,51 +133,39 @@ public class Solver extends Servlet {
 				String data = solveClue(clue, pattern);
 				request.setAttribute("results", data);
 			}
-			
+
 			// Forward request and response onto the view
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("index.jsp")
+					.forward(request, response);
 		}
 	}
 
 	/**
-	 * This method will validate this given clue, solution and pattern against
-	 * various aspects to ensure that the inputs are valid. The method will
-	 * return a list of error messages, should one or more of the inputs fail
-	 * the validation.
+	 * This method will compare a string length against a given pattern.
 	 * 
-	 * @param clue
-	 *            the clue to be validated
-	 * @param solution
-	 *            the solution format to be validated
+	 * @param length
+	 *            the expected length of the pattern format
 	 * @param pattern
-	 *            the solution pattern format to be validated
-	 * @return A String array of errors if errors are detected
+	 *            the pattern format
+	 * @return true if length of the pattern is equal to the pattern format
+	 *         length
 	 */
-	private String[] validateInputs(String clue, String solution, String pattern) {
-		// List of error messages to be displayed to the client
-		Collection<String> messages = new ArrayList<>();
+	private boolean hasSameLength(String length, String pattern) {
+		// Compare current word length against actual length
+		try {
+			// Obtain integer value of solution
+			int solLen = Integer.parseInt(length);
 
-		// Ensure the clue is valid.
-		if (!isClueValid(clue)) {
-			messages.add("Please enter a clue to solve.");
+			// Compare solution format number against pattern format
+			// e.g. 3 => ???
+			if (solLen != pattern.length()) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			// An error has occurred therefore error
+			return false;
 		}
-
-		// Ensure the solution format is valid
-		if (!isSolutionValid(solution)) {
-			messages.add("Please enter a valid solution format.");
-		}
-
-		// Ensure the pattern format is valid
-		if (!isPatternValid(pattern)) {
-			messages.add("Please enter a valid pattern format.");
-		}
-
-		// Ensure that the solution format matches the pattern format
-		if (!isValidMatch(solution, pattern)) {
-			messages.add("Please ensure the solution format matches the pattern format.");
-		}
-
-		return messages.toArray(new String[messages.size()]);
+		return true;
 	}
 
 	/**
@@ -191,23 +178,6 @@ public class Solver extends Servlet {
 	private boolean isClueValid(String clue) {
 		// Ensure the clue is present
 		return !(clue == null || clue.isEmpty());
-	}
-
-	/**
-	 * This method will validate the given solution, based upon a well-formed
-	 * regular expression.
-	 * 
-	 * @param solution
-	 *            the solution to be validated
-	 * @return true if the solution is valid
-	 */
-	private boolean isSolutionValid(String solution) {
-		// Solution string regular expression
-		final String regex = "[0-9]+((,|-)[0-9]+)*";
-		boolean match = Pattern.matches(regex, solution);
-
-		// Solution String must be present and of a valid format
-		return isPresent(solution) && match;
 	}
 
 	/**
@@ -225,6 +195,23 @@ public class Solver extends Servlet {
 
 		// Pattern String must be present and of a valid format
 		return isPresent(pattern) && match;
+	}
+
+	/**
+	 * This method will validate the given solution, based upon a well-formed
+	 * regular expression.
+	 * 
+	 * @param solution
+	 *            the solution to be validated
+	 * @return true if the solution is valid
+	 */
+	private boolean isSolutionValid(String solution) {
+		// Solution string regular expression
+		final String regex = "[0-9]+((,|-)[0-9]+)*";
+		boolean match = Pattern.matches(regex, solution);
+
+		// Solution String must be present and of a valid format
+		return isPresent(solution) && match;
 	}
 
 	/**
@@ -279,34 +266,6 @@ public class Solver extends Servlet {
 	}
 
 	/**
-	 * This method will compare a string length against a given pattern.
-	 * 
-	 * @param length
-	 *            the expected length of the pattern format
-	 * @param pattern
-	 *            the pattern format
-	 * @return true if length of the pattern is equal to the pattern format
-	 *         length
-	 */
-	private boolean hasSameLength(String length, String pattern) {
-		// Compare current word length against actual length
-		try {
-			// Obtain integer value of solution
-			int solLen = Integer.parseInt(length);
-
-			// Compare solution format number against pattern format
-			// e.g. 3 => ???
-			if (solLen != pattern.length()) {
-				return false;
-			}
-		} catch (NumberFormatException e) {
-			// An error has occurred therefore error
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * This method provides a simple entry point to solving a given clue
 	 * utilising the supplied pattern. A well formated XML String is returned
 	 * with any given results.
@@ -342,5 +301,46 @@ public class Solver extends Servlet {
 		data += "</solver>";
 
 		return data;
+	}
+
+	/**
+	 * This method will validate this given clue, solution and pattern against
+	 * various aspects to ensure that the inputs are valid. The method will
+	 * return a list of error messages, should one or more of the inputs fail
+	 * the validation.
+	 * 
+	 * @param clue
+	 *            the clue to be validated
+	 * @param solution
+	 *            the solution format to be validated
+	 * @param pattern
+	 *            the solution pattern format to be validated
+	 * @return A String array of errors if errors are detected
+	 */
+	private String[] validateInputs(String clue, String solution, String pattern) {
+		// List of error messages to be displayed to the client
+		Collection<String> messages = new ArrayList<>();
+
+		// Ensure the clue is valid.
+		if (!isClueValid(clue)) {
+			messages.add("Please enter a clue to solve.");
+		}
+
+		// Ensure the solution format is valid
+		if (!isSolutionValid(solution)) {
+			messages.add("Please enter a valid solution format.");
+		}
+
+		// Ensure the pattern format is valid
+		if (!isPatternValid(pattern)) {
+			messages.add("Please enter a valid pattern format.");
+		}
+
+		// Ensure that the solution format matches the pattern format
+		if (!isValidMatch(solution, pattern)) {
+			messages.add("Please ensure the solution format matches the pattern format.");
+		}
+
+		return messages.toArray(new String[messages.size()]);
 	}
 }

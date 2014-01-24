@@ -31,6 +31,38 @@ public class WordUtils {
 	public static final String REGEX_WHITESPACE = "\\s+";
 
 	/**
+	 * Determine whether a specified word can be create by using the characters
+	 * present in a pool of available characters.
+	 * 
+	 * @param targetWord
+	 *            - the word to attempt to create using the supplied characters
+	 * @param characters
+	 *            - a pool of characters that can be used to build the target
+	 *            word
+	 * @return <code>true</code> if the target word can be built the set (or a
+	 *         subset of) the characters present in this String,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean hasCharacters(String targetWord, String characters) {
+		// This list will be reduced as characters are consumed
+		Collection<Character> remaining = new ArrayList<>();
+		for (char c : characters.toCharArray()) {
+			remaining.add(c);
+		}
+
+		// For each character of the target word
+		for (char c : targetWord.toCharArray()) {
+			// If the char isn't available in the pool of remining characters,
+			// abort mission
+			if (!remaining.remove(c)) {
+				return false;
+			}
+		}
+		// If you've reached here, the target word can indeed be built
+		return true;
+	}
+
+	/**
 	 * Remove any non-alphabetical characters including spaces. This should be
 	 * used from input coming from the user, such as the Clue and Solution text.
 	 * 
@@ -80,38 +112,6 @@ public class WordUtils {
 	 */
 	public static String removeSpacesAndHyphens(String input) {
 		return input.replaceAll("(\\s+|-)", "");
-	}
-
-	/**
-	 * Determine whether a specified word can be create by using the characters
-	 * present in a pool of available characters.
-	 * 
-	 * @param targetWord
-	 *            - the word to attempt to create using the supplied characters
-	 * @param characters
-	 *            - a pool of characters that can be used to build the target
-	 *            word
-	 * @return <code>true</code> if the target word can be built the set (or a
-	 *         subset of) the characters present in this String,
-	 *         <code>false</code> otherwise
-	 */
-	public static boolean hasCharacters(String targetWord, String characters) {
-		// This list will be reduced as characters are consumed
-		Collection<Character> remaining = new ArrayList<>();
-		for (char c : characters.toCharArray()) {
-			remaining.add(c);
-		}
-
-		// For each character of the target word
-		for (char c : targetWord.toCharArray()) {
-			// If the char isn't available in the pool of remining characters,
-			// abort mission
-			if (!remaining.remove(c)) {
-				return false;
-			}
-		}
-		// If you've reached here, the target word can indeed be built
-		return true;
 	}
 
 } // End of class WordUtils

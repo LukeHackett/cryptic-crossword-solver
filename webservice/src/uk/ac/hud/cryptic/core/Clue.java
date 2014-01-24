@@ -1,7 +1,7 @@
 package uk.ac.hud.cryptic.core;
 
-import uk.ac.hud.cryptic.util.WordUtils;
 import uk.ac.hud.cryptic.solver.Solver.Type;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * Represents an individual cryptic crossword clue, and maintains a list of
@@ -51,6 +51,27 @@ public class Clue {
 		this(clue, pattern);
 		actualSolution = solution.toLowerCase();
 		this.type = type;
+	}
+
+	/**
+	 * Retrieve the known solution of the clue
+	 * 
+	 * @return the solution to the clue
+	 */
+	public String getActualSolution() {
+		return actualSolution;
+	}
+
+	/**
+	 * Get the best solution for this clue that has been calculated. This is
+	 * determined by the solution with the greatest confidence rating. If there
+	 * is more than one clue with the same highest rating, only one of these
+	 * will be returned.
+	 * 
+	 * @return the solution most likely to be correct
+	 */
+	public Solution getBestSolution() {
+		return solutions.getBestSolution();
 	}
 
 	/**
@@ -105,27 +126,6 @@ public class Clue {
 	 */
 	public SolutionCollection getSolutions() {
 		return solutions;
-	}
-
-	/**
-	 * Get the best solution for this clue that has been calculated. This is
-	 * determined by the solution with the greatest confidence rating. If there
-	 * is more than one clue with the same highest rating, only one of these
-	 * will be returned.
-	 * 
-	 * @return the solution most likely to be correct
-	 */
-	public Solution getBestSolution() {
-		return solutions.getBestSolution();
-	}
-
-	/**
-	 * Retrieve the known solution of the clue
-	 * 
-	 * @return the solution to the clue
-	 */
-	public String getActualSolution() {
-		return actualSolution;
 	}
 
 	/**

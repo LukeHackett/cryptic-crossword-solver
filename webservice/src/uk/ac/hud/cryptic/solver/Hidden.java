@@ -17,6 +17,13 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 public class Hidden extends Solver {
 
 	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Hidden.class, Type.HIDDEN);
+	}
+
+	/**
 	 * Default constructor for solver class
 	 * 
 	 * @param clue
@@ -24,32 +31,6 @@ public class Hidden extends Solver {
 	 */
 	public Hidden(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Entry point to the code for testing purposes
-	 */
-	public static void main(String[] args) {
-		testSolver(Hidden.class, Type.HIDDEN);
-	}
-
-	public SolutionCollection solve(Clue c) {
-
-		SolutionCollection solutions = new SolutionCollection();
-
-		// Clue length must be greater than solution length
-		if (c.getClueNoPunctuation(true).length() <= c.getPattern()
-				.getTotalLength()) {
-			return solutions;
-		}
-
-		// Hidden words from left-to-right
-		solutions.addAll(calculateHiddenWords(c, false));
-
-		// Hidden words from right-to-left
-		solutions.addAll(calculateHiddenWords(c, true));
-
-		return solutions;
 	}
 
 	/**
@@ -130,6 +111,26 @@ public class Hidden extends Solver {
 				}
 			}
 		}
+	}
+
+	@Override
+	public SolutionCollection solve(Clue c) {
+
+		SolutionCollection solutions = new SolutionCollection();
+
+		// Clue length must be greater than solution length
+		if (c.getClueNoPunctuation(true).length() <= c.getPattern()
+				.getTotalLength()) {
+			return solutions;
+		}
+
+		// Hidden words from left-to-right
+		solutions.addAll(calculateHiddenWords(c, false));
+
+		// Hidden words from right-to-left
+		solutions.addAll(calculateHiddenWords(c, true));
+
+		return solutions;
 	}
 
 } // End of class Hidden

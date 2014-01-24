@@ -6,14 +6,8 @@ package uk.ac.hud.cryptic.core;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
-
 import org.junit.Test;
 
-import uk.ac.hud.cryptic.solver.Acrostic;
-import uk.ac.hud.cryptic.solver.Solver;
-import uk.ac.hud.cryptic.solver.Solver.Type;
-import uk.ac.hud.cryptic.util.DB;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**

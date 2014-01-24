@@ -14,6 +14,13 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 public class Acrostic extends Solver {
 
 	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Acrostic.class, Type.ACROSTIC);
+	}
+
+	/**
 	 * Default constructor for solver class
 	 * 
 	 * @param clue
@@ -23,13 +30,7 @@ public class Acrostic extends Solver {
 		super(clue);
 	}
 
-	/**
-	 * Entry point to the code for testing purposes
-	 */
-	public static void main(String[] args) {
-		testSolver(Acrostic.class, Type.ACROSTIC);
-	}
-
+	@Override
 	public SolutionCollection solve(Clue c) {
 
 		SolutionCollection solutions = new SolutionCollection();

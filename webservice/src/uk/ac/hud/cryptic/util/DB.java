@@ -27,16 +27,41 @@ public class DB {
 	// Default number of records to retrieve from the DB
 	private static final int DEFAULT_RECORDS = 10;
 
-	/**
-	 * Entry point to the class used for testing purposes
-	 */
-	public static void main(String[] args) {
-		// Get a default number of Hidden-type clue/solutions.
-		Collection<Clue> clues = getTestClues(Type.HIDDEN, true);
-		// Print the results
-		for (Clue c : clues) {
-			System.out.println(c.getClue() + ", " + c.getPattern());
+	static {
+		// Load the MySQL driver, or try to.
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Obtain a specified number of records for each of the clue types that have
+	 * been specified as parameters. These are bundled up in a single
+	 * <code>Collection</code> to be returned.
+	 * 
+	 * @param n
+	 *            - the number of records to acquire for each clue type
+	 * @param unknownCharacters
+	 *            - <code>true</code> if characters of the solution should be
+	 *            marked with the unknown character symbol, or
+	 *            <code>false</code> if the actual character should be written
+	 *            to the solution pattern (useful for fast solving)
+	 * @param types
+	 *            - the types of clue to obtain test data for
+	 * @return a collection containing the requested data, if it is present in
+	 *         the database
+	 */
+	public static Collection<Clue> getTestClues(int n,
+			boolean unknownCharacters, Type... types) {
+		// Will hold the example (test) clues
+		Collection<Clue> clues = new ArrayList<>();
+		// Get n number of records for each declared type
+		for (Type t : types) {
+			clues.addAll(getTestClues(t, unknownCharacters, n));
+		}
+		return clues;
 	}
 
 	/**
@@ -102,39 +127,14 @@ public class DB {
 	}
 
 	/**
-	 * Obtain a specified number of records for each of the clue types that have
-	 * been specified as parameters. These are bundled up in a single
-	 * <code>Collection</code> to be returned.
-	 * 
-	 * @param n
-	 *            - the number of records to acquire for each clue type
-	 * @param unknownCharacters
-	 *            - <code>true</code> if characters of the solution should be
-	 *            marked with the unknown character symbol, or
-	 *            <code>false</code> if the actual character should be written
-	 *            to the solution pattern (useful for fast solving)
-	 * @param types
-	 *            - the types of clue to obtain test data for
-	 * @return a collection containing the requested data, if it is present in
-	 *         the database
+	 * Entry point to the class used for testing purposes
 	 */
-	public static Collection<Clue> getTestClues(int n,
-			boolean unknownCharacters, Type... types) {
-		// Will hold the example (test) clues
-		Collection<Clue> clues = new ArrayList<>();
-		// Get n number of records for each declared type
-		for (Type t : types) {
-			clues.addAll(getTestClues(t, unknownCharacters, n));
-		}
-		return clues;
-	}
-
-	static {
-		// Load the MySQL driver, or try to.
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	public static void main(String[] args) {
+		// Get a default number of Hidden-type clue/solutions.
+		Collection<Clue> clues = getTestClues(Type.HIDDEN, true);
+		// Print the results
+		for (Clue c : clues) {
+			System.out.println(c.getClue() + ", " + c.getPattern());
 		}
 	}
 

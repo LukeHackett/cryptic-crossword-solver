@@ -33,16 +33,6 @@ public class Settings {
 	}
 
 	/**
-	 * This method will return the path to the dictionary words file.
-	 * 
-	 * @return the file path to the dictionary
-	 */
-	public InputStream getDictionaryPath() {
-		// Location of the resource
-		return getPath("dictionary/acd/UKACD.txt");
-	}
-
-	/**
 	 * This method will return the path to the custom dictionary words file.
 	 * 
 	 * @return the file path to the custom dictionary
@@ -50,6 +40,35 @@ public class Settings {
 	public InputStream getCustomDictionaryPath() {
 		// Location of the resource
 		return getPath("dictionary/custom/custom-dict.txt");
+	}
+
+	/**
+	 * Get the password of the cryptic project's MySQL database. Yes this
+	 * shouldn't be stored in a source file, and yes it shouldn't be stored as
+	 * plain text. Please don't hurt me. Many thanks. TODO I'm an idiot.
+	 * 
+	 * @return the password of the MySQL database
+	 */
+	public String getDBPassword() {
+		return "du4hacrEKa";
+	}
+
+	/**
+	 * Get the URL of the cryptic project's MySQL database
+	 * 
+	 * @return the url of the MySQL database
+	 */
+	public String getDBURL() {
+		return "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+	}
+
+	/**
+	 * Get the username of the cryptic project's MySQL database
+	 * 
+	 * @return the username of the MySQL database
+	 */
+	public String getDBUsername() {
+		return "cryptic";
 	}
 
 	/**
@@ -66,24 +85,13 @@ public class Settings {
 	}
 
 	/**
-	 * This method will return the path to the thesaurus file.
+	 * This method will return the path to the dictionary words file.
 	 * 
-	 * @return the file path to the thesaurus
+	 * @return the file path to the dictionary
 	 */
-	public InputStream getThesaurusPath() {
+	public InputStream getDictionaryPath() {
 		// Location of the resource
-		return getPath("thesaurus/gutenberg/mthesaur.txt");
-	}
-
-	/**
-	 * This method will return the path to the pronouncing dictionary file.
-	 * 
-	 * @return the file path to the pronouncing dictionary
-	 */
-	public InputStream getPronouncingDictionaryPath() {
-		// Location of the resource
-		return getPath("homophones/cmudict.0.7a");
-
+		return getPath("dictionary/acd/UKACD.txt");
 	}
 
 	/**
@@ -108,32 +116,24 @@ public class Settings {
 	}
 
 	/**
-	 * Get the URL of the cryptic project's MySQL database
+	 * This method will return the path to the pronouncing dictionary file.
 	 * 
-	 * @return the url of the MySQL database
+	 * @return the file path to the pronouncing dictionary
 	 */
-	public String getDBURL() {
-		return "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+	public InputStream getPronouncingDictionaryPath() {
+		// Location of the resource
+		return getPath("homophones/cmudict.0.7a");
+
 	}
 
 	/**
-	 * Get the username of the cryptic project's MySQL database
+	 * This method will return the path to the thesaurus file.
 	 * 
-	 * @return the username of the MySQL database
+	 * @return the file path to the thesaurus
 	 */
-	public String getDBUsername() {
-		return "cryptic";
-	}
-
-	/**
-	 * Get the password of the cryptic project's MySQL database. Yes this
-	 * shouldn't be stored in a source file, and yes it shouldn't be stored as
-	 * plain text. Please don't hurt me. Many thanks. TODO I'm an idiot.
-	 * 
-	 * @return the password of the MySQL database
-	 */
-	public String getDBPassword() {
-		return "du4hacrEKa";
+	public InputStream getThesaurusPath() {
+		// Location of the resource
+		return getPath("thesaurus/gutenberg/mthesaur.txt");
 	}
 
 	/**

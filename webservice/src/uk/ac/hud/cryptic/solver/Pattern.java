@@ -14,6 +14,13 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 public class Pattern extends Solver {
 
 	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Pattern.class, Type.PATTERN);
+	}
+
+	/**
 	 * Default constructor for solver class
 	 * 
 	 * @param clue
@@ -21,55 +28,6 @@ public class Pattern extends Solver {
 	 */
 	public Pattern(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Entry point to the code for testing purposes
-	 */
-	public static void main(String[] args) {
-		testSolver(Pattern.class, Type.PATTERN);
-	}
-
-	public SolutionCollection solve(Clue c) {
-		SolutionCollection solutions = new SolutionCollection();
-
-		// (Clue length / 2) must be greater than solution length
-		int maxLength = (int) Math.ceil((double) c.getClueNoPunctuation(true)
-				.length() / 2);
-		if (c.getPattern().getTotalLength() > maxLength) {
-			return solutions;
-		}
-
-		String oddCharacters = getEveryOtherChar(c, false);
-		String evenCharacters = getEveryOtherChar(c, true);
-
-		// Even words
-		solutions.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
-
-		// Odd words
-		solutions.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
-
-		// for (String clueComponent : c.getClueWords()) {
-		// for (String possibleSolution : allWords) {
-		// if (Thesaurus.match(clueComponent, possibleSolution)) {
-		// System.out.println(possibleSolution
-		// + " matches (synonym) with the clue word "
-		// + clueComponent + ".");
-		// }
-		// }
-		// }
-
-		return solutions;
-	}
-
-	private String getEveryOtherChar(Clue c, boolean even) {
-		final String text = c.getClueNoPunctuation(true);
-		String newString = "";
-		int i;
-		for (i = even ? 0 : 1; i < text.length(); i += 2) {
-			newString += text.charAt(i);
-		}
-		return newString;
 	}
 
 	/**
@@ -106,6 +64,49 @@ public class Pattern extends Solver {
 
 		// TODO Assign probabilities to each. This could try to use the
 		// word definition component of the clue.
+
+		return solutions;
+	}
+
+	private String getEveryOtherChar(Clue c, boolean even) {
+		final String text = c.getClueNoPunctuation(true);
+		String newString = "";
+		int i;
+		for (i = even ? 0 : 1; i < text.length(); i += 2) {
+			newString += text.charAt(i);
+		}
+		return newString;
+	}
+
+	@Override
+	public SolutionCollection solve(Clue c) {
+		SolutionCollection solutions = new SolutionCollection();
+
+		// (Clue length / 2) must be greater than solution length
+		int maxLength = (int) Math.ceil((double) c.getClueNoPunctuation(true)
+				.length() / 2);
+		if (c.getPattern().getTotalLength() > maxLength) {
+			return solutions;
+		}
+
+		String oddCharacters = getEveryOtherChar(c, false);
+		String evenCharacters = getEveryOtherChar(c, true);
+
+		// Even words
+		solutions.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
+
+		// Odd words
+		solutions.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
+
+		// for (String clueComponent : c.getClueWords()) {
+		// for (String possibleSolution : allWords) {
+		// if (Thesaurus.match(clueComponent, possibleSolution)) {
+		// System.out.println(possibleSolution
+		// + " matches (synonym) with the clue word "
+		// + clueComponent + ".");
+		// }
+		// }
+		// }
 
 		return solutions;
 	}
