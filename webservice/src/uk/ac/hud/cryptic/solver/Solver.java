@@ -80,13 +80,6 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	}
 
 	/**
-	 * No-arg constructor
-	 */
-	protected Solver() {
-
-	}
-
-	/**
 	 * The solve method will provide the core functionality of the cryptic
 	 * crossword solver application. It will take a clue object and return a
 	 * collection of possible solutions, if any.
@@ -136,6 +129,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 		// Fire off each solver to find that magic solution
 		for (final Clue clue : clues) {
 			results.add(executor.submit(new Callable<Boolean>() {
+				@Override
 				public Boolean call() {
 					boolean found = false;
 					try {
@@ -197,4 +191,5 @@ public abstract class Solver implements Callable<SolutionCollection> {
 		System.out.println("Total time: " + timeTotal + "ms. Average time: "
 				+ timeAvg + "ms.");
 	}
+
 } // End of class Solver
