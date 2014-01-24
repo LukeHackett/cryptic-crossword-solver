@@ -11,7 +11,6 @@ import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Solution;
-import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -216,7 +215,7 @@ public class Dictionary {
 	 * @param prefixes
 	 *            - the collection of words to verify against the dictionary
 	 */
-	public void dictionaryPrefixFilter(SolutionCollection prefixes) {
+	public void dictionaryPrefixFilter(Set<Solution> prefixes) {
 		// List of prefixes which don't match the beginnings of known word, and
 		// so will be removed
 		Collection<Solution> toRemove = new ArrayList<>();
@@ -245,7 +244,7 @@ public class Dictionary {
 	 *            - the SolutionPattern object modelling the characteristics of
 	 *            the solution from the user's provided input
 	 */
-	public void dictionaryFilter(SolutionCollection solutions,
+	public void dictionaryFilter(Set<Solution> solutions,
 			SolutionPattern pattern) {
 		Collection<Solution> toRemove = new ArrayList<>();
 		outer: for (Solution solution : solutions) {

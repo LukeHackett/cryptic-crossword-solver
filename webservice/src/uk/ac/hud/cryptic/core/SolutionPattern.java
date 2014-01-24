@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -354,7 +355,7 @@ public class SolutionPattern {
 	 *            - the <code>SolutionPattern</code> to match against TODO This
 	 *            might have a better home somewhere else
 	 */
-	public void filterSolutions(SolutionCollection solutions) {
+	public void filterSolutions(Set<Solution> solutions) {
 		Collection<Solution> toRemove = new ArrayList<>();
 		// For each proposed solution
 		for (Solution solution : solutions) {
