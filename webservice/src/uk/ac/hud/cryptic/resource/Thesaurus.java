@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
@@ -33,41 +36,13 @@ public class Thesaurus {
 	}
 
 	// Actual thesaurus data structure
-	private Collection<Collection<String>> thesaurus;
+	private Map<String, Collection<String>> thesaurus;
 
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
 		populateThesaurusFromFile();
-	}
-
-	/**
-	 * See how closely matched a clue is with a proposed solution by the number
-	 * of entries in the thesaurus which contain both words. This may not be
-	 * very useful in practice, but we'll see
-	 * 
-	 * @param clue
-	 *            - the clue being solved
-	 * @param solution
-	 *            - the proposed solution string
-	 * @return the number of entries which exist in the thesaurus containing
-	 *         both words
-	 */
-	public int getMatchCount(Clue clue, String solution) {
-		// Populate an array with the separate words of the clue
-		String[] clueWords = clue.getClueWords();
-		solution = solution.toLowerCase();
-		// Number of thesaurus matches
-		int count = 0;
-		for (Collection<String> entry : thesaurus) {
-			for (String word : clueWords) {
-				if (entry.contains(word) && entry.contains(solution)) {
-					count++;
-				}
-			}
-		}
-		return count;
 	}
 
 	/**
@@ -80,11 +55,7 @@ public class Thesaurus {
 	public Collection<String> getSynonyms(String word) {
 		// Use of HashSet prevents duplicates
 		Collection<String> synonyms = new HashSet<>();
-		for (Collection<String> entry : thesaurus) {
-			if (entry.contains(word)) {
-				synonyms.addAll(entry);
-			}
-		}
+		synonyms.addAll(thesaurus.get(word));
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
@@ -115,10 +86,10 @@ public class Thesaurus {
 			solutions[1] = pattern.recomposeSolution(solution);
 		}
 		for (String clueWord : clueWords) {
-			for (Collection<String> entry : thesaurus) {
-				if (entry.contains(clueWord) && entry.contains(solutions[0])
-						|| multipleWords && entry.contains(clueWord)
-						&& entry.contains(solutions[1])) {
+			if (thesaurus.containsKey(clueWord)) {
+				Collection<String> synonyms = thesaurus.get(clueWord);
+				if (synonyms.contains(solutions[0])
+						|| (multipleWords && synonyms.contains(solutions[1]))) {
 					return true;
 				}
 			}
@@ -133,7 +104,7 @@ public class Thesaurus {
 		InputStream is = settings.getThesaurusPath();
 
 		// Instantiate the thesaurus object
-		thesaurus = new HashSet<>();
+		thesaurus = new HashMap<>();
 
 		// Try-with-resources. Readers are automatically closed after use
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -142,13 +113,17 @@ public class Thesaurus {
 			while ((line = br.readLine()) != null) {
 				// Separate the individual words
 				String[] words = line.split(",");
+				// Get the key (look-up) word
+				String lookupWord = words[0];
+				// Rest of the words are synonyms
+				words = Arrays.copyOfRange(words, 1, words.length);
 				// Add words to a list
 				Collection<String> entry = new ArrayList<>();
 				for (String word : words) {
 					entry.add(word.toLowerCase());
 				}
 				// And add them to the dictionary
-				thesaurus.add(entry);
+				thesaurus.put(lookupWord, entry);
 			}
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");
@@ -160,34 +135,36 @@ public class Thesaurus {
 	 * 
 	 * @param word
 	 *            - the word to get synonyms for
+	 * @param pattern
+	 *            - the pattern the synonyms should match against
 	 * @return the synonyms of the given word
 	 */
-	public Collection<String> getSpecificSynonyms(String word,
+	public Collection<String> getMatchingSynonyms(String word,
 			SolutionPattern pattern) {
 		// Use of HashSet prevents duplicates
-		Collection<String> synonyms = new HashSet<>();
+		Collection<String> matchingSynonyms = new HashSet<>();
 
 		int lengthOfSolution = pattern.getTotalLength();
 		int numOfWords = pattern.getNumberOfWords();
 
 		String[] knownChars = pattern.getKnownCharacters();
 
-		for (Collection<String> entry : thesaurus) {
-			if (entry.contains(word)) {
-				for (String e : entry) {
-					String[] words = e.split(" ");
-					if ((e.replaceAll(" ", "").length() == lengthOfSolution)
-							&& (numOfWords == words.length)
-							&& (WordUtils.charactersPresentInWord(e, knownChars))
-							&& (pattern.match(e))) {
-						synonyms.add(e);
-					}
-				}
+		// Get synonyms
+		Collection<String> synonyms = thesaurus.get(word);
+
+		for (String entry : synonyms) {
+			String[] words = entry.split(" ");
+			String singleWordEntry = entry.replaceAll(" ", "");
+			if ((singleWordEntry.length() == lengthOfSolution)
+					&& (numOfWords == words.length)
+					&& (WordUtils.charactersPresentInWord(entry, knownChars))
+					&& (pattern.match(entry))) {
+				matchingSynonyms.add(entry);
 			}
 		}
 		// Remove the original word which was passed in (if present)
-		synonyms.remove(word);
-		return synonyms;
+		matchingSynonyms.remove(word);
+		return matchingSynonyms;
 	}
 
 } // End of class Thesaurus
