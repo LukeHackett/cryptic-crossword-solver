@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
@@ -165,6 +166,29 @@ public class Thesaurus {
 		// Remove the original word which was passed in (if present)
 		matchingSynonyms.remove(word);
 		return matchingSynonyms;
+	}
+
+	/**
+	 * Get the words for which the passed parameter is a synonym of
+	 * 
+	 * @param synonym
+	 *            - the synonym that should be present in the list of synonyms
+	 *            of the words returned
+	 * @return a list of words which contain the passed word as a synonym
+	 */
+	public Collection<String> getWordsContainingSynonym(String synonym) {
+		// The collection that will be returned
+		Collection<String> results = new HashSet<>();
+
+		// Have to go through the entire thesaurus
+		for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
+			// If an entry contains the specified word as a synonym
+			if (entry.getValue().contains(synonym)) {
+				// Return it
+				results.add(entry.getKey());
+			}
+		}
+		return results;
 	}
 
 } // End of class Thesaurus
