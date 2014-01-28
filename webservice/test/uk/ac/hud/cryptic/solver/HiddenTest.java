@@ -3,14 +3,12 @@ package uk.ac.hud.cryptic.solver;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uk.ac.hud.cryptic.solver.Solver.Type;
-
 public class HiddenTest extends SolverTest {
 
 	// Corresponding Type for this test (for database)
-	private static Type type;
+	private static String type;
 	// The Class to test (should make it easier to streamline these solver
-			// tests)
+	// tests)
 	private static Class<? extends Solver> solver;
 	// Max number of clues to solve
 	private static int testCount;
@@ -19,7 +17,7 @@ public class HiddenTest extends SolverTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		type = Type.HIDDEN;
+		type = new Hidden().toString();
 		solver = Hidden.class;
 		testCount = 20;
 		unknownCharacters = true;

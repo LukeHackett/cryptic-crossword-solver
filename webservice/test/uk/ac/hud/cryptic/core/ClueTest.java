@@ -4,29 +4,29 @@
  */
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.ac.hud.cryptic.solver.Solver.Type;
+import uk.ac.hud.cryptic.solver.Acrostic;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * @author Mohammad Rahman
  * @version 0.1
- * 
  */
 public class ClueTest {
-	
+
 	private static SolutionPattern pattern;
 	private static Clue clue;
 	private static SolutionCollection solutions;
 	private static String actualSolution;
-	private static Type type;
-
+	private static String type;
 
 	/**
 	 * @throws java.lang.Exception
@@ -34,11 +34,12 @@ public class ClueTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		pattern = new SolutionPattern("?????");
-		clue = new Clue("Air that's more usually seen in cheerleaders", 
-				pattern.toString()); //MUSIC
+		clue = new Clue("Air that's more usually seen in cheerleaders",
+				pattern.toString(), "music", new Acrostic().toString()); // MUSIC
 		solutions = new SolutionCollection();
+		solutions.add(new Solution("MUSIC"));
 		actualSolution = "MUSIC";
-		type = Type.HIDDEN;
+		type = new Acrostic().toString();
 
 	}
 
@@ -52,27 +53,30 @@ public class ClueTest {
 		solutions = null;
 		actualSolution = null;
 		type = null;
-		
+
 	}
 
-	
 	@Test
 	public final void testClueStringString() {
-		Clue test = new Clue("Air that's more usually seen in cheerleaders", "?????");
+		Clue test = new Clue("Air that's more usually seen in cheerleaders",
+				"?????");
 		assertTrue(test.equals(clue));
-		
+
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#Clue(java.lang.String, java.lang.String, java.lang.String, uk.ac.hud.cryptic.solver.Solver.Type)}.
+	 * Test method for
+	 * {@link uk.ac.hud.cryptic.core.Clue#Clue(java.lang.String, java.lang.String, java.lang.String, uk.ac.hud.cryptic.solver.Solver.Type)}
+	 * .
 	 */
 	@Test
 	public final void testClueStringStringStringType() {
-		
-		Type t = Type.HIDDEN;
-		Clue test = new Clue("Air that's more usually seen in cheerleaders", "?????","MUSIC", t);
-		assertTrue(test.equals(clue));
-		
+
+		String t = new Acrostic().toString();
+		Clue test = new Clue("Air that's more usually seen in cheerleaders",
+				"?????", "MUSIC", t);
+		assertTrue(test.getType().equals(t));
+
 	}
 
 	/**
@@ -81,7 +85,7 @@ public class ClueTest {
 	@Test
 	public final void testGetActualSolution() {
 		String test = "music";
-		assertEquals(test,clue.getActualSolution());
+		assertEquals(test, clue.getActualSolution());
 	}
 
 	/**
@@ -97,33 +101,33 @@ public class ClueTest {
 	 */
 	@Test
 	public final void testGetClue() {
-		assertEquals("Air that's more usually seen in cheerleaders", 
-				"air that's more usually seen in cheerleaders",
-				clue.getClue());
+		assertEquals("Air that's more usually seen in cheerleaders",
+				"air that's more usually seen in cheerleaders", clue.getClue());
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}.
-	 * No Punctuation
+	 * Test method for
+	 * {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}. No
+	 * Punctuation
 	 */
 	@Test
-	//Get clue no punctuation with spaces
-	public final void testGetClueNoWithPunctuation() {		
+	// Get clue no punctuation with spaces
+	public final void testGetClueNoWithPunctuation() {
 		assertEquals("air thats more usually seen in cheerleaders",
 				clue.getClueNoPunctuation(false));
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}.
-	 * No Spaces
+	 * Test method for
+	 * {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}. No
+	 * Spaces
 	 */
 	@Test
-	//Get clue no punctuation without spaces
-	public final void testGetClueNoPunctuationNoSpaces() {		
+	// Get clue no punctuation without spaces
+	public final void testGetClueNoPunctuationNoSpaces() {
 		assertEquals("airthatsmoreusuallyseenincheerleaders",
 				clue.getClueNoPunctuation(true));
 	}
-	
 
 	/**
 	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getClueWords()}.
@@ -131,7 +135,7 @@ public class ClueTest {
 	@Test
 	public final void testGetClueWords() {
 		String aclue = clue.getClueNoPunctuation(false).trim();
-		String [] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
+		String[] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
 
 		assertArrayEquals(splitclues, clue.getClueWords());
 	}
@@ -141,8 +145,7 @@ public class ClueTest {
 	 */
 	@Test
 	public final void testGetPattern() {
-		assertEquals(pattern.toString(),
-				clue.getPattern().toString());
+		assertEquals(pattern.toString(), clue.getPattern().toString());
 	}
 
 	/**
@@ -152,7 +155,7 @@ public class ClueTest {
 	public final void testGetSolutions() {
 		SolutionCollection test = new SolutionCollection();
 		test.add(new Solution("MUSIC"));
-		assertEquals(test,solutions);
+		assertEquals(test, solutions);
 	}
 
 	/**
@@ -160,8 +163,8 @@ public class ClueTest {
 	 */
 	@Test
 	public final void testGetType() {
-		Type t = Type.HIDDEN;
-		assertEquals(t,type);
+		String t = new Acrostic().toString();
+		assertEquals(t, type);
 	}
 
 }

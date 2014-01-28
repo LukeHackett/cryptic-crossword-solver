@@ -25,44 +25,6 @@ import uk.ac.hud.cryptic.util.DB;
  */
 public abstract class Solver implements Callable<SolutionCollection> {
 
-	/**
-	 * An Enum representing the distinct cryptic crossword categories. Each of
-	 * these contains the corresponding MySQL database name for the 'type'
-	 * field, which is useful when, for example, retrieving test data for a
-	 * particular clue type.
-	 */
-	public enum Type {
-		ACROSTIC("acrostic"), ANAGRAM("anagram"), AND_LITERALLY_SO("&lit"), CHARADE(
-				"charade"), CONTAINER("container"), DELETION("deletion"), DOUBLE_DEFINITION(
-				"double definition"), EXCHANGE("exchange"), HIDDEN("hidden"), HOMOPHONE(
-				"homophone"), PALINDROME("palindrome"), PATTERN("pattern"), PURELY_CRYPTIC(
-				"purely cryptic"), REVERSAL("reversal"), SHIFTING("shifting"), SPOONERISM(
-				"spoonerism"), SUBSTITUTION("substitution"), UNCATEGORISED(
-				"uncategorised");
-
-		private final String dbName;
-
-		/**
-		 * Constructor for the Enum takes the corresponding clue type's database
-		 * name
-		 * 
-		 * @param name
-		 *            - the database name for this clue type
-		 */
-		private Type(String name) {
-			dbName = name;
-		}
-
-		/**
-		 * Get the corresponding database name for this clue type
-		 * 
-		 * @return
-		 */
-		public String getDBName() {
-			return dbName;
-		}
-	}
-
 	protected static final Dictionary DICTIONARY = Dictionary.getInstance();
 	protected static final Thesaurus THESAURUS = Thesaurus.getInstance();
 
@@ -76,89 +38,96 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	 * @param t
 	 *            - the type of test clues to retreive from the database
 	 */
-	protected static void testSolver(final Class<? extends Solver> solver,
-			Type t) {
-		// Obtain some test data from the database
-		Collection<Clue> clues = DB.getTestClues(t, true);
+	protected static void testSolver(final Class<? extends Solver> solver) {
+		try {
+			Solver s = solver.newInstance();
 
-		// Solve 1 clue on each thread available
-		int processors = Runtime.getRuntime().availableProcessors();
-		// Create a thread pool to execute the solvers
-		ExecutorService executor = Executors.newFixedThreadPool(processors);
+			// Obtain some test data from the database
+			Collection<Clue> clues = DB.getTestClues(s.toString(), true);
 
-		// Will hold final results
-		Collection<Future<Boolean>> results = new ArrayList<>();
+			// Solve 1 clue on each thread available
+			int processors = Runtime.getRuntime().availableProcessors();
+			// Create a thread pool to execute the solvers
+			ExecutorService executor = Executors.newFixedThreadPool(processors);
 
-		// Timer of entire process
-		long timeStart = System.currentTimeMillis();
+			// Will hold final results
+			Collection<Future<Boolean>> results = new ArrayList<>();
 
-		// Fire off each solver to find that magic solution
-		for (final Clue clue : clues) {
-			results.add(executor.submit(new Callable<Boolean>() {
-				@Override
-				public Boolean call() {
-					boolean found = false;
-					try {
-						// Solve time measurement
-						long timeStart = System.currentTimeMillis();
-						// Invoke the constructor of the passed class' name
-						Constructor<?> con = solver.getConstructor(Clue.class);
-						Solver s = (Solver) con
-								.newInstance(new Object[] { clue });
+			// Timer of entire process
+			long timeStart = System.currentTimeMillis();
 
-						// Call the implementation's solve method
-						SolutionCollection sc = s.solve(clue);
+			// Fire off each solver to find that magic solution
+			for (final Clue clue : clues) {
+				results.add(executor.submit(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						boolean found = false;
+						try {
+							// Solve time measurement
+							long timeStart = System.currentTimeMillis();
+							// Invoke the constructor of the passed class' name
+							Constructor<?> con = solver
+									.getConstructor(Clue.class);
+							Solver s = (Solver) con
+									.newInstance(new Object[] { clue });
 
-						// See if the solution has been found
-						found = sc.contains(clue.getActualSolution());
+							// Call the implementation's solve method
+							SolutionCollection sc = s.solve(clue);
 
-						// Output results all at once
-						String output = "";
-						// Print results to console
-						output = found ? "[Found] " : "[Not Found] ";
-						output += clue.getClue() + ": (";
-						output += clue.getActualSolution() + ")";
-						output += " ["
-								+ (System.currentTimeMillis() - timeStart)
-								+ "ms]";
-						System.out.println(output);
-					} catch (Exception e) {
-						e.printStackTrace();
+							// See if the solution has been found
+							found = sc.contains(clue.getActualSolution());
+
+							// Output results all at once
+							String output = "";
+							// Print results to console
+							output = found ? "[Found] " : "[Not Found] ";
+							output += clue.getClue() + ": (";
+							output += clue.getActualSolution() + ")";
+							output += " ["
+									+ (System.currentTimeMillis() - timeStart)
+									+ "ms]";
+							System.out.println(output);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						return found;
 					}
-					return found;
-				}
-			}));
-		}
-
-		// All finished
-		executor.shutdown();
-
-		// Now we need to 'unpack' the results
-		int count = 0;
-		for (Future<Boolean> future : results) {
-			try {
-				// Was it successful in finding the solution?
-				boolean result = future.get();
-				if (result) {
-					count++;
-				}
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+				}));
 			}
+
+			// All finished
+			executor.shutdown();
+
+			// Now we need to 'unpack' the results
+			int count = 0;
+			for (Future<Boolean> future : results) {
+				try {
+					// Was it successful in finding the solution?
+					boolean result = future.get();
+					if (result) {
+						count++;
+					}
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// Some time statistics
+			long timeTotal = System.currentTimeMillis() - timeStart;
+			long timeAvg = timeTotal / clues.size();
+			boolean multiThreaded = processors > 1;
+
+			// Summary of results
+			System.out.println(count + " out of " + clues.size()
+					+ " successfully found.");
+			System.out.println("Total time is " + timeTotal
+					+ "ms and average time is " + timeAvg + "ms, solving over "
+					+ processors + (multiThreaded ? " separate" : "")
+					+ " thread" + (multiThreaded ? "s" : "") + ".");
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | SecurityException e1) {
+			e1.printStackTrace();
 		}
-
-		// Some time statistics
-		long timeTotal = System.currentTimeMillis() - timeStart;
-		long timeAvg = timeTotal / clues.size();
-		boolean multiThreaded = processors > 1;
-
-		// Summary of results
-		System.out.println(count + " out of " + clues.size()
-				+ " successfully found.");
-		System.out.println("Total time is " + timeTotal
-				+ "ms and average time is " + timeAvg + "ms, solving over "
-				+ processors + (multiThreaded ? " separate" : "") + " thread"
-				+ (multiThreaded ? "s" : "") + ".");
 	}
 
 	// The clue to solve
@@ -172,6 +141,13 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	 */
 	protected Solver(Clue clue) {
 		this.clue = clue;
+	}
+
+	/**
+	 * Default constructor for solver class
+	 */
+	protected Solver() {
+
 	}
 
 	/**
@@ -194,4 +170,14 @@ public abstract class Solver implements Callable<SolutionCollection> {
 	 * @return a <code>Collection</code> of potential solutions
 	 */
 	public abstract SolutionCollection solve(Clue c);
+
+	/**
+	 * Get a String representation of this solver. This should also correspond
+	 * with the database name for this type of clue. e.g. "hidden" or "&lit"
+	 * 
+	 * @return the human-friendly name for this type of clue
+	 */
+	@Override
+	public abstract String toString();
+
 } // End of class Solver

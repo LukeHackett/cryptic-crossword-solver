@@ -11,7 +11,7 @@ import java.util.Collection;
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionPattern;
-import uk.ac.hud.cryptic.solver.Solver.Type;
+import uk.ac.hud.cryptic.solver.Hidden;
 
 /**
  * A set of database-related functions that interface with the project's MySQL
@@ -22,6 +22,8 @@ import uk.ac.hud.cryptic.solver.Solver.Type;
  */
 public class DB {
 
+	// The type for uncategorised clues
+	public static final String UNCATEGORISED = "uncategorised";
 	// Settings class holds connection information
 	private static final Settings SETTINGS = Settings.getInstance();
 	// Default number of records to retrieve from the DB
@@ -54,11 +56,11 @@ public class DB {
 	 *         the database
 	 */
 	public static Collection<Clue> getTestClues(int n,
-			boolean unknownCharacters, Type... types) {
+			boolean unknownCharacters, String... types) {
 		// Will hold the example (test) clues
 		Collection<Clue> clues = new ArrayList<>();
 		// Get n number of records for each declared type
-		for (Type t : types) {
+		for (String t : types) {
 			clues.addAll(getTestClues(t, unknownCharacters, n));
 		}
 		return clues;
@@ -86,7 +88,7 @@ public class DB {
 	 *            default number (10) of clues is retrieved
 	 * @return a collection of text records of the length specified (or not)
 	 */
-	public static Collection<Clue> getTestClues(Type type,
+	public static Collection<Clue> getTestClues(String type,
 			boolean unknownCharacters, int... maxRecords) {
 		// Will hold the example (test) clues
 		Collection<Clue> clues = new ArrayList<>();
@@ -99,14 +101,12 @@ public class DB {
 
 			// Construct the query string
 			String query;
-			if (type == Type.UNCATEGORISED) {
+			if (UNCATEGORISED.equals(type)) {
 				query = "SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` IS NULL "
 						+ "ORDER BY RAND() LIMIT " + records + ";";
 			} else {
 				query = "SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` = '"
-						+ type.getDBName()
-						+ "' ORDER BY RAND() LIMIT "
-						+ records + ";";
+						+ type + "' ORDER BY RAND() LIMIT " + records + ";";
 			}
 
 			// Retrieve and process the results
@@ -131,7 +131,7 @@ public class DB {
 	 */
 	public static void main(String[] args) {
 		// Get a default number of Hidden-type clue/solutions.
-		Collection<Clue> clues = getTestClues(Type.HIDDEN, true);
+		Collection<Clue> clues = getTestClues(new Hidden().toString(), true);
 		// Print the results
 		for (Clue c : clues) {
 			System.out.println(c.getClue() + ", " + c.getPattern());

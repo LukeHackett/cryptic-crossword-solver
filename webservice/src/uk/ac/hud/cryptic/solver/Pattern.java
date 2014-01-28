@@ -17,7 +17,7 @@ public class Pattern extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Pattern.class, Type.PATTERN);
+		testSolver(Pattern.class);
 	}
 
 	/**
@@ -28,6 +28,13 @@ public class Pattern extends Solver {
 	 */
 	public Pattern(Clue clue) {
 		super(clue);
+	}
+
+	/**
+	 * Default constructor for solver class
+	 */
+	public Pattern() {
+		super();
 	}
 
 	/**
@@ -109,6 +116,16 @@ public class Pattern extends Solver {
 		// }
 
 		return solutions;
+	}
+
+	/**
+	 * Get the database name for this type of clue
+	 * 
+	 * @return the database name for this type of clue
+	 */
+	@Override
+	public String toString() {
+		return "pattern";
 	}
 
 } // End of class Pattern

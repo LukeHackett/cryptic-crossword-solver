@@ -20,7 +20,7 @@ public class Hidden extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Hidden.class, Type.HIDDEN);
+		testSolver(Hidden.class);
 	}
 
 	/**
@@ -31,6 +31,13 @@ public class Hidden extends Solver {
 	 */
 	public Hidden(Clue clue) {
 		super(clue);
+	}
+
+	/**
+	 * Default constructor for solver class
+	 */
+	public Hidden() {
+		super();
 	}
 
 	/**
@@ -131,6 +138,16 @@ public class Hidden extends Solver {
 		solutions.addAll(calculateHiddenWords(c, true));
 
 		return solutions;
+	}
+
+	/**
+	 * Get the database name for this type of clue
+	 * 
+	 * @return the database name for this type of clue
+	 */
+	@Override
+	public String toString() {
+		return "hidden";
 	}
 
 } // End of class Hidden

@@ -1,6 +1,5 @@
 package uk.ac.hud.cryptic.core;
 
-import uk.ac.hud.cryptic.solver.Solver.Type;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -15,7 +14,7 @@ public class Clue {
 	private final String clue;
 	private final SolutionPattern pattern;
 	private String actualSolution;
-	private Type type;
+	private String type;
 	private SolutionCollection solutions;
 
 	/**
@@ -47,7 +46,7 @@ public class Clue {
 	 * @param type
 	 *            - the type of clue
 	 */
-	public Clue(String clue, String pattern, String solution, Type type) {
+	public Clue(String clue, String pattern, String solution, String type) {
 		this(clue, pattern);
 		actualSolution = solution.toLowerCase();
 		this.type = type;
@@ -131,9 +130,9 @@ public class Clue {
 	/**
 	 * Get the type of clue this is (if available)
 	 * 
-	 * @return the type of clue
+	 * @return the type of clue (db friendly name)
 	 */
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 

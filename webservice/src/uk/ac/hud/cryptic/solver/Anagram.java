@@ -22,7 +22,7 @@ public class Anagram extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Anagram.class, Type.ANAGRAM);
+		testSolver(Anagram.class);
 	}
 
 	/**
@@ -33,6 +33,13 @@ public class Anagram extends Solver {
 	 */
 	public Anagram(Clue clue) {
 		super(clue);
+	}
+
+	/**
+	 * Default constructor for solver class
+	 */
+	public Anagram() {
+		super();
 	}
 
 	/**
@@ -202,6 +209,16 @@ public class Anagram extends Solver {
 		// Don't dictionary filter as it's handled by anagram()
 
 		return solutions;
+	}
+
+	/**
+	 * Get the database name for this type of clue
+	 * 
+	 * @return the database name for this type of clue
+	 */
+	@Override
+	public String toString() {
+		return "anagram";
 	}
 
 } // End of class Anagram

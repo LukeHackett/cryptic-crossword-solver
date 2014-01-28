@@ -17,17 +17,24 @@ public class Acrostic extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Acrostic.class, Type.ACROSTIC);
+		testSolver(Acrostic.class);
 	}
 
 	/**
-	 * Default constructor for solver class
+	 * Constructor for solver class
 	 * 
 	 * @param clue
 	 *            - the clue to be solved
 	 */
 	public Acrostic(Clue clue) {
 		super(clue);
+	}
+
+	/**
+	 * Default constructor for solver class
+	 */
+	public Acrostic() {
+		super();
 	}
 
 	@Override
@@ -72,6 +79,16 @@ public class Acrostic extends Solver {
 		DICTIONARY.dictionaryFilter(solutions, pattern);
 
 		return solutions;
+	}
+
+	/**
+	 * Get the database name for this type of clue
+	 * 
+	 * @return the database name for this type of clue
+	 */
+	@Override
+	public String toString() {
+		return "acrostic";
 	}
 
 } // End of class Acrostic

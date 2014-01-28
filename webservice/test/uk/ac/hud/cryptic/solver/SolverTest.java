@@ -17,7 +17,6 @@ import java.util.concurrent.Future;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionCollection;
-import uk.ac.hud.cryptic.solver.Solver.Type;
 import uk.ac.hud.cryptic.util.DB;
 
 /**
@@ -33,7 +32,7 @@ public abstract class SolverTest {
 	 * @param solver
 	 *            - The solver Class to test
 	 */
-	public void testSolve(Type type, final Class<? extends Solver> solver,
+	public void testSolve(String type, final Class<? extends Solver> solver,
 			boolean unknownCharacters, int... testCount) {
 		// Obtain some test data from the database
 		Collection<Clue> clues = DB.getTestClues(type, unknownCharacters,

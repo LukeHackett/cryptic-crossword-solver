@@ -12,7 +12,6 @@ import uk.ac.hud.cryptic.solver.Anagram;
 import uk.ac.hud.cryptic.solver.Hidden;
 import uk.ac.hud.cryptic.solver.Pattern;
 import uk.ac.hud.cryptic.solver.Solver;
-import uk.ac.hud.cryptic.solver.Solver.Type;
 import uk.ac.hud.cryptic.util.DB;
 
 /**
@@ -35,8 +34,9 @@ public class Manager {
 	 */
 	public static void main(String[] args) {
 		// The clues to solve
-		Collection<Clue> clues = DB.getTestClues(10, true, Type.HIDDEN,
-				Type.ACROSTIC, Type.PATTERN);
+		Collection<Clue> clues = DB.getTestClues(10, true,
+				new Hidden().toString(), new Acrostic().toString(),
+				new Pattern().toString());
 
 		// Will record the success rate
 		int successes = 0;
@@ -57,8 +57,7 @@ public class Manager {
 			System.out.println("Results summary: "
 					+ (found ? "[[PASS]]" : "[[FAIL]]"));
 			System.out.println("\"" + clue.getClue() + "\" ("
-					+ clue.getActualSolution() + "), Type: "
-					+ clue.getType().getDBName());
+					+ clue.getActualSolution() + "), Type: " + clue.getType());
 			for (Solution s : allSolutions) {
 				System.out.println(s);
 			}
