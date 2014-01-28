@@ -38,6 +38,23 @@ public class Solution implements Comparable<Solution> {
 	}
 
 	/**
+	 * Constructor where the solution string is passed in and the confidence
+	 * 
+	 * @param solution
+	 *            - the potential solution to the corresponding clue which is
+	 *            represented by this class
+	 * @param confidence
+	 * 			  - the confidence rating of this solutuon on this clue
+	 */
+	public Solution(String solution, int confidence) {
+		trace = new ArrayList<>();
+		// Standardise all potential solutions
+		this.solution = WordUtils.normaliseInput(solution, false);
+		// Default confidence rating
+		this.confidence = confidence;
+	}
+
+	/**
 	 * Append an entry to the end of the trace's stack
 	 * 
 	 * @param traceEntry
