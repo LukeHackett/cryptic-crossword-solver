@@ -114,4 +114,23 @@ public class WordUtils {
 		return input.replaceAll("(\\s+|-)", "");
 	}
 
+	/**
+	 * Check whether the characters known by the user are present within the 
+	 * potential solution
+	 * 
+	 * @param word the solution to check
+	 * @param mandatoryChars the characters which should be present
+	 * @return
+	 */
+	public static boolean charactersPresentInWord(String word, String[] mandatoryChars) {
+		// Check through characters which must be present
+		for (String c : mandatoryChars) {
+			// If word does not contain character
+			if (!word.contains(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 } // End of class WordUtils

@@ -11,6 +11,7 @@ import java.util.HashSet;
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 public class Thesaurus {
 	// Thesaurus Instance
@@ -152,6 +153,41 @@ public class Thesaurus {
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");
 		}
+	}
+
+	/**
+	 * Retrieve specific synonyms of a given word
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms of the given word
+	 */
+	public Collection<String> getSpecificSynonyms(String word,
+			SolutionPattern pattern) {
+		// Use of HashSet prevents duplicates
+		Collection<String> synonyms = new HashSet<>();
+
+		int lengthOfSolution = pattern.getTotalLength();
+		int numOfWords = pattern.getNumberOfWords();
+
+		String[] knownChars = pattern.getKnownCharacters();
+
+		for (Collection<String> entry : thesaurus) {
+			if (entry.contains(word)) {
+				for (String e : entry) {
+					String[] words = e.split(" ");
+					if ((e.replaceAll(" ", "").length() == lengthOfSolution)
+							&& (numOfWords == words.length)
+							&& (WordUtils.charactersPresentInWord(e, knownChars))
+							&& (pattern.match(e))) {
+						synonyms.add(e);
+					}
+				}
+			}
+		}
+		// Remove the original word which was passed in (if present)
+		synonyms.remove(word);
+		return synonyms;
 	}
 
 } // End of class Thesaurus

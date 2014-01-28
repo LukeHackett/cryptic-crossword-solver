@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { 
-		//TestDictionary.class,
-		//TestThesaurus.class
+		DictionaryTest.class,
+		ThesaurusTest.class
 		})
 
 public class ResourceSuite {

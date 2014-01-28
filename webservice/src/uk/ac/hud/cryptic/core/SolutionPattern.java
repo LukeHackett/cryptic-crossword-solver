@@ -184,7 +184,7 @@ public class SolutionPattern {
 		}
 
 		// Are all characters unknown?
-		final String regex = "\\?+";
+		final String regex = "[?]+[-?]*";
 		allUnknown = Pattern.matches(regex, pattern);
 
 		// For 5-4,2 this will be 3
@@ -283,6 +283,15 @@ public class SolutionPattern {
 	}
 
 	/**
+	 * Get the number of words in the solution
+	 * 
+	 * @return the total words in the solution
+	 */
+	public int getNumberOfWords() {
+		return wordCount;
+	}
+
+	/**
 	 * Determine whether the solution pattern is modelling a multi-word solution
 	 * 
 	 * @return <code>true</code> if the solution being modelled is multi-worded,
@@ -301,8 +310,8 @@ public class SolutionPattern {
 	 * @return <code>true</code> if the proposed solution matches the pattern,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean match(String solution) {
-		solution = WordUtils.removeSpacesAndHyphens(solution);
+	public boolean match(String sol) {
+		String solution = WordUtils.normaliseInput(sol, true);
 		// Assume a match until proven otherwise
 		boolean match = true;
 
@@ -310,7 +319,25 @@ public class SolutionPattern {
 		if (!(solution.length() == totalLength)) {
 			match = false;
 		} else if (allUnknown) {
-			match = true;
+			// Check solution matches word lengths of pattern
+			int[] wordLengths = getIndividualWordLengths();
+			String[] solWords = sol.split(" ");
+			int[] solWordLengths = new int[solWords.length];
+
+			for (int i = 0; i < solWords.length; i++)
+				solWordLengths[i] = solWords[i].length();
+			// If solution has same number of words as pattern
+			if (solWordLengths.length == wordLengths.length) {
+				for (int i = 0; i < wordLengths.length; i++) {
+					// If individual word lengths are the same
+					if (wordLengths[i] != solWordLengths[i]) {
+						match = false;
+						break;
+					}
+				}
+			} else {
+				match = false;
+			}
 		} else {
 			int counter = 0;
 			// For the patterns representing each individual word
