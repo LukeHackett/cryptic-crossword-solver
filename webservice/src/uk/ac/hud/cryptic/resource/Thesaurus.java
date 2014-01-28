@@ -153,14 +153,16 @@ public class Thesaurus {
 		// Get synonyms
 		Collection<String> synonyms = thesaurus.get(word);
 
-		for (String entry : synonyms) {
-			String[] words = entry.split(" ");
-			String singleWordEntry = entry.replaceAll(" ", "");
-			if ((singleWordEntry.length() == lengthOfSolution)
-					&& (numOfWords == words.length)
-					&& (WordUtils.charactersPresentInWord(entry, knownChars))
-					&& (pattern.match(entry))) {
-				matchingSynonyms.add(entry);
+		if (synonyms != null) {
+			for (String entry : synonyms) {
+				String[] words = entry.split(" ");
+				String singleWordEntry = entry.replaceAll(" ", "");
+				if ((singleWordEntry.length() == lengthOfSolution)
+						&& (numOfWords == words.length)
+						&& (WordUtils.charactersPresentInWord(entry, knownChars))
+						&& (pattern.match(entry))) {
+					matchingSynonyms.add(entry);
+				}
 			}
 		}
 		// Remove the original word which was passed in (if present)
