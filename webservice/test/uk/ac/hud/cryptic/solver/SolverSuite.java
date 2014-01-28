@@ -14,12 +14,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { 
-//		AcrosticTest.class,
-//		AnagramTest.class,
-//		HiddenTest.class,
-//		HomophoneTest.class,
-//		PatternTest.class,
-//		SolverTest.class
+		AcrosticTest.class,
+		AnagramTest.class,
+		HiddenTest.class,
+		PatternTest.class,
 		})
 
 public class SolverSuite {

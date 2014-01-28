@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import uk.ac.hud.cryptic.solver.Solver.Type;
 
-public class AcrosticTest extends SolverTest {
+public class AnagramTest extends SolverTest {
 
 	// Corresponding Type for this test (for database)
 	private static Type type;
@@ -19,9 +19,9 @@ public class AcrosticTest extends SolverTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		type = Type.ACROSTIC;
-		solver = Acrostic.class;
-		testCount = 20;
+		type = Type.ANAGRAM;
+		solver = Anagram.class;
+		testCount = 5;
 		unknownCharacters = true;
 	}
 
