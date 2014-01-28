@@ -13,6 +13,9 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  */
 public class Acrostic extends Solver {
 
+	// A readable (and DB-valid) name for the solver
+	private static final String NAME = "acrostic";
+
 	/**
 	 * Entry point to the code for testing purposes
 	 */
@@ -88,7 +91,7 @@ public class Acrostic extends Solver {
 	 */
 	@Override
 	public String toString() {
-		return "acrostic";
+		return NAME;
 	}
 
 } // End of class Acrostic

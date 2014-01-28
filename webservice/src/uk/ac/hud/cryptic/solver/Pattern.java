@@ -13,6 +13,9 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  */
 public class Pattern extends Solver {
 
+	// A readable (and DB-valid) name for the solver
+	private static final String NAME = "pattern";
+
 	/**
 	 * Entry point to the code for testing purposes
 	 */
@@ -125,7 +128,7 @@ public class Pattern extends Solver {
 	 */
 	@Override
 	public String toString() {
-		return "pattern";
+		return NAME;
 	}
 
 } // End of class Pattern

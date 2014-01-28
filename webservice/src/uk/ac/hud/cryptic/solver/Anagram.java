@@ -18,6 +18,9 @@ import uk.ac.hud.cryptic.util.WordUtils;
  */
 public class Anagram extends Solver {
 
+	// A readable (and DB-valid) name for the solver
+	private static final String NAME = "anagram";
+
 	/**
 	 * Entry point to the code for testing purposes
 	 */
@@ -218,7 +221,7 @@ public class Anagram extends Solver {
 	 */
 	@Override
 	public String toString() {
-		return "anagram";
+		return NAME;
 	}
 
 } // End of class Anagram

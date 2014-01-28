@@ -16,6 +16,9 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  */
 public class Hidden extends Solver {
 
+	// A readable (and DB-valid) name for the solver
+	private static final String NAME = "hidden";
+
 	/**
 	 * Entry point to the code for testing purposes
 	 */
@@ -147,7 +150,7 @@ public class Hidden extends Solver {
 	 */
 	@Override
 	public String toString() {
-		return "hidden";
+		return NAME;
 	}
 
 } // End of class Hidden
