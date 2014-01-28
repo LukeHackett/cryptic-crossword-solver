@@ -4,29 +4,25 @@
  */
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import uk.ac.hud.cryptic.solver.Acrostic;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * @author Mohammad Rahman
  * @version 0.1
+ * 
  */
 public class ClueTest {
 
 	private static SolutionPattern pattern;
 	private static Clue clue;
 	private static SolutionCollection solutions;
-	private static String actualSolution;
 	private static String type;
+	private static Solution solution;
+
 
 	/**
 	 * @throws java.lang.Exception
@@ -34,12 +30,28 @@ public class ClueTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		pattern = new SolutionPattern("?????");
-		clue = new Clue("Air that's more usually seen in cheerleaders",
-				pattern.toString(), "music", new Acrostic().toString()); // MUSIC
+		clue = new Clue("Air that's more usually seen in cheerleaders", 
+				pattern.toString());
+
 		solutions = new SolutionCollection();
-		solutions.add(new Solution("MUSIC"));
-		actualSolution = "MUSIC";
-		type = new Acrostic().toString();
+
+		solution = new Solution("music",100);
+
+		solutions.add(new Solution("smore",10));
+		solutions.add(new Solution("usual",20));
+		solutions.add(new Solution("taths",36));
+		solutions.add(new Solution("cheer",49));
+		solutions.add(solution);
+		solutions.add(new Solution("sered",1));
+		solutions.add(new Solution("salse",75));
+
+		clue.setSolutions(solutions);
+		clue.setActualSolution("music");
+		type = "HIDDEN";
+		clue.setType(type);
+		String actualSolution = "MUSIC";
+		clue.setActualSolution(actualSolution);
+
 
 	}
 
@@ -51,120 +63,125 @@ public class ClueTest {
 		pattern = null;
 		clue = null;
 		solutions = null;
-		actualSolution = null;
 		type = null;
 
 	}
 
+
 	@Test
 	public final void testClueStringString() {
-		Clue test = new Clue("Air that's more usually seen in cheerleaders",
-				"?????");
-		assertTrue(test.equals(clue));
-
+		Clue test = new Clue("Air that's more usually seen in cheerleaders", "?????");
+		assertEquals(test.getClue(),clue.getClue());
+		assertEquals(test.getPattern().toString(),clue.getPattern().toString());
 	}
 
-	/**
-	 * Test method for
-	 * {@link uk.ac.hud.cryptic.core.Clue#Clue(java.lang.String, java.lang.String, java.lang.String, uk.ac.hud.cryptic.solver.Solver.Type)}
-	 * .
-	 */
-	@Test
-	public final void testClueStringStringStringType() {
 
-		String t = new Acrostic().toString();
-		Clue test = new Clue("Air that's more usually seen in cheerleaders",
-				"?????", "MUSIC", t);
-		assertTrue(test.getType().equals(t));
-
-	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getActualSolution()}.
+	 * This method will test to see if the actual solution matches
+	 * the test data solution
 	 */
 	@Test
 	public final void testGetActualSolution() {
-		String test = "music";
-		assertEquals(test, clue.getActualSolution());
+		String test = "MUSIC";
+		assertEquals(test,clue.getActualSolution());
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getBestSolution()}.
+	 * This method will test to see that the best solution i.e the solution
+	 * with the highest confidence rating matches to the actual solution
 	 */
 	@Test
 	public final void testGetBestSolution() {
-		fail("Not yet implemented"); // TODO
+		Solution test = new Solution("music", 100);
+		assertEquals(clue.getBestSolution(), test);
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getClue()}.
+	 * This test method checks to see that the getter for the clue returns
+	 * the clue as it is entered
 	 */
 	@Test
 	public final void testGetClue() {
-		assertEquals("Air that's more usually seen in cheerleaders",
-				"air that's more usually seen in cheerleaders", clue.getClue());
+		assertEquals("Air that's more usually seen in cheerleaders", 
+				"air that's more usually seen in cheerleaders",
+				clue.getClue());
 	}
 
 	/**
-	 * Test method for
-	 * {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}. No
-	 * Punctuation
+	 * This method tests that all punctuation is removed from the clue.
 	 */
 	@Test
-	// Get clue no punctuation with spaces
-	public final void testGetClueNoWithPunctuation() {
+	//Get clue no punctuation with spaces
+	public final void testGetClueNoWithPunctuation() {		
 		assertEquals("air thats more usually seen in cheerleaders",
 				clue.getClueNoPunctuation(false));
 	}
 
 	/**
-	 * Test method for
-	 * {@link uk.ac.hud.cryptic.core.Clue#getClueNoPunctuation(boolean)}. No
-	 * Spaces
+	 * This method tests all punctuation and spaces are removed from the clue
 	 */
 	@Test
-	// Get clue no punctuation without spaces
-	public final void testGetClueNoPunctuationNoSpaces() {
+	//Get clue no punctuation without spaces
+	public final void testGetClueNoPunctuationNoSpaces() {		
 		assertEquals("airthatsmoreusuallyseenincheerleaders",
 				clue.getClueNoPunctuation(true));
 	}
 
+
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getClueWords()}.
+	 * This method tests that the words in the clue are split so that they
+	 * can be evaluated individually
 	 */
 	@Test
 	public final void testGetClueWords() {
 		String aclue = clue.getClueNoPunctuation(false).trim();
-		String[] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
+		String [] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
 
 		assertArrayEquals(splitclues, clue.getClueWords());
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getPattern()}.
+	 * This method tests the pattern of the clue has not changed from when it
+	 * has been entered
 	 */
 	@Test
 	public final void testGetPattern() {
-		assertEquals(pattern.toString(), clue.getPattern().toString());
+		assertEquals(pattern.toString(),
+				clue.getPattern().toString());
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getSolutions()}.
+	 * This method tests the getter for the solutions of a clue
 	 */
 	@Test
 	public final void testGetSolutions() {
-		SolutionCollection test = new SolutionCollection();
-		test.add(new Solution("MUSIC"));
-		assertEquals(test, solutions);
+		String t = "HIDDEN";
+		Clue test = new Clue("Air that's more usually seen in cheerleaders", 
+				"?????","MUSIC", t);
+
+		SolutionCollection testSolutions = new SolutionCollection();
+		testSolutions.add(new Solution("smore"));
+		testSolutions.add(new Solution("usual"));
+		testSolutions.add(new Solution("taths"));
+		testSolutions.add(new Solution("cheer"));
+		testSolutions.add(new Solution("music"));
+		testSolutions.add(new Solution("sered"));
+		testSolutions.add(new Solution("salse"));
+		test.setSolutions(testSolutions);
+
+		assertEquals(test.getSolutions(),clue.getSolutions());	
 	}
 
 	/**
-	 * Test method for {@link uk.ac.hud.cryptic.core.Clue#getType()}.
+	 * This method tests the getter for the Type of clue it is
 	 */
 	@Test
 	public final void testGetType() {
-		String t = new Acrostic().toString();
-		assertEquals(t, type);
+		String type;
+		type = "HIDDEN";
+		assertEquals(type,clue.getType().toString());
+
 	}
 
 }
