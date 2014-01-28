@@ -50,12 +50,16 @@ public class WordUtils {
 			remaining.add(c);
 		}
 
-		// For each character of the target word
-		for (char c : targetWord.toCharArray()) {
-			// If the char isn't available in the pool of remining characters,
-			// abort mission
-			if (!remaining.remove(c)) {
-				return false;
+		if (!targetWord.isEmpty()) {
+
+			// For each character of the target word
+			for (char c : targetWord.toCharArray()) {
+				// If the char isn't available in the pool of remaining
+				// characters,
+				// abort mission
+				if (!remaining.remove(c)) {
+					return false;
+				}
 			}
 		}
 		// If you've reached here, the target word can indeed be built
@@ -115,22 +119,23 @@ public class WordUtils {
 	}
 
 	/**
-	 * Check whether the characters known by the user are present within the 
+	 * Check whether the characters known by the user are present within the
 	 * potential solution
 	 * 
-	 * @param word the solution to check
-	 * @param mandatoryChars the characters which should be present
+	 * @param word
+	 *            the solution to check
+	 * @param mandatoryChars
+	 *            the characters which should be present
 	 * @return
 	 */
-	public static boolean charactersPresentInWord(String word, String[] mandatoryChars) {
-		// Check through characters which must be present
-		for (String c : mandatoryChars) {
-			// If word does not contain character
-			if (!word.contains(c)) {
-				return false;
-			}
+	public static boolean charactersPresentInWord(String word,
+			String[] mandatoryChars) {
+		StringBuilder builder = new StringBuilder();
+		// Convert array of String to String
+		for (String s : mandatoryChars) {
+			builder.append(s);
 		}
-		return true;
+		return hasCharacters(builder.toString(), word);
 	}
 
 } // End of class WordUtils
