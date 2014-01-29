@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import uk.ac.hud.cryptic.core.ClueTest;
+import uk.ac.hud.cryptic.core.ManagerTest;
 
 /**
  * @author Mohammad Rahman
@@ -15,10 +16,10 @@ import uk.ac.hud.cryptic.core.ClueTest;
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { 
-		ClueTest.class
-		//ManagerTest.class,
-		//SolutionTest.class,
-		//SolutionCollectionTest.class,
+		ClueTest.class,
+		ManagerTest.class,
+		SolutionTest.class,
+		SolutionCollectionTest.class
 		//SolutionPatternTest.class
 		})
 
