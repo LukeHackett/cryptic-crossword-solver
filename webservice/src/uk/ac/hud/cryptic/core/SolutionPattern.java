@@ -302,7 +302,7 @@ public class SolutionPattern {
 	}
 
 	/**
-	 * Determine is a given solution matches against the solution pattern
+	 * /** Determine is a given solution matches against the solution pattern
 	 * provided by the user.
 	 * 
 	 * @param solution
@@ -310,8 +310,8 @@ public class SolutionPattern {
 	 * @return <code>true</code> if the proposed solution matches the pattern,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean match(String sol) {
-		String solution = WordUtils.normaliseInput(sol, true);
+	public boolean match(String solution) {
+		solution = WordUtils.removeSpacesAndHyphens(solution);
 		// Assume a match until proven otherwise
 		boolean match = true;
 
@@ -319,24 +319,26 @@ public class SolutionPattern {
 		if (!(solution.length() == totalLength)) {
 			match = false;
 		} else if (allUnknown) {
-			// Check solution matches word lengths of pattern
-			int[] wordLengths = getIndividualWordLengths();
-			String[] solWords = sol.split(" ");
-			int[] solWordLengths = new int[solWords.length];
-
-			for (int i = 0; i < solWords.length; i++)
-				solWordLengths[i] = solWords[i].length();
-			// If solution has same number of words as pattern
-			if (solWordLengths.length == wordLengths.length) {
-				for (int i = 0; i < wordLengths.length; i++) {
-					// If individual word lengths are the same
-					if (wordLengths[i] != solWordLengths[i]) {
-						match = false;
-						break;
+			// Handle multi-word solutions
+			if (hasMultipleWords()) {
+				// Format proposed solution in line with the pattern
+				String multiWord = recomposeSolution(solution);
+				// Break the solution into the separate word components
+				String[] indWords = multiWord.split(WordUtils.SPACE_AND_HYPHEN);
+				// Must contain same number of words
+				if (indWordPatterns.length != indWords.length) {
+					match = false;
+				} else {
+					// Each word must be of the same length
+					for (int i = 0; i < indWords.length; i++) {
+						if (indWords[i].length() != indWordPatterns[i].length()) {
+							match = false;
+							break;
+						}
 					}
 				}
 			} else {
-				match = false;
+				match = true;
 			}
 		} else {
 			int counter = 0;

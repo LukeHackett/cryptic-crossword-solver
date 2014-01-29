@@ -30,6 +30,9 @@ public class WordUtils {
 	// Will match whitespace characters
 	public static final String REGEX_WHITESPACE = "\\s+";
 
+	// Spaces and hyphens
+	public static final String SPACE_AND_HYPHEN = "(\\s+|-)";
+
 	/**
 	 * Determine whether a specified word can be create by using the characters
 	 * present in a pool of available characters.
@@ -115,7 +118,7 @@ public class WordUtils {
 	 * @return the text with no spaces or hyphens
 	 */
 	public static String removeSpacesAndHyphens(String input) {
-		return input.replaceAll("(\\s+|-)", "");
+		return input.replaceAll(SPACE_AND_HYPHEN, "");
 	}
 
 	/**
