@@ -1,7 +1,7 @@
 package uk.ac.hud.cryptic.core;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -20,7 +20,7 @@ public class Solution implements Comparable<Solution> {
 	// The confidence score for this generated solution
 	private int confidence;
 	// A log of the steps involved to arrive at this solution
-	private Collection<String> trace;
+	private List<String> trace;
 
 	/**
 	 * Constructor where the solution string is passed in
@@ -61,7 +61,9 @@ public class Solution implements Comparable<Solution> {
 	 *            - the item to append to the solution's trace stack
 	 */
 	public void addToTrace(String traceEntry) {
-		trace.add(traceEntry);
+		if (traceEntry != null && !traceEntry.isEmpty()) {
+			trace.add(traceEntry);
+		}
 	}
 
 	/**
@@ -142,7 +144,7 @@ public class Solution implements Comparable<Solution> {
 	 * 
 	 * @return the trace list for this solution
 	 */
-	public Collection<String> getSolutionTrace() {
+	public List<String> getSolutionTrace() {
 		return trace;
 	}
 

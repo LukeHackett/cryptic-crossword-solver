@@ -1,6 +1,6 @@
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,10 +11,22 @@ public class SolutionTest {
 
 	private static Solution solution = new Solution("Dream");
 	private static Solution solutionConfidence = new Solution("Dream", 75);
-	
+
 	@Test
-	public void testAddToTraceAndGetSolutionTrace()
-	{
+	public void testAddToTraceAndGetSolutionTrace() {
+		Solution s = new Solution("Banana");
+		assertEquals(0, s.getSolutionTrace().size());
+		final String trace1 = "Solution hidden in substring \"blahbananablah\"";
+		s.addToTrace(trace1);
+		assertEquals(1, s.getSolutionTrace().size());
+		s.addToTrace(null);
+		assertEquals(1, s.getSolutionTrace().size());
+		s.addToTrace("");
+		assertEquals(1, s.getSolutionTrace().size());
+		s.addToTrace("A second trace message");
+		assertEquals(2, s.getSolutionTrace().size());
+		assertEquals(trace1, s.getSolutionTrace().get(0));
+
 		Collection<String> testColl = new ArrayList<>();
 		assertEquals(testColl, solution.getSolutionTrace());
 		String traceEntry = "Looking through Acrostic";
@@ -22,86 +34,75 @@ public class SolutionTest {
 		testColl.add(traceEntry);
 		assertEquals(testColl, solution.getSolutionTrace());
 	}
-	
+
 	@Test
-	public void testCompareToSameConfidencesAndSolutions()
-	{
+	public void testCompareToSameConfidencesAndSolutions() {
 		Solution solutionToCompare = new Solution("Dream", 75);
 		assertEquals(0, solutionConfidence.compareTo(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testCompareToSameConfidencesAndDifferentSolutions()
-	{
+	public void testCompareToSameConfidencesAndDifferentSolutions() {
 		Solution solutionToCompare = new Solution("Fantasy", 75);
 		assertEquals(-2, solutionConfidence.compareTo(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testCompareToDifferentConfidencesAndSameSolutions()
-	{
+	public void testCompareToDifferentConfidencesAndSameSolutions() {
 		Solution solutionToCompare = new Solution("Dream", 50);
 		assertEquals(0, solutionConfidence.compareTo(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testCompareToDifferentConfidencesAndSolutions()
-	{
+	public void testCompareToDifferentConfidencesAndSolutions() {
 		Solution solutionToCompare = new Solution("Fantasy", 50);
 		assertEquals(1, solutionConfidence.compareTo(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testEqualsDifferentSolutionAndConfidence()
-	{
+	public void testEqualsDifferentSolutionAndConfidence() {
 		Solution solutionToCompare = new Solution("Fantasy", 75);
 		assertEquals(false, solutionConfidence.equals(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testEqualsSameSolutionAndConfidence()
-	{
+	public void testEqualsSameSolutionAndConfidence() {
 		Solution solutionToCompare = new Solution("Dream", 75);
 		assertEquals(true, solutionConfidence.equals(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testEqualsSameSolutionAndDifferentConfidence()
-	{
+	public void testEqualsSameSolutionAndDifferentConfidence() {
 		Solution solutionToCompare = new Solution("Dream", 50);
 		assertEquals(true, solutionConfidence.equals(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testEqualsDifferentSolutionAndSameConfidence()
-	{
+	public void testEqualsDifferentSolutionAndSameConfidence() {
 		Solution solutionToCompare = new Solution("Fantasy", 75);
 		assertEquals(false, solutionConfidence.equals(solutionToCompare));
 	}
-	
+
 	@Test
-	public void testGetConfidence()
-	{
-		assertEquals(0, Double.compare(75.00, solutionConfidence.getConfidence()));
+	public void testGetConfidence() {
+		assertEquals(0,
+				Double.compare(75.00, solutionConfidence.getConfidence()));
 	}
-	
+
 	@Test
-	public void testGetSolution()
-	{
+	public void testGetSolution() {
 		assertEquals("dream", solutionConfidence.getSolution());
 	}
-	
+
 	@Test
-	public void testSetConfidence()
-	{
+	public void testSetConfidence() {
 		Solution solution = new Solution("Test");
 		assertEquals(true, solution.setConfidence(50));
 		assertEquals(0, Double.compare(50.00, solution.getConfidence()));
 	}
-	
+
 	@Test
-	public void testToString()
-	{
+	public void testToString() {
 		assertEquals("dream [75%]", solutionConfidence.toString());
 	}
 }
