@@ -17,10 +17,10 @@ public class Pattern extends Solver {
 	private static final String NAME = "pattern";
 
 	/**
-	 * Entry point to the code for testing purposes
+	 * Default constructor for solver class
 	 */
-	public static void main(String[] args) {
-		testSolver(Pattern.class);
+	public Pattern() {
+		super();
 	}
 
 	/**
@@ -31,13 +31,6 @@ public class Pattern extends Solver {
 	 */
 	public Pattern(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Default constructor for solver class
-	 */
-	public Pattern() {
-		super();
 	}
 
 	/**
@@ -129,6 +122,13 @@ public class Pattern extends Solver {
 	@Override
 	public String toString() {
 		return NAME;
+	}
+
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Pattern.class);
 	}
 
 } // End of class Pattern

@@ -27,19 +27,6 @@ public class Dictionary {
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
 
-	/**
-	 * This method will return the current (and only) instance of the Dictionary
-	 * object.
-	 * 
-	 * @return the dictionary
-	 */
-	public static Dictionary getInstance() {
-		if (instance == null) {
-			instance = new Dictionary();
-		}
-		return instance;
-	}
-
 	// Actual dictionary data structure
 	private Collection<String> dictionary;
 
@@ -48,6 +35,60 @@ public class Dictionary {
 	 */
 	private Dictionary() {
 		populateDictionaryFromFile();
+	}
+
+	/**
+	 * Load the dictionary into a HashSet to allow for much faster access
+	 */
+	private void populateDictionaryFromFile() {
+		InputStream[] is = { settings.getDictionaryPath() };
+
+		// Instantiate the dictionary object
+		dictionary = new HashSet<>();
+
+		// Read specified dictionary to internal data structure
+		for (InputStream element : is) {
+			readFile(element, true);
+		}
+
+		// Remove specified exclusions
+		InputStream exclusions = settings.getDictionaryExclusionsPath();
+		readFile(exclusions, false);
+
+		// Now add custom dictionary (takes precedence over exclusions)
+		InputStream customWords = settings.getCustomDictionaryPath();
+		readFile(customWords, true);
+	}
+
+	/**
+	 * Read an <code>InputStream</code> and either add or remove the contents
+	 * from the dictionary depending on which flag is passed.
+	 * 
+	 * @param element
+	 *            - the Stream to read in
+	 * @param add
+	 *            - <code>true</code> to add the found words to the dictionary,
+	 *            <code>false</code> to remove them
+	 */
+	private void readFile(InputStream element, boolean add) {
+
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				element))) {
+			// Open the dictionary
+			String line = null;
+
+			// Loop over every line
+			while ((line = br.readLine()) != null) {
+				if (add) {
+					dictionary.add(line.toLowerCase().trim());
+				} else {
+					dictionary.remove(line.toLowerCase().trim());
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -198,29 +239,6 @@ public class Dictionary {
 	}
 
 	/**
-	 * Load the dictionary into a HashSet to allow for much faster access
-	 */
-	private void populateDictionaryFromFile() {
-		InputStream[] is = { settings.getDictionaryPath() };
-
-		// Instantiate the dictionary object
-		dictionary = new HashSet<>();
-
-		// Read specified dictionary to internal data structure
-		for (InputStream element : is) {
-			readFile(element, true);
-		}
-
-		// Remove specified exclusions
-		InputStream exclusions = settings.getDictionaryExclusionsPath();
-		readFile(exclusions, false);
-
-		// Now add custom dictionary (takes precedence over exclusions)
-		InputStream customWords = settings.getCustomDictionaryPath();
-		readFile(customWords, true);
-	}
-
-	/**
 	 * Determine if any words are present in the dictionary which begin with the
 	 * specified prefix
 	 * 
@@ -242,34 +260,16 @@ public class Dictionary {
 	}
 
 	/**
-	 * Read an <code>InputStream</code> and either add or remove the contents
-	 * from the dictionary depending on which flag is passed.
+	 * This method will return the current (and only) instance of the Dictionary
+	 * object.
 	 * 
-	 * @param element
-	 *            - the Stream to read in
-	 * @param add
-	 *            - <code>true</code> to add the found words to the dictionary,
-	 *            <code>false</code> to remove them
+	 * @return the dictionary
 	 */
-	private void readFile(InputStream element, boolean add) {
-
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(
-				element))) {
-			// Open the dictionary
-			String line = null;
-
-			// Loop over every line
-			while ((line = br.readLine()) != null) {
-				if (add) {
-					dictionary.add(line.toLowerCase().trim());
-				} else {
-					dictionary.remove(line.toLowerCase().trim());
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static Dictionary getInstance() {
+		if (instance == null) {
+			instance = new Dictionary();
 		}
+		return instance;
 	}
 
 } // End of class Dictionary

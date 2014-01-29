@@ -20,10 +20,10 @@ public class Hidden extends Solver {
 	private static final String NAME = "hidden";
 
 	/**
-	 * Entry point to the code for testing purposes
+	 * Default constructor for solver class
 	 */
-	public static void main(String[] args) {
-		testSolver(Hidden.class);
+	public Hidden() {
+		super();
 	}
 
 	/**
@@ -34,13 +34,6 @@ public class Hidden extends Solver {
 	 */
 	public Hidden(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Default constructor for solver class
-	 */
-	public Hidden() {
-		super();
 	}
 
 	/**
@@ -151,6 +144,13 @@ public class Hidden extends Solver {
 	@Override
 	public String toString() {
 		return NAME;
+	}
+
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Hidden.class);
 	}
 
 } // End of class Hidden

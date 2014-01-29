@@ -22,10 +22,10 @@ public class Anagram extends Solver {
 	private static final String NAME = "anagram";
 
 	/**
-	 * Entry point to the code for testing purposes
+	 * Default constructor for solver class
 	 */
-	public static void main(String[] args) {
-		testSolver(Anagram.class);
+	public Anagram() {
+		super();
 	}
 
 	/**
@@ -36,13 +36,6 @@ public class Anagram extends Solver {
 	 */
 	public Anagram(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Default constructor for solver class
-	 */
-	public Anagram() {
-		super();
 	}
 
 	/**
@@ -222,6 +215,13 @@ public class Anagram extends Solver {
 	@Override
 	public String toString() {
 		return NAME;
+	}
+
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Anagram.class);
 	}
 
 } // End of class Anagram

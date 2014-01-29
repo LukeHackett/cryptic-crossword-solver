@@ -28,17 +28,6 @@ public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = -8312653026552012858L;
 
 	/**
-	 * Initialise resources at servlet creation rather than during the first
-	 * clue call to the service
-	 */
-	@Override
-	public void init() {
-		Dictionary.getInstance();
-		Thesaurus.getInstance();
-		Settings.getInstance();
-	}
-
-	/**
 	 * This method returns whether or not the x-requested-with header found
 	 * within the request object states an AJAX request.
 	 * 
@@ -170,5 +159,16 @@ public class Servlet extends HttpServlet {
 			throw new HTTPException(
 					HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	/**
+	 * Initialise resources at servlet creation rather than during the first
+	 * clue call to the service
+	 */
+	@Override
+	public void init() {
+		Dictionary.getInstance();
+		Thesaurus.getInstance();
+		Settings.getInstance();
 	}
 }

@@ -138,26 +138,32 @@ public class Clue {
 
 	/**
 	 * Set the actual solution to this clue
-	 * @param actualSolution the actualSolution to set
+	 * 
+	 * @param actualSolution
+	 *            the actualSolution to set
 	 */
 	public void setActualSolution(String actualSolution) {
 		this.actualSolution = actualSolution;
 	}
 
 	/**
-	 * Set the Type of Clue this is
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
 	 * Set the solutions this clue can have
-	 * @param solutions the solutions to set
+	 * 
+	 * @param solutions
+	 *            the solutions to set
 	 */
 	public void setSolutions(SolutionCollection solutions) {
 		this.solutions = solutions;
+	}
+
+	/**
+	 * Set the Type of Clue this is
+	 * 
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 } // End of class Clue

@@ -20,16 +20,24 @@ public class Settings {
 	private static final String LOCAL_PRE_PATH = "/";
 
 	/**
-	 * This method will return the current (and only) instance of the Settings
-	 * object.
+	 * Get the InputStream for the given path to a resource. The exact location
+	 * depends on whether the application is being run from a local or server
+	 * environment.
 	 * 
-	 * @return Settings
+	 * @param resource
+	 *            - the path of the resource to use
+	 * @return the <code>InputStream</code> of the requested resource
 	 */
-	public static Settings getInstance() {
-		if (instance == null) {
-			instance = new Settings();
-		}
-		return instance;
+	private InputStream getPath(String resource) {
+		// Am I being called from a Servlet?
+		boolean server = context != null;
+		// Path to the dictionary resource
+		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
+		// InputStream to resource
+		InputStream is = server ? context.getResourceAsStream(path)
+				: Settings.class.getResourceAsStream(path);
+
+		return is;
 	}
 
 	/**
@@ -95,27 +103,6 @@ public class Settings {
 	}
 
 	/**
-	 * Get the InputStream for the given path to a resource. The exact location
-	 * depends on whether the application is being run from a local or server
-	 * environment.
-	 * 
-	 * @param resource
-	 *            - the path of the resource to use
-	 * @return the <code>InputStream</code> of the requested resource
-	 */
-	private InputStream getPath(String resource) {
-		// Am I being called from a Servlet?
-		boolean server = context != null;
-		// Path to the dictionary resource
-		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
-		// InputStream to resource
-		InputStream is = server ? context.getResourceAsStream(path)
-				: Settings.class.getResourceAsStream(path);
-
-		return is;
-	}
-
-	/**
 	 * This method will return the path to the pronouncing dictionary file.
 	 * 
 	 * @return the file path to the pronouncing dictionary
@@ -146,6 +133,19 @@ public class Settings {
 	 */
 	public void setServletContext(ServletContext sc) {
 		context = sc;
+	}
+
+	/**
+	 * This method will return the current (and only) instance of the Settings
+	 * object.
+	 * 
+	 * @return Settings
+	 */
+	public static Settings getInstance() {
+		if (instance == null) {
+			instance = new Settings();
+		}
+		return instance;
 	}
 
 } // End of class Settings

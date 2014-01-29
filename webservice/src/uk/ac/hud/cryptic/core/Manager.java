@@ -27,47 +27,6 @@ import uk.ac.hud.cryptic.util.DB;
 public class Manager {
 
 	/**
-	 * A entry point to the class in order to test, in particular, the
-	 * concurrent nature of the solver algorithms. This little test will obtain
-	 * a number of test clues from the database and pass these to several solver
-	 * algorithms simultaneously for solving.
-	 */
-	public static void main(String[] args) {
-		// The clues to solve
-		Collection<Clue> clues = DB.getTestClues(10, true,
-				new Hidden().toString(), new Acrostic().toString(),
-				new Pattern().toString());
-
-		// Will record the success rate
-		int successes = 0;
-
-		for (final Clue clue : clues) {
-
-			// Instantiate the manager and fire off the clue to the solvers
-			Manager m = new Manager();
-			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
-
-			boolean found;
-			// If found, mark as a success
-			if (found = allSolutions.contains(clue.getActualSolution())) {
-				successes++;
-			}
-
-			// Print block for results
-			System.out.println("Results summary: "
-					+ (found ? "[[PASS]]" : "[[FAIL]]"));
-			System.out.println("\"" + clue.getClue() + "\" ("
-					+ clue.getActualSolution() + "), Type: " + clue.getType());
-			for (Solution s : allSolutions) {
-				System.out.println(s);
-			}
-			System.out.println("--------------------------------");
-		}
-		System.out.println("The solution has been found " + successes
-				+ " out of " + clues.size() + " times.");
-	}
-
-	/**
 	 * This method could take some input from the Servlet / Controller in the
 	 * form of a <code>Clue</code> object and return a
 	 * <code>SolutionCollection</code> of the potential solutions that have been
@@ -113,6 +72,47 @@ public class Manager {
 		executor.shutdown();
 
 		return allSolutions;
+	}
+
+	/**
+	 * A entry point to the class in order to test, in particular, the
+	 * concurrent nature of the solver algorithms. This little test will obtain
+	 * a number of test clues from the database and pass these to several solver
+	 * algorithms simultaneously for solving.
+	 */
+	public static void main(String[] args) {
+		// The clues to solve
+		Collection<Clue> clues = DB.getTestClues(10, true,
+				new Hidden().toString(), new Acrostic().toString(),
+				new Pattern().toString());
+
+		// Will record the success rate
+		int successes = 0;
+
+		for (final Clue clue : clues) {
+
+			// Instantiate the manager and fire off the clue to the solvers
+			Manager m = new Manager();
+			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
+
+			boolean found;
+			// If found, mark as a success
+			if (found = allSolutions.contains(clue.getActualSolution())) {
+				successes++;
+			}
+
+			// Print block for results
+			System.out.println("Results summary: "
+					+ (found ? "[[PASS]]" : "[[FAIL]]"));
+			System.out.println("\"" + clue.getClue() + "\" ("
+					+ clue.getActualSolution() + "), Type: " + clue.getType());
+			for (Solution s : allSolutions) {
+				System.out.println(s);
+			}
+			System.out.println("--------------------------------");
+		}
+		System.out.println("The solution has been found " + successes
+				+ " out of " + clues.size() + " times.");
 	}
 
 } // End of class manager

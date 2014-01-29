@@ -17,10 +17,10 @@ public class Acrostic extends Solver {
 	private static final String NAME = "acrostic";
 
 	/**
-	 * Entry point to the code for testing purposes
+	 * Default constructor for solver class
 	 */
-	public static void main(String[] args) {
-		testSolver(Acrostic.class);
+	public Acrostic() {
+		super();
 	}
 
 	/**
@@ -31,13 +31,6 @@ public class Acrostic extends Solver {
 	 */
 	public Acrostic(Clue clue) {
 		super(clue);
-	}
-
-	/**
-	 * Default constructor for solver class
-	 */
-	public Acrostic() {
-		super();
 	}
 
 	@Override
@@ -92,6 +85,13 @@ public class Acrostic extends Solver {
 	@Override
 	public String toString() {
 		return NAME;
+	}
+
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Acrostic.class);
 	}
 
 } // End of class Acrostic

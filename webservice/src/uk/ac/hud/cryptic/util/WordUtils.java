@@ -34,6 +34,26 @@ public class WordUtils {
 	public static final String SPACE_AND_HYPHEN = "(\\s+|-)";
 
 	/**
+	 * Check whether the characters known by the user are present within the
+	 * potential solution
+	 * 
+	 * @param word
+	 *            the solution to check
+	 * @param mandatoryChars
+	 *            the characters which should be present
+	 * @return
+	 */
+	public static boolean charactersPresentInWord(String word,
+			String[] mandatoryChars) {
+		StringBuilder builder = new StringBuilder();
+		// Convert array of String to String
+		for (String s : mandatoryChars) {
+			builder.append(s);
+		}
+		return hasCharacters(builder.toString(), word);
+	}
+
+	/**
 	 * Determine whether a specified word can be create by using the characters
 	 * present in a pool of available characters.
 	 * 
@@ -119,26 +139,6 @@ public class WordUtils {
 	 */
 	public static String removeSpacesAndHyphens(String input) {
 		return input.replaceAll(SPACE_AND_HYPHEN, "");
-	}
-
-	/**
-	 * Check whether the characters known by the user are present within the
-	 * potential solution
-	 * 
-	 * @param word
-	 *            the solution to check
-	 * @param mandatoryChars
-	 *            the characters which should be present
-	 * @return
-	 */
-	public static boolean charactersPresentInWord(String word,
-			String[] mandatoryChars) {
-		StringBuilder builder = new StringBuilder();
-		// Convert array of String to String
-		for (String s : mandatoryChars) {
-			builder.append(s);
-		}
-		return hasCharacters(builder.toString(), word);
 	}
 
 } // End of class WordUtils

@@ -29,15 +29,6 @@ public class DB {
 	// Default number of records to retrieve from the DB
 	private static final int DEFAULT_RECORDS = 10;
 
-	static {
-		// Load the MySQL driver, or try to.
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Obtain a specified number of records for each of the clue types that have
 	 * been specified as parameters. These are bundled up in a single
@@ -135,6 +126,15 @@ public class DB {
 		// Print the results
 		for (Clue c : clues) {
 			System.out.println(c.getClue() + ", " + c.getPattern());
+		}
+	}
+
+	static {
+		// Load the MySQL driver, or try to.
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

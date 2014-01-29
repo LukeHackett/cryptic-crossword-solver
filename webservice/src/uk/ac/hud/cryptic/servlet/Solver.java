@@ -38,109 +38,6 @@ public class Solver extends Servlet {
 	}
 
 	/**
-	 * This method will allow for three parameters to be sent via a GET request
-	 * -- clue, length and pattern. Clue refers to the original clue, and the
-	 * length reference to the length of the solution, whilst pattern refers to
-	 * the format of the answer. This method will automatically return the user
-	 * back to the main index page.
-	 * 
-	 * @param request
-	 *            HTTP request information
-	 * @param response
-	 *            HTTP response information
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// Obtain the input requests
-		String clue = request.getParameter("clue");
-		String length = request.getParameter("length");
-		String pattern = request.getParameter("pattern");
-
-		// Check for a new request
-		if (clue == null && length == null && pattern == null) {
-			request.getRequestDispatcher("index.jsp")
-					.forward(request, response);
-			return;
-		}
-
-		// Do the GET request as a POST request
-		doPost(request, response);
-	}
-
-	/**
-	 * This method will allow for two parameters to be posted -- clue and
-	 * length. Clue refers to the original clue, and the solutionLength refers
-	 * to the length of the solution. Responses are returned as either XML
-	 * (default) or JSON depending upon the client's request.
-	 * 
-	 * @param request
-	 *            HTTP request information
-	 * @param response
-	 *            HTTP response information
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		// ServletContext is required to locate resource (e.g. dictionary)
-		// TODO This could perhaps be implemented more elegantly?
-		Settings settings = Settings.getInstance();
-		// When settings has this "context", it knows to load resources from
-		// somewhere else
-		settings.setServletContext(getServletConfig().getServletContext());
-
-		// Obtain the input requests
-		String clue = request.getParameter("clue");
-		String solution = request.getParameter("length");
-		String pattern = request.getParameter("pattern");
-
-		// Validate Inputs
-		String[] errors = validateInputs(clue, solution, pattern);
-
-		// Check to see if a page needs to be rendered server-side
-		if (isAjaxRequest(request)) {
-			// Send errors and cancel the current request if required
-			if (errors.length > 0) {
-				sendError(request, response, errors,
-						HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-
-			// Solve the clue
-			String data = solveClue(clue, pattern);
-
-			// Send the response
-			boolean json = isJSONRequest(request);
-			sendResponse(response, data, json);
-
-		} else {
-			// Server-side page rendering is required
-			request.setAttribute("clue", clue);
-			request.setAttribute("length", solution);
-			request.setAttribute("pattern", pattern);
-
-			// Check to see if there are any errors
-			if (errors.length > 0) {
-				// Validation has failed -> inform end user
-				request.setAttribute("errors", errors);
-			} else {
-				// Validation has passed -> present results
-				String data = solveClue(clue, pattern);
-				request.setAttribute("results", data);
-			}
-
-			// Forward request and response onto the view
-			request.getRequestDispatcher("index.jsp")
-					.forward(request, response);
-		}
-	}
-
-	/**
 	 * This method will compare a string length against a given pattern.
 	 * 
 	 * @param length
@@ -342,5 +239,108 @@ public class Solver extends Servlet {
 		}
 
 		return messages.toArray(new String[messages.size()]);
+	}
+
+	/**
+	 * This method will allow for three parameters to be sent via a GET request
+	 * -- clue, length and pattern. Clue refers to the original clue, and the
+	 * length reference to the length of the solution, whilst pattern refers to
+	 * the format of the answer. This method will automatically return the user
+	 * back to the main index page.
+	 * 
+	 * @param request
+	 *            HTTP request information
+	 * @param response
+	 *            HTTP response information
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Obtain the input requests
+		String clue = request.getParameter("clue");
+		String length = request.getParameter("length");
+		String pattern = request.getParameter("pattern");
+
+		// Check for a new request
+		if (clue == null && length == null && pattern == null) {
+			request.getRequestDispatcher("index.jsp")
+					.forward(request, response);
+			return;
+		}
+
+		// Do the GET request as a POST request
+		doPost(request, response);
+	}
+
+	/**
+	 * This method will allow for two parameters to be posted -- clue and
+	 * length. Clue refers to the original clue, and the solutionLength refers
+	 * to the length of the solution. Responses are returned as either XML
+	 * (default) or JSON depending upon the client's request.
+	 * 
+	 * @param request
+	 *            HTTP request information
+	 * @param response
+	 *            HTTP response information
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// ServletContext is required to locate resource (e.g. dictionary)
+		// TODO This could perhaps be implemented more elegantly?
+		Settings settings = Settings.getInstance();
+		// When settings has this "context", it knows to load resources from
+		// somewhere else
+		settings.setServletContext(getServletConfig().getServletContext());
+
+		// Obtain the input requests
+		String clue = request.getParameter("clue");
+		String solution = request.getParameter("length");
+		String pattern = request.getParameter("pattern");
+
+		// Validate Inputs
+		String[] errors = validateInputs(clue, solution, pattern);
+
+		// Check to see if a page needs to be rendered server-side
+		if (isAjaxRequest(request)) {
+			// Send errors and cancel the current request if required
+			if (errors.length > 0) {
+				sendError(request, response, errors,
+						HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+
+			// Solve the clue
+			String data = solveClue(clue, pattern);
+
+			// Send the response
+			boolean json = isJSONRequest(request);
+			sendResponse(response, data, json);
+
+		} else {
+			// Server-side page rendering is required
+			request.setAttribute("clue", clue);
+			request.setAttribute("length", solution);
+			request.setAttribute("pattern", pattern);
+
+			// Check to see if there are any errors
+			if (errors.length > 0) {
+				// Validation has failed -> inform end user
+				request.setAttribute("errors", errors);
+			} else {
+				// Validation has passed -> present results
+				String data = solveClue(clue, pattern);
+				request.setAttribute("results", data);
+			}
+
+			// Forward request and response onto the view
+			request.getRequestDispatcher("index.jsp")
+					.forward(request, response);
+		}
 	}
 }

@@ -44,7 +44,7 @@ public class Solution implements Comparable<Solution> {
 	 *            - the potential solution to the corresponding clue which is
 	 *            represented by this class
 	 * @param confidence
-	 * 			  - the confidence rating of this solutuon on this clue
+	 *            - the confidence rating of this solutuon on this clue
 	 */
 	public Solution(String solution, int confidence) {
 		trace = new ArrayList<>();
