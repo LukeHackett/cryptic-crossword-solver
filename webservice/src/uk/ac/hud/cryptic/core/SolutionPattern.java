@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.hud.cryptic.resource.Dictionary;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -20,133 +21,26 @@ public class SolutionPattern {
 	public static final char HYPHEN = '-';
 	public static final char UNKNOWN_CHARACTER = '?';
 
-	/**
-	 * Determine if a specified pattern (for a single word and represented as a
-	 * String rather than a SolutionPattern) matches against a provided word.
-	 * 
-	 * @param pattern
-	 *            - the pattern to match against for this single word
-	 * @param word
-	 *            - the word to verify against the supplied pattern
-	 * @return <code>true</code> if the word matches with the given pattern,
-	 *         <code>false</code> otherwise
-	 */
-	public static boolean match(String pattern, String word) {
-		// Quick check that lengths are the same
-		if (word.length() != pattern.length()) {
-			return false;
-		}
-		// Assume match
-		boolean match = true;
-		// Get chars of both inputs
-		char[] targetChars = word.toCharArray();
-		char[] patternChars = pattern.toCharArray();
-
-		int i;
-		for (i = 0; i < word.length(); i++) {
-			// If two corresponding chars of each don't match up
-			boolean isUnknownCharacter = patternChars[i] == UNKNOWN_CHARACTER;
-			if (!isUnknownCharacter && targetChars[i] != patternChars[i]) {
-				match = false;
-				break;
-			}
-		}
-		return match;
-	}
-
-	/**
-	 * Manipulate the given text in order to obtain an array of the separation
-	 * characters used to split up the separate words. For example, this method
-	 * will return array [ '-' , ',' ] for input "5-4,2"
-	 * 
-	 * @param pattern
-	 *            - the solution pattern
-	 * @param matchOn
-	 *            - a regular expression of the characters to match on
-	 * @return a char array of the separators present in the given pattern
-	 */
-	private static char[] processSeparators(String pattern, String matchOn) {
-		// Initialise regex objects using the given information
-		Pattern p = Pattern.compile(matchOn);
-		Matcher m = p.matcher(pattern);
-		// Will temporary hold the found separators
-		List<Character> matches = new ArrayList<>();
-		// Add matches to this list
-		while (m.find()) {
-			matches.add(m.group().charAt(0));
-		}
-		// Convert the char List to a char array
-		char[] separators = new char[matches.size()];
-		for (int i = 0; i < matches.size(); i++) {
-			separators[i] = matches.get(i);
-		}
-		return separators;
-	}
-
-	/**
-	 * Generate a solution pattern which maps to the known solution which is
-	 * passed in.
-	 * 
-	 * @param solution
-	 *            - the solution to generate a pattern for
-	 * @param unknown
-	 *            - <code>true</code> if the characters solution should be
-	 *            marked as unknown characters, <code>false</code>
-	 * @return a solution pattern mapping to the given solution
-	 */
-	public static String toPattern(String solution, boolean unknown) {
-		// Solution separated by '-' and ' ', rather than '-' and ','
-		final String separatorRegEx = "(\\s+|-+)";
-		// Split the solution into its separate word components
-		String[] words = solution.split(separatorRegEx);
-		// Set the multiple word flag accordingly
-		boolean multipleWords = words.length > 1;
-		// Obtain an array of the separators used in the solution
-		char[] separators = processSeparators(solution, separatorRegEx);
-
-		// This is the solution pattern which will now be generated
-		String pattern = "";
-		// For each individual word of the solution
-		for (int i = 0; i < words.length; i++) {
-			// Add a '?' for each character
-			for (int j = 0; j < words[i].length(); j++) {
-				pattern += unknown ? UNKNOWN_CHARACTER : words[i].charAt(j);
-			}
-			// Insert the correct separators where necessary in the pattern
-			if (multipleWords && i < words.length - 1) {
-				switch (separators[i]) {
-					case ' ':
-						pattern += SPACE;
-						break;
-					case '-':
-						pattern += HYPHEN;
-						break;
-					default:
-						pattern += SPACE;
-						break;
-				}
-			}
-		}
-		return pattern;
-	}
+	// The dictionary
+	private static final Dictionary DICTIONARY = Dictionary.getInstance();
 
 	// As inputted by the user. e.g. "?a??e,???d-??"
 	private String pattern;
+
 	// Solution is comprised of this many words
 	private int wordCount;
+
 	// Individual word lengths. e.g. [ 5 , 4 , 2 ]
 	private int[] indLengths;
+
 	// The characters present between words. e.g. [ ',' , '-' ]
 	private char[] separators;
 	// Total number of characters in the solution. e.g. For 5,4-2 = 11
 	private int totalLength;
-
 	// Does the solution comprise of a single or multiple words?
 	private boolean multipleWords;
-
 	// The solution patterns for the individual words of the solution
 	private String[] indWordPatterns;
-
 	// True if no characters have been specified
 	private boolean allUnknown;
 
@@ -262,6 +156,15 @@ public class SolutionPattern {
 	}
 
 	/**
+	 * Get the number of words in the solution
+	 * 
+	 * @return the total words in the solution
+	 */
+	public int getNumberOfWords() {
+		return wordCount;
+	}
+
+	/**
 	 * Get the solution pattern in the defined format. For example,
 	 * "THE BIG-DIPPER" will be represented as "???,???-??????" where question
 	 * marks may be replaced by known characters
@@ -280,15 +183,6 @@ public class SolutionPattern {
 	 */
 	public int getTotalLength() {
 		return totalLength;
-	}
-
-	/**
-	 * Get the number of words in the solution
-	 * 
-	 * @return the total words in the solution
-	 */
-	public int getNumberOfWords() {
-		return wordCount;
 	}
 
 	/**
@@ -331,7 +225,8 @@ public class SolutionPattern {
 				} else {
 					// Each word must be of the same length
 					for (int i = 0; i < indWords.length; i++) {
-						if (indWords[i].length() != indWordPatterns[i].length()) {
+						if (indWords[i].length() != indWordPatterns[i].length()
+								|| !DICTIONARY.isWord(indWords[i])) {
 							match = false;
 							break;
 						}
@@ -447,6 +342,116 @@ public class SolutionPattern {
 	 */
 	@Override
 	public String toString() {
+		return pattern;
+	}
+
+	/**
+	 * Manipulate the given text in order to obtain an array of the separation
+	 * characters used to split up the separate words. For example, this method
+	 * will return array [ '-' , ',' ] for input "5-4,2"
+	 * 
+	 * @param pattern
+	 *            - the solution pattern
+	 * @param matchOn
+	 *            - a regular expression of the characters to match on
+	 * @return a char array of the separators present in the given pattern
+	 */
+	private static char[] processSeparators(String pattern, String matchOn) {
+		// Initialise regex objects using the given information
+		Pattern p = Pattern.compile(matchOn);
+		Matcher m = p.matcher(pattern);
+		// Will temporary hold the found separators
+		List<Character> matches = new ArrayList<>();
+		// Add matches to this list
+		while (m.find()) {
+			matches.add(m.group().charAt(0));
+		}
+		// Convert the char List to a char array
+		char[] separators = new char[matches.size()];
+		for (int i = 0; i < matches.size(); i++) {
+			separators[i] = matches.get(i);
+		}
+		return separators;
+	}
+
+	/**
+	 * Determine if a specified pattern (for a single word and represented as a
+	 * String rather than a SolutionPattern) matches against a provided word.
+	 * 
+	 * @param pattern
+	 *            - the pattern to match against for this single word
+	 * @param word
+	 *            - the word to verify against the supplied pattern
+	 * @return <code>true</code> if the word matches with the given pattern,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean match(String pattern, String word) {
+		// Quick check that lengths are the same
+		if (word.length() != pattern.length()) {
+			return false;
+		}
+		// Assume match
+		boolean match = true;
+		// Get chars of both inputs
+		char[] targetChars = word.toCharArray();
+		char[] patternChars = pattern.toCharArray();
+
+		int i;
+		for (i = 0; i < word.length(); i++) {
+			// If two corresponding chars of each don't match up
+			boolean isUnknownCharacter = patternChars[i] == UNKNOWN_CHARACTER;
+			if (!isUnknownCharacter && targetChars[i] != patternChars[i]) {
+				match = false;
+				break;
+			}
+		}
+		return match;
+	}
+
+	/**
+	 * Generate a solution pattern which maps to the known solution which is
+	 * passed in.
+	 * 
+	 * @param solution
+	 *            - the solution to generate a pattern for
+	 * @param unknown
+	 *            - <code>true</code> if the characters solution should be
+	 *            marked as unknown characters, <code>false</code>
+	 * @return a solution pattern mapping to the given solution
+	 */
+	public static String toPattern(String solution, boolean unknown) {
+		// Solution separated by '-' and ' ', rather than '-' and ','
+		final String separatorRegEx = "(\\s+|-+)";
+		// Split the solution into its separate word components
+		String[] words = solution.split(separatorRegEx);
+		// Set the multiple word flag accordingly
+		boolean multipleWords = words.length > 1;
+		// Obtain an array of the separators used in the solution
+		char[] separators = processSeparators(solution, separatorRegEx);
+
+		// This is the solution pattern which will now be generated
+		String pattern = "";
+		// For each individual word of the solution
+		for (int i = 0; i < words.length; i++) {
+			// Add a '?' for each character
+			for (int j = 0; j < words[i].length(); j++) {
+				pattern += unknown ? UNKNOWN_CHARACTER : words[i].charAt(j);
+			}
+			// Insert the correct separators where necessary in the pattern
+			if (multipleWords && i < words.length - 1) {
+				switch (separators[i]) {
+					case ' ':
+						pattern += SPACE;
+						break;
+					case '-':
+						pattern += HYPHEN;
+						break;
+					default:
+						pattern += SPACE;
+						break;
+				}
+			}
+		}
 		return pattern;
 	}
 

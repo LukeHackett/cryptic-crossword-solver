@@ -23,19 +23,6 @@ public class Thesaurus {
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
 
-	/**
-	 * This method will return the current (and only) instance of the Thesaurus
-	 * object.
-	 * 
-	 * @return the thesaurus
-	 */
-	public static Thesaurus getInstance() {
-		if (instance == null) {
-			instance = new Thesaurus();
-		}
-		return instance;
-	}
-
 	// Actual thesaurus data structure
 	private Map<String, Collection<String>> thesaurus;
 
@@ -44,58 +31,6 @@ public class Thesaurus {
 	 */
 	private Thesaurus() {
 		populateThesaurusFromFile();
-	}
-
-	/**
-	 * Retrieve all synonyms of a given word
-	 * 
-	 * @param word
-	 *            - the word to get synonyms for
-	 * @return the synonyms of the given word
-	 */
-	public Collection<String> getSynonyms(String word) {
-		// Use of HashSet prevents duplicates
-		Collection<String> synonyms = new HashSet<>();
-		synonyms.addAll(thesaurus.get(word));
-		// Remove the original word which was passed in (if present)
-		synonyms.remove(word);
-		return synonyms;
-	}
-
-	/**
-	 * Check if a given solution (String) matches as a synonym against any of
-	 * the words present in the clue.
-	 * 
-	 * @param clue
-	 *            - the <code>Clue</code> object
-	 * @param solution
-	 *            - the potential solution word
-	 * @return <code>true</code> if the thesaurus contains the specified word,
-	 *         <code>false</code> otherwise
-	 */
-	public boolean match(Clue clue, String solution) {
-		// Populate an array with the separate words of the clue
-		String[] clueWords = clue.getClueWords();
-		SolutionPattern pattern = clue.getPattern();
-		// More than one word in the solution?
-		boolean multipleWords = pattern.hasMultipleWords();
-
-		// Solution might need to be 're-spaced'
-		String[] solutions = new String[multipleWords ? 2 : 1];
-		solutions[0] = solution.toLowerCase();
-		if (multipleWords) {
-			solutions[1] = pattern.recomposeSolution(solution);
-		}
-		for (String clueWord : clueWords) {
-			if (thesaurus.containsKey(clueWord)) {
-				Collection<String> synonyms = thesaurus.get(clueWord);
-				if (synonyms.contains(solutions[0])
-						|| (multipleWords && synonyms.contains(solutions[1]))) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -145,9 +80,6 @@ public class Thesaurus {
 		// Use of HashSet prevents duplicates
 		Collection<String> matchingSynonyms = new HashSet<>();
 
-		int lengthOfSolution = pattern.getTotalLength();
-		int numOfWords = pattern.getNumberOfWords();
-
 		String[] knownChars = pattern.getKnownCharacters();
 
 		// Get synonyms
@@ -155,12 +87,10 @@ public class Thesaurus {
 
 		if (synonyms != null) {
 			for (String entry : synonyms) {
-				String[] words = entry.split(" ");
-				String singleWordEntry = entry.replaceAll(" ", "");
-				if ((singleWordEntry.length() == lengthOfSolution)
-						&& (numOfWords == words.length)
-						&& (WordUtils.charactersPresentInWord(entry, knownChars))
-						&& (pattern.match(entry))) {
+				if (WordUtils.charactersPresentInWord(entry, knownChars)
+						&& pattern.match(entry)
+						&& entry.split(WordUtils.SPACE_AND_HYPHEN).length == pattern
+								.getNumberOfWords()) {
 					matchingSynonyms.add(entry);
 				}
 			}
@@ -168,6 +98,22 @@ public class Thesaurus {
 		// Remove the original word which was passed in (if present)
 		matchingSynonyms.remove(word);
 		return matchingSynonyms;
+	}
+
+	/**
+	 * Retrieve all synonyms of a given word
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms of the given word
+	 */
+	public Collection<String> getSynonyms(String word) {
+		// Use of HashSet prevents duplicates
+		Collection<String> synonyms = new HashSet<>();
+		synonyms.addAll(thesaurus.get(word));
+		// Remove the original word which was passed in (if present)
+		synonyms.remove(word);
+		return synonyms;
 	}
 
 	/**
@@ -191,6 +137,55 @@ public class Thesaurus {
 			}
 		}
 		return results;
+	}
+
+	/**
+	 * Check if a given solution (String) matches as a synonym against any of
+	 * the words present in the clue.
+	 * 
+	 * @param clue
+	 *            - the <code>Clue</code> object
+	 * @param solution
+	 *            - the potential solution word
+	 * @return <code>true</code> if the thesaurus contains the specified word,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean match(Clue clue, String solution) {
+		// Populate an array with the separate words of the clue
+		String[] clueWords = clue.getClueWords();
+		SolutionPattern pattern = clue.getPattern();
+		// More than one word in the solution?
+		boolean multipleWords = pattern.hasMultipleWords();
+
+		// Solution might need to be 're-spaced'
+		String[] solutions = new String[multipleWords ? 2 : 1];
+		solutions[0] = solution.toLowerCase();
+		if (multipleWords) {
+			solutions[1] = pattern.recomposeSolution(solution);
+		}
+		for (String clueWord : clueWords) {
+			if (thesaurus.containsKey(clueWord)) {
+				Collection<String> synonyms = thesaurus.get(clueWord);
+				if (synonyms.contains(solutions[0]) || multipleWords
+						&& synonyms.contains(solutions[1])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * This method will return the current (and only) instance of the Thesaurus
+	 * object.
+	 * 
+	 * @return the thesaurus
+	 */
+	public static Thesaurus getInstance() {
+		if (instance == null) {
+			instance = new Thesaurus();
+		}
+		return instance;
 	}
 
 } // End of class Thesaurus
