@@ -28,13 +28,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Cryptic Crossword Solver</a>
+          <a class="navbar-brand" href="/cryptic">Cryptic Crossword Solver</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav pull-right">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="/cryptic">Home</a></li>
+            <li><a href="changelog.jsp">Changelog</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
