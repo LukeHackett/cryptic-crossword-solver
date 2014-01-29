@@ -9,7 +9,7 @@ import java.util.Set;
 import org.junit.Test;
 
 public class SolutionPatternTest {
-	
+
 	@Test
 	public void testToPattern() {
 		// Single word
@@ -194,26 +194,61 @@ public class SolutionPatternTest {
 	@Test
 	public void testGetIndividualWordLengths() {
 		SolutionPattern solPattern = new SolutionPattern("??-????,??");
-		int[] wordLengths = {2,4,2}; 
+		int[] wordLengths = { 2, 4, 2 };
 		assertArrayEquals(wordLengths, solPattern.getIndividualWordLengths());
 	}
 
 	@Test
 	public void testMatch() {
-		fail("Not yet implemented");
+		// Single
+		SolutionPattern sp1 = new SolutionPattern("?????");
+		assertTrue(sp1.match("dream"));
+		assertFalse(sp1.match("drea"));
+		assertFalse(sp1.match("dreamy"));
+		// We should supply characters, not question marks
+		assertFalse(sp1.match("?????"));
+
+		// Hyphen
+		SolutionPattern sp2 = new SolutionPattern("???-???");
+		assertTrue(sp2.match("top-hat"));
+		// Should re-space and match
+		assertTrue(sp2.match("tophat"));
+		assertTrue(sp2.match("top hat"));
+		// Should fail
+		assertFalse(sp2.match("top-ha"));
+		assertTrue(sp2.match("top-hatt"));
+
+		// Spaces and hyphens
+		SolutionPattern sp3 = new SolutionPattern("???,???-??????");
+		assertTrue(sp3.match("thebigdipper"));
+		assertTrue(sp3.match("the big dipper"));
+		assertTrue(sp3.match("the big-dipper"));
+		assertTrue(sp3.match("the-big-dipper"));
+		assertFalse(sp3.match("he big-dipper"));
+		assertFalse(sp3.match("the bigg-dipper"));
+
+		// Known chars
+		SolutionPattern sp4 = new SolutionPattern("?h?,?ig-??pp?r");
+		assertTrue(sp4.match("thebigdipper"));
+		assertTrue(sp4.match("the big dipper"));
+		assertTrue(sp4.match("the big-dipper"));
+		assertFalse(sp4.match("yjrnohfooort"));
+		assertFalse(sp4.match("yjr noh-fooort"));
+		assertFalse(sp4.match("yjr-noh-fooort"));
 	}
 
 	@Test
 	public void testSeparateSolution() {
 		SolutionPattern solPattern = new SolutionPattern("????,??????,??,?????");
-		String[] splitSolution = {"this", "should", "be", "split"};
-		assertArrayEquals(splitSolution, solPattern.separateSolution("thisshouldbesplit"));
+		String[] splitSolution = { "this", "should", "be", "split" };
+		assertArrayEquals(splitSolution,
+				solPattern.separateSolution("thisshouldbesplit"));
 	}
 
 	@Test
 	public void testSplitPattern() {
 		SolutionPattern solPattern = new SolutionPattern("??-????-??");
-		String[] splitPattern = {"??", "????", "??"};
+		String[] splitPattern = { "??", "????", "??" };
 		assertArrayEquals(splitPattern, solPattern.splitPattern());
 	}
 }
