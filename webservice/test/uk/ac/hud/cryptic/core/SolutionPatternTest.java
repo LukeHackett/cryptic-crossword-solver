@@ -1,6 +1,6 @@
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class SolutionPatternTest {
 		// Space
 		assertEquals(false, SolutionPattern.match("???,??", "Dream"));
 		assertEquals(true, SolutionPattern.match("???,???", "the cat"));
-		
+
 		// Both
 	}
 
@@ -52,7 +52,7 @@ public class SolutionPatternTest {
 	public void testToString() {
 		SolutionPattern solPattern = new SolutionPattern("?????");
 		assertEquals("?????", solPattern.toString());
-		
+
 		SolutionPattern solutionPattern = new SolutionPattern("??A??");
 		assertEquals("??a??", solutionPattern.toString());
 	}
@@ -101,7 +101,7 @@ public class SolutionPatternTest {
 	public void testGetNumberOfWords() {
 		SolutionPattern solPattern = new SolutionPattern("????????");
 		assertEquals(1, solPattern.getNumberOfWords());
-		
+
 		SolutionPattern solutionPattern = new SolutionPattern("??-????-??");
 		assertEquals(3, solutionPattern.getNumberOfWords());
 	}
@@ -113,10 +113,53 @@ public class SolutionPatternTest {
 	}
 
 	@Test
+	public void testRecomposeSolution() {
+		// Single word
+		SolutionPattern sp1 = new SolutionPattern("?????");
+		String s1 = sp1.recomposeSolution("hello");
+		assertEquals("hello", s1);
+
+		// Single word, some known chars
+		SolutionPattern sp2 = new SolutionPattern("?e??o");
+		String s2 = sp2.recomposeSolution("hello");
+		assertEquals("hello", s2);
+
+		// Single word, all known chars
+		SolutionPattern sp3 = new SolutionPattern("hello");
+		String s3 = sp3.recomposeSolution("hello");
+		assertEquals("hello", s3);
+
+		// Invalid input (no match)
+		SolutionPattern sp4 = new SolutionPattern("???");
+		String s4 = sp4.recomposeSolution("hello");
+		assertEquals("", s4);
+
+		// Multi-word
+		SolutionPattern sp5 = new SolutionPattern("???,???-??????");
+		String s5 = sp5.recomposeSolution("thebigdipper");
+		assertEquals("the big-dipper", s5);
+
+		// Multi-word, some known chars
+		SolutionPattern sp6 = new SolutionPattern("?he,??g-d?p?er");
+		String s6 = sp6.recomposeSolution("thebigdipper");
+		assertEquals("the big-dipper", s6);
+
+		// Multi-word, all known chars
+		SolutionPattern sp7 = new SolutionPattern("the,big-dipper");
+		String s7 = sp7.recomposeSolution("thebigdipper");
+		assertEquals("the big-dipper", s7);
+
+		// Invalid input (no match)
+		SolutionPattern sp8 = new SolutionPattern("???,??-?????");
+		String s8 = sp8.recomposeSolution("thebigdipper");
+		assertEquals("", s8);
+	}
+
+	@Test
 	public void testGetTotalLength() {
 		SolutionPattern solPattern = new SolutionPattern("????????");
 		assertEquals(8, solPattern.getTotalLength());
-		
+
 		SolutionPattern solutionPattern = new SolutionPattern("??-????,??");
 		assertEquals(8, solutionPattern.getTotalLength());
 	}
@@ -125,7 +168,7 @@ public class SolutionPatternTest {
 	public void testHasMultipleWords() {
 		SolutionPattern solPattern = new SolutionPattern("????????");
 		assertEquals(false, solPattern.hasMultipleWords());
-		
+
 		SolutionPattern solutionPattern = new SolutionPattern("??-????,??");
 		assertEquals(true, solutionPattern.hasMultipleWords());
 	}
