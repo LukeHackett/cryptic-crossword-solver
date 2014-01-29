@@ -88,9 +88,19 @@ public class Thesaurus {
 		if (synonyms != null) {
 			for (String entry : synonyms) {
 				if (WordUtils.charactersPresentInWord(entry, knownChars)
-						&& pattern.match(entry)
-						&& entry.split(WordUtils.SPACE_AND_HYPHEN).length == pattern
-								.getNumberOfWords()) {
+						&& pattern.match(entry)) {
+					// Figure out the length of each word
+					String[] indWords = entry.split(WordUtils.SPACE_AND_HYPHEN);
+					int[] indLengths = new int[indWords.length];
+					for (int i = 0; i < indWords.length; i++) {
+						indLengths[i] = indWords[i].length();
+					}
+					// Test the "pattern" of the synonym and the solution match
+					if (!Arrays.equals(indLengths,
+							pattern.getIndividualWordLengths())) {
+						break;
+					}
+					// Add as a synonym if there is a match
 					matchingSynonyms.add(entry);
 				}
 			}

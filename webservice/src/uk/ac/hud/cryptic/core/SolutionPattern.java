@@ -272,10 +272,6 @@ public class SolutionPattern {
 	 *         pattern
 	 */
 	public String recomposeSolution(String solution) {
-		// Solution must first match the pattern
-		if (!match(solution)) {
-			return "";
-		}
 		// A single word will need no manipulation
 		if (!multipleWords) {
 			return solution;
