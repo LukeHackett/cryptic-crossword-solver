@@ -1,12 +1,15 @@
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
 public class SolutionPatternTest {
-
+	
 	@Test
 	public void testToPattern() {
 		// Single word
@@ -174,12 +177,25 @@ public class SolutionPatternTest {
 
 	@Test
 	public void testFilterSolutions() {
-		fail("Not yet implemented");
+		HashSet<Solution> solutions = new HashSet<Solution>();
+		solutions.add(new Solution("pink"));
+		solutions.add(new Solution("blue"));
+		solutions.add(new Solution("dream"));
+		solutions.add(new Solution("hello"));
+		solutions.add(new Solution("dog"));
+		HashSet<Solution> filtered = new HashSet<Solution>();
+		filtered.add(new Solution("dream"));
+		filtered.add(new Solution("hello"));
+		SolutionPattern solPattern = new SolutionPattern("?????");
+		solPattern.filterSolutions(solutions);
+		assertEquals(filtered, solutions);
 	}
 
 	@Test
 	public void testGetIndividualWordLengths() {
-		fail("Not yet implemented");
+		SolutionPattern solPattern = new SolutionPattern("??-????,??");
+		int[] wordLengths = {2,4,2}; 
+		assertArrayEquals(wordLengths, solPattern.getIndividualWordLengths());
 	}
 
 	@Test
@@ -189,11 +205,15 @@ public class SolutionPatternTest {
 
 	@Test
 	public void testSeparateSolution() {
-		fail("Not yet implemented");
+		SolutionPattern solPattern = new SolutionPattern("????,??????,??,?????");
+		String[] splitSolution = {"this", "should", "be", "split"};
+		assertArrayEquals(splitSolution, solPattern.separateSolution("thisshouldbesplit"));
 	}
 
 	@Test
 	public void testSplitPattern() {
-		fail("Not yet implemented");
+		SolutionPattern solPattern = new SolutionPattern("??-????-??");
+		String[] splitPattern = {"??", "????", "??"};
+		assertArrayEquals(splitPattern, solPattern.splitPattern());
 	}
 }
