@@ -40,6 +40,10 @@ public class Palindrome extends Solver {
 
 	@Override
 	public SolutionCollection solve(Clue c) {
+		if(c.getClue().equals("language for two-way communication?"))
+		{
+			System.out.println("STOP!");
+		}
 		SolutionCollection solutions = new SolutionCollection();
 		final SolutionPattern pattern = c.getPattern();
 
@@ -52,8 +56,10 @@ public class Palindrome extends Solver {
 			// Takes about 1.14s on 2 threads
 			//synonyms.addAll(THESAURUS.getWordsContainingSynonym(clueWord));
 			// Takes about .70s on 2 threads
+			boolean here2 = synonyms.contains("malayalam");
 			synonyms.addAll(THESAURUS.getSecondSynonyms(clueWord));
 
+			boolean here = synonyms.contains("malayalam");
 			filterNonePalindromes(synonyms);
 
 			for (String sol : synonyms) {
