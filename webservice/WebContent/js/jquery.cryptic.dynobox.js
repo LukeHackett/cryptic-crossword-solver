@@ -20,18 +20,21 @@
       "failureClass"  : "has-error"
     }, options);
 
+    // Reference to self (text input)
+    var self = $(this);
+
     // Method Listing
     return this.each(function() {
 
       // Validates the input on keypress
-      $(this).on('keypress', function (event){
+      self.on('keypress', function (event){
         if(!validateNumeric(event)){
           event.preventDefault();
         }
       });
 
       // Validates against the given regular expression
-      $(this).on('keyup', function (event) {
+      self.on('keyup', function (event) {
         // Sanity variables
         var input = this.value
         var self = $(this);
@@ -99,7 +102,7 @@
           // Allow numbers 1 - 9
           (49 <= event.which && event.which <= 57) || 
           // Disallow 0 as first digit 
-          (48 == event.which && $(this).val()) ||     
+          (48 == event.which && self.val()) ||     
           // Allow any given inclusions
           ($.inArray(event.which, settings.inclusions) >= 0) ||
           // Opera assigns values for control keys.
