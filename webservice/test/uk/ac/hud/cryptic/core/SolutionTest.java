@@ -10,7 +10,8 @@ import org.junit.Test;
 public class SolutionTest {
 
 	private static Solution solution = new Solution("Dream");
-	private static Solution solutionConfidence = new Solution("Dream", 75);
+	private static Solution solutionConfidence = new Solution("Dream", 75,
+			"undefined");
 
 	@Test
 	public void testAddToTraceAndGetSolutionTrace() {
@@ -37,49 +38,49 @@ public class SolutionTest {
 
 	@Test
 	public void testCompareToSameConfidencesAndSolutions() {
-		Solution solutionToCompare = new Solution("Dream", 75);
+		Solution solutionToCompare = new Solution("Dream", 75, "undefined");
 		assertEquals(0, solutionConfidence.compareTo(solutionToCompare));
 	}
 
 	@Test
 	public void testCompareToSameConfidencesAndDifferentSolutions() {
-		Solution solutionToCompare = new Solution("Fantasy", 75);
+		Solution solutionToCompare = new Solution("Fantasy", 75, "undefined");
 		assertEquals(-2, solutionConfidence.compareTo(solutionToCompare));
 	}
 
 	@Test
 	public void testCompareToDifferentConfidencesAndSameSolutions() {
-		Solution solutionToCompare = new Solution("Dream", 50);
+		Solution solutionToCompare = new Solution("Dream", 50, "undefined");
 		assertEquals(0, solutionConfidence.compareTo(solutionToCompare));
 	}
 
 	@Test
 	public void testCompareToDifferentConfidencesAndSolutions() {
-		Solution solutionToCompare = new Solution("Fantasy", 50);
+		Solution solutionToCompare = new Solution("Fantasy", 50, "undefined");
 		assertEquals(-1, solutionConfidence.compareTo(solutionToCompare));
 	}
 
 	@Test
 	public void testEqualsDifferentSolutionAndConfidence() {
-		Solution solutionToCompare = new Solution("Fantasy", 75);
+		Solution solutionToCompare = new Solution("Fantasy", 75, "undefined");
 		assertEquals(false, solutionConfidence.equals(solutionToCompare));
 	}
 
 	@Test
 	public void testEqualsSameSolutionAndConfidence() {
-		Solution solutionToCompare = new Solution("Dream", 75);
+		Solution solutionToCompare = new Solution("Dream", 75, "undefined");
 		assertEquals(true, solutionConfidence.equals(solutionToCompare));
 	}
 
 	@Test
 	public void testEqualsSameSolutionAndDifferentConfidence() {
-		Solution solutionToCompare = new Solution("Dream", 50);
+		Solution solutionToCompare = new Solution("Dream", 50, "undefined");
 		assertEquals(true, solutionConfidence.equals(solutionToCompare));
 	}
 
 	@Test
 	public void testEqualsDifferentSolutionAndSameConfidence() {
-		Solution solutionToCompare = new Solution("Fantasy", 75);
+		Solution solutionToCompare = new Solution("Fantasy", 75, "undefined");
 		assertEquals(false, solutionConfidence.equals(solutionToCompare));
 	}
 

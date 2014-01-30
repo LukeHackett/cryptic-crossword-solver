@@ -83,7 +83,7 @@ public class Anagram extends Solver {
 		// the solution has been found
 		if (patterns.length == 0) {
 			// If you're here, a potential solution has been found
-			anagrams.add(new Solution(str));
+			anagrams.add(new Solution(str, NAME));
 		} else {
 			// Get all words matching the specified pattern
 			Collection<String> words = DICTIONARY.getMatchingWords(patterns[0]);

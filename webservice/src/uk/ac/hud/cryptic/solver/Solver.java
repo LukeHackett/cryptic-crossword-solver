@@ -11,6 +11,7 @@ import java.util.concurrent.Future;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.SolutionCollection;
+import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Dictionary;
 import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.DB;
@@ -124,6 +125,8 @@ public abstract class Solver implements Callable<SolutionCollection> {
 							// Call the implementation's solve method
 							SolutionCollection sc = s.solve(clue);
 							THESAURUS.confidenceAdjust(clue, sc);
+							Categoriser.getInstance()
+									.confidenceAdjust(clue, sc);
 
 							// See if the solution has been found
 							found = sc.contains(clue.getActualSolution());

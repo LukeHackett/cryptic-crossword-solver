@@ -1,6 +1,8 @@
 package uk.ac.hud.cryptic.config;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.servlet.ServletContext;
 
@@ -133,6 +135,55 @@ public class Settings {
 	 */
 	public void setServletContext(ServletContext sc) {
 		context = sc;
+	}
+
+	/**
+	 * This method will return the path to the indicator file.
+	 * 
+	 * @return the file path to the indicators
+	 */
+	public URL getIndicatorsDirectory() {
+		// Location of the resource
+		return getDirectory("indicators");
+	}
+
+	/**
+	 * Get a directory from the classpath, represented as a URL
+	 * 
+	 * @param resource
+	 *            - the directory to obtain
+	 * @return the requested directory as a URL, <code>null</code> otherwise
+	 */
+	private URL getDirectory(String resource) {
+		URL url = null;
+		// Am I being called from a Servlet?
+		boolean server = context != null;
+		// Path to the dictionary resource
+		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
+		try {
+			// URL of resource
+			url = server ? context.getResource(path) : Settings.class
+					.getResource(path);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return url;
+	}
+
+	/**
+	 * Get the filename of a text file. E.g. for "anagrams.txt", return
+	 * "anagrams"
+	 * 
+	 * @param filename
+	 *            - the filename to get the name of
+	 * @return the name of the specified text file
+	 */
+	public String getTextFileName(String filename) {
+		filename = filename.toLowerCase().trim();
+		if (filename.endsWith(".txt")) {
+			filename = filename.substring(0, filename.length() - 4);
+		}
+		return filename;
 	}
 
 	/**

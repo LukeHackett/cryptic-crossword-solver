@@ -65,7 +65,7 @@ public class Acrostic extends Solver {
 			for (int j = i; j < i + solutionLength; j++) {
 				subStr += termToSearch.substring(j, j + 1);
 			}
-			solutions.add(new Solution(subStr));
+			solutions.add(new Solution(subStr, NAME));
 		}
 
 		// Remove solutions which don't match the provided pattern

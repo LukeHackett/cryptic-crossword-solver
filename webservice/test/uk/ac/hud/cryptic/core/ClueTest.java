@@ -4,16 +4,18 @@
  */
 package uk.ac.hud.cryptic.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * @author Mohammad Rahman
  * @version 0.1
- * 
  */
 public class ClueTest {
 
@@ -23,27 +25,26 @@ public class ClueTest {
 	private static String type;
 	private static Solution solution;
 
-
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		pattern = new SolutionPattern("?????");
-		clue = new Clue("Air that's more usually seen in cheerleaders", 
+		clue = new Clue("Air that's more usually seen in cheerleaders",
 				pattern.toString());
 
 		solutions = new SolutionCollection();
 
-		solution = new Solution("music",100);
+		solution = new Solution("music", 100, "undefined");
 
-		solutions.add(new Solution("smore",10));
-		solutions.add(new Solution("usual",20));
-		solutions.add(new Solution("taths",36));
-		solutions.add(new Solution("cheer",49));
+		solutions.add(new Solution("smore", 10, "undefined"));
+		solutions.add(new Solution("usual", 20, "undefined"));
+		solutions.add(new Solution("taths", 36, "undefined"));
+		solutions.add(new Solution("cheer", 49, "undefined"));
 		solutions.add(solution);
-		solutions.add(new Solution("sered",1));
-		solutions.add(new Solution("salse",75));
+		solutions.add(new Solution("sered", 1, "undefined"));
+		solutions.add(new Solution("salse", 75, "undefined"));
 
 		clue.setSolutions(solutions);
 		clue.setActualSolution("music");
@@ -51,7 +52,6 @@ public class ClueTest {
 		clue.setType(type);
 		String actualSolution = "MUSIC";
 		clue.setActualSolution(actualSolution);
-
 
 	}
 
@@ -67,53 +67,50 @@ public class ClueTest {
 
 	}
 
-
 	@Test
 	public final void testClueStringString() {
-		Clue test = new Clue("Air that's more usually seen in cheerleaders", "?????");
-		assertEquals(test.getClue(),clue.getClue());
-		assertEquals(test.getPattern().toString(),clue.getPattern().toString());
+		Clue test = new Clue("Air that's more usually seen in cheerleaders",
+				"?????");
+		assertEquals(test.getClue(), clue.getClue());
+		assertEquals(test.getPattern().toString(), clue.getPattern().toString());
 	}
 
-
-
 	/**
-	 * This method will test to see if the actual solution matches
-	 * the test data solution
+	 * This method will test to see if the actual solution matches the test data
+	 * solution
 	 */
 	@Test
 	public final void testGetActualSolution() {
 		String test = "MUSIC";
-		assertEquals(test,clue.getActualSolution());
+		assertEquals(test, clue.getActualSolution());
 	}
 
 	/**
-	 * This method will test to see that the best solution i.e the solution
-	 * with the highest confidence rating matches to the actual solution
+	 * This method will test to see that the best solution i.e the solution with
+	 * the highest confidence rating matches to the actual solution
 	 */
 	@Test
 	public final void testGetBestSolution() {
-		Solution test = new Solution("music", 100);
+		Solution test = new Solution("music", 100, "undefined");
 		assertEquals(clue.getBestSolution(), test);
 	}
 
 	/**
-	 * This test method checks to see that the getter for the clue returns
-	 * the clue as it is entered
+	 * This test method checks to see that the getter for the clue returns the
+	 * clue as it is entered
 	 */
 	@Test
 	public final void testGetClue() {
-		assertEquals("Air that's more usually seen in cheerleaders", 
-				"air that's more usually seen in cheerleaders",
-				clue.getClue());
+		assertEquals("Air that's more usually seen in cheerleaders",
+				"air that's more usually seen in cheerleaders", clue.getClue());
 	}
 
 	/**
 	 * This method tests that all punctuation is removed from the clue.
 	 */
 	@Test
-	//Get clue no punctuation with spaces
-	public final void testGetClueNoWithPunctuation() {		
+	// Get clue no punctuation with spaces
+	public final void testGetClueNoWithPunctuation() {
 		assertEquals("air thats more usually seen in cheerleaders",
 				clue.getClueNoPunctuation(false));
 	}
@@ -122,21 +119,20 @@ public class ClueTest {
 	 * This method tests all punctuation and spaces are removed from the clue
 	 */
 	@Test
-	//Get clue no punctuation without spaces
-	public final void testGetClueNoPunctuationNoSpaces() {		
+	// Get clue no punctuation without spaces
+	public final void testGetClueNoPunctuationNoSpaces() {
 		assertEquals("airthatsmoreusuallyseenincheerleaders",
 				clue.getClueNoPunctuation(true));
 	}
 
-
 	/**
-	 * This method tests that the words in the clue are split so that they
-	 * can be evaluated individually
+	 * This method tests that the words in the clue are split so that they can
+	 * be evaluated individually
 	 */
 	@Test
 	public final void testGetClueWords() {
 		String aclue = clue.getClueNoPunctuation(false).trim();
-		String [] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
+		String[] splitclues = aclue.split(WordUtils.REGEX_WHITESPACE);
 
 		assertArrayEquals(splitclues, clue.getClueWords());
 	}
@@ -147,8 +143,7 @@ public class ClueTest {
 	 */
 	@Test
 	public final void testGetPattern() {
-		assertEquals(pattern.toString(),
-				clue.getPattern().toString());
+		assertEquals(pattern.toString(), clue.getPattern().toString());
 	}
 
 	/**
@@ -157,8 +152,8 @@ public class ClueTest {
 	@Test
 	public final void testGetSolutions() {
 		String t = "HIDDEN";
-		Clue test = new Clue("Air that's more usually seen in cheerleaders", 
-				"?????","MUSIC", t);
+		Clue test = new Clue("Air that's more usually seen in cheerleaders",
+				"?????", "MUSIC", t);
 
 		SolutionCollection testSolutions = new SolutionCollection();
 		testSolutions.add(new Solution("smore"));
@@ -170,7 +165,7 @@ public class ClueTest {
 		testSolutions.add(new Solution("salse"));
 		test.setSolutions(testSolutions);
 
-		assertEquals(test.getSolutions(),clue.getSolutions());	
+		assertEquals(test.getSolutions(), clue.getSolutions());
 	}
 
 	/**
@@ -180,7 +175,7 @@ public class ClueTest {
 	public final void testGetType() {
 		String type;
 		type = "HIDDEN";
-		assertEquals(type,clue.getType().toString());
+		assertEquals(type, clue.getType().toString());
 
 	}
 

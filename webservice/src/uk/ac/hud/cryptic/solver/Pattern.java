@@ -53,7 +53,7 @@ public class Pattern extends Solver {
 		int index;
 		for (index = 0; index <= limit; index++) {
 			solutions.add(new Solution(text.substring(index,
-					index + pattern.getTotalLength())));
+					index + pattern.getTotalLength()), NAME));
 		}
 
 		// Remove solutions which don't match the provided pattern

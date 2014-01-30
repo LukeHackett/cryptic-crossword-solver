@@ -23,6 +23,19 @@ public class Solution implements Comparable<Solution> {
 	private double confidence;
 	// A log of the steps involved to arrive at this solution
 	private List<String> trace;
+	// The algorithm which generated this solution
+	private String type;
+
+	/**
+	 * Constructor which simply takes the solution
+	 * 
+	 * @param solution
+	 *            - the potential solution to the corresponding clue which is
+	 *            represented by this class
+	 */
+	public Solution(String solution) {
+		this(solution, "unspecified");
+	}
 
 	/**
 	 * Constructor where the solution string is passed in
@@ -30,13 +43,11 @@ public class Solution implements Comparable<Solution> {
 	 * @param solution
 	 *            - the potential solution to the corresponding clue which is
 	 *            represented by this class
+	 * @param type
+	 *            - the type of algorithm that generated this Solution
 	 */
-	public Solution(String solution) {
-		trace = new ArrayList<>();
-		// Standardise all potential solutions
-		this.solution = WordUtils.normaliseInput(solution, false);
-		// Default confidence rating
-		confidence = Confidence.INITIAL;
+	public Solution(String solution, String type) {
+		this(solution, Confidence.INITIAL, type);
 	}
 
 	/**
@@ -47,13 +58,17 @@ public class Solution implements Comparable<Solution> {
 	 *            represented by this class
 	 * @param confidence
 	 *            - the confidence rating of this solutuon on this clue
+	 * @param type
+	 *            - the type of algorithm that generated this Solution
 	 */
-	public Solution(String solution, double confidence) {
+	public Solution(String solution, double confidence, String type) {
 		trace = new ArrayList<>();
 		// Standardise all potential solutions
 		this.solution = WordUtils.normaliseInput(solution, false);
 		// Default confidence rating
 		this.confidence = confidence;
+		// Assign the solver type
+		this.type = type;
 	}
 
 	/**
@@ -149,6 +164,15 @@ public class Solution implements Comparable<Solution> {
 	 */
 	public List<String> getSolutionTrace() {
 		return trace;
+	}
+
+	/**
+	 * Get the type of solver used to generate this solution (e.g. hidden)
+	 * 
+	 * @return the solver type
+	 */
+	public String getSolverType() {
+		return type;
 	}
 
 	/*

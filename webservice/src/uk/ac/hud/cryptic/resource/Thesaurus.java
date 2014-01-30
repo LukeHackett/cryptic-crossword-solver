@@ -245,6 +245,15 @@ public class Thesaurus {
 		return instance;
 	}
 
+	/**
+	 * Adjust the confidence values for solution, based on whether there is a
+	 * synonym link between the clue and the solution
+	 * 
+	 * @param c
+	 *            - the clue that is being solved
+	 * @param solutions
+	 *            - the solutions which have been generated for this clue
+	 */
 	public void confidenceAdjust(Clue c, SolutionCollection solutions) {
 
 		// See if clue definition word contains the solution as a synonym

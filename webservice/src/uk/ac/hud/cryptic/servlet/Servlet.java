@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.json.XML;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Dictionary;
 import uk.ac.hud.cryptic.resource.Thesaurus;
 
@@ -170,5 +171,6 @@ public class Servlet extends HttpServlet {
 		Dictionary.getInstance();
 		Thesaurus.getInstance();
 		Settings.getInstance();
+		Categoriser.getInstance();
 	}
 }

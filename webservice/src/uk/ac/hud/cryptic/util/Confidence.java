@@ -18,6 +18,9 @@ public class Confidence {
 	public static final double REVERSE_SYNONYM_MULTIPLIER = 1.2d;
 	// Multiplier for Hidden words words that aren't really hidden
 	public static final double NOT_HIDDEN_MULTIPLIER = 0.85d;
+	// Multiplier for solutions which are solved by an algorithm, for which
+	// there is an indicator word(s) in the clue
+	public static final double CATEGORY_MULTIPLIER = 1.2d;
 
 	/**
 	 * @param value

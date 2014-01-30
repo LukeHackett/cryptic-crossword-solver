@@ -52,7 +52,7 @@ public class Palindrome extends Solver {
 			synonyms = filterNonePalindromes(synonyms);
 
 			for (String sol : synonyms) {
-				solutions.add(new Solution(sol));
+				solutions.add(new Solution(sol, NAME));
 			}
 		}
 

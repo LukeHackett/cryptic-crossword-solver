@@ -68,7 +68,7 @@ public class Hidden extends Solver {
 		int index;
 		for (index = 0; index <= limit; index++) {
 			solutions.add(new Solution(clue.substring(index, index
-					+ totalLength)));
+					+ totalLength), NAME));
 		}
 
 		// Remove risk of matching original words
@@ -79,11 +79,6 @@ public class Hidden extends Solver {
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
-
-		// TODO Assign confidences to each. This could try to use the
-		// word definition component of the clue.
-
-		// TODO Increase confidence using thesaurus matching
 
 		// Remove solutions which aren't really hidden at all
 		markNonHiddenWords(c, solutions);
