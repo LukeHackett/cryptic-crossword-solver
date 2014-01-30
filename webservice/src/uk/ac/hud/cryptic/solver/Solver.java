@@ -133,8 +133,12 @@ public abstract class Solver implements Callable<SolutionCollection> {
 							// Print results to console
 							output = found ? "[Found] " : "[Not Found] ";
 							output += clue.getClue() + ": ";
-							output += sc.getSolution(clue.getActualSolution())
-									.toString();
+							if (found) {
+								output += sc.getSolution(
+										clue.getActualSolution()).toString();
+							} else {
+								output += clue.getActualSolution();
+							}
 							output += " ["
 									+ (System.currentTimeMillis() - timeStart)
 									+ "ms]";
@@ -181,5 +185,4 @@ public abstract class Solver implements Callable<SolutionCollection> {
 			e1.printStackTrace();
 		}
 	}
-
 } // End of class Solver
