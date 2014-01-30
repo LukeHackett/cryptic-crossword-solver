@@ -85,34 +85,22 @@ public class Thesaurus {
 	 *            - the pattern the synonyms should match against
 	 * @return the synonyms of the given word
 	 */
-	public Set<String> getMatchingSynonyms(String word,
-			SolutionPattern pattern) {
+	public Set<String> getMatchingSynonyms(String word, SolutionPattern pattern) {
 		// Use of HashSet prevents duplicates
 		Set<String> matchingSynonyms = new HashSet<>();
 
-		String[] knownChars = pattern.getKnownCharacters();
-
 		// Get synonyms
-//		Collection<String> synonyms = getWordsContainingSynonym(word);
 		Collection<String> synonyms = thesaurus.get(word);
 
 		if (synonyms != null) {
 			for (String entry : synonyms) {
-				if (WordUtils.charactersPresentInWord(entry, knownChars)
-						&& pattern.match(entry)) {
+				// Synonym must match specified pattern
+				if (pattern.match(entry)) {
 					// Figure out the length of each word
-					String[] indWords = entry.split(WordUtils.SPACE_AND_HYPHEN);
-					int[] indLengths = new int[indWords.length];
-					for (int i = 0; i < indWords.length; i++) {
-						indLengths[i] = indWords[i].length();
+					if (WordUtils.wordLengthMatch(entry, pattern)) {
+						// Add as a synonym if there is a match
+						matchingSynonyms.add(entry);
 					}
-					// Test the "pattern" of the synonym and the solution match
-					if (!Arrays.equals(indLengths,
-							pattern.getIndividualWordLengths())) {
-						break;
-					}
-					// Add as a synonym if there is a match
-					matchingSynonyms.add(entry);
 				}
 			}
 		}
@@ -286,7 +274,7 @@ public class Thesaurus {
 	public Set<String> getSecondSynonyms(String clueWord) {
 		Set<String> firstLevelSynonyms = getSynonyms(clueWord);
 		Set<String> secondLevelSynonyms = new HashSet<>();
-		
+
 		for (String synonym : firstLevelSynonyms) {
 			Set<String> newSynonyms = getSynonyms(synonym);
 			if (newSynonyms != null) {

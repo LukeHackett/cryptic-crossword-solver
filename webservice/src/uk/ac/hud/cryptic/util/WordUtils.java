@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.util;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import uk.ac.hud.cryptic.core.SolutionPattern;
@@ -51,6 +52,36 @@ public class WordUtils {
 			builder.append(s);
 		}
 		return hasCharacters(builder.toString(), word);
+	}
+
+	/**
+	 * Check if a single word or SPACED phrase matches against a given pattern.
+	 * For example, true will be returned with input parameters "over the top"
+	 * and "????,???,???". The actual characters are not dealt with here to see
+	 * if they match up, just the word lengths. For the example given, lengths
+	 * [4,3,3] will match with word length [4,3,3] of the pattern.
+	 * 
+	 * @param phrase
+	 *            - the phrase to check the word lengths of
+	 * @param pattern
+	 *            - the solution pattern to match against
+	 * @return <code>true</code> if the word lengths match up,
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean wordLengthMatch(String phrase, SolutionPattern pattern) {
+		boolean match = true;
+
+		String[] indWords = phrase.split(WordUtils.SPACE_AND_HYPHEN);
+		int[] indLengths = new int[indWords.length];
+		for (int i = 0; i < indWords.length; i++) {
+			indLengths[i] = indWords[i].length();
+		}
+
+		// Test the "pattern" of the synonym and the solution match
+		if (!Arrays.equals(indLengths, pattern.getIndividualWordLengths())) {
+			match = false;
+		}
+		return match;
 	}
 
 	/**

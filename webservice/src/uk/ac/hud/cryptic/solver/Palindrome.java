@@ -63,7 +63,7 @@ public class Palindrome extends Solver {
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
-
+		
 		return solutions;
 	}
 
