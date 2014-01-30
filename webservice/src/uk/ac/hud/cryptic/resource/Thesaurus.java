@@ -89,14 +89,13 @@ public class Thesaurus {
 		// Use of HashSet prevents duplicates
 		Set<String> matchingSynonyms = new HashSet<>();
 
-		// Get synonyms
-		Collection<String> synonyms = thesaurus.get(word);
-
-		if (synonyms != null) {
+		if (thesaurus.containsKey(word)) {
+			// Get synonyms
+			Collection<String> synonyms = thesaurus.get(word);
 			for (String entry : synonyms) {
 				// Synonym must match specified pattern
 				if (pattern.match(entry)) {
-					// Figure out the length of each word
+					// Match the word lengths
 					if (WordUtils.wordLengthMatch(entry, pattern)) {
 						// Add as a synonym if there is a match
 						matchingSynonyms.add(entry);
@@ -111,6 +110,44 @@ public class Thesaurus {
 	}
 
 	/**
+	 * Obtain a list of "synonyms of a word's synonyms" to increase the chances
+	 * of finding the correct solution. These must match against a supplied
+	 * pattern
+	 * 
+	 * @param word
+	 *            - the word to find two levels of synonyms for
+	 * @param pattern
+	 *            - the pattern the synonyms should match against
+	 * @param includeFirstLevel
+	 *            - <code>true</code> to return the first level synonyms also,
+	 *            <code>false</code> to only return the second level synonyms
+	 * @return a set of synonyms of a word's synonyms
+	 */
+	public Set<String> getSecondSynonyms(String word, SolutionPattern pattern,
+			boolean includeFirstLevel) {
+		// Go and fetch the first level synonyms
+		Set<String> firstLevelSynonyms = getSynonyms(word);
+		// This will hold the results of this method
+		Set<String> secondLevelSynonyms = new HashSet<>();
+
+		// Include first level synonyms if requested
+		if (includeFirstLevel) {
+			// But only those that match the specified pattern
+			Set<String> matchingFirstLevel = getMatchingSynonyms(word, pattern);
+			secondLevelSynonyms.addAll(matchingFirstLevel);
+		}
+
+		// Get the synonyms for each first level synonym
+		for (String synonym : firstLevelSynonyms) {
+			// The second level synonyms for this first level synonym
+			Set<String> newSynonyms = getMatchingSynonyms(synonym, pattern);
+			secondLevelSynonyms.addAll(newSynonyms);
+		}
+
+		return secondLevelSynonyms;
+	}
+
+	/**
 	 * Retrieve all synonyms of a given word
 	 * 
 	 * @param word
@@ -120,8 +157,9 @@ public class Thesaurus {
 	public Set<String> getSynonyms(String word) {
 		// Use of HashSet prevents duplicates
 		Set<String> synonyms = new HashSet<>();
-		if (thesaurus.get(word) != null)
+		if (thesaurus.containsKey(word)) {
 			synonyms.addAll(thesaurus.get(word));
+		}
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
@@ -269,19 +307,6 @@ public class Thesaurus {
 			}
 		}
 
-	}
-
-	public Set<String> getSecondSynonyms(String clueWord) {
-		Set<String> firstLevelSynonyms = getSynonyms(clueWord);
-		Set<String> secondLevelSynonyms = new HashSet<>();
-
-		for (String synonym : firstLevelSynonyms) {
-			Set<String> newSynonyms = getSynonyms(synonym);
-			if (newSynonyms != null) {
-				secondLevelSynonyms.addAll(newSynonyms);
-			}
-		}
-		return secondLevelSynonyms;
 	}
 
 } // End of class Thesaurus
