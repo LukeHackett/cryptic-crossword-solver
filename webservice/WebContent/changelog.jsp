@@ -14,7 +14,7 @@
     <div class="col-md-12">
       <h3>Milestone 1 <small>29th January 2014</small></h3>
       <p>Today marks the completion of the first milestone. Although the solver
-      only currently supports a basic set of solvers, there has been plently of
+      only currently supports a basic set of solvers, there has been plenty of
       work completed so that additional solvers can be <i>hopefully</i> added in
       no time at all. 
 	    <div class="row">
@@ -27,13 +27,15 @@
 		        </li>
 		        <li>Threaded solving support, enabling each solver to finish around
 		        the same time.</li>
-		        <li>Interfaces to offical cryptic crossword dictionaries and 
+		        <li>Interfaces to official cryptic crossword dictionaries and 
 		        thesauri (with support for custom additions and exclusions).</li>
 		        <li>A framework skeleton for calculating confidence ratings.</li>
 		        <li>A framework for solution traces which will highlight the "best"
 		        path in order to solve the given clue.</li>
-		        <li>A database of gauridan clues has been created, and is used in 
-		        testing each of the solvers.</li>
+		        <li>A database of cryptic clues and solutions has been created,
+		        with kind permission of <a href="http://www.theguardian.com/uk"
+		        target="_blank">the Guardian</a>, and is used in testing
+		        each of the solvers.</li>
 		      </ul>
 		    </div>
 		    <div class="col-md-4">
