@@ -232,10 +232,33 @@ public class Dictionary {
 	 * 
 	 * @param word
 	 *            the word to be search for
-	 * @return boolean
+	 * @return <code>true</code> if the word is valid, <code>false</code>
+	 *         otherwise
 	 */
 	public boolean isWord(String word) {
 		return dictionary.contains(word.toLowerCase().trim());
+	}
+
+	/**
+	 * Just the same as "isWord", but this is to be used when the text may
+	 * contain more than one word
+	 * 
+	 * @param words
+	 *            - the word to check in the dictionary
+	 * @return <code>true</code> if all words are valid, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean areWords(String input) {
+		if (input != null && !input.isEmpty()) {
+			String[] words = input.split(WordUtils.SPACE_AND_HYPHEN);
+			// Check each word
+			for (String word : words) {
+				if (!isWord(word)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**

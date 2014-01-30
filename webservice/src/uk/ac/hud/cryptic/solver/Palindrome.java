@@ -13,8 +13,8 @@ import uk.ac.hud.cryptic.util.WordUtils;
 /**
  * Palindrome solver algorithm
  * 
- * @author Leanne Butcher
- * @version 0.1
+ * @author Leanne Butcher, Stuart Leader
+ * @version 0.2
  */
 public class Palindrome extends Solver {
 
@@ -72,8 +72,7 @@ public class Palindrome extends Solver {
 	public void filterNonePalindromes(Collection<String> solutions) {
 		// Iterate through
 		for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
-			String solution = it.next();
-			String normal = WordUtils.removeSpacesAndHyphens(solution);
+			String normal = WordUtils.removeSpacesAndHyphens(it.next());
 			String reverse = new StringBuilder(normal).reverse().toString();
 
 			// If the word isn't "symmetrical" from both sides, remove it

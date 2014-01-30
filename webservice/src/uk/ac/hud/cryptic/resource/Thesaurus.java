@@ -66,7 +66,9 @@ public class Thesaurus {
 				// Add words to a list
 				Collection<String> entry = new ArrayList<>();
 				for (String word : words) {
-					entry.add(word.toLowerCase());
+					if (Dictionary.getInstance().areWords(word)) {
+						entry.add(word.toLowerCase());
+					}
 				}
 				// And add them to the dictionary
 				thesaurus.put(lookupWord, entry);

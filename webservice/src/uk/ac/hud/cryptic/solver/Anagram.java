@@ -181,10 +181,10 @@ public class Anagram extends Solver {
 		int solutionLength = pattern.getTotalLength();
 
 		// Get clue with no punctuation
-		String condensedClue = c.getClueNoPunctuation(true);
+		String clue = c.getClueNoPunctuation(true);
 
 		// Clue length must be greater than solution length
-		if (condensedClue.length() < solutionLength) {
+		if (clue.length() < solutionLength) {
 			return solutions;
 		}
 

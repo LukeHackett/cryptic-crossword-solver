@@ -141,6 +141,23 @@ public class Categoriser {
 		return matches;
 	}
 
+	public String removeIndicatorWords(String c, String type) {
+		String clue = WordUtils.normaliseInput(c, false);
+		if (indicators.containsKey(type)) {
+			String indicator = "";
+			for (String i : indicators.get(type)) {
+//				if (clue.contains(i) && i.length() > indicator.length()) {
+//					indicator = i;
+//				}
+				if (clue.contains(i)) {
+					clue = clue.replace(i, "");
+				}
+			}
+			clue = clue.replace(indicator, "");
+		}
+		return clue;
+	}
+
 	/**
 	 * For testing purposes
 	 */

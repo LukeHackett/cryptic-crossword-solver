@@ -38,10 +38,11 @@ there_and_back
 there_or_back
 this_way_and_that
 this_way_or_that
-turner
 to-and-fro
 to_and_fro
+turner
 twice_over
+twist
 unaffected
 unaltered
 unchanged
