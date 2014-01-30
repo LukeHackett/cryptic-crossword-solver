@@ -1,5 +1,6 @@
 package uk.ac.hud.cryptic.core;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,14 @@ import uk.ac.hud.cryptic.util.WordUtils;
  */
 public class Solution implements Comparable<Solution> {
 
+	// Formatter for the confidence value
+	public static DecimalFormat CONF_FORMATTER = new DecimalFormat("#0");
 	// Each generated solution will start with this confidence score
-	private static final int DEFAULT_CONFIDENCE = 50;
+	private static final double DEFAULT_CONFIDENCE = 50d;
 	// A text representation of the solution
 	private String solution;
 	// The confidence score for this generated solution
-	private int confidence;
+	private double confidence;
 	// A log of the steps involved to arrive at this solution
 	private List<String> trace;
 
@@ -46,7 +49,7 @@ public class Solution implements Comparable<Solution> {
 	 * @param confidence
 	 *            - the confidence rating of this solutuon on this clue
 	 */
-	public Solution(String solution, int confidence) {
+	public Solution(String solution, double confidence) {
 		trace = new ArrayList<>();
 		// Standardise all potential solutions
 		this.solution = WordUtils.normaliseInput(solution, false);
@@ -76,7 +79,8 @@ public class Solution implements Comparable<Solution> {
 	@Override
 	public int compareTo(Solution o) {
 		int solutionCompare = solution.compareTo(o.getSolution());
-		int confidenceCompare = Double.compare(confidence, o.getConfidence());
+		int confidenceCompare = -1
+				* Double.compare(confidence, o.getConfidence());
 
 		if (solutionCompare == 0) {
 			// Compare the actual solution text. If they are the same, return
@@ -169,7 +173,7 @@ public class Solution implements Comparable<Solution> {
 	 * @return <code>true</code> if successfully assigned, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean setConfidence(int value) {
+	public boolean setConfidence(double value) {
 		boolean valid;
 		if (valid = value >= 0 && value <= 100) {
 			confidence = value;
@@ -182,7 +186,7 @@ public class Solution implements Comparable<Solution> {
 	 */
 	@Override
 	public String toString() {
-		return solution + " [" + confidence + "%]";
+		return solution + " [" + CONF_FORMATTER.format(confidence) + "%]";
 	}
 
 } // End of class Solution

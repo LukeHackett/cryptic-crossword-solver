@@ -56,7 +56,7 @@ public class SolutionTest {
 	@Test
 	public void testCompareToDifferentConfidencesAndSolutions() {
 		Solution solutionToCompare = new Solution("Fantasy", 50);
-		assertEquals(1, solutionConfidence.compareTo(solutionToCompare));
+		assertEquals(-1, solutionConfidence.compareTo(solutionToCompare));
 	}
 
 	@Test

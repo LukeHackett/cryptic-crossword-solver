@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
@@ -178,6 +179,8 @@ public class Solver extends Servlet {
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
+		// Solutions aren't sorted until this is requested
+		Set<Solution> sortedSolutions = solutions.sortSolutions();
 
 		// Needed to correct the output of the solution(s)
 		final SolutionPattern pattern = clue.getPattern();
@@ -188,11 +191,13 @@ public class Solver extends Servlet {
 		data += "<solver>";
 		data += "<clue>" + clueString + "</clue>";
 		data += "<pattern>" + patternString + "</pattern>";
-		for (Solution s : solutions) {
+		for (Solution s : sortedSolutions) {
 			String solution = pattern.recomposeSolution(s.getSolution());
 			data += "<solution>";
 			data += "<value>" + solution + "</value>";
-			data += "<confidence>" + s.getConfidence() + "</confidence>";
+			data += "<confidence>"
+					+ Solution.CONF_FORMATTER.format(s.getConfidence())
+					+ "</confidence>";
 			data += "</solution>";
 		}
 		data += "</solver>";
