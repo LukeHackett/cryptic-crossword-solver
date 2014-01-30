@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.solver.Acrostic;
 import uk.ac.hud.cryptic.solver.Anagram;
 import uk.ac.hud.cryptic.solver.Hidden;
@@ -23,7 +24,7 @@ import uk.ac.hud.cryptic.util.DB;
  * then combined into a single collection object.
  * 
  * @author Stuart Leader
- * @version 0.1
+ * @version 0.2
  */
 public class Manager {
 
@@ -72,6 +73,9 @@ public class Manager {
 
 		// All finished
 		executor.shutdown();
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(clue, allSolutions);
 
 		return allSolutions;
 	}

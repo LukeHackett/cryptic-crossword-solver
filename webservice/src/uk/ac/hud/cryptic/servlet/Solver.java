@@ -24,7 +24,7 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
  * resource.
  * 
  * @author Luke Hackett, Stuart Leader
- * @version 0.1
+ * @version 0.2
  */
 @WebServlet("/solver")
 public class Solver extends Servlet {

@@ -14,9 +14,18 @@ import java.util.Map.Entry;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
+/**
+ * An interface to the thesaurus file(s)
+ * 
+ * @author Stuart Leader, Leanne Butcher
+ * @version 0.2
+ */
 public class Thesaurus {
 	// Thesaurus Instance
 	private static Thesaurus instance;
@@ -186,6 +195,44 @@ public class Thesaurus {
 	}
 
 	/**
+	 * Check if any of the words contained in a clue are present as synonyms to
+	 * the given solution.
+	 * 
+	 * @param clue
+	 *            - the <code>Clue</code> object
+	 * @param solution
+	 *            - the potential solution word
+	 * @return <code>true</code> if the thesaurus contains the specified
+	 *         solution and a clue word is present as a synonym,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean reverseMatch(Clue clue, String solution) {
+		// Populate an array with the separate words of the clue
+		String[] clueWords = clue.getClueWords();
+		SolutionPattern pattern = clue.getPattern();
+		// More than one word in the solution?
+		boolean multipleWords = pattern.hasMultipleWords();
+
+		// Solution might need to be 're-spaced'
+		String[] solutions = new String[multipleWords ? 2 : 1];
+		solutions[0] = solution.toLowerCase();
+		if (multipleWords) {
+			solutions[1] = pattern.recomposeSolution(solution);
+		}
+		for (String s : solutions) {
+			if (thesaurus.containsKey(s)) {
+				Collection<String> synonyms = thesaurus.get(s);
+				for (String clueWord : clueWords) {
+					if (synonyms.contains(clueWord)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * This method will return the current (and only) instance of the Thesaurus
 	 * object.
 	 * 
@@ -196,6 +243,31 @@ public class Thesaurus {
 			instance = new Thesaurus();
 		}
 		return instance;
+	}
+
+	public void confidenceAdjust(Clue c, SolutionCollection solutions) {
+
+		// See if clue definition word contains the solution as a synonym
+		// TODO Can we pick out the definition word rather than check the entire
+		// clue?
+		for (Solution s : solutions) {
+			if (match(c, s.getSolution())) {
+				double confidence = Confidence.multiply(s.getConfidence(),
+						Confidence.SYNONYM_MULTIPLIER);
+				s.setConfidence(confidence);
+			}
+		}
+
+		// Now check if the solution contains the clue definition word as a
+		// synonym, giving a lower confidence rating than the above
+		for (Solution s : solutions) {
+			if (reverseMatch(c, s.getSolution())) {
+				double confidence = Confidence.multiply(s.getConfidence(),
+						Confidence.REVERSE_SYNONYM_MULTIPLIER);
+				s.setConfidence(confidence);
+			}
+		}
+
 	}
 
 } // End of class Thesaurus

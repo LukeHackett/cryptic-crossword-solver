@@ -12,7 +12,7 @@ import uk.ac.hud.cryptic.util.WordUtils;
  * ordered by their associated confidence rating.
  * 
  * @author Stuart Leader
- * @version 0.1
+ * @version 0.2
  */
 public class SolutionCollection extends HashSet<Solution> {
 
@@ -128,6 +128,32 @@ public class SolutionCollection extends HashSet<Solution> {
 	public Set<Solution> sortSolutions() {
 		// As simple as converting to a TreeSet
 		return new TreeSet<>(this);
+	}
+
+	/**
+	 * Get the Solution object which matches the passed String solution (if
+	 * present)
+	 * 
+	 * @param solution
+	 *            - a String representation of the Solution object to return
+	 * @return the corresponding Solution object, <code>null</code> if not
+	 *         present
+	 */
+	public Solution getSolution(String solution) {
+		// Standardise the given solution
+		String otherSolution = WordUtils.removeSpacesAndHyphens(solution);
+
+		for (Solution s : this) {
+			// Standardise each solution of the collection
+			String thisSolution = WordUtils.removeSpacesAndHyphens(s
+					.getSolution());
+
+			// Check if they match!
+			if (thisSolution.equals(otherSolution)) {
+				return s;
+			}
+		}
+		return null;
 	}
 
 } // End of class SolutionCollection

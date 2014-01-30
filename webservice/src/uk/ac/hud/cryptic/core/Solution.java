@@ -4,20 +4,19 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * Represents a potential solution for a given clue.
  * 
  * @author Stuart Leader
- * @version 0.1
+ * @version 0.2
  */
 public class Solution implements Comparable<Solution> {
 
 	// Formatter for the confidence value
 	public static DecimalFormat CONF_FORMATTER = new DecimalFormat("#0");
-	// Each generated solution will start with this confidence score
-	private static final double DEFAULT_CONFIDENCE = 50d;
 	// A text representation of the solution
 	private String solution;
 	// The confidence score for this generated solution
@@ -37,7 +36,7 @@ public class Solution implements Comparable<Solution> {
 		// Standardise all potential solutions
 		this.solution = WordUtils.normaliseInput(solution, false);
 		// Default confidence rating
-		confidence = DEFAULT_CONFIDENCE;
+		confidence = Confidence.INITIAL;
 	}
 
 	/**
