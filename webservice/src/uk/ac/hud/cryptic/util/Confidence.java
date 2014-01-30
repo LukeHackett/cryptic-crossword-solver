@@ -16,6 +16,8 @@ public class Confidence {
 	public static final double SYNONYM_MULTIPLIER = 1.6d;
 	// Multiplier if a solution has a synonym of the clue's definition word
 	public static final double REVERSE_SYNONYM_MULTIPLIER = 1.2d;
+	// Multiplier for Hidden words words that aren't really hidden
+	public static final double NOT_HIDDEN_MULTIPLIER = 0.85d;
 
 	/**
 	 * @param value

@@ -7,6 +7,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Confidence;
 
 /**
  * Hidden solver algorithm
@@ -109,8 +110,10 @@ public class Hidden extends Solver {
 			for (String w : words) {
 				if (w.startsWith(s.getSolution())
 						|| w.endsWith(s.getSolution())) {
-					// TODO Average chance of this happening is 2.46%... Here
-					// the confidence should be lowered accordingly?
+					// Reduce the solution's confidence
+					double confidence = Confidence.multiply(s.getConfidence(),
+							Confidence.NOT_HIDDEN_MULTIPLIER);
+					s.setConfidence(confidence);
 				}
 			}
 		}
