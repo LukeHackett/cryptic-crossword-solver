@@ -46,13 +46,9 @@ public class Palindrome extends Solver {
 		String[] words = c.getClueWords();
 
 		for (String clueWord : words) {
-			Set<String> synonyms = THESAURUS.getMatchingSynonyms(clueWord,
-					pattern);
-
-			// Takes about 1.14s on 2 threads
 			// synonyms.addAll(THESAURUS.getWordsContainingSynonym(clueWord));
-			// Takes about .70s on 2 threads
-			synonyms.addAll(THESAURUS.getSecondSynonyms(clueWord));
+			Set<String> synonyms = THESAURUS.getSecondSynonyms(clueWord,
+					pattern, true);
 
 			filterNonePalindromes(synonyms);
 
@@ -63,16 +59,24 @@ public class Palindrome extends Solver {
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
-		
+
 		return solutions;
 	}
 
+	/**
+	 * Remove words from proposed solutions which aren't actually palindromes
+	 * 
+	 * @param solutions
+	 *            - the solutions to filter
+	 */
 	public void filterNonePalindromes(Collection<String> solutions) {
+		// Iterate through
 		for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
 			String solution = it.next();
 			String normal = WordUtils.removeSpacesAndHyphens(solution);
 			String reverse = new StringBuilder(normal).reverse().toString();
 
+			// If the word isn't "symmetrical" from both sides, remove it
 			if (!normal.equals(reverse)) {
 				it.remove();
 			}
