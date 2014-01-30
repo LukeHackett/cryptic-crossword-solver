@@ -1,1 +1,2 @@
 https://github.com/rdeits/cryptics/tree/master/indicators
+http://cryptics.wikia.com/wiki
