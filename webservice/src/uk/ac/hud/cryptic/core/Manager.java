@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 import uk.ac.hud.cryptic.solver.Acrostic;
 import uk.ac.hud.cryptic.solver.Anagram;
 import uk.ac.hud.cryptic.solver.Hidden;
+import uk.ac.hud.cryptic.solver.Palindrome;
 import uk.ac.hud.cryptic.solver.Pattern;
 import uk.ac.hud.cryptic.solver.Solver;
 import uk.ac.hud.cryptic.util.DB;
@@ -46,6 +47,7 @@ public class Manager {
 		solvers.add(new Acrostic(clue));
 		solvers.add(new Anagram(clue));
 		solvers.add(new Pattern(clue));
+		solvers.add(new Palindrome(clue));
 
 		// Create a thread pool to execute the solvers
 		ExecutorService executor = Executors.newFixedThreadPool(solvers.size());

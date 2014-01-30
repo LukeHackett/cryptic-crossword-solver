@@ -2,6 +2,8 @@ package uk.ac.hud.cryptic.core;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -116,6 +118,16 @@ public class SolutionCollection extends HashSet<Solution> {
 				remove(new Solution(solution));
 			}
 		}
+	}
+
+	/**
+	 * Return the set of solutions, sorted by their confidence ratings
+	 * 
+	 * @return a sorted set of solution, based on their confidence ratings
+	 */
+	public Set<Solution> sortSolutions() {
+		// As simple as converting to a TreeSet
+		return new TreeSet<>(this);
 	}
 
 } // End of class SolutionCollection
