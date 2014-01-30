@@ -123,6 +123,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 
 							// Call the implementation's solve method
 							SolutionCollection sc = s.solve(clue);
+							THESAURUS.confidenceAdjust(clue, sc);
 
 							// See if the solution has been found
 							found = sc.contains(clue.getActualSolution());
@@ -131,8 +132,9 @@ public abstract class Solver implements Callable<SolutionCollection> {
 							String output = "";
 							// Print results to console
 							output = found ? "[Found] " : "[Not Found] ";
-							output += clue.getClue() + ": (";
-							output += clue.getActualSolution() + ")";
+							output += clue.getClue() + ": ";
+							output += sc.getSolution(clue.getActualSolution())
+									.toString();
 							output += " ["
 									+ (System.currentTimeMillis() - timeStart)
 									+ "ms]";
