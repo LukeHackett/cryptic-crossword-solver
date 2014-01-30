@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
@@ -84,14 +85,15 @@ public class Thesaurus {
 	 *            - the pattern the synonyms should match against
 	 * @return the synonyms of the given word
 	 */
-	public Collection<String> getMatchingSynonyms(String word,
+	public Set<String> getMatchingSynonyms(String word,
 			SolutionPattern pattern) {
 		// Use of HashSet prevents duplicates
-		Collection<String> matchingSynonyms = new HashSet<>();
+		Set<String> matchingSynonyms = new HashSet<>();
 
 		String[] knownChars = pattern.getKnownCharacters();
 
 		// Get synonyms
+//		Collection<String> synonyms = getWordsContainingSynonym(word);
 		Collection<String> synonyms = thesaurus.get(word);
 
 		if (synonyms != null) {
@@ -114,6 +116,7 @@ public class Thesaurus {
 				}
 			}
 		}
+
 		// Remove the original word which was passed in (if present)
 		matchingSynonyms.remove(word);
 		return matchingSynonyms;
@@ -126,10 +129,11 @@ public class Thesaurus {
 	 *            - the word to get synonyms for
 	 * @return the synonyms of the given word
 	 */
-	public Collection<String> getSynonyms(String word) {
+	public Set<String> getSynonyms(String word) {
 		// Use of HashSet prevents duplicates
-		Collection<String> synonyms = new HashSet<>();
-		synonyms.addAll(thesaurus.get(word));
+		Set<String> synonyms = new HashSet<>();
+		if (thesaurus.get(word) != null)
+			synonyms.addAll(thesaurus.get(word));
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
@@ -152,7 +156,7 @@ public class Thesaurus {
 			// If an entry contains the specified word as a synonym
 			if (entry.getValue().contains(synonym)) {
 				// Return it
-				results.add(entry.getKey());
+				results.addAll(entry.getValue());
 			}
 		}
 		return results;
@@ -268,6 +272,19 @@ public class Thesaurus {
 			}
 		}
 
+	}
+
+	public Set<String> getSecondSynonyms(String clueWord) {
+		Set<String> firstLevelSynonyms = getSynonyms(clueWord);
+		Set<String> secondLevelSynonyms = new HashSet<>();
+		
+		for (String synonym : firstLevelSynonyms) {
+			Set<String> newSynonyms = getSynonyms(synonym);
+			if (newSynonyms != null) {
+				secondLevelSynonyms.addAll(newSynonyms);
+			}
+		}
+		return secondLevelSynonyms;
 	}
 
 } // End of class Thesaurus

@@ -2,6 +2,7 @@ package uk.ac.hud.cryptic.solver;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -45,11 +46,15 @@ public class Palindrome extends Solver {
 		String[] words = c.getClueWords();
 
 		for (String clueWord : words) {
-			Collection<String> synonyms = THESAURUS.getMatchingSynonyms(
+			Set<String> synonyms = THESAURUS.getMatchingSynonyms(
 					clueWord, pattern);
-			synonyms.addAll(THESAURUS.getWordsContainingSynonym(clueWord));
+			
+			// Takes about 1.14s on 2 threads
+			//synonyms.addAll(THESAURUS.getWordsContainingSynonym(clueWord));
+			// Takes about .70s on 2 threads
+			synonyms.addAll(THESAURUS.getSecondSynonyms(clueWord));
 
-			synonyms = filterNonePalindromes(synonyms);
+			filterNonePalindromes(synonyms);
 
 			for (String sol : synonyms) {
 				solutions.add(new Solution(sol));
@@ -62,7 +67,7 @@ public class Palindrome extends Solver {
 		return solutions;
 	}
 
-	public Collection<String> filterNonePalindromes(Collection<String> solutions) {
+	public void filterNonePalindromes(Collection<String> solutions) {
 		for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
 			String solution = it.next();
 			String normal = WordUtils.removeSpacesAndHyphens(solution);
@@ -72,8 +77,6 @@ public class Palindrome extends Solver {
 				it.remove();
 			}
 		}
-
-		return solutions;
 	}
 
 	@Override
