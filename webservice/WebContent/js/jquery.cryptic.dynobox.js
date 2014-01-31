@@ -73,6 +73,8 @@
         var words = splitSolution(input);
         // Make the HTML
         createInputGroup(container, words);
+        // Bind auto tab to the newly created inputs
+        $(".word input[type=text]").autotab({ format: 'alpha' });
       });  
     });
 
