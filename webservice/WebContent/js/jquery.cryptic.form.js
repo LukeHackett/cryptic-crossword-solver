@@ -1,6 +1,7 @@
 /**
  * This jQuery plug-in provides a wrapper around the cryptic form, to ensure 
- * that data is correctly being sent to the server.
+ * that data is correctly being sent to the server. The plug-in will also handle
+ * displaying the results.
  *
  * Author  :  Luke Hackett
  * Date    :  January 2014
@@ -8,19 +9,22 @@
  */
 (function($) {
 
-  $.fn.formHandler = function(options, callback) {
+  $.fn.formHandler = function(options) {
 
     // Default settings
     var settings = $.extend({
-      "presence"      : [],
-      "patternHolder" : null,
-      "words"         : null,
-      "subword"       : null,
-      "blank"         : "?",
-      "hyphen"        : "-",
-      "separator"     : ",",
-      "successClass"  : "has-success",
-      "errorClass"    : "has-error"
+      'presence'      : [],
+      'patternHolder' : null,
+      'words'         : null,
+      'subword'       : null,
+      'container'     : null,
+      'results'       : null,
+      'reset'         : null,
+      'blank'         : '?',
+      'hyphen'        : '-',
+      'separator'     : ',',
+      'successClass'  : 'has-success',
+      'errorClass'    : 'has-error'
     }, options);
 
     // Method Listing
@@ -28,12 +32,26 @@
       
       // Validates clue presence - a bit of a hack
       $('#clue').on('keyup', function(){
-        inputIsEmpty("#clue");
+        inputIsEmpty('#clue');
+      });
+
+      // Handles the reset button
+      $(settings.reset).on('click', function(evt){
+        // Remove any existing alerts
+        removeFormAlerts();
+        removeResultAlerts();
+        // Clear any existing results
+        clearResults();
+        // Remove any form colour indicators
+        $(".form-group").removeClass(function(index, css) {
+          return (css.match(/\bhas-\S+/g) || []).join(' ');
+        });
       });
 
       // Form submit event handler
       $(this).on('submit', function (event) {
         event.preventDefault();
+        var self = $(this);
 
         // Check to see if the form has been completed
         if(hasValidationErrors()){
@@ -43,8 +61,60 @@
         // Merge the individual characters to form the solution pattern
         $(settings.patternHolder).val(createSolutionPattern());
 
-        // Make an AJAX request
-        console.log("AJAX Request")
+        // Perform the AJAX request
+        $.ajax({
+          url: self.attr('action'),
+          type: 'POST',
+          data: self.serialize(),
+          dataType: 'json',
+          beforeSend: function(){
+            // Initialise the results area
+            initialiseResults();
+            // Clear any existing results & alerts
+            clearResults();
+            removeFormAlerts();
+            // Show the loading logo - TODO
+          }
+        })
+        .always(function() {
+          // remove loading image
+          console.log('always');
+        })
+        .done(function(data) {
+          // Ensure returns have been generated
+          if(data.solver.solution) {
+             // Show the given input values
+            showInputValues(data.solver.clue, data.solver.pattern);
+            // Output the results
+            showResults(data.solver.solution);
+          } else {
+            // No data was returned
+            var message = '<b>Heads up!</b> The solvers have been unable to ' +
+                'find a solution to your clue. Try widening your solution ' +
+                'pattern by using more unknown characters (?).';
+            raiseResultAlert(settings.results, 'info', message);
+          }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          // Display new errors if available
+          if(jqXHR.responseJSON){
+            // Sanity purposes
+            errors = jqXHR.responseJSON.solver.errors;
+            // Loop over if array
+            if($.isArray(errors)){ 
+              // Display each of the error messages
+              $.each(errors, function(index, error){  
+                message = '<b>Oh snap!</b> ' + error.message;
+                raiseFormAlert('danger', message);       
+              });           
+            } else {
+              // Display the error message
+              message = '<b>Oh snap!</b> ' + errors.message;
+              raiseFormAlert('danger', message); 
+            }
+          }
+        });
+
       });
 
     });
@@ -59,9 +129,9 @@
       var errors = false;
 
       var input = $(input);
-      var inputGroup = input.parents(".form-group:first")
+      var inputGroup = input.parents('.form-group:first')
       // Ensure there is an input
-      if(input.val().trim() == ""){
+      if(input.val().trim() == ''){
         // Errors exist
         errors = true;
         // Make the input field go red denoting an error
@@ -84,7 +154,6 @@
 
       // Loop over all required inputs
       $.each(settings.presence, function(index, input){
-        console.log(input);
         // Check each input for a value
         if(inputIsEmpty(input)){
           errors = true;
@@ -109,58 +178,133 @@
      * the hyphenated separator value.
      */
     function createSolutionPattern(){
-      var pattern = "";
+      var pattern = '';
       var words = $(settings.words);
-      
-      // Get each character and combine
-      words.each(function(i, row){
-        var self = $(row);
-        var subwords = self.children(settings.subword);
-        
-        if(subwords.length == 0){
-          // Single Word
-          pattern += wordToPattern(row);          
-        } else {
-          // Hyphen word
-          subwords.each(function(s, subword){
-            // Append the new words to the pattern
-            pattern += wordToPattern(subword);
-            // Append a hyphen if required
-            if(s != subwords.length-1){
-              pattern += settings.hyphen;
-            }
-          });
-        }
-        
-        // Append the word separator if required
+
+      // Loop over each set "word"
+      words.each(function(i, word){
+        // Loop over each of the individual input boxes
+        $(word).children().each(function(){
+          if($(this).is('input[type="text"]')){
+            // Get the value
+            var value = $(this).val().trim();
+            // Append the value to the pattern or use the default blank value
+            pattern += (value == '') ? settings.blank : value;
+          } else {
+            // Append the hyphen
+            pattern += settings.hyphen;
+          }
+        });
+        // Append the word separator
         if(i != words.length-1){
           pattern += settings.separator;
         }
-          
       });
-        
-      return pattern;
-    };
-    
-    /**
-     * Merges a div of input box values into a a single string value
-     */
-    function wordToPattern(div){
-      var pattern = '';
-      
-      // Loop over all inputs
-      $(div).find('input[type="text"]').each(function(i, input){
-        var value = input.value;
-        // Replace with required blank value  
-        if(value == "" || value == " "){
-          pattern += settings.blank;
-        } else {
-          pattern += settings.value;
-        }
-      });
-    
+
       return pattern;
     };
 
+    /**
+     * This function will create the results area, if it has already not been 
+     * added to the DOM.
+     */
+    function initialiseResults(){
+      var container = $(settings.container);
+      // Only create if not already initialised
+      if(container.find(settings.results).length === 0){
+        // Create the inner results panel
+        var results = $('<div>').attr({'id': 'results', 'class': 'col-md-8'});
+        results.append($('<h3>').text('Results'));
+        results.append($('<p>').attr('id', 'clue-received'));
+        results.append($('<p>').attr('id', 'pattern-received'));
+        results.append($('<ul>').attr({'id': 'results-list', 'class': 'list-group'}));
+        // Create the row
+        var row = $('<div>').addClass('row');
+        row.append(results);
+        // Add to the page container
+        container.append(row);
+      }
+    };
+
+    /**
+     * This function will output the given clue and pattern solution to the 
+     * results area of the page
+     */
+    function showInputValues(clue, pattern){
+      // State the clue received
+      $('#clue-received').html('<b> Clue:</b> ' + clue);
+      // State the clue pattern received
+      $('#pattern-received').html('<b> Pattern:</b> ' + pattern);
+    };
+
+    /**
+     * This function will show a single result object or a list of result 
+     * objects in the results area of the page.
+     */
+    function showResults(results){
+      // Loop over if array
+      if($.isArray(results)){ 
+        // Display each of the solutions
+        $.each(results, function(index, solution){
+          createPanel(solution); 
+        });           
+      } else {
+        // Display the single result
+        createPanel(results);
+      }
+    };
+
+    /**
+     * This function will format a single solution (result) to the result area.
+     */
+    function createPanel(solution){
+      // Solution Confidence rating
+      var span = '<span class="badge">' + solution.confidence + ' &#37;</span>';
+      // List Element
+      var li = $('<li>').addClass('list-group-item');
+      li.html(span + solution.value);
+      // Append to the text area
+      $('#results-list').append(li);
+    };
+    
+    /**
+     * Creates a new result alert with the type being one of (success, info, 
+     * warning, danger), and the message to be displayed.
+     */
+    function raiseResultAlert(area, type, message){
+      $(settings.results).append($('<div>').addClass('alert alert-' + type).html(message));
+    };
+
+   /**
+     * Creates a new form alert with the type being one of (success, info, 
+     * warning, danger), and the message to be displayed.
+     */
+    function raiseFormAlert(type, message){
+      $('#solver').prepend($('<div>').addClass('alert alert-' + type).html(message));
+    };
+
+    /**
+     * Removes all alerts from the results area
+     */
+    function removeResultAlerts(){
+      $(settings.results).find('.alert').remove();
+    };
+
+    /**
+     * Removes all alerts from the form area
+     */
+    function removeFormAlerts(){
+      $('#solver').find('.alert').remove();
+    };
+
+    /**
+     * This method will clear all results and alerts from the results area. 
+     */
+    function clearResults(){
+      $('#clue-received').text('');
+      $('#pattern-received').text('');
+      $('#results-list').children().remove();
+      removeResultAlerts();
+    };
   }
 }(jQuery));
