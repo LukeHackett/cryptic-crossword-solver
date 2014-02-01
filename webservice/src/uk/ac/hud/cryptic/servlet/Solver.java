@@ -17,6 +17,7 @@ import uk.ac.hud.cryptic.core.Manager;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.XMLResultBuilder;
 
 /**
  * This class provides a servlet to provide an interface to the application.
@@ -185,24 +186,21 @@ public class Solver extends Servlet {
 		// Needed to correct the output of the solution(s)
 		final SolutionPattern pattern = clue.getPattern();
 
-		// Format the data
-		// TODO: Use of library
-		String data = "";
-		data += "<solver>";
-		data += "<clue>" + clueString + "</clue>";
-		data += "<pattern>" + patternString + "</pattern>";
-		for (Solution s : sortedSolutions) {
-			String solution = pattern.recomposeSolution(s.getSolution());
-			data += "<solution>";
-			data += "<value>" + solution + "</value>";
-			data += "<confidence>"
-					+ Solution.CONF_FORMATTER.format(s.getConfidence())
-					+ "</confidence>";
-			data += "</solution>";
-		}
-		data += "</solver>";
+		// Create a new XML Builder object
+		XMLResultBuilder xmlBuilder = new XMLResultBuilder(clueString,
+				patternString);
 
-		return data;
+		// Add each of the solutions to the XML document
+		for (Solution s : sortedSolutions) {
+			String solver = s.getSolverType();
+			String solution = pattern.recomposeSolution(s.getSolution());
+			String confidence = Solution.CONF_FORMATTER.format(s
+					.getConfidence());
+
+			xmlBuilder.addSolution(solver, solution, confidence);
+		}
+
+		return xmlBuilder.toString();
 	}
 
 	/**
