@@ -80,46 +80,27 @@ public class Servlet extends HttpServlet {
 	}
 
 	/**
-	 * Sends the given error messages to the client based upon the response
-	 * information. The method is able to send both XML and JSON responses, and
-	 * if a non-javascript request is made, then the first error message will be
-	 * returned along with the server's default error page.
+	 * Sends a well formed XML error message to the client based upon the
+	 * response information. The method is able to send both XML and JSON
+	 * responses.
 	 * 
 	 * @param response
 	 *            HTTP response information
-	 * @param payload
-	 *            the data to send to the client
-	 * @param errors
-	 *            the array of error messages to be displayed
+	 * @param data
+	 *            the XML String to send to the client
+	 * @param json
+	 *            should the response be in JSON (false gives XML)
 	 * @param errorCode
 	 *            the HTML status code to be associated with the response
 	 */
-	protected void sendError(HttpServletRequest request,
-			HttpServletResponse response, String[] errors, int errorCode) {
+	protected void sendError(HttpServletResponse response, String data,
+			boolean json, int errorCode) {
 
-		try {
-			// Only send raw data if original request was made via ajax
-			if (isAjaxRequest(request)) {
-				// Create the XML error message list
-				String xml = "<solver><errors>";
-				for (String msg : errors) {
-					xml += "<message>" + msg + "</message>";
-				}
-				xml += "</errors></solver>";
-
-				// Send the error
-				response.setStatus(errorCode);
-				boolean json = isJSONRequest(request);
-				sendResponse(response, xml, json);
-			} else {
-				// Send a default server error using the first error message
-				response.sendError(errorCode, errors[0]);
-			}
-		} catch (IOException | NullPointerException
-				| ArrayIndexOutOfBoundsException e) {
-			throw new HTTPException(
-					HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}
+		// Set the return status code
+		response.setStatus(errorCode);
+		
+		// Send the response
+		sendResponse(response, data, json);
 	}
 
 	/**
@@ -129,8 +110,8 @@ public class Servlet extends HttpServlet {
 	 * 
 	 * @param response
 	 *            HTTP response information
-	 * @param payload
-	 *            the data to send to the client
+	 * @param data
+	 *            the XML data to send to the client
 	 * @param json
 	 *            should the response be in JSON (false gives XML)
 	 */

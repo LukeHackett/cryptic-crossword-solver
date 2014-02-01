@@ -17,6 +17,7 @@ import uk.ac.hud.cryptic.core.Manager;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.XMLErrorBuilder;
 import uk.ac.hud.cryptic.util.XMLResultBuilder;
 
 /**
@@ -311,9 +312,16 @@ public class Solver extends Servlet {
 
 		// Check to see if a page needs to be rendered server-side
 		if (isAjaxRequest(request)) {
+			// Determine if the request is expecting a JSON return
+			boolean json = isJSONRequest(request);
+
 			// Send errors and cancel the current request if required
 			if (errors.length > 0) {
-				sendError(request, response, errors,
+				// Build a new XML document
+				XMLErrorBuilder builder = new XMLErrorBuilder();
+				builder.addErrors(errors);
+
+				sendError(response, builder.toString(), json,
 						HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
@@ -322,7 +330,6 @@ public class Solver extends Servlet {
 			String data = solveClue(clue, pattern);
 
 			// Send the response
-			boolean json = isJSONRequest(request);
 			sendResponse(response, data, json);
 
 		} else {
