@@ -68,8 +68,6 @@
           data: self.serialize(),
           dataType: 'json',
           beforeSend: function(){
-            // Initialise the results area
-            initialiseResults();
             // Clear any existing results & alerts
             clearResults();
             removeFormAlerts();
@@ -79,6 +77,8 @@
         .always(function() {
           // remove loading image
           console.log('always');
+          // Initialise the results area
+          initialiseResults();
         })
         .done(function(data) {
           // Ensure returns have been generated
@@ -209,21 +209,18 @@
      * added to the DOM.
      */
     function initialiseResults(){
-      var container = $(settings.container);
-      // Only create if not already initialised
-      if(container.find(settings.results).length === 0){
-        // Create the inner results panel
-        var results = $('<div>').attr({'id': 'results', 'class': 'col-md-8'});
-        results.append($('<h3>').text('Results'));
-        results.append($('<p>').attr('id', 'clue-received'));
-        results.append($('<p>').attr('id', 'pattern-received'));
-        results.append($('<ul>').attr({'id': 'results-list', 'class': 'list-group'}));
-        // Create the row
-        var row = $('<div>').addClass('row');
-        row.append(results);
-        // Add to the page container
-        container.append(row);
-      }
+      // Find the results element
+      var results = $(settings.results);
+      // Remove any existing results
+      clearResults;
+      // Add the Results header
+      results.append($('<h3>').text('Results'));
+      // Add the clue received paragraph element
+      results.append($('<p>').attr('id', 'clue-received'));
+      // Add the pattern received paragraph element
+      results.append($('<p>').attr('id', 'pattern-received'));
+      // Add the possible solution results list
+      results.append($('<ul>').attr({'id': 'results-list', 'class': 'list-group'}));
     };
 
     /**
@@ -301,10 +298,7 @@
      * This method will clear all results and alerts from the results area. 
      */
     function clearResults(){
-      $('#clue-received').text('');
-      $('#pattern-received').text('');
-      $('#results-list').children().remove();
-      removeResultAlerts();
+      $(settings.results).children().remove();
     };
   }
 }(jQuery));
