@@ -9,11 +9,11 @@
     <hr>
     </div>
   </div>
-  <!-- Milestone 1 -->
+  <!-- Iteration 1 -->
   <div class="row">
     <div class="col-md-12">
-      <h3>Milestone 1 <small>29th January 2014</small></h3>
-      <p>Today marks the completion of the first milestone. Although the solver
+      <h3>Iteration 1 <small>29th January 2014</small></h3>
+      <p>Today marks the completion of the first iteration. Although the solver
       only currently supports a basic set of solvers, there has been plenty of
       work completed so that additional solvers can be <i>hopefully</i> added in
       no time at all. 
