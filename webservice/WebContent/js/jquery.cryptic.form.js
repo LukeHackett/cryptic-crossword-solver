@@ -71,12 +71,13 @@
             // Clear any existing results & alerts
             clearResults();
             removeFormAlerts();
-            // Show the loading logo - TODO
+            // Show the loading logo
+            showLoading();
           }
         })
         .always(function() {
           // remove loading image
-          console.log('always');
+          hideLoading();
           // Initialise the results area
           initialiseResults();
         })
@@ -264,6 +265,44 @@
       $('#results-list').append(li);
     };
     
+    /**
+     * This function shows the loading results message.
+     */
+    function showLoading(){
+      // The progress bar
+      var progressbar = $('<div>').attr({
+        'class': 'progress-bar progress-bar-success',
+        'role': 'progressbar',
+        'aria-valuenow': '100',
+        'aria-valuemin': '100',
+        'aria-valuemax': '100',
+        'style': 'width: 100%'
+      });
+      // Adding screen reader support
+      progressbar.append( $('<span>').addClass('sr-only').text('Processing Request') );
+      // The progress bar wrapper
+      var barWrap = $('<div>').addClass('progress progress-striped active');
+      barWrap.append(progressbar);
+      // Inform the user what is currently happening
+      var info = $('<h3>').text('Obtaining the results, please wait...');
+      // Create the main wrapper
+      var loading = $('<div>').attr({
+        'id': 'loading',
+        'class': 'well'
+      });
+      loading.append(info);
+      loading.append(barWrap);
+      // Add to the DOM
+      $(settings.results).append(loading);
+    };
+
+    /**
+     * This function removes the loading results message from the DOM
+     */
+    function hideLoading(){
+      $(settings.results).find("#loading").remove();
+    };
+
     /**
      * Creates a new result alert with the type being one of (success, info, 
      * warning, danger), and the message to be displayed.
