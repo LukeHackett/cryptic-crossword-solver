@@ -121,19 +121,24 @@
         });
       });
 
-      // pagination event handler
-      $(settings.results).on('click', '.pagination a', function(event){
+      // next pagination event handler
+      $(settings.results).on('click', '.pagination #next', function(event){
         // prevent the default action
         event.preventDefault();
-        var self = $(this);
-        // Get all solutions
-        var solutions = $("#accordion");
-        // Hide all solutions
-        solutions.children().hide();
-        // Show the selected solutions
-        solutions.children('[group="' + self.attr('action') + '"]').show();
-        // Set the currently selected page
-        updatePagination(self.parent());
+        // Obtain the current page
+        var page = parseInt($('#accordion :not(:hidden):first').attr('group'));
+        // Move to the next page
+        updatePagination(page + 1);
+      });
+
+      // previous pagination event handler
+      $(settings.results).on('click', '.pagination #prev', function(event){
+        // prevent the default action
+        event.preventDefault();
+        // Obtain the current page
+        var page = parseInt($('#accordion :not(:hidden):first').attr('group'));
+        // Move to the previous page
+        updatePagination(page - 1);
       });
 
     });
@@ -379,8 +384,6 @@
       // Start and End selector values
       var start = 0;
       var end = resultsPerPage;
-      // Create a new Pagination
-      var ul = $('<ul>').addClass('pagination');
       // Assign each block of results to a page
       for(var i = 0; i < noPages; i++){
         // Increment the counter by one for aesthetic purposes
@@ -390,39 +393,31 @@
           solutions.slice(start, end).attr('group', j);
         } else {
           solutions.slice(start, end).attr('group', j).hide();
-        }
-        // Add counter to the main paginate
-        ul.append( $('<li>').append( 
-            $('<a>').attr({
-              'href': '#', 
-              'action': j
-            }).text(j) 
-          ) 
-        );
+        }    
         // Move onto the next block of results
         start += resultsPerPage;
         end += resultsPerPage;
       }
-      // Add the first button
-      ul.prepend( $('<li>').append(
-          $('<a>').attr({
-            'href': '#', 
-            'action': 1
-          }).html('&laquo;')
-        ) 
+      // Create the Pagination
+      var ul = $('<ul>').addClass('pagination');
+      // Previous page button
+      ul.append( $('<li>').attr('id', 'prev').addClass('disabled').append(
+          $('<a>').attr('href', '#').html('&larr; Previous')
+        )
       );
-      // Add the last button
+      // Current page indicator
       ul.append( $('<li>').append(
-          $('<a>').attr({
-            'href': '#', 
-            'action': noPages
-          }).html('&raquo;')
-        ) 
+          $('<a>').html('Page <b id="pgno">1</b> of <b id="totno">' + noPages + '</b>')
+        )
+      );  
+      // Next page button   
+      ul.append( $('<li>').attr('id', 'next').append(
+          $('<a>').attr('href', '#').html('Next &rarr;')
+        )
       );
       // Add the paginate to the main body
       $(settings.results).append($('<div>').addClass('text-center').append(ul));
       // Show the first page on the pagination
-      updatePagination(ul.children().first());
     };
 
     /**
@@ -430,22 +425,31 @@
      * ensuring that all other pages are not selected. The .active and .disabled
      * classes are added to the given element to indicate the current page.
      */
-    function updatePagination(li){
-      // Get the index of the selected page
-      var index = li.index();
-      // List of pages
-      var siblings = $(li.siblings());
-      // Number of pages
-      var length = siblings.length;
-      // Remove the css classes from all siblings
-      siblings.removeClass('active disabled');
-      // Set the currently selected number
-      li.addClass('active disabled');
-      // Check to see if the last and next buttons should be disabled
-      if(index == 0 || index == length-1) {
-        li.next().addClass('active disabled');
-      } else if(index == length || index == 1) {
-        li.prev().addClass('active disabled');
+    function updatePagination(newPage){
+      // Get the total number of pages
+      var total = parseInt($('.pagination #totno').text());
+      // Change pages if new page is a valid page number
+      if(newPage >= 1 && newPage <= total) {
+        var results = $("#accordion");
+        var next = $('.pagination #next');
+        var prev = $('.pagination #prev');
+        // Update the next and previous buttons
+        if(newPage == 1){
+          prev.addClass('disabled');
+          next.removeClass('disabled');
+        } else if(newPage == total) {
+          next.addClass('disabled');
+          prev.removeClass('disabled');
+        } else {
+          next.removeClass('disabled');
+          prev.removeClass('disabled');
+        }
+        // hide all results
+        results.children().hide();
+        // Show only 'newPage' results
+        results.children('[group=' + newPage + ']').show();
+        // Update the current page
+        $('.pagination #pgno').text(newPage);
       }
     };
 
