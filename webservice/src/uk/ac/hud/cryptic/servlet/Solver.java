@@ -271,7 +271,7 @@ public class Solver extends Servlet {
 
 		// Check for a new request
 		if (clue == null && length == null && pattern == null) {
-			request.getRequestDispatcher("index.jsp")
+			request.getRequestDispatcher("solver.jsp")
 					.forward(request, response);
 			return;
 		}
@@ -351,7 +351,7 @@ public class Solver extends Servlet {
 			}
 
 			// Forward request and response onto the view
-			request.getRequestDispatcher("index.jsp")
+			request.getRequestDispatcher("solver.jsp")
 					.forward(request, response);
 		}
 	}
