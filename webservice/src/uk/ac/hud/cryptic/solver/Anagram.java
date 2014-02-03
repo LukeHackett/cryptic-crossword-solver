@@ -3,6 +3,11 @@ package uk.ac.hud.cryptic.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -193,9 +198,9 @@ public class Anagram extends Solver {
 				solutionLength);
 
 		// For each potential fodder, find all potential solutions
-		for (String characters : possibleFodder) {
-			solutions.addAll(anagram(characters, pattern));
-		}
+		// Let's try this using threads as the ones that takes a long time
+		// typically contain multiple fodders
+		findSolutions(possibleFodder, pattern, solutions);
 
 		// Remove risk of matching original words
 		solutions.removeAllStrings(Arrays.asList(c.getClueWords()));
@@ -205,6 +210,51 @@ public class Anagram extends Solver {
 		// Don't dictionary filter as it's handled by anagram()
 
 		return solutions;
+	}
+
+	/**
+	 * Find the solutions for each fodder in a separate thread.
+	 * 
+	 * @param fodder
+	 *            - the collection of fodders found in the clue
+	 * @param pattern
+	 *            - the solution pattern
+	 * @param solutions
+	 *            - the list of solutions to add matches to
+	 */
+	private void findSolutions(Collection<String> fodder,
+			final SolutionPattern pattern, SolutionCollection solutions) {
+		// This will hold the returned objects from the threads
+		Collection<Future<SolutionCollection>> futures = new ArrayList<>();
+		// Create a thread pool to execute the solvers
+		ExecutorService executor = Executors.newFixedThreadPool(fodder.size());
+
+		// One to a thread
+		for (final String characters : fodder) {
+			// Java 1.8 can make this neater with lambda expressions ;)
+			Future<SolutionCollection> future = executor
+					.submit(new Callable<SolutionCollection>() {
+						@Override
+						public SolutionCollection call() throws Exception {
+							return anagram(characters, pattern);
+						}
+					});
+			// Add to the list of all futures to later process
+			futures.add(future);
+		}
+
+		// All finished
+		executor.shutdown();
+
+		// Get the actual solutions from the futures
+		for (Future<SolutionCollection> future : futures) {
+			try {
+				// Add to the master list of potential solutions
+				solutions.addAll(future.get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
