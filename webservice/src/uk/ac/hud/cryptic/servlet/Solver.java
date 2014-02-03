@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -197,10 +198,11 @@ public class Solver extends Servlet {
 			String solution = pattern.recomposeSolution(s.getSolution());
 			String confidence = Solution.CONF_FORMATTER.format(s
 					.getConfidence());
+			List<String> trace = s.getSolutionTrace();
 
-			xmlBuilder.addSolution(solver, solution, confidence);
+			xmlBuilder.addSolution(solver, solution, confidence, trace);
 		}
-
+		
 		return xmlBuilder.toString();
 	}
 

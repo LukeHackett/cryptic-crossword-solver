@@ -2,6 +2,7 @@ package uk.ac.hud.cryptic.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -50,8 +51,9 @@ public class XMLResultBuilder {
 	 *            the computed solution to the clue
 	 * @param confidence
 	 *            the computed confidence rating of the solution
+	 * @param trace A list of steps that were performed in obtaining the solution
 	 */
-	public void addSolution(String solver, String solution, String confidence) {
+	public void addSolution(String solver, String solution, String confidence, List<String> trace) {
 		// Build a new Solution Element
 		Element solElement = new Element("solution");
 		// Add the solver that was used to obtain the solution
@@ -60,6 +62,10 @@ public class XMLResultBuilder {
 		solElement.addContent(new Element("value").setText(solution));
 		// Add the confidence rating
 		solElement.addContent(new Element("confidence").setText(confidence));
+		// Add each of the traces
+		for(String t : trace){
+			solElement.addContent(new Element("trace").setText(t));
+		}
 		// Add the Solution Element to the root element
 		xml.getRootElement().addContent(solElement);
 	}
