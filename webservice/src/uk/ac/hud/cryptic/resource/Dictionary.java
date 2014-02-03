@@ -6,7 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
@@ -30,11 +34,18 @@ public class Dictionary {
 	// Actual dictionary data structure
 	private Collection<String> dictionary;
 
+	// Cache to speed up common requests
+	private DictionaryCache cache;
+
 	/**
 	 * Default Constructor
 	 */
 	private Dictionary() {
+		// Load the dictionary from file(s)
 		populateDictionaryFromFile();
+		// Initialise the cache
+		cache = new DictionaryCache();
+		cache.prePopulate();
 	}
 
 	/**
@@ -167,6 +178,12 @@ public class Dictionary {
 	 *         pattern provided
 	 */
 	public Collection<String> getMatches(SolutionPattern pattern) {
+		final String patternString = pattern.toString();
+		// Check the cache first for faster retrieval
+		if (cache.containsKey(patternString)) {
+			return cache.get(patternString);
+		}
+
 		Collection<String> matches = new HashSet<>();
 		// Go through each word in the dictionary
 		for (String word : dictionary) {
@@ -175,7 +192,36 @@ public class Dictionary {
 				matches.add(word);
 			}
 		}
+		cache.put(patternString, matches);
 		return matches;
+	}
+
+	/**
+	 * Return a collection of dictionary words which match against the specified
+	 * pattern
+	 * 
+	 * @param pattern
+	 *            - the solution pattern, in the form of a string ("?h??"),
+	 *            representing a single word of what may be a larger solution
+	 *            pattern
+	 * @return a list of words which match against the specified pattern
+	 */
+	public Collection<String> getMatchingWords(String pattern) {
+		// Check the cache first for faster retrieval
+		if (cache.containsKey(pattern)) {
+			return cache.get(pattern);
+		}
+
+		Set<String> words = new HashSet<>();
+		// Go through all words of the dictionary
+		for (String w : dictionary) {
+			// If the dictionary word matches the pattern, return it
+			if (SolutionPattern.match(pattern, w)) {
+				words.add(w);
+			}
+		}
+		cache.put(pattern.toString(), words);
+		return words;
 	}
 
 	/**
@@ -202,28 +248,6 @@ public class Dictionary {
 			}
 		}
 		return matches;
-	}
-
-	/**
-	 * Return a collection of dictionary words which match against the specified
-	 * pattern
-	 * 
-	 * @param pattern
-	 *            - the solution pattern, in the form of a string ("?h??"),
-	 *            representing a single word of what may be a larger solution
-	 *            pattern
-	 * @return a list of words which match against the specified pattern
-	 */
-	public Collection<String> getMatchingWords(String pattern) {
-		Set<String> words = new HashSet<>();
-		// Go through all words of the dictionary
-		for (String w : dictionary) {
-			// If the dictionary word matches the pattern, return it
-			if (SolutionPattern.match(pattern, w)) {
-				words.add(w);
-			}
-		}
-		return words;
 	}
 
 	/**
@@ -294,5 +318,95 @@ public class Dictionary {
 		}
 		return instance;
 	}
+
+	/**
+	 * A cache to speed up common requests to find all matching elements to a
+	 * given pattern. Initial results indicate this speeds up Anagram solving in
+	 * some cases by >75%.
+	 * 
+	 * @author Stuart Leader
+	 * @version 0.2
+	 */
+	private class DictionaryCache {
+
+		// The maximum number of elements that may be cached
+		private static final int MAX_CAPACITY = 100;
+		// Elements to be cached on application initialisation
+		private final String[] PRE_POPULATE_ITEMS = new String[] { "?", "??",
+				"???", "????", "?????", "??????", "???????", "????????",
+				"?????????", "??????????", "???????????", "????????????",
+				"?????????????", "??????????????", "????????????????" };
+		// Our cache object
+		private Map<String, Collection<String>> cache;
+		// Used to manage the capacity of the cache
+		private Queue<String> keys;
+
+		/**
+		 * The one and only constructor
+		 */
+		private DictionaryCache() {
+			// Initialise our objects
+			cache = new HashMap<>();
+			keys = new LinkedList<>();
+		}
+
+		/**
+		 * Fill the cache with the pre-defined items
+		 */
+		private void prePopulate() {
+			for (String item : PRE_POPULATE_ITEMS) {
+				cache.put(item, getMatchingWords(item));
+			}
+		}
+
+		/**
+		 * A check to see if the cache contains a given solution pattern
+		 * 
+		 * @param key
+		 *            - the solution pattern
+		 * @return <code>true</code> if the cache contains the matches for the
+		 *         given pattern, <code>false</code> otherwise
+		 */
+		private boolean containsKey(String key) {
+			return cache.containsKey(key);
+		}
+
+		/**
+		 * Add a new element to the cache. If the capacity is reached, the
+		 * oldest cache element is removed (exclusing the pre-defined items -
+		 * these can stay)
+		 * 
+		 * @param key
+		 *            - the key of the cache item
+		 * @param value
+		 *            - the value of the cache item
+		 */
+		public void put(String key, Collection<String> value) {
+			// Pointless if the cache already contains the given key
+			if (!cache.containsKey(key)) {
+				// If capacity has been reached
+				if (cache.size() >= MAX_CAPACITY) {
+					// Remove the oldest cache element
+					cache.remove(keys.poll());
+				}
+				// Add the new item
+				cache.put(key, value);
+				keys.add(key);
+			}
+		}
+
+		/**
+		 * Get the dictionary items which match the given key
+		 * 
+		 * @param key
+		 *            - the key to retrieve the matching entries for
+		 * @return the dictionary entries which match the supplied solution
+		 *         pattern
+		 */
+		public Collection<String> get(String key) {
+			return cache.get(key);
+		}
+
+	} // End of class DictionaryCache
 
 } // End of class Dictionary
