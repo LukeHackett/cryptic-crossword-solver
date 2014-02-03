@@ -396,7 +396,7 @@
       // List of pages
       var siblings = $(li.siblings());
       // Number of pages
-      var length = siblings.length
+      var length = siblings.length;
       // Remove the css classes from all siblings
       siblings.removeClass('active disabled');
       // Set the currently selected number
