@@ -380,7 +380,7 @@
         ) 
       );
       // Add the paginate to the main body
-      $(settings.results).append(ul);
+      $(settings.results).append($('<div>').addClass('text-center').append(ul));
       // Show the first page on the pagination
       updatePagination(ul.children().first());
     };
