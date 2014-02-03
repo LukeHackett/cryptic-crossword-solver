@@ -224,35 +224,40 @@ public class Anagram extends Solver {
 	 */
 	private void findSolutions(Collection<String> fodder,
 			final SolutionPattern pattern, SolutionCollection solutions) {
-		// This will hold the returned objects from the threads
-		Collection<Future<SolutionCollection>> futures = new ArrayList<>();
-		// Create a thread pool to execute the solvers
-		ExecutorService executor = Executors.newFixedThreadPool(fodder.size());
+		// Only proceed if potential fodder has been found
+		if (fodder != null && !fodder.isEmpty()) {
 
-		// One to a thread
-		for (final String characters : fodder) {
-			// Java 1.8 can make this neater with lambda expressions ;)
-			Future<SolutionCollection> future = executor
-					.submit(new Callable<SolutionCollection>() {
-						@Override
-						public SolutionCollection call() throws Exception {
-							return anagram(characters, pattern);
-						}
-					});
-			// Add to the list of all futures to later process
-			futures.add(future);
-		}
+			// This will hold the returned objects from the threads
+			Collection<Future<SolutionCollection>> futures = new ArrayList<>();
+			// Create a thread pool to execute the solvers
+			ExecutorService executor = Executors.newFixedThreadPool(fodder
+					.size());
 
-		// All finished
-		executor.shutdown();
+			// One to a thread
+			for (final String characters : fodder) {
+				// Java 1.8 can make this neater with lambda expressions ;)
+				Future<SolutionCollection> future = executor
+						.submit(new Callable<SolutionCollection>() {
+							@Override
+							public SolutionCollection call() throws Exception {
+								return anagram(characters, pattern);
+							}
+						});
+				// Add to the list of all futures to later process
+				futures.add(future);
+			}
 
-		// Get the actual solutions from the futures
-		for (Future<SolutionCollection> future : futures) {
-			try {
-				// Add to the master list of potential solutions
-				solutions.addAll(future.get());
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+			// All finished
+			executor.shutdown();
+
+			// Get the actual solutions from the futures
+			for (Future<SolutionCollection> future : futures) {
+				try {
+					// Add to the master list of potential solutions
+					solutions.addAll(future.get());
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
