@@ -6,9 +6,11 @@
 <t:application>
   <div class="row">
     <div class="col-md-12">
-      <p>Welcome to the Cryptic Crossword Solver. This web service has been 
-        designed to solve the various types of cryptic crossword clues by 
-        utilising various algorithms, dictionaries and thesauri.</p>
+      <p>Welcome to the Cryptic Crossword Solver. This web service has been
+        designed to solve the various types of cryptic crossword clues by
+        utilising various algorithms, dictionaries and thesauri.</p> 
+      <p>For more information about using the solver please review the 
+        <a href="help.jsp">help page</a>.</p>
       <br>     
       <p>Please input a cryptic crossword clue, along with the expected answer 
         format and any known characters (optional).</p>
