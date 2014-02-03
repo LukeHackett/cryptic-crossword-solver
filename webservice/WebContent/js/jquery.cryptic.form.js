@@ -43,7 +43,7 @@
         // Clear any existing results
         clearResults();
         // Remove any form colour indicators
-        $(".form-group").removeClass(function(index, css) {
+        $('.form-group').removeClass(function(index, css) {
           return (css.match(/\bhas-\S+/g) || []).join(' ');
         });
       });
@@ -82,12 +82,16 @@
           initialiseResults();
         })
         .done(function(data) {
+          // Show the given input values
+          showInputValues(data.solver.clue, data.solver.pattern);
           // Ensure returns have been generated
           if(data.solver.solution) {
-             // Show the given input values
-            showInputValues(data.solver.clue, data.solver.pattern);
             // Output the results
             showResults(data.solver.solution);
+            // Paginate the results if there are more than 10
+            if(data.solver.solution.length > 10) {
+              paginateResults();
+            }
           } else {
             // No data was returned
             var message = '<b>Heads up!</b> The solvers have been unable to ' +
@@ -115,7 +119,21 @@
             }
           }
         });
+      });
 
+      // pagination event handler
+      $(settings.results).on('click', '.pagination a', function(event){
+        // prevent the default action
+        event.preventDefault();
+        var self = $(this);
+        // Get all solutions
+        var solutions = $("#accordion");
+        // Hide all solutions
+        solutions.children().hide();
+        // Show the selected solutions
+        solutions.children('[group="' + self.attr('action') + '"]').show();
+        // Set the currently selected page
+        updatePagination(self.parent());
       });
 
     });
@@ -130,7 +148,7 @@
       var errors = false;
 
       var input = $(input);
-      var inputGroup = input.parents('.form-group:first')
+      var inputGroup = input.parents('.form-group:first');
       // Ensure there is an input
       if(input.val().trim() == ''){
         // Errors exist
@@ -220,8 +238,6 @@
       results.append($('<p>').attr('id', 'clue-received'));
       // Add the pattern received paragraph element
       results.append($('<p>').attr('id', 'pattern-received'));
-      // Add the possible solution results list
-      results.append($('<ul>').attr({'id': 'results-list', 'class': 'list-group'}));
     };
 
     /**
@@ -240,31 +256,159 @@
      * objects in the results area of the page.
      */
     function showResults(results){
+      // Add the panel-group to the results DOM
+      var group = $('<div>').addClass('panel-group').attr('id', 'accordion');
+      $(settings.results).append(group);
       // Loop over if array
       if($.isArray(results)){ 
         // Display each of the solutions
         $.each(results, function(index, solution){
-          createPanel(solution); 
+          var id = 'solution' + index;
+          createPanel('#accordion', id, solution); 
         });           
       } else {
         // Display the single result
-        createPanel(results);
+        createPanel('#accordion', 'solution0', results);
       }
+      // Set the first result to show the trace path
+      $(settings.results).find('.panel-collapse:first').addClass('in');
     };
 
     /**
      * This function will format a single solution (result) to the result area.
      */
-    function createPanel(solution){
+    function createPanel(group, id, solution){
+      // The answer solution answer
+      var title = $('<h3>').addClass('panel-title').append( 
+        $('<a>').attr({
+          'data-toggle': 'collapse',
+          'data-parent': group,
+          'href': '#' + id
+        }).text(solution.value)
+      );
       // Solution Confidence rating
-      var span = '<span class="badge">' + solution.confidence + ' &#37;</span>';
-      // List Element
-      var li = $('<li>').addClass('list-group-item');
-      li.html(span + solution.value);
-      // Append to the text area
-      $('#results-list').append(li);
+      var confidence = $('<span>').attr({
+        'class': 'label label-default pull-right'
+      }).html(solution.confidence + '&#37;');
+      // Solution solver that was used
+      var solver = $('<span>').attr({
+        'class': 'label label-info pull-right'
+      }).text(solution.solver);
+      // Format the panel header
+      var header = $('<div>').addClass('panel-heading');
+      header.append(title);
+      header.append(confidence);
+      header.append(solver);
+      // Create the body
+      var panelBody = $('<div>').addClass('panel-body');
+      var body = $('<div>').attr({
+          'id': id,
+          'class': 'panel-collapse collapse'
+        }).append(panelBody);
+      // Show the trace if available
+      if(solution.trace != null){
+        panelBody.append( $('<p>').text('Solution Trace:') );
+        // Add the ordered list
+        panelBody.append( $('<ol>') );
+        // Each each trace as part of the ordered list
+        $.each(solution.trace, function(i, step){
+          panelBody.find('ol').append( $('<li>').text(step) );
+        });
+      } else {
+        // Trace is not available
+        panelBody.append( $('<p>').text('Solution Trace Unavailable.') );
+      }
+      // create the final panel
+      var panel = $('<div>').addClass('panel panel-default');
+      panel.append(header);
+      panel.append(body);
+      // Add the panel to the DOM
+      $(group).append(panel);
     };
     
+    /**
+     * This function will paginate all the results that is found within the 
+     * #accordion element.
+     */
+    function paginateResults(){
+      // Number of results per page
+      var resultsPerPage = 10;
+      // list of results
+      var solutions = $("#accordion").children();
+      var noPages = Math.ceil(solutions.length / resultsPerPage);
+      // Start and End selector values
+      var start = 0;
+      var end = resultsPerPage;
+      // Create a new Pagination
+      var ul = $('<ul>').addClass('pagination');
+      // Assign each block of results to a page
+      for(var i = 0; i < noPages; i++){
+        // Increment the counter by one for aesthetic purposes
+        var j = i + 1;
+        // Only show the first set of results by default
+        if(i == 0){
+          solutions.slice(start, end).attr('group', j);
+        } else {
+          solutions.slice(start, end).attr('group', j).hide();
+        }
+        // Add counter to the main paginate
+        ul.append( $('<li>').append( 
+            $('<a>').attr({
+              'href': '#', 
+              'action': j
+            }).text(j) 
+          ) 
+        );
+        // Move onto the next block of results
+        start += resultsPerPage;
+        end += resultsPerPage;
+      }
+      // Add the first button
+      ul.prepend( $('<li>').append(
+          $('<a>').attr({
+            'href': '#', 
+            'action': 1
+          }).html('&laquo;')
+        ) 
+      );
+      // Add the last button
+      ul.append( $('<li>').append(
+          $('<a>').attr({
+            'href': '#', 
+            'action': noPages
+          }).html('&raquo;')
+        ) 
+      );
+      // Add the paginate to the main body
+      $(settings.results).append(ul);
+      // Show the first page on the pagination
+      updatePagination(ul.children().first());
+    };
+
+    /**
+     * This function will set the given li element to the currently view page, 
+     * ensuring that all other pages are not selected. The .active and .disabled
+     * classes are added to the given element to indicate the current page.
+     */
+    function updatePagination(li){
+      // Get the index of the selected page
+      var index = li.index();
+      // List of pages
+      var siblings = $(li.siblings());
+      // Number of pages
+      var length = siblings.length
+      // Remove the css classes from all siblings
+      siblings.removeClass('active disabled');
+      // Set the currently selected number
+      li.addClass('active disabled');
+      // Check to see if the last and next buttons should be disabled
+      if(index == 0 || index == length-1) {
+        li.next().addClass('active disabled');
+      } else if(index == length || index == 1) {
+        li.prev().addClass('active disabled');
+      }
+    };
+
     /**
      * This function shows the loading results message.
      */
@@ -339,5 +483,6 @@
     function clearResults(){
       $(settings.results).children().remove();
     };
-  }
+    
+  };
 }(jQuery));
