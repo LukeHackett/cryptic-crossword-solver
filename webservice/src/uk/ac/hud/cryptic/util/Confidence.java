@@ -11,7 +11,7 @@ package uk.ac.hud.cryptic.util;
 public class Confidence {
 
 	// Each generated solution will start with this confidence score
-	public static final double INITIAL = 50d;
+	public static final double INITIAL = 42d;
 	// Multiplier if a solution is a synonym of the clue's definition word
 	public static final double SYNONYM_MULTIPLIER = 1.6d;
 	// Multiplier if a solution has a synonym of the clue's definition word
