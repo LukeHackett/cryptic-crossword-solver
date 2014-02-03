@@ -137,8 +137,12 @@ public abstract class Solver implements Callable<SolutionCollection> {
 							output = found ? "[Found] " : "[Not Found] ";
 							output += clue.getClue() + ": ";
 							if (found) {
-								output += sc.getSolution(
-										clue.getActualSolution()).toString();
+								output += clue
+										.getPattern()
+										.recomposeSolution(
+												sc.getSolution(
+														clue.getActualSolution())
+														.getSolution());
 							} else {
 								output += clue.getActualSolution();
 							}
