@@ -261,14 +261,20 @@
       $(settings.results).append(group);
       // Loop over if array
       if($.isArray(results)){ 
+        // Get the highest confidence rating
+        var topConfidence = results[0].confidence;
         // Display each of the solutions
         $.each(results, function(index, solution){
           var id = 'solution' + index;
-          createPanel('#accordion', id, solution); 
+          createPanel('#accordion', id, solution);
+          // Set the panel colour
+          setPanelColour('#accordion', topConfidence, solution.confidence);
         });           
       } else {
         // Display the single result
         createPanel('#accordion', 'solution0', results);
+        // Set the panel colour (NOTE: only one solution)
+        setPanelColour('#accordion', solution.confidence, solution.confidence);
       }
       // Set the first result to show the trace path
       $(settings.results).find('.panel-collapse:first').addClass('in');
@@ -324,6 +330,40 @@
       panel.append(body);
       // Add the panel to the DOM
       $(group).append(panel);
+    };
+
+    /**
+     * This function will set the panel colour of the last panel in the group
+     * based upon the supplied top confidence rating and the confidence rating
+     * of the panel.
+     */
+    function setPanelColour(group, topConfidence, confidence){
+      // Obtain the last result added
+      var result = $(group).children().last();
+      // Calculate the size of the three categories based upon the top rating
+      var divider = Math.floor(1/3 * topConfidence);
+      // Calculate each of the category boundaries
+      var success = topConfidence - divider;
+      var warning = topConfidence - (divider * 2);
+      var error   = topConfidence - (divider * 3);
+      // Set the colour of the panel based upon the confidence rating
+      if(confidence == topConfidence) {
+        // Top Answer
+        result.addClass('panel-primary');
+        result.find('span:first').addClass('label-success');
+      } else if(confidence >= success) {
+        // Highly likely answer
+        result.addClass('panel-success');
+        result.find('span:first').addClass('label-success');
+      } else if(confidence >= warning) {
+        // Possibly likely answer
+        result.addClass('panel-warning');
+        result.find('span:first').addClass('label-warning');
+      } else {
+        // Unlikely answer
+        result.addClass('panel-danger');
+        result.find('span:first').addClass('label-danger');
+      }
     };
     
     /**
