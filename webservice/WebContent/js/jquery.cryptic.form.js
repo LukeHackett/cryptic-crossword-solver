@@ -453,38 +453,19 @@
      * This function shows the loading results message.
      */
     function showLoading(){
-      // The progress bar
-      var progressbar = $('<div>').attr({
-        'class': 'progress-bar progress-bar-success',
-        'role': 'progressbar',
-        'aria-valuenow': '100',
-        'aria-valuemin': '100',
-        'aria-valuemax': '100',
-        'style': 'width: 100%'
+      // Show the pre-defined model window
+      $('#loading').modal({
+        'backdrop': 'static',
+        'keyboard': false,
+        'show': true
       });
-      // Adding screen reader support
-      progressbar.append( $('<span>').addClass('sr-only').text('Processing Request') );
-      // The progress bar wrapper
-      var barWrap = $('<div>').addClass('progress progress-striped active');
-      barWrap.append(progressbar);
-      // Inform the user what is currently happening
-      var info = $('<h3>').text('Obtaining the results, please wait...');
-      // Create the main wrapper
-      var loading = $('<div>').attr({
-        'id': 'loading',
-        'class': 'well'
-      });
-      loading.append(info);
-      loading.append(barWrap);
-      // Add to the DOM
-      $(settings.results).append(loading);
     };
 
     /**
-     * This function removes the loading results message from the DOM
+     * This function hides the loading results message.
      */
     function hideLoading(){
-      $(settings.results).find("#loading").remove();
+      $('#loading').modal('hide');
     };
 
     /**
