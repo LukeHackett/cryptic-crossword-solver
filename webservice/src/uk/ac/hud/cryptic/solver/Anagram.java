@@ -243,6 +243,9 @@ public class Anagram extends Solver {
 			futures.add(future);
 		}
 
+		// All finished
+		executor.shutdown();
+
 		// Get the actual solutions from the futures
 		for (Future<SolutionCollection> future : futures) {
 			try {
