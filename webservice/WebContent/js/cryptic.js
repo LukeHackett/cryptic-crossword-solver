@@ -1,5 +1,8 @@
 jQuery(document).ready(function($){
 
+  // Set the current page as active in the nav bar
+  setActivePage();
+
   // Remove the non-js pattern input style
   initialisePatternInput();
 
@@ -37,6 +40,27 @@ jQuery(document).ready(function($){
     'results'       : '#results',
     'reset'         : '#reset'
   });
+
+  /**
+   * This function will set the current page active upon the main nav bar
+   */
+  function setActivePage(){
+    // Get the current page from the window location object
+    var page = window.location.pathname.split('/').pop();
+
+    if(page == '' || page == 'index.jsp') {
+      $('.nav [href="index.jsp"]').parent().addClass('active');
+
+    } else if(page == 'solver' || page == 'solver.jsp') {
+      $('.nav [href="solver.jsp"]').parent().addClass('active');
+    
+    } else if(page == 'help.jsp') {
+      $('.nav [href="help.jsp"]').parent().addClass('active');
+    
+    } else if(page == 'changelog.jsp') {
+      $('.nav [href="changelog.jsp"]').parent().addClass('active');  
+    }
+  }
 
   /**
    * Removes all unneeded input boxes, and hides the entire wrapping div 
