@@ -6,16 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -327,28 +324,13 @@ public class Dictionary {
 	 * @author Stuart Leader
 	 * @version 0.2
 	 */
-	private class DictionaryCache {
+	private class DictionaryCache extends Cache {
 
-		// The maximum number of elements that may be cached
-		private static final int MAX_CAPACITY = 100;
 		// Elements to be cached on application initialisation
 		private final String[] PRE_POPULATE_ITEMS = new String[] { "?", "??",
 				"???", "????", "?????", "??????", "???????", "????????",
 				"?????????", "??????????", "???????????", "????????????",
 				"?????????????", "??????????????", "????????????????" };
-		// Our cache object
-		private Map<String, Collection<String>> cache;
-		// Used to manage the capacity of the cache
-		private Queue<String> keys;
-
-		/**
-		 * The one and only constructor
-		 */
-		private DictionaryCache() {
-			// Initialise our objects
-			cache = new HashMap<>();
-			keys = new LinkedList<>();
-		}
 
 		/**
 		 * Fill the cache with the pre-defined items
@@ -357,54 +339,6 @@ public class Dictionary {
 			for (String item : PRE_POPULATE_ITEMS) {
 				cache.put(item, getMatchingWords(item));
 			}
-		}
-
-		/**
-		 * A check to see if the cache contains a given solution pattern
-		 * 
-		 * @param key
-		 *            - the solution pattern
-		 * @return <code>true</code> if the cache contains the matches for the
-		 *         given pattern, <code>false</code> otherwise
-		 */
-		private boolean containsKey(String key) {
-			return cache.containsKey(key);
-		}
-
-		/**
-		 * Add a new element to the cache. If the capacity is reached, the
-		 * oldest cache element is removed (exclusing the pre-defined items -
-		 * these can stay)
-		 * 
-		 * @param key
-		 *            - the key of the cache item
-		 * @param value
-		 *            - the value of the cache item
-		 */
-		public void put(String key, Collection<String> value) {
-			// Pointless if the cache already contains the given key
-			if (!cache.containsKey(key)) {
-				// If capacity has been reached
-				if (cache.size() >= MAX_CAPACITY) {
-					// Remove the oldest cache element
-					cache.remove(keys.poll());
-				}
-				// Add the new item
-				cache.put(key, value);
-				keys.add(key);
-			}
-		}
-
-		/**
-		 * Get the dictionary items which match the given key
-		 * 
-		 * @param key
-		 *            - the key to retrieve the matching entries for
-		 * @return the dictionary entries which match the supplied solution
-		 *         pattern
-		 */
-		public Collection<String> get(String key) {
-			return cache.get(key);
 		}
 
 	} // End of class DictionaryCache

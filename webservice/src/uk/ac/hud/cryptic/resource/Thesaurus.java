@@ -18,6 +18,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -36,11 +37,15 @@ public class Thesaurus {
 	// Actual thesaurus data structure
 	private Map<String, Collection<String>> thesaurus;
 
+	// Cache to speed up common requests
+	private Cache cache;
+
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
 		populateThesaurusFromFile();
+		cache = new Cache();
 	}
 
 	/**
@@ -179,51 +184,21 @@ public class Thesaurus {
 		// The collection that will be returned
 		Collection<String> results = new HashSet<>();
 
-		// Have to go through the entire thesaurus
-		for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
-			// If an entry contains the specified word as a synonym
-			if (entry.getValue().contains(synonym)) {
-				// Return it
-				results.addAll(entry.getValue());
-			}
-		}
-		return results;
-	}
-
-	/**
-	 * Check if a given solution (String) matches as a synonym against any of
-	 * the words present in the clue.
-	 * 
-	 * @param clue
-	 *            - the <code>Clue</code> object
-	 * @param solution
-	 *            - the potential solution word
-	 * @return <code>true</code> if the thesaurus contains the specified word,
-	 *         <code>false</code> otherwise
-	 */
-	public boolean match(Clue clue, String solution) {
-		// Populate an array with the separate words of the clue
-		String[] clueWords = clue.getClueWords();
-		SolutionPattern pattern = clue.getPattern();
-		// More than one word in the solution?
-		boolean multipleWords = pattern.hasMultipleWords();
-
-		// Solution might need to be 're-spaced'
-		String[] solutions = new String[multipleWords ? 2 : 1];
-		solutions[0] = solution.toLowerCase();
-		if (multipleWords) {
-			solutions[1] = pattern.recomposeSolution(solution);
-		}
-		for (String clueWord : clueWords) {
-			if (thesaurus.containsKey(clueWord)) {
-				Collection<String> synonyms = thesaurus.get(clueWord);
-				if (synonyms.contains(solutions[0]) || multipleWords
-						&& synonyms.contains(solutions[1])) {
-					return true;
+		// Check the cache first to avoid a full thesaurus lookup
+		if (cache.containsKey(synonym)) {
+			results = cache.get(synonym);
+		} else {
+			// Have to go through the entire thesaurus
+			for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
+				// If an entry contains the specified word as a synonym
+				if (entry.getValue().contains(synonym)) {
+					// Return it
+					results.addAll(entry.getValue());
 				}
 			}
+			cache.put(synonym, results);
 		}
-		return false;
+		return results;
 	}
 
 	/**
@@ -258,6 +233,42 @@ public class Thesaurus {
 					if (synonyms.contains(clueWord)) {
 						return true;
 					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if a given solution (String) matches as a synonym against any of
+	 * the words present in the clue.
+	 * 
+	 * @param clue
+	 *            - the <code>Clue</code> object
+	 * @param solution
+	 *            - the potential solution word
+	 * @return <code>true</code> if the thesaurus contains the specified word,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean match(Clue clue, String solution) {
+		// Populate an array with the separate words of the clue
+		String[] clueWords = clue.getClueWords();
+		SolutionPattern pattern = clue.getPattern();
+		// More than one word in the solution?
+		boolean multipleWords = pattern.hasMultipleWords();
+
+		// Solution might need to be 're-spaced'
+		String[] solutions = new String[multipleWords ? 2 : 1];
+		solutions[0] = solution.toLowerCase();
+		if (multipleWords) {
+			solutions[1] = pattern.recomposeSolution(solution);
+		}
+		for (String clueWord : clueWords) {
+			if (thesaurus.containsKey(clueWord)) {
+				Collection<String> synonyms = thesaurus.get(clueWord);
+				if (synonyms.contains(solutions[0]) || multipleWords
+						&& synonyms.contains(solutions[1])) {
+					return true;
 				}
 			}
 		}
