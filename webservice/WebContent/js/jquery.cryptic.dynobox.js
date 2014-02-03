@@ -36,7 +36,7 @@
       // Validates against the given regular expression
       self.on('keyup', function (event) {
         // Sanity variables
-        var input = this.value
+        var input = this.value;
         var self = $(this);
         var wrapper = $(container);
         // Ensure settings are available
@@ -217,5 +217,5 @@
       return wordContainer;
     };
 
-  }
+  };
 }(jQuery));
