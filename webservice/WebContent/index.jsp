@@ -6,9 +6,7 @@
     <div class="col-md-12">
       <div class="jumbotron">
         <h1>Cryptic Crossword Solver</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget 
-        quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-         nibh, ut fermentum massa justo sit amet risus.</p>
+        <p class="lead">Rude type making love twice on grass, perversely (5)</p>
       </div>
     </div>
   </div>
@@ -16,11 +14,11 @@
     <!-- Crossword Solver -->
     <div class="col-lg-4">
       <h2>Crossword Solver</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur.</p>
+      <p class="text-justify">The cryptic crossword solver found within this 
+      site provides a number of integrated solving algorithms designed to 
+      effortlessly solve the majority of clues. In order to solve a clue the 
+      tool will only require the clue and the solution pattern. For access to 
+      the tool, please click the button below.</p>
       <p>
         <a class="btn btn-primary" href="solver.jsp" role="button">
           Solve a clue
@@ -30,11 +28,12 @@
     <!-- Help & Documentation -->
     <div class="col-lg-4">
       <h2>Help &amp; Documentation</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur.</p>
+      <p class="text-justify">Using the cryptic crossword solver's web interface
+      couldn't be easier, however we have a comprehensive user guide that helps
+      those who need it. There is also information for those who are wanting to 
+      access our public restful interface to integrate in their own projects. 
+      For more information on how to use our web interface or how to use the 
+      public APIs, click the button below.</p>
       <p>
         <a class="btn btn-primary" href="help.jsp" role="button">
           View the manual
@@ -44,11 +43,10 @@
     <!-- Changelog -->
     <div class="col-lg-4">
       <h2>Software Changelog</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur.</p>
+      <p class="text-justify">The project has been developed using an iterative
+      process, and new features are constantly being added. For more information
+      upon the changes please review the changelog, by clicking upon the button 
+      below.</p>
       <p>
         <a class="btn btn-primary" href="changelog.jsp" role="button">
           View the changelog
