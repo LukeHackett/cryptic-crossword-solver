@@ -133,7 +133,7 @@
           <h4 class="modal-title">Solving clue, please wait...</h4>
         </div>
         <div class="modal-body">
-          <img alt="loading" src="/cryptic/images/spinner.gif">
+          <img alt="loading" src="images/spinner.gif">
         </div>
       </div>
     </div>
