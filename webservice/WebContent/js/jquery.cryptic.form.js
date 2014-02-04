@@ -83,7 +83,8 @@
         })
         .done(function(data) {
           // Show the given input values
-          showInputValues(data.solver.clue, data.solver.pattern);
+          showInputValues(data.solver.clue, data.solver.pattern, 
+                          data.solver.total, data.solver.duration);
           // Ensure returns have been generated
           if(data.solver.solution) {
             // Output the results
@@ -236,24 +237,47 @@
       // Find the results element
       var results = $(settings.results);
       // Remove any existing results
-      clearResults;
+      clearResults();
       // Add the Results header
       results.append($('<h3>').text('Results'));
+      // Create a main wrapper around the static UI
+      var wrapper = $('<div>').addClass('form-horizontal');
       // Add the clue received paragraph element
-      results.append($('<p>').attr('id', 'clue-received'));
+      wrapper.append(createStaticForm('Clue', '', 'clue-received'));
       // Add the pattern received paragraph element
-      results.append($('<p>').attr('id', 'pattern-received'));
+      wrapper.append(createStaticForm('Pattern', '', 'pattern-received'));
+      // Add the pattern received paragraph element
+      wrapper.append(createStaticForm('', '', 'duration'));
+      // Append the wrapper to the results element
+      results.append(wrapper);
+      // Add the horizontal rule separator;
+      results.append($('<hr>'));
     };
+
+    function createStaticForm(label, content, id){
+      // Create the label
+      var lbl = $('<label>').addClass('col-sm-2 control-label').text(label);
+      // Create the paragraph
+      var value = $('<div>').addClass('col-sm-10').html(
+                    $('<p>').attr({
+                      'id': id, 
+                      'class': 'form-control-static'
+                    }).text(content)
+                  );
+      // Combine together
+      return $('<div>').addClass('form-group').append(lbl).append(value);
+    }
 
     /**
      * This function will output the given clue and pattern solution to the 
      * results area of the page
      */
-    function showInputValues(clue, pattern){
+    function showInputValues(clue, pattern, total, duration){
       // State the clue received
-      $('#clue-received').html('<b> Clue:</b> ' + clue);
+      $('#clue-received').text(clue);
       // State the clue pattern received
-      $('#pattern-received').html('<b> Pattern:</b> ' + pattern);
+      $('#pattern-received').text(pattern);
+      $('#duration').text(total + ' solutions generated in ' + duration + ' seconds');
     };
 
     /**
