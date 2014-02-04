@@ -18,8 +18,7 @@ import uk.ac.hud.cryptic.core.Manager;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
-import uk.ac.hud.cryptic.util.XMLErrorBuilder;
-import uk.ac.hud.cryptic.util.XMLResultBuilder;
+import uk.ac.hud.cryptic.util.XMLBuilder;
 
 /**
  * This class provides a servlet to provide an interface to the application.
@@ -184,7 +183,15 @@ public class Solver extends Servlet {
 		// Notify Manager this is a servlet
 		//manager.setServletContext(getServletConfig().getServletContext());
 		
+		// get the start time of the solving process
+		double startTime = (double) System.currentTimeMillis() % 1000; 
+		
+		// Solve the clue
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
+		
+		// get the end time of the solving process
+		double endTime = (double) System.currentTimeMillis() % 1000; 
+		
 		// Solutions aren't sorted until this is requested
 		Set<Solution> sortedSolutions = solutions.sortSolutions();
 
@@ -192,9 +199,9 @@ public class Solver extends Servlet {
 		final SolutionPattern pattern = clue.getPattern();
 
 		// Create a new XML Builder object
-		XMLResultBuilder xmlBuilder = new XMLResultBuilder(clueString,
-				patternString);
-
+		XMLBuilder xmlBuilder = new XMLBuilder(clueString, patternString, endTime - startTime);
+		xmlBuilder.addKeyValue("total", String.valueOf(sortedSolutions.size()));
+		
 		// Add each of the solutions to the XML document
 		for (Solution s : sortedSolutions) {
 			String solver = s.getSolverType();
@@ -332,7 +339,7 @@ public class Solver extends Servlet {
 			// Send errors and cancel the current request if required
 			if (errors.length > 0) {
 				// Build a new XML document
-				XMLErrorBuilder builder = new XMLErrorBuilder();
+				XMLBuilder builder = new XMLBuilder(clue, solution);
 				builder.addErrors(errors);
 
 				sendError(response, builder.toString(), json,
