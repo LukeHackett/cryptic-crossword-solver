@@ -126,6 +126,16 @@ public class Settings {
 	}
 
 	/**
+	 * This method will return the path to the homophone dictionary file.
+	 * 
+	 * @return the file path to the homophone dictionary
+	 */
+	public InputStream getHomophoneDictionaryPath() {
+		// Location of the resource
+		return getPath("homophones/cmudict.0.7a");
+	}
+
+	/**
 	 * Set the <code>ServletContext</code> object, which should be done when the
 	 * application is run in a server environment to indicate this is the case
 	 * 

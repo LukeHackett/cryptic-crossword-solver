@@ -14,6 +14,7 @@ import org.json.XML;
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Dictionary;
+import uk.ac.hud.cryptic.resource.HomophoneDictionary;
 import uk.ac.hud.cryptic.resource.Thesaurus;
 
 /**
@@ -98,7 +99,7 @@ public class Servlet extends HttpServlet {
 
 		// Set the return status code
 		response.setStatus(errorCode);
-		
+
 		// Send the response
 		sendResponse(response, data, json);
 	}
@@ -153,5 +154,6 @@ public class Servlet extends HttpServlet {
 		Thesaurus.getInstance();
 		Settings.getInstance();
 		Categoriser.getInstance();
+		HomophoneDictionary.getInstance();
 	}
 }
