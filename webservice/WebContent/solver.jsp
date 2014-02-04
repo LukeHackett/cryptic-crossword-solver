@@ -72,16 +72,47 @@
           <input type="submit" class="btn btn-primary" id="submit" value="Submit"/>
         </div>
       </form>
+      <hr>
     </div>
   </div> 
   <div class="row">
     <!-- Results -->
-    <div id="results" class="col-md-10  col-md-offset-1">
+    <div id="results" class="col-md-10 col-md-offset-1">
       <c:if test="${results != null}">
         <x:parse var="doc" doc="${results}"/>     
         <h3>Results</h3>
-        <p><b>Clue Received:</b> <x:out select="$doc/solver/clue"/></p>
-        <p><b>Pattern Received:</b> <x:out select="$doc/solver/pattern"/></p>
+        <div class="form-horizontal">
+          <!-- Received Clue -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Clue</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">
+                <x:out select="$doc/solver/clue"/>
+              </p>
+            </div>
+          </div>
+          <!-- Received Pattern -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Pattern</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">
+                <x:out select="$doc/solver/pattern"/>
+              </p>
+            </div>
+          </div>
+          <!-- Total Time -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">
+                <x:out select="$doc/solver/total"/> 
+                solutions generated in 
+                <x:out select="$doc/solver/duration"/> seconds
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr>
         <x:choose>
           <x:when select="$doc/solver//solution">
             <div class="panel-group" id="accordion">
