@@ -321,10 +321,15 @@
         panelBody.append( $('<p>').text('Solution Trace:') );
         // Add the ordered list
         panelBody.append( $('<ol>') );
-        // Each each trace as part of the ordered list
-        $.each(solution.trace, function(i, step){
-          panelBody.find('ol').append( $('<li>').text(step) );
-        });
+        // Add the solution trace to the DOM
+        if($.isArray(solution.trace)) {
+          // Each each trace as part of the ordered list
+          $.each(solution.trace, function(i, step){
+            panelBody.find('ol').append( $('<li>').text(step) );
+          });
+        } else {
+          panelBody.find('ol').append( $('<li>').text(solution.trace) );
+        }
       } else {
         // Trace is not available
         panelBody.append( $('<p>').text('Solution Trace Unavailable.') );
