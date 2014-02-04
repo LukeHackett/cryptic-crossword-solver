@@ -70,6 +70,20 @@ public class Cache {
 	}
 
 	/**
+	 * Add an element to the cache, but don't add it to the list of keys that
+	 * may be removed from the cache when capacity is reached. In other words,
+	 * these items will always remain in the cache, no matter how full it gets.
+	 * 
+	 * @param key
+	 *            - the key to persist in the cache for its lifetime
+	 * @param value
+	 *            - the value to persist in the cache for its lifetime
+	 */
+	protected void prePut(String key, Collection<String> value) {
+		cache.put(key, value);
+	}
+
+	/**
 	 * Get the dictionary items which match the given key
 	 * 
 	 * @param key

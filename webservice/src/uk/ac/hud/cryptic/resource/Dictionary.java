@@ -337,7 +337,7 @@ public class Dictionary {
 		 */
 		private void prePopulate() {
 			for (String item : PRE_POPULATE_ITEMS) {
-				cache.put(item, getMatchingWords(item));
+				cache.prePut(item, getMatchingWords(item));
 			}
 		}
 
