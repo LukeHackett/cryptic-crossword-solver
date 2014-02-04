@@ -221,10 +221,21 @@ public class Thesaurus {
 		boolean multipleWords = pattern.hasMultipleWords();
 
 		// Solution might need to be 're-spaced'
-		String[] solutions = new String[multipleWords ? 2 : 1];
-		solutions[0] = solution.toLowerCase();
+		String[] solutions;
 		if (multipleWords) {
-			solutions[1] = pattern.recomposeSolution(solution);
+			// e.g. "strain a muscle"
+			String recomposed = pattern.recomposeSolution(solution);
+			// e,g. { "strain" , "a" , "muscle" }
+			String[] words = recomposed.split(WordUtils.REGEX_WHITESPACE);
+			solutions = new String[words.length + 2];
+			// i.e. "strainamuscle"
+			solutions[0] = solution.toLowerCase();
+			solutions[1] = recomposed;
+			for (int i = 0; i < words.length; i++) {
+				solutions[i + 1] = words[i];
+			}
+		} else {
+			solutions = new String[] { solution.toLowerCase() };
 		}
 		for (String s : solutions) {
 			if (thesaurus.containsKey(s)) {
@@ -266,9 +277,15 @@ public class Thesaurus {
 		for (String clueWord : clueWords) {
 			if (thesaurus.containsKey(clueWord)) {
 				Collection<String> synonyms = thesaurus.get(clueWord);
-				if (synonyms.contains(solutions[0]) || multipleWords
-						&& synonyms.contains(solutions[1])) {
+				if (synonyms.contains(solutions[0])) {
 					return true;
+				} else if (multipleWords) {
+					for (String word : solutions[1]
+							.split(WordUtils.REGEX_WHITESPACE)) {
+						if (synonyms.contains(word)) {
+							return true;
+						}
+					}
 				}
 			}
 		}
