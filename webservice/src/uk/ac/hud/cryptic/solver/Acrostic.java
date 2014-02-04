@@ -1,5 +1,7 @@
 package uk.ac.hud.cryptic.solver;
 
+import java.util.List;
+
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -65,14 +67,36 @@ public class Acrostic extends Solver {
 			for (int j = i; j < i + solutionLength; j++) {
 				subStr += termToSearch.substring(j, j + 1);
 			}
-			solutions.add(new Solution(subStr, NAME));
+			Solution s = new Solution(subStr, NAME);
+			s.addToTrace("Looking for possible acrostic answers");
+			solutions.add(s);
 		}
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
+		
+		for(Solution s : solutions) {
+			s.addToTrace("Finding acrostics which match the patten " + pattern.getPattern());
+			
+			List<String> so = s.getSolutionTrace();
+			for(String sol : so)
+			{
+				System.out.println(sol);
+			}
+		}
 
 		// Remove words not in the dictionary
 		DICTIONARY.dictionaryFilter(solutions, pattern);
+		
+		for(Solution s : solutions) {
+			s.addToTrace("Removing words which are not in the dictionary");
+			
+			List<String> so = s.getSolutionTrace();
+			for(String sol : so)
+			{
+				System.out.println(sol);
+			}
+		}
 
 		return solutions;
 	}

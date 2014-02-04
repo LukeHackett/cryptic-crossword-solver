@@ -182,7 +182,7 @@ public class Solver extends Servlet {
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
 		// Notify Manager this is a servlet
-		manager.setServletContext(getServletConfig().getServletContext());
+		//manager.setServletContext(getServletConfig().getServletContext());
 		
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
 		// Solutions aren't sorted until this is requested
@@ -201,6 +201,15 @@ public class Solver extends Servlet {
 			String solution = pattern.recomposeSolution(s.getSolution());
 			String confidence = Solution.CONF_FORMATTER.format(s
 					.getConfidence());
+			s.addToTrace("Retrieving confidence score of: " + confidence);
+			
+			List<String> so = s.getSolutionTrace();
+			for(String sol : so)
+			{
+				System.out.println(sol);
+			}
+			
+			
 			List<String> trace = s.getSolutionTrace();
 
 			xmlBuilder.addSolution(solver, solution, confidence, trace);
