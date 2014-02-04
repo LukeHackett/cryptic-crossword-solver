@@ -181,6 +181,9 @@ public class Solver extends Servlet {
 		// Encapsulate the clueString in an object and solve it
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
+		// Notify Manager this is a servlet
+		manager.setServletContext(getServletConfig().getServletContext());
+		
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
 		// Solutions aren't sorted until this is requested
 		Set<Solution> sortedSolutions = solutions.sortSolutions();
