@@ -177,51 +177,43 @@ public class Solver extends Servlet {
 	 * @return XML String of results
 	 */
 	private String solveClue(String clueString, String patternString) {
+		// Get the time before the solving process
+		long startTime = System.currentTimeMillis();
+
 		// Encapsulate the clueString in an object and solve it
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
 		// Notify Manager this is a servlet
-		//manager.setServletContext(getServletConfig().getServletContext());
-		
-		// get the start time of the solving process
-		double startTime = (double) System.currentTimeMillis() % 1000; 
-		
+		// manager.setServletContext(getServletConfig().getServletContext());
+
 		// Solve the clue
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
-		
-		// get the end time of the solving process
-		double endTime = (double) System.currentTimeMillis() % 1000; 
-		
+
 		// Solutions aren't sorted until this is requested
 		Set<Solution> sortedSolutions = solutions.sortSolutions();
 
 		// Needed to correct the output of the solution(s)
 		final SolutionPattern pattern = clue.getPattern();
 
+		// Get the duration of the solving process in ms
+		long duration = System.currentTimeMillis() - startTime;
+
 		// Create a new XML Builder object
-		XMLBuilder xmlBuilder = new XMLBuilder(clueString, patternString, endTime - startTime);
+		XMLBuilder xmlBuilder = new XMLBuilder(clueString, patternString,
+				duration);
 		xmlBuilder.addKeyValue("total", String.valueOf(sortedSolutions.size()));
-		
+
 		// Add each of the solutions to the XML document
 		for (Solution s : sortedSolutions) {
 			String solver = s.getSolverType();
 			String solution = pattern.recomposeSolution(s.getSolution());
 			String confidence = Solution.CONF_FORMATTER.format(s
 					.getConfidence());
-			s.addToTrace("Retrieving confidence score of: " + confidence);
-			
-			List<String> so = s.getSolutionTrace();
-			for(String sol : so)
-			{
-				System.out.println(sol);
-			}
-			
-			
 			List<String> trace = s.getSolutionTrace();
 
 			xmlBuilder.addSolution(solver, solution, confidence, trace);
 		}
-		
+
 		return xmlBuilder.toString();
 	}
 
@@ -290,8 +282,8 @@ public class Solver extends Servlet {
 
 		// Check for a new request
 		if (clue == null && length == null && pattern == null) {
-			request.getRequestDispatcher("solver.jsp")
-					.forward(request, response);
+			request.getRequestDispatcher("solver.jsp").forward(request,
+					response);
 			return;
 		}
 
@@ -370,8 +362,8 @@ public class Solver extends Servlet {
 			}
 
 			// Forward request and response onto the view
-			request.getRequestDispatcher("solver.jsp")
-					.forward(request, response);
+			request.getRequestDispatcher("solver.jsp").forward(request,
+					response);
 		}
 	}
 }
