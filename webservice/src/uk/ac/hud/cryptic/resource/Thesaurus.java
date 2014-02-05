@@ -38,14 +38,14 @@ public class Thesaurus {
 	private Map<String, Collection<String>> thesaurus;
 
 	// Cache to speed up common requests
-	private Cache cache;
+	private Cache<String, Collection<String>> cache;
 
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
 		populateThesaurusFromFile();
-		cache = new Cache();
+		cache = new Cache<>();
 	}
 
 	/**

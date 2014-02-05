@@ -324,7 +324,7 @@ public class Dictionary {
 	 * @author Stuart Leader
 	 * @version 0.2
 	 */
-	private class DictionaryCache extends Cache {
+	private class DictionaryCache extends Cache<String, Collection<String>> {
 
 		// Elements to be cached on application initialisation
 		private final String[] PRE_POPULATE_ITEMS = new String[] { "?", "??",

@@ -1,6 +1,5 @@
 package uk.ac.hud.cryptic.util;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -14,15 +13,15 @@ import java.util.Queue;
  * @author Stuart Leader
  * @version 0.2
  */
-public class Cache {
+public class Cache<K, V> {
 
 	// The maximum number of elements that may be cached
 	protected static final int MAX_CAPACITY = 1000;
 
 	// Our cache object
-	private Map<String, Collection<String>> cache;
+	private Map<K, V> cache;
 	// Used to manage the capacity of the cache
-	private Queue<String> keys;
+	private Queue<K> keys;
 
 	/**
 	 * The one and only constructor
@@ -41,7 +40,7 @@ public class Cache {
 	 * @return <code>true</code> if the cache contains the matches for the given
 	 *         pattern, <code>false</code> otherwise
 	 */
-	public boolean containsKey(String key) {
+	public boolean containsKey(K key) {
 		return cache.containsKey(key);
 	}
 
@@ -55,7 +54,7 @@ public class Cache {
 	 * @param value
 	 *            - the value of the cache item
 	 */
-	public void put(String key, Collection<String> value) {
+	public void put(K key, V value) {
 		// Pointless if the cache already contains the given key
 		if (!cache.containsKey(key)) {
 			// If capacity has been reached
@@ -79,7 +78,7 @@ public class Cache {
 	 * @param value
 	 *            - the value to persist in the cache for its lifetime
 	 */
-	protected void prePut(String key, Collection<String> value) {
+	protected void prePut(K key, V value) {
 		cache.put(key, value);
 	}
 
@@ -90,7 +89,7 @@ public class Cache {
 	 *            - the key to retrieve the matching entries for
 	 * @return the dictionary entries which match the supplied solution pattern
 	 */
-	public Collection<String> get(String key) {
+	public V get(K key) {
 		return cache.get(key);
 	}
 
