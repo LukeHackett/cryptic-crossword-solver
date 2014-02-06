@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.config.Settings.ResourceType;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -38,7 +39,7 @@ public class Categoriser {
 	 * Load the indicators into a HashSet to allow for much faster access
 	 */
 	private void populateIndicatorsFromFile() {
-		URL url = settings.getIndicatorsDirectory();
+		URL url = settings.getDirectory(ResourceType.ASSET, "indicators");
 
 		// Instantiate the dictionary object
 		indicators = new HashMap<>();
@@ -54,8 +55,8 @@ public class Categoriser {
 						continue;
 					}
 					// Get the key (look-up) word
-					String solverType = settings
-							.getTextFileName(file.getName());
+					String solverType = settings.getFileName(file.getName(),
+							"txt");
 					// This will hold the indicators
 					Collection<String> words = new ArrayList<>();
 
@@ -146,9 +147,9 @@ public class Categoriser {
 		if (indicators.containsKey(type)) {
 			String indicator = "";
 			for (String i : indicators.get(type)) {
-//				if (clue.contains(i) && i.length() > indicator.length()) {
-//					indicator = i;
-//				}
+				// if (clue.contains(i) && i.length() > indicator.length()) {
+				// indicator = i;
+				// }
 				if (clue.contains(i)) {
 					clue = clue.replace(i, "");
 				}

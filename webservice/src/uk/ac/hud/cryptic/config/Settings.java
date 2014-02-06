@@ -10,16 +10,38 @@ import javax.servlet.ServletContext;
  * This class provides a number of application wide settings and constants.
  * 
  * @author Luke Hackett, Stuart Leader
- * @version 0.1
+ * @version 0.2
  */
 public class Settings {
 	private static Settings instance;
 	// Context if application is executed as a servlet
 	private ServletContext context;
 	// Pre-path for Server environment
-	private static final String SERVER_PRE_PATH = "/WEB-INF/assets/";
+	private static final String SERVER_PRE_PATH = "/WEB-INF/";
 	// Pre-path for local environment
 	private static final String LOCAL_PRE_PATH = "/";
+
+	/**
+	 * Allows one to specify whether a requested resource is an asset or a
+	 * class. Other types could be added to this if necessary. This is used in
+	 * the creation of the path to the specified resource.
+	 * 
+	 * @author Stuart Leader
+	 * @version 0.2
+	 */
+	public enum ResourceType {
+		ASSET("assets/"), CLASS("classes/uk/ac/hud/cryptic/");
+
+		private final String path;
+
+		ResourceType(String path) {
+			this.path = path;
+		}
+
+		String getPath() {
+			return path;
+		}
+	}
 
 	/**
 	 * Get the InputStream for the given path to a resource. The exact location
@@ -30,11 +52,12 @@ public class Settings {
 	 *            - the path of the resource to use
 	 * @return the <code>InputStream</code> of the requested resource
 	 */
-	private InputStream getPath(String resource) {
+	private InputStream getPath(ResourceType type, String resource) {
 		// Am I being called from a Servlet?
 		boolean server = context != null;
 		// Path to the dictionary resource
-		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
+		String path = (server ? SERVER_PRE_PATH + type.getPath()
+				: LOCAL_PRE_PATH) + resource;
 		// InputStream to resource
 		InputStream is = server ? context.getResourceAsStream(path)
 				: Settings.class.getResourceAsStream(path);
@@ -49,7 +72,7 @@ public class Settings {
 	 */
 	public InputStream getCustomDictionaryPath() {
 		// Location of the resource
-		return getPath("dictionary/custom/custom-dict.txt");
+		return getPath(ResourceType.ASSET, "dictionary/custom/custom-dict.txt");
 	}
 
 	/**
@@ -91,7 +114,7 @@ public class Settings {
 	 */
 	public InputStream getDictionaryExclusionsPath() {
 		// Location of the resource
-		return getPath("dictionary/custom/exclusions.txt");
+		return getPath(ResourceType.ASSET, "dictionary/custom/exclusions.txt");
 	}
 
 	/**
@@ -101,7 +124,7 @@ public class Settings {
 	 */
 	public InputStream getDictionaryPath() {
 		// Location of the resource
-		return getPath("dictionary/acd/UKACD.txt");
+		return getPath(ResourceType.ASSET, "dictionary/acd/UKACD.txt");
 	}
 
 	/**
@@ -111,7 +134,7 @@ public class Settings {
 	 */
 	public InputStream getPronouncingDictionaryPath() {
 		// Location of the resource
-		return getPath("homophones/cmudict.0.7a");
+		return getPath(ResourceType.ASSET, "homophones/cmudict.0.7a");
 
 	}
 
@@ -122,7 +145,7 @@ public class Settings {
 	 */
 	public InputStream getThesaurusPath() {
 		// Location of the resource
-		return getPath("thesaurus/gutenberg/mthesaur.txt");
+		return getPath(ResourceType.ASSET, "thesaurus/gutenberg/mthesaur.txt");
 	}
 
 	/**
@@ -132,7 +155,7 @@ public class Settings {
 	 */
 	public InputStream getHomophoneDictionaryPath() {
 		// Location of the resource
-		return getPath("homophones/cmudict.0.7a");
+		return getPath(ResourceType.ASSET, "homophones/cmudict.0.7a");
 	}
 
 	/**
@@ -148,28 +171,19 @@ public class Settings {
 	}
 
 	/**
-	 * This method will return the path to the indicator file.
-	 * 
-	 * @return the file path to the indicators
-	 */
-	public URL getIndicatorsDirectory() {
-		// Location of the resource
-		return getDirectory("indicators");
-	}
-
-	/**
 	 * Get a directory from the classpath, represented as a URL
 	 * 
 	 * @param resource
 	 *            - the directory to obtain
 	 * @return the requested directory as a URL, <code>null</code> otherwise
 	 */
-	private URL getDirectory(String resource) {
+	public URL getDirectory(ResourceType type, String resource) {
 		URL url = null;
 		// Am I being called from a Servlet?
 		boolean server = context != null;
 		// Path to the dictionary resource
-		String path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH) + resource;
+		String path = (server ? SERVER_PRE_PATH + type.getPath()
+				: LOCAL_PRE_PATH) + resource;
 		try {
 			// URL of resource
 			url = server ? context.getResource(path) : Settings.class
@@ -188,10 +202,11 @@ public class Settings {
 	 *            - the filename to get the name of
 	 * @return the name of the specified text file
 	 */
-	public String getTextFileName(String filename) {
+	public String getFileName(String filename, String extension) {
 		filename = filename.toLowerCase().trim();
-		if (filename.endsWith(".txt")) {
-			filename = filename.substring(0, filename.length() - 4);
+		if (filename.endsWith("." + extension)) {
+			filename = filename.substring(0,
+					filename.length() - (1 + extension.length()));
 		}
 		return filename;
 	}
