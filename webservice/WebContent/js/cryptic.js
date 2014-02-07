@@ -11,7 +11,15 @@ jQuery(document).ready(function($){
    * for the given input box
    */
   $('#clue-input input[type="text"]').hidenseek();
-
+  
+  /**
+   * Multi-event handler that provides complete selection of a given text input
+   * field 
+   */
+  $(document).on('click', 'input[type=text]', function(){
+    this.select();
+  });
+  
   /**
    * Multi-event handler for the length input text box
    */
@@ -19,7 +27,7 @@ jQuery(document).ready(function($){
       'regex'      : /[0-9]+((,|-)[0-9]+)*/gi,     // Solution length Regex 
       'inclusions' : [44, 45]                      // Commas and Hyphens
   });
-
+  
   /**
    * Reset button event handler
    */
