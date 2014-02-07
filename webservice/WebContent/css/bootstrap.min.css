@@ -825,7 +825,7 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .word input[type=text].form-control{width:35px;display:inline;text-align:center;padding:5px 10px;margin-right:1px}
 .panel-heading .panel-title{display:inline-block}
 .panel-heading span.label{margin:10px 0 0 5px}
-#results{padding-top:30px;border-top:1px solid #e5e5e5}#results h3{text-align:center;margin:10px}
+#results h3{text-align:center;margin:10px}
 .panel-group{margin:30px 0px}
 .modal-vertical-centered{transform:translate(0, 50%) !important;-ms-transform:translate(0, 50%) !important;-webkit-transform:translate(0, 50%) !important;}
 .modal-body img{margin:20px 0px}
