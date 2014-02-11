@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 /**
  * This class provides a number of application wide settings and constants.
  * 
- * @author Luke Hackett, Stuart Leader
+ * @author Luke Hackett, Stuart Leader, Mohamamd Rahman
  * @version 0.2
  */
 public class Settings {
@@ -125,6 +125,16 @@ public class Settings {
 	public InputStream getDictionaryPath() {
 		// Location of the resource
 		return getPath(ResourceType.ASSET, "dictionary/acd/UKACD.txt");
+	}
+	
+	/**
+	 * This method will return the path to the solvers properties file.
+	 * 
+	 * @return the file path to the properties file
+	 */
+	public InputStream getPropertyPath() {
+		// Location of the property
+		return getPath(ResourceType.ASSET, "properties/solvers.properties");
 	}
 
 	/**
