@@ -183,8 +183,6 @@ public class Solver extends Servlet {
 		// Encapsulate the clueString in an object and solve it
 		Clue clue = new Clue(clueString, patternString);
 		Manager manager = new Manager();
-		// Notify Manager this is a servlet
-		// manager.setServletContext(getServletConfig().getServletContext());
 
 		// Solve the clue
 		SolutionCollection solutions = manager.distributeAndSolveClue(clue);
