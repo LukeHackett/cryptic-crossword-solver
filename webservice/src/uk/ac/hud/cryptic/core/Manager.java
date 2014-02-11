@@ -1,31 +1,21 @@
 package uk.ac.hud.cryptic.core;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import javax.servlet.ServletContext;
-
+import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.solver.Acrostic;
-import uk.ac.hud.cryptic.solver.Anagram;
 import uk.ac.hud.cryptic.solver.Hidden;
-import uk.ac.hud.cryptic.solver.Palindrome;
 import uk.ac.hud.cryptic.solver.Pattern;
 import uk.ac.hud.cryptic.solver.Solver;
 import uk.ac.hud.cryptic.util.DB;
@@ -42,14 +32,9 @@ import uk.ac.hud.cryptic.util.DB;
  */
 public class Manager {
 
-	private String prepath;
-	private ServletContext context;
-	private String path;
-	private static final String SERVER_PRE_PATH = "/WEB-INF/properties/solvers.properties";
-	// Pre-path for local environment
-	private static final String LOCAL_PRE_PATH = "WebContent/WEB-INF/properties/solvers.properties";
-
-
+	public static final String PREFIX = "stream2file";
+    public static final String SUFFIX = ".tmp";
+	
 	/**
 	 * This method could take some input from the Servlet / Controller in the
 	 * form of a <code>Clue</code> object and return a
@@ -61,21 +46,26 @@ public class Manager {
 	 * @return the calculated solutions to the given clue
 	 */
 	public SolutionCollection distributeAndSolveClue(Clue clue) {
-		
-		// Allocate Pre-Path for specific OS
-		findPathToProperties();
-		
+
 		// This will hold the returned data from the solvers
 		Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
 
 		// This will hold the solvers to be ran at runtime
 		Collection<Solver> solvers = new ArrayList<>();
 
-		try {			
+
+		//TODO Need to find a better way to locate the properties file
+		//InputStream p = Settings.getInstance().getPropertyPath(); << Does not reload
+
+
+		//Instead create a new instance of Settings file to reload solvers in use
+		Settings settings = new Settings();
+
+		try {		
+
 			//Locate the properties file which contains available solvers
-			System.out.println("Properties file in: " + completePath());
-			FileInputStream fstream = new FileInputStream(completePath());
-			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(settings.getPropertyPath()));
 
 			// An available solver
 			String strLine;
@@ -86,7 +76,7 @@ public class Manager {
 				// A Solver
 				Class<?> cls;
 				try {
-
+					System.out.println(strLine);
 					//Load the class
 					cls = Class.forName(strLine);
 					Constructor<?> c = cls.getDeclaredConstructor(Clue.class);
@@ -159,8 +149,9 @@ public class Manager {
 		for (final Clue clue : clues) {
 
 			// Instantiate the manager and fire off the clue to the solvers
-			Manager m = new Manager();
+			Manager m = new Manager();			
 			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
+			
 
 			boolean found;
 			// If found, mark as a success
@@ -181,46 +172,6 @@ public class Manager {
 		System.out.println("The solution has been found " + successes
 				+ " out of " + clues.size() + " times.");
 	}
-	
-	
-	/**
-	 * This method is used to access the paths of the project. The output is
-	 * Dependent upon the operating System (Windows, Linux, Other)
-	 */
-	public void findPathToProperties() {
-		String workingDir = System.getProperty("user.dir");
-		String os = System.getProperty("os.name").toLowerCase();
-		if(os.indexOf("win") >= 0){
-			prepath = workingDir + "\\";
-		}else if(os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0){
-			prepath = workingDir + "/";
-		}else{
-			prepath = workingDir + "/";
-		}
 
-	}
-
-	/**
-	 * This method will complete the absolute path to the class files.
-	 * The path will be dependent upon whether the application is in
-	 * Development or running as a servlet
-	 * @return 
-	 */
-	public String completePath(){		
-		// Am I being called from a Servlet?
-		boolean server = context != null;
-		// Path to the dictionary resource
-		path = (server ? SERVER_PRE_PATH : LOCAL_PRE_PATH );
-
-		String absolutePath = prepath+path;
-		System.out.println("Absolute Path: " + absolutePath);
-		return absolutePath;
-
-	}
-
-	public void setServletContext(ServletContext servletContext) {
-		context = servletContext;
-		
-	}
 
 } // End of class manager
