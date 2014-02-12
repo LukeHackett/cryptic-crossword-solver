@@ -6,11 +6,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -30,12 +34,15 @@ public class HomophoneDictionary {
 	private static final String COMMENT = ";;;";
 	// Actual homophone dictionary data structure
 	private Map<String, List<String>> dictionary;
+	// Cache of homonyms
+	private Cache<String, Set<String>> cache;
 
 	/**
 	 * Default Constructor
 	 */
 	private HomophoneDictionary() {
 		populateDictionaryFromFile();
+		cache = new Cache<>();
 	}
 
 	/**
@@ -69,6 +76,8 @@ public class HomophoneDictionary {
 				if (components.length == 2) {
 					// Normalise the lookup word
 					String word = components[0].toLowerCase().trim();
+					// Remove duplicate indicator from word
+					word = word.replaceAll("(\\d+)", "");
 					// Create a list of the pronunciation elements
 					List<String> pronunciation = Arrays.asList(components[1]
 							.split(WordUtils.REGEX_WHITESPACE));
@@ -103,14 +112,56 @@ public class HomophoneDictionary {
 	 *            - the word to get pronunciation for
 	 * @return the pronunciation of the given word
 	 */
-	public List<String> getPronunciation(String word) {
+	public Collection<List<String>> getPronunciations(String word) {
 		// This will hold the pronunciation, if present
-		List<String> pronunciation = new ArrayList<>();
+		Collection<List<String>> pronunciations = new ArrayList<>();
+
+		// Might be more than one pronunciation
+		List<String> pronunciation;
+		String key = word;
+		int counter = 0;
+
 		// Check it is contained in the dictionary
-		if (dictionary.containsKey(word)) {
-			pronunciation.addAll(dictionary.get(word));
+		while ((pronunciation = dictionary.get(key)) != null) {
+			pronunciations.add(pronunciation);
+			// Search for more pronunciations
+			key = word + "(" + ++counter + ")";
 		}
-		return pronunciation;
+
+		return pronunciations;
 	}
+
+	public Set<String> getHomonyms(String word) {
+		// First check the cache
+		if (cache.containsKey(word)) {
+			return cache.get(word);
+		}
+		// This will hold the words that are pronounced the same
+		Set<String> homonyms = new HashSet<>();
+		// Get the pronunciations of the supplied word
+		Collection<List<String>> pronunciations = getPronunciations(word);
+		// For each of these pronunciations
+		for (List<String> pronunciation : pronunciations) {
+			// Find matching words - iterate entire dictionary
+			for (String entry : dictionary.keySet()) {
+				// If pronunciations exactly match
+				if (getPronunciations(entry).contains(pronunciation)) {
+					// Add as a homonym
+					homonyms.add(entry);
+					// System.out.println(entry);
+				}
+			}
+			// Remove the original word, if present
+			homonyms.remove(word);
+			// Add results to the cache
+			cache.put(word, homonyms);
+		}
+		return homonyms;
+	}
+
+	/**
+	 * Reverse lookup. Take the given pronunciation and find words which match
+	 * this.
+	 */
 
 } // End of class HomophoneDictionary
