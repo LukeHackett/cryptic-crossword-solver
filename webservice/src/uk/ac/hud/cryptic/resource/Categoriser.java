@@ -39,7 +39,7 @@ public class Categoriser {
 	 * Load the indicators into a HashSet to allow for much faster access
 	 */
 	private void populateIndicatorsFromFile() {
-		URL url = settings.getDirectory(ResourceType.ASSET, "indicators");
+		URL url = settings.getIndicatorDirectory(ResourceType.ASSET, "indicators");
 
 		// Instantiate the dictionary object
 		indicators = new HashMap<>();

@@ -12,7 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Manager;
 import uk.ac.hud.cryptic.core.Solution;
@@ -305,13 +304,6 @@ public class Solver extends Servlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// ServletContext is required to locate resource (e.g. dictionary)
-		// TODO This could perhaps be implemented more elegantly?
-		Settings settings = Settings.getInstance();
-		// When settings has this "context", it knows to load resources from
-		// somewhere else
-		settings.setServletContext(getServletConfig().getServletContext());
 
 		// Obtain the input requests
 		String clue = request.getParameter("clue");

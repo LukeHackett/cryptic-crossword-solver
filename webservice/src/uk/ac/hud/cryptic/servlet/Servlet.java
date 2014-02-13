@@ -150,9 +150,11 @@ public class Servlet extends HttpServlet {
 	 */
 	@Override
 	public void init() {
+		Settings settings = Settings.getInstance();
+		settings.setServletContext(getServletConfig().getServletContext());
+
 		Dictionary.getInstance();
 		Thesaurus.getInstance();
-		Settings.getInstance();
 		Categoriser.getInstance();
 		HomophoneDictionary.getInstance();
 	}

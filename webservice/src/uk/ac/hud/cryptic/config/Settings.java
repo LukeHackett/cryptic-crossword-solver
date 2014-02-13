@@ -1,7 +1,6 @@
 package uk.ac.hud.cryptic.config;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.ServletContext;
@@ -126,7 +125,7 @@ public class Settings {
 		// Location of the resource
 		return getPath(ResourceType.ASSET, "dictionary/acd/UKACD.txt");
 	}
-	
+
 	/**
 	 * This method will return the path to the solvers properties file.
 	 * 
@@ -187,21 +186,11 @@ public class Settings {
 	 *            - the directory to obtain
 	 * @return the requested directory as a URL, <code>null</code> otherwise
 	 */
-	public URL getDirectory(ResourceType type, String resource) {
-		URL url = null;
-		// Am I being called from a Servlet?
-		boolean server = context != null;
+	public URL getIndicatorDirectory(ResourceType type, String resource) {
 		// Path to the dictionary resource
-		String path = (server ? SERVER_PRE_PATH + type.getPath()
-				: LOCAL_PRE_PATH) + resource;
-		try {
-			// URL of resource
-			url = server ? context.getResource(path) : Settings.class
-					.getResource(path);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return url;
+		String path = LOCAL_PRE_PATH + resource;
+		// URL of resource
+		return Settings.class.getResource(path);
 	}
 
 	/**
