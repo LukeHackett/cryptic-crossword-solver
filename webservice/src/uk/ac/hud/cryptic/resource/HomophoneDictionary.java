@@ -49,7 +49,7 @@ public class HomophoneDictionary {
 	 * Load the dictionary into a HashMap to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		InputStream is = settings.getHomophoneDictionaryPath();
+		InputStream is = settings.getHomophoneDictionaryStream();
 
 		// Instantiate the homophone dictionary object
 		dictionary = new HashMap<>();

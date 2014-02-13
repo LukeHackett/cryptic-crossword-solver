@@ -116,7 +116,7 @@ public class Manager {
 
 		// Locate the properties file which contains available solvers
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(
-				settings.getPropertyPath()))) {
+				settings.getPropertyStream()))) {
 
 			// An available solver
 			String strLine;

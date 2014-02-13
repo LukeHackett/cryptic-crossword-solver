@@ -51,7 +51,7 @@ public class Settings {
 	 *            - the path of the resource to use
 	 * @return the <code>InputStream</code> of the requested resource
 	 */
-	private InputStream getPath(ResourceType type, String resource) {
+	private InputStream getStream(ResourceType type, String resource) {
 		// Am I being called from a Servlet?
 		boolean server = context != null;
 		// Path to the dictionary resource
@@ -69,9 +69,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the custom dictionary
 	 */
-	public InputStream getCustomDictionaryPath() {
+	public InputStream getCustomDictionaryStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "dictionary/custom/custom-dict.txt");
+		return getStream(ResourceType.ASSET, "dictionary/custom/custom-dict.txt");
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the dictionary exclusions
 	 */
-	public InputStream getDictionaryExclusionsPath() {
+	public InputStream getDictionaryExclusionsStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "dictionary/custom/exclusions.txt");
+		return getStream(ResourceType.ASSET, "dictionary/custom/exclusions.txt");
 	}
 
 	/**
@@ -121,9 +121,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the dictionary
 	 */
-	public InputStream getDictionaryPath() {
+	public InputStream getDictionaryStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "dictionary/acd/UKACD.txt");
+		return getStream(ResourceType.ASSET, "dictionary/acd/UKACD.txt");
 	}
 
 	/**
@@ -131,9 +131,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the properties file
 	 */
-	public InputStream getPropertyPath() {
+	public InputStream getPropertyStream() {
 		// Location of the property
-		return getPath(ResourceType.ASSET, "properties/solvers.properties");
+		return getStream(ResourceType.ASSET, "properties/solvers.properties");
 	}
 
 	/**
@@ -141,9 +141,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the pronouncing dictionary
 	 */
-	public InputStream getPronouncingDictionaryPath() {
+	public InputStream getPronouncingDictionaryStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "homophones/cmudict.0.7a");
+		return getStream(ResourceType.ASSET, "homophones/cmudict.0.7a");
 
 	}
 
@@ -152,9 +152,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the thesaurus
 	 */
-	public InputStream getThesaurusPath() {
+	public InputStream getThesaurusStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "thesaurus/gutenberg/mthesaur.txt");
+		return getStream(ResourceType.ASSET, "thesaurus/gutenberg/mthesaur.txt");
 	}
 
 	/**
@@ -162,9 +162,9 @@ public class Settings {
 	 * 
 	 * @return the file path to the homophone dictionary
 	 */
-	public InputStream getHomophoneDictionaryPath() {
+	public InputStream getHomophoneDictionaryStream() {
 		// Location of the resource
-		return getPath(ResourceType.ASSET, "homophones/cmudict.0.7a");
+		return getStream(ResourceType.ASSET, "homophones/cmudict.0.7a");
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class Settings {
 	 *            - the directory to obtain
 	 * @return the requested directory as a URL, <code>null</code> otherwise
 	 */
-	public URL getIndicatorDirectory(ResourceType type, String resource) {
+	public URL getIndicatorsURL(ResourceType type, String resource) {
 		// Path to the dictionary resource
 		String path = LOCAL_PRE_PATH + resource;
 		// URL of resource

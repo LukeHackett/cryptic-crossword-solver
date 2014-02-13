@@ -44,7 +44,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDictionaryPath() {
-		testStream(settings.getDictionaryPath());
+		testStream(settings.getDictionaryStream());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetCustomDictionaryPath() {
-		testStream(settings.getCustomDictionaryPath());
+		testStream(settings.getCustomDictionaryStream());
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDictionaryExclusionsPath() {
-		testStream(settings.getDictionaryExclusionsPath());
+		testStream(settings.getDictionaryExclusionsStream());
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetThesaurusPath() {
-		testStream(settings.getThesaurusPath());
+		testStream(settings.getThesaurusStream());
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetPronouncingDictionaryPath() {
-		testStream(settings.getPronouncingDictionaryPath());
+		testStream(settings.getPronouncingDictionaryStream());
 	}
 
 	/**

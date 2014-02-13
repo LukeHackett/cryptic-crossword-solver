@@ -49,7 +49,7 @@ public class Dictionary {
 	 * Load the dictionary into a HashSet to allow for much faster access
 	 */
 	private void populateDictionaryFromFile() {
-		InputStream[] is = { settings.getDictionaryPath() };
+		InputStream[] is = { settings.getDictionaryStream() };
 
 		// Instantiate the dictionary object
 		dictionary = new HashSet<>();
@@ -60,11 +60,11 @@ public class Dictionary {
 		}
 
 		// Remove specified exclusions
-		InputStream exclusions = settings.getDictionaryExclusionsPath();
+		InputStream exclusions = settings.getDictionaryExclusionsStream();
 		readFile(exclusions, false);
 
 		// Now add custom dictionary (takes precedence over exclusions)
-		InputStream customWords = settings.getCustomDictionaryPath();
+		InputStream customWords = settings.getCustomDictionaryStream();
 		readFile(customWords, true);
 	}
 

@@ -52,7 +52,7 @@ public class Thesaurus {
 	 * Load the thesaurus into a HashSet to allow for much faster access
 	 */
 	private void populateThesaurusFromFile() {
-		InputStream is = settings.getThesaurusPath();
+		InputStream is = settings.getThesaurusStream();
 
 		// Instantiate the thesaurus object
 		thesaurus = new HashMap<>();
