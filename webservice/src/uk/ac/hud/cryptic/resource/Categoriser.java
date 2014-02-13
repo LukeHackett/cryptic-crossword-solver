@@ -111,7 +111,7 @@ public class Categoriser {
 					double confidence = Confidence.multiply(s.getConfidence(),
 							Confidence.CATEGORY_MULTIPLIER);
 					s.setConfidence(confidence);
-					s.addToTrace("Confidence rating increased as the clue contains indicator word(s) suggesting the solution is of type \" "
+					s.addToTrace("Confidence rating increased as the clue contains indicator word(s) suggesting the solution is of type \""
 							+ clueType + "\".");
 				}
 			}
