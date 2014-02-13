@@ -240,7 +240,12 @@ public class Anagram extends Solver {
 						.submit(new Callable<SolutionCollection>() {
 							@Override
 							public SolutionCollection call() throws Exception {
-								return anagram(characters, pattern);
+								SolutionCollection solutions = anagram(characters, pattern);
+								for (Solution s : solutions) {
+									s.addToTrace("Word is an anagram of the clue word \""
+											+ characters + "\".");
+								}
+								return solutions;
 							}
 						});
 				// Add to the list of all futures to later process

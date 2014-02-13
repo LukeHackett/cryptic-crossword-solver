@@ -67,8 +67,11 @@ public class Hidden extends Solver {
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
-			solutions.add(new Solution(clue.substring(index, index
-					+ totalLength), NAME));
+			Solution s = new Solution(
+					clue.substring(index, index + totalLength), NAME);
+			s.addToTrace("Solution hidden in the clue in a "
+					+ (reverse ? "reverse" : "forward") + " direction.");
+			solutions.add(s);
 		}
 
 		// Remove risk of matching original words
@@ -80,7 +83,7 @@ public class Hidden extends Solver {
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
 
-		// Remove solutions which aren't really hidden at all
+		// Lower confidence of solutions which aren't really hidden at all
 		markNonHiddenWords(c, solutions);
 
 		return solutions;
@@ -109,6 +112,7 @@ public class Hidden extends Solver {
 					double confidence = Confidence.multiply(s.getConfidence(),
 							Confidence.NOT_HIDDEN_MULTIPLIER);
 					s.setConfidence(confidence);
+					s.addToTrace("Confidence rating slightly reduced as this solution isn't really hidden with a word(s).");
 				}
 			}
 		}

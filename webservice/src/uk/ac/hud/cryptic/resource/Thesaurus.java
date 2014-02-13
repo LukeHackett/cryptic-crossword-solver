@@ -324,6 +324,7 @@ public class Thesaurus {
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.SYNONYM_MULTIPLIER);
 				s.setConfidence(confidence);
+				s.addToTrace("Confidence rating increased as this solution is a synonym of the clue's definition.");
 			}
 		}
 
@@ -334,6 +335,7 @@ public class Thesaurus {
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.REVERSE_SYNONYM_MULTIPLIER);
 				s.setConfidence(confidence);
+				s.addToTrace("Confidence rating slightly increased as the clue's definition word is a synonym of this solution.");
 			}
 		}
 

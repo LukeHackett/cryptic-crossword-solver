@@ -46,14 +46,16 @@ public class Palindrome extends Solver {
 		String[] words = c.getClueWords();
 
 		for (String clueWord : words) {
-			// synonyms.addAll(THESAURUS.getWordsContainingSynonym(clueWord));
 			Set<String> synonyms = THESAURUS.getSecondSynonyms(clueWord,
 					pattern, true);
 
 			filterNonePalindromes(synonyms);
 
 			for (String sol : synonyms) {
-				solutions.add(new Solution(sol, NAME));
+				Solution s = new Solution(sol, NAME);
+				s.addToTrace("This is a synonym of the clue word \"" + clueWord
+						+ "\".");
+				solutions.add(s);
 			}
 		}
 

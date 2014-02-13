@@ -66,24 +66,17 @@ public class Acrostic extends Solver {
 				subStr += termToSearch.substring(j, j + 1);
 			}
 			Solution s = new Solution(subStr, NAME);
-			s.addToTrace("Looking for possible acrostic answers");
+			s.addToTrace("Initial letters taken from clue words, starting with \"" + words[i]
+					+ "\", to clue word \"" + words[i + solutionLength - 1]
+					+ "\".");
 			solutions.add(s);
 		}
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
 
-		for (Solution s : solutions) {
-			s.addToTrace("Finding acrostics which match the patten "
-					+ pattern.getPattern());
-		}
-
 		// Remove words not in the dictionary
 		DICTIONARY.dictionaryFilter(solutions, pattern);
-
-		for (Solution s : solutions) {
-			s.addToTrace("Removing words which are not in the dictionary");
-		}
 
 		return solutions;
 	}

@@ -42,18 +42,39 @@ public class Pattern extends Solver {
 	 *            - the <code>SolutionPattern</code> to match against
 	 * @return a collection of words which match against the solution pattern
 	 */
-	private SolutionCollection calculateHiddenWords(String text,
-			SolutionPattern pattern) {
+	private SolutionCollection calculateHiddenWords(Clue c, boolean even) {
+		final SolutionPattern pattern = c.getPattern();
+		final String[] clueWords = c.getClueWords();
+		String text = getEveryOtherChar(c, even);
 
 		SolutionCollection solutions = new SolutionCollection();
 
-		int limit = text.length() - pattern.getTotalLength();
+		int totalLength = pattern.getTotalLength();
+		int limit = text.length() - totalLength;
 
 		// Generate substrings
 		int index;
 		for (index = 0; index <= limit; index++) {
-			solutions.add(new Solution(text.substring(index,
-					index + pattern.getTotalLength()), NAME));
+			Solution s = new Solution(
+					text.substring(index, index + totalLength), NAME);
+
+			// First word used, to include in the trace
+			String word = null;
+			int wordIndex = 0;
+			int cumulative = 0;
+			do {
+				String currentWord = clueWords[wordIndex++];
+				if (index * 2 + (even ? 0 : 1) < currentWord.length()
+						+ cumulative) {
+					word = currentWord;
+				} else {
+					cumulative += currentWord.length();
+				}
+			} while (word == null);
+
+			s.addToTrace("Every other character taken from the clue, starting with the clue word \""
+							+ word + "\".");
+			solutions.add(s);
 		}
 
 		// Remove solutions which don't match the provided pattern
@@ -92,14 +113,11 @@ public class Pattern extends Solver {
 			return solutions;
 		}
 
-		String oddCharacters = getEveryOtherChar(c, false);
-		String evenCharacters = getEveryOtherChar(c, true);
-
 		// Even words
-		solutions.addAll(calculateHiddenWords(evenCharacters, c.getPattern()));
+		solutions.addAll(calculateHiddenWords(c, true));
 
 		// Odd words
-		solutions.addAll(calculateHiddenWords(oddCharacters, c.getPattern()));
+		solutions.addAll(calculateHiddenWords(c, false));
 
 		// for (String clueComponent : c.getClueWords()) {
 		// for (String possibleSolution : allWords) {
