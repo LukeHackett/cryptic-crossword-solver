@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Thesaurus;
@@ -32,9 +33,6 @@ import uk.ac.hud.cryptic.util.DB;
  */
 public class Manager {
 
-	public static final String PREFIX = "stream2file";
-    public static final String SUFFIX = ".tmp";
-	
 	/**
 	 * This method could take some input from the Servlet / Controller in the
 	 * form of a <code>Clue</code> object and return a
@@ -47,66 +45,11 @@ public class Manager {
 	 */
 	public SolutionCollection distributeAndSolveClue(Clue clue) {
 
+		// This will hold the solvers to be run at runtime
+		Collection<Solver> solvers = getSolversFromClasses(clue);
+
 		// This will hold the returned data from the solvers
-		Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
-
-		// This will hold the solvers to be ran at runtime
-		Collection<Solver> solvers = new ArrayList<>();
-
-
-		//TODO Need to find a better way to locate the properties file
-		//InputStream p = Settings.getInstance().getPropertyPath(); << Does not reload
-
-
-		//Instead create a new instance of Settings file to reload solvers in use
-		Settings settings = new Settings();
-
-		try {		
-
-			//Locate the properties file which contains available solvers
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(settings.getPropertyPath()));
-
-			// An available solver
-			String strLine;
-
-			//Read File Line By Line
-			while ((strLine = br.readLine()) != null)   {
-
-				// A Solver
-				Class<?> cls;
-				try {
-					System.out.println(strLine);
-					//Load the class
-					cls = Class.forName(strLine);
-					Constructor<?> c = cls.getDeclaredConstructor(Clue.class);
-					//Instantiate class
-					Solver solver = (Solver) c.newInstance(clue); // we instantiate it, no parameters
-					// Add to solvers
-					solvers.add(solver);
-
-				} catch (ClassNotFoundException | NoSuchMethodException 
-						| SecurityException | InstantiationException 
-						| IllegalAccessException | IllegalArgumentException 
-						| InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-
-			//Close the input stream
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// Create a thread pool to execute the solvers
-		ExecutorService executor = Executors.newFixedThreadPool(solvers.size());
-
-		// Fire off each solver to find that magic solution
-		for (Solver s : solvers) {
-			Future<SolutionCollection> future = executor.submit(s);
-			solutions.add(future);
-		}
+		Collection<Future<SolutionCollection>> solutions = initiateSolvers(solvers);
 
 		// This will hold all solutions that have been returned
 		SolutionCollection allSolutions = new SolutionCollection();
@@ -120,15 +63,88 @@ public class Manager {
 			}
 		}
 
-		// All finished
-		executor.shutdown();
-
 		// Adjust confidence scores based on synonym matches
 		Thesaurus.getInstance().confidenceAdjust(clue, allSolutions);
 		// Adjust confidence scores based on cateogory matches
 		Categoriser.getInstance().confidenceAdjust(clue, allSolutions);
 
 		return allSolutions;
+	}
+
+	/**
+	 * Instances of the solvers have been created and given the clue which is to
+	 * be solved. Now they should run their algorithms in order to attempt to
+	 * find the correct solution.
+	 * 
+	 * @param solvers
+	 *            - the solvers which will search for the solution
+	 * @return the Future objects which will hold the collections of solutions
+	 *         once they have been found
+	 */
+	private Collection<Future<SolutionCollection>> initiateSolvers(
+			Collection<Solver> solvers) {
+		Collection<Future<SolutionCollection>> solutions = new ArrayList<>();
+
+		// Create a thread pool to execute the solvers
+		ExecutorService executor = Executors.newFixedThreadPool(solvers.size());
+
+		// Fire off each solver to find that magic solution
+		for (Solver s : solvers) {
+			Future<SolutionCollection> future = executor.submit(s);
+			solutions.add(future);
+		}
+
+		// All finished
+		executor.shutdown();
+		return solutions;
+	}
+
+	/**
+	 * Load the solvers in from their corresponding Class files.
+	 * 
+	 * @param clue
+	 *            - the clue which is to be solved
+	 * @return a collection of Solver objects which have been loaded from their
+	 *         Class file(s)
+	 */
+	private Collection<Solver> getSolversFromClasses(Clue clue) {
+		Collection<Solver> solvers = new ArrayList<>();
+
+		// Create a new instance of Settings file to reload solvers in
+		// use
+		Settings settings = new Settings();
+
+		// Locate the properties file which contains available solvers
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				settings.getPropertyPath()))) {
+
+			// An available solver
+			String strLine;
+
+			// Read File Line By Line
+			while ((strLine = br.readLine()) != null) {
+
+				try {
+					// System.out.println(strLine);
+					// Load the class
+					Class<?> cls = Class.forName(strLine);
+					Constructor<?> c = cls.getDeclaredConstructor(Clue.class);
+					// Instantiate class
+					Solver solver = (Solver) c.newInstance(clue);
+					// Add to solvers
+					solvers.add(solver);
+
+				} catch (ClassNotFoundException | NoSuchMethodException
+						| SecurityException | InstantiationException
+						| IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return solvers;
 	}
 
 	/**
@@ -139,7 +155,7 @@ public class Manager {
 	 */
 	public static void main(String[] args) {
 		// The clues to solve
-		Collection<Clue> clues = DB.getTestClues(10, true,
+		Collection<Clue> clues = DB.getTestClues(5, true,
 				new Hidden().toString(), new Acrostic().toString(),
 				new Pattern().toString());
 
@@ -149,9 +165,8 @@ public class Manager {
 		for (final Clue clue : clues) {
 
 			// Instantiate the manager and fire off the clue to the solvers
-			Manager m = new Manager();			
+			Manager m = new Manager();
 			SolutionCollection allSolutions = m.distributeAndSolveClue(clue);
-			
 
 			boolean found;
 			// If found, mark as a success
@@ -173,5 +188,4 @@ public class Manager {
 				+ " out of " + clues.size() + " times.");
 	}
 
-
-} // End of class manager
+} // End of class Manager
