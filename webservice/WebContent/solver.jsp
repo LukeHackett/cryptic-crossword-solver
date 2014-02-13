@@ -66,7 +66,7 @@
               characters (?), word separators (comma) and hyphens (-).</span>
           </div>
         </div>
-        <div id="clue-split-pattern" class="form-group"></div>
+        <div id="clue-split-pattern"></div>
         <div class="form-actions">
           <input type="reset" class="btn btn-default" id="reset" value="Clear"/>
           <input type="submit" class="btn btn-primary" id="submit" value="Submit"/>
