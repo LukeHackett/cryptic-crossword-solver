@@ -11,7 +11,7 @@ import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
- * Palindrome solver algorithm
+ * Double definition solver algorithm
  * 
  * @author Leanne Butcher
  * @version 0.2
@@ -46,7 +46,7 @@ public class DoubleDefinition extends Solver {
 
 		// Get all clue words
 		String[] words = c.getClueWords();
-		
+
 		// List for all synonyms
 		List<String> allSynonyms = new ArrayList<String>();
 
@@ -63,21 +63,24 @@ public class DoubleDefinition extends Solver {
 
 		return solutions;
 	}
-	
-	public void checkForDoubles(List<String> synonyms, SolutionPattern pattern)
-	{
-		// Set to check for synonyms that have already been added as possible solutions
+
+	public void checkForDoubles(List<String> synonyms, SolutionPattern pattern) {
+		// Set to check for synonyms that have already been added as possible
+		// solutions
 		// meaning it is likely to be a double definition
-	    Set<String> testSet = new HashSet<String>();
-		
-		for(String synonym : synonyms) {
-			// If synonym is already in list, it's a synonym for two words in the clue
-			if(!testSet.add(synonym)) {
-			   // Add to solutions 
-			   solutions.add(new Solution(synonym));
+		Set<String> testSet = new HashSet<String>();
+
+		for (String synonym : synonyms) {
+			// If synonym is already in list, it's a synonym for two words in
+			// the clue
+			if (!testSet.add(synonym)) {
+				// Add to solutions
+				Solution s = new Solution(synonym, NAME);
+				s.addToTrace("Two words of the given clue share the synonym \""
+						+ synonym + "\".");
+				solutions.add(s);
 			}
 		}
-		
 	}
 
 	@Override
@@ -92,4 +95,4 @@ public class DoubleDefinition extends Solver {
 		testSolver(DoubleDefinition.class);
 	}
 
-} // End of class Double Definition
+} // End of class DoubleDefinition
