@@ -135,4 +135,11 @@ public class Spoonerism extends Solver {
 	public String toString() {
 		return NAME;
 	}
+	
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		testSolver(Spoonerism.class);
+	}
 } // End of class Spoonerism 
