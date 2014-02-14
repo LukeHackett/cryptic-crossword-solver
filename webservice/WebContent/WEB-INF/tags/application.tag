@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="A cryptic crossword solver">
     <meta name="author" content="Leanne Butcher, Luke Hackett, Stuart Leader, Mohammad Rahman">
     <title>Cryptic Crossword Solver</title>
@@ -26,23 +26,23 @@
   <body>
     <div id="container" class="container">
       <!-- Static navbar -->
-      <div class="navbar navbar-cryptic">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.jsp">Cryptic Crossword Solver</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav pull-right">
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="solver.jsp">Solver</a>
-            <li><a href="help.jsp">Help</a>
-            <li><a href="changelog.jsp">Changelog</a></li>
-          </ul>
+      <div class="navbar navbar-cryptic" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="glyphicon glyphicon-th-list"></span>
+            </button>
+            <a class="navbar-brand" href="index.jsp">Cryptic Crossword Solver</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="index.jsp">Home</a></li>
+              <li><a href="solver.jsp">Solver</a>
+              <li><a href="help.jsp">Help</a>
+              <li><a href="changelog.jsp">Changelog</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <!-- Main Body -->
