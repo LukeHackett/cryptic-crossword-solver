@@ -1,9 +1,13 @@
 package uk.ac.hud.cryptic.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -80,7 +84,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetPronouncingDictionaryPath() {
-		testStream(settings.getPronouncingDictionaryStream());
+		testStream(settings.getHomophoneDictionaryStream());
 	}
 
 	/**

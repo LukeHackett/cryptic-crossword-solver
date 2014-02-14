@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 /**
  * This class provides a number of application wide settings and constants.
  * 
- * @author Luke Hackett, Stuart Leader, Mohamamd Rahman
+ * @author Luke Hackett, Stuart Leader, Mohammad Rahman
  * @version 0.2
  */
 public class Settings {
@@ -71,7 +71,8 @@ public class Settings {
 	 */
 	public InputStream getCustomDictionaryStream() {
 		// Location of the resource
-		return getStream(ResourceType.ASSET, "dictionary/custom/custom-dict.txt");
+		return getStream(ResourceType.ASSET,
+				"dictionary/custom/custom-dict.txt");
 	}
 
 	/**
@@ -134,17 +135,6 @@ public class Settings {
 	public InputStream getPropertyStream() {
 		// Location of the property
 		return getStream(ResourceType.ASSET, "properties/solvers.properties");
-	}
-
-	/**
-	 * This method will return the path to the pronouncing dictionary file.
-	 * 
-	 * @return the file path to the pronouncing dictionary
-	 */
-	public InputStream getPronouncingDictionaryStream() {
-		// Location of the resource
-		return getStream(ResourceType.ASSET, "homophones/cmudict.0.7a");
-
 	}
 
 	/**
