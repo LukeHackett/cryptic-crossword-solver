@@ -99,8 +99,7 @@
           } else {
             // No data was returned
             var message = 'The solvers have been unable to find a solution to ' +
-                          'your clue. Try widening your solution pattern by ' +
-                          'sing more unknown characters (?).';
+                          'your clue.';
             raiseResultAlert('info', 'Heads up!', message);
           }
         })
