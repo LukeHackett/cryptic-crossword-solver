@@ -308,6 +308,8 @@
       }
       // Set the first result to show the trace path
       $(settings.results).find('.panel-collapse:first').addClass('in');
+      // Enable tooltips
+      $('#accordion .label').tooltip();
     };
 
     /**
@@ -324,11 +326,15 @@
       );
       // Solution Confidence rating
       var confidence = $('<span>').attr({
-        'class': 'label label-default pull-right'
+        'class': 'label label-default pull-right',
+        'data-toggle': 'tooltip',
+        'title': 'The overall confidence rating'
       }).html(solution.confidence + '&#37;');
       // Solution solver that was used
       var solver = $('<span>').attr({
-        'class': 'label label-info pull-right'
+        'class': 'label label-info pull-right',
+        'data-toggle': 'tooltip',
+        'title': 'The solver that provided the solution'
       }).text(solution.solver);
       // Format the panel header
       var header = $('<div>').addClass('panel-heading');
