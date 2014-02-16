@@ -113,13 +113,11 @@
             if($.isArray(errors)){ 
               // Display each of the error messages
               $.each(errors, function(index, error){  
-                message = '<b>Oh snap!</b> ' + error.message;
-                raiseFormAlert('danger', message);       
+                raiseFormAlert('danger', 'Oh snap!', error);       
               });           
             } else {
               // Display the error message
-              message = '<b>Oh snap!</b> ' + errors.message;
-              raiseFormAlert('danger', message); 
+              raiseFormAlert('danger', 'Oh snap!', errors.message); 
             }
           }
         });
@@ -519,8 +517,11 @@
      * Creates a new form alert with the type being one of (success, info, 
      * warning, danger), and the message to be displayed.
      */
-    function raiseFormAlert(type, message){
-      $('#solver').prepend($('<div>').addClass('alert alert-' + type).html(message));
+    function raiseFormAlert(type, title, message){
+      $('#solver').prepend(
+        $('<div>').addClass('alert alert-' + type)
+                  .html('<b>' + title + '</b> ' + message)
+      );
     };
 
     /**
