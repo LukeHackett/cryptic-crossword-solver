@@ -92,13 +92,16 @@
             // Paginate the results if there are more than 10
             if(data.solver.solution.length > 10) {
               paginateResults();
+              var message = 'Try supplying known characters to reduce the ' + 
+                            'number of possible solutions.';
+              raiseResultAlert('info', 'Heads up!', message);
             }
           } else {
             // No data was returned
-            var message = '<b>Heads up!</b> The solvers have been unable to ' +
-                'find a solution to your clue. Try widening your solution ' +
-                'pattern by using more unknown characters (?).';
-            raiseResultAlert(settings.results, 'info', message);
+            var message = 'The solvers have been unable to find a solution to ' +
+                          'your clue. Try widening your solution pattern by ' +
+                          'sing more unknown characters (?).';
+            raiseResultAlert('info', 'Heads up!', message);
           }
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
@@ -505,8 +508,11 @@
      * Creates a new result alert with the type being one of (success, info, 
      * warning, danger), and the message to be displayed.
      */
-    function raiseResultAlert(area, type, message){
-      $(settings.results).append($('<div>').addClass('alert alert-' + type).html(message));
+    function raiseResultAlert(type, title, message){
+      $(settings.results + ' .form-horizontal').append(
+        $('<div>').addClass('alert alert-' + type)
+                  .html('<b>' + title + '</b> ' + message)
+      );
     };
 
    /**
