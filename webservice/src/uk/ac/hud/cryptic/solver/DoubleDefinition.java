@@ -1,8 +1,10 @@
 package uk.ac.hud.cryptic.solver;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.core.Clue;
@@ -13,7 +15,7 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 /**
  * Double definition solver algorithm
  * 
- * @author Leanne Butcher
+ * @author Leanne Butcher, Stuart Leader
  * @version 0.2
  */
 public class DoubleDefinition extends Solver {
@@ -48,14 +50,25 @@ public class DoubleDefinition extends Solver {
 		String[] words = c.getClueWords();
 
 		// List for all synonyms
-		List<String> allSynonyms = new ArrayList<String>();
+		Map<String, List<String>> allSynonyms = new HashMap<>();
 
 		for (String clueWord : words) {
-			// Get second synonyms for each word
+			// Get first and second-level synonyms for each word
 			Set<String> synonyms = THESAURUS.getSecondSynonyms(clueWord,
 					pattern, true);
-			// Add all synonyms to list
-			allSynonyms.addAll(synonyms);
+			// Add these synonyms to a list, making note of which clue word they
+			// correspond to
+			for (String synonym : synonyms) {
+				// Add to the list if already present
+				if (allSynonyms.containsKey(synonym)) {
+					allSynonyms.get(synonym).add(clueWord);
+				} else {
+					// Otherwise create a list to use as the map's value
+					List<String> mapWords = new ArrayList<>();
+					mapWords.add(clueWord);
+					allSynonyms.put(synonym, mapWords);
+				}
+			}
 		}
 
 		// Check for synonyms added to list twice
@@ -64,20 +77,29 @@ public class DoubleDefinition extends Solver {
 		return solutions;
 	}
 
-	public void checkForDoubles(List<String> synonyms, SolutionPattern pattern) {
-		// Set to check for synonyms that have already been added as possible
-		// solutions
-		// meaning it is likely to be a double definition
-		Set<String> testSet = new HashSet<String>();
+	public void checkForDoubles(Map<String, List<String>> synonyms,
+			SolutionPattern pattern) {
 
-		for (String synonym : synonyms) {
-			// If synonym is already in list, it's a synonym for two words in
-			// the clue
-			if (!testSet.add(synonym)) {
+		// Iterate through all the synonyms found for the clue words
+		for (Entry<String, List<String>> entry : synonyms.entrySet()) {
+			// Proceed only if the synonym matches more than one clue word
+			int matchCount = entry.getValue().size();
+			if (matchCount > 1) {
 				// Add to solutions
-				Solution s = new Solution(synonym, NAME);
-				s.addToTrace("Two words of the given clue share the synonym \""
-						+ synonym + "\".");
+				Solution s = new Solution(entry.getKey(), NAME);
+
+				// Compile a detailed trace message
+				String trace = matchCount + " words of the clue, ";
+				for (int i = 0; i < matchCount; i++) {
+					trace += "\"" + entry.getValue().get(i) + "\"";
+					if (i != matchCount - 1) {
+						trace += " and ";
+					}
+				}
+				trace += " share the synonym \"" + entry.getKey() + "\".";
+
+				s.addToTrace(trace);
+				// Add this to the master list of solutions
 				solutions.add(s);
 			}
 		}
