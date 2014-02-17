@@ -96,11 +96,12 @@ public class Spoonerism extends Solver {
 			Collection<String> nextSynonyms, SolutionPattern pattern) {
 		for (String syn : synonyms) {
 			for (String nextSyn : nextSynonyms) {
-				if (pattern.match(syn.concat(nextSyn))
-						|| pattern.match(syn + " " + nextSyn)) {
-					String possibleSpooner = swapFirstLetters(syn, nextSyn,
-							pattern);
-					solutions.add(new Solution(possibleSpooner, NAME));
+				if (!syn.equals(nextSyn)) {
+					if (pattern.getTotalLength() == (syn.length() + nextSyn.length())) {
+						String possibleSpooner = swapFirstLetters(syn, nextSyn,
+								pattern);
+						solutions.add(new Solution(possibleSpooner, NAME));
+					}
 				}
 			}
 		}
