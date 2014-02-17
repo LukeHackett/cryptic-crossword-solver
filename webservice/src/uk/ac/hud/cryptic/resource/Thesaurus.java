@@ -213,7 +213,7 @@ public class Thesaurus {
 	 *         solution and a clue word is present as a synonym,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean reverseMatch(Clue clue, String solution) {
+	public boolean reverseMatch(Clue clue, Solution solution) {
 		// Populate an array with the separate words of the clue
 		String[] clueWords = clue.getClueWords();
 		SolutionPattern pattern = clue.getPattern();
@@ -224,24 +224,27 @@ public class Thesaurus {
 		String[] solutions;
 		if (multipleWords) {
 			// e.g. "strain a muscle"
-			String recomposed = pattern.recomposeSolution(solution);
+			String recomposed = pattern.recomposeSolution(solution
+					.getSolution());
 			// e,g. { "strain" , "a" , "muscle" }
 			String[] words = recomposed.split(WordUtils.REGEX_WHITESPACE);
 			solutions = new String[words.length + 2];
 			// i.e. "strainamuscle"
-			solutions[0] = solution.toLowerCase();
+			solutions[0] = solution.getSolution().toLowerCase();
 			solutions[1] = recomposed;
 			for (int i = 0; i < words.length; i++) {
 				solutions[i + 1] = words[i];
 			}
 		} else {
-			solutions = new String[] { solution.toLowerCase() };
+			solutions = new String[] { solution.getSolution().toLowerCase() };
 		}
 		for (String s : solutions) {
 			if (thesaurus.containsKey(s)) {
 				Collection<String> synonyms = thesaurus.get(s);
 				for (String clueWord : clueWords) {
 					if (synonyms.contains(clueWord)) {
+						solution.addToTrace("Confidence rating slightly increased as the clue word \""
+								+ clueWord + "\"is a synonym of this solution.");
 						return true;
 					}
 				}
@@ -261,7 +264,7 @@ public class Thesaurus {
 	 * @return <code>true</code> if the thesaurus contains the specified word,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean match(Clue clue, String solution) {
+	public boolean match(Clue clue, Solution solution) {
 		// Populate an array with the separate words of the clue
 		String[] clueWords = clue.getClueWords();
 		SolutionPattern pattern = clue.getPattern();
@@ -270,19 +273,23 @@ public class Thesaurus {
 
 		// Solution might need to be 're-spaced'
 		String[] solutions = new String[multipleWords ? 2 : 1];
-		solutions[0] = solution.toLowerCase();
+		solutions[0] = solution.getSolution().toLowerCase();
 		if (multipleWords) {
-			solutions[1] = pattern.recomposeSolution(solution);
+			solutions[1] = pattern.recomposeSolution(solution.getSolution());
 		}
 		for (String clueWord : clueWords) {
 			if (thesaurus.containsKey(clueWord)) {
 				Collection<String> synonyms = thesaurus.get(clueWord);
 				if (synonyms.contains(solutions[0])) {
+					solution.addToTrace("Confidence rating increased as this solution is a synonym of the clue word \""
+							+ clueWord + "\".");
 					return true;
 				} else if (multipleWords) {
 					for (String word : solutions[1]
 							.split(WordUtils.REGEX_WHITESPACE)) {
 						if (synonyms.contains(word)) {
+							solution.addToTrace("Confidence rating increased as this solution is a synonym of the clue word \""
+									+ clueWord + "\".");
 							return true;
 						}
 					}
@@ -320,22 +327,20 @@ public class Thesaurus {
 		// TODO Can we pick out the definition word rather than check the entire
 		// clue?
 		for (Solution s : solutions) {
-			if (match(c, s.getSolution())) {
+			if (match(c, s)) {
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.SYNONYM_MULTIPLIER);
 				s.setConfidence(confidence);
-				s.addToTrace("Confidence rating increased as this solution is a synonym of the clue's definition.");
 			}
 		}
 
 		// Now check if the solution contains the clue definition word as a
 		// synonym, giving a lower confidence rating than the above
 		for (Solution s : solutions) {
-			if (reverseMatch(c, s.getSolution())) {
+			if (reverseMatch(c, s)) {
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.REVERSE_SYNONYM_MULTIPLIER);
 				s.setConfidence(confidence);
-				s.addToTrace("Confidence rating slightly increased as the clue's definition word is a synonym of this solution.");
 			}
 		}
 

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.junit.Test;
 
 import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
@@ -26,38 +27,38 @@ public class ThesaurusTest {
 	@Test
 	public void testSynonymMatch() {
 		Clue testClue = new Clue("Speedy", "???????");
-		String testSolution = "quick";
+		Solution testSolution = new Solution("quick");
 		assertTrue(thesaurus.match(testClue, testSolution));
 	}
 
 	@Test
 	public void testGetSynonyms() {
-		 Collection<String> testColl = new HashSet<>();
-		 testColl.add("act between");
-		 testColl.add("arbitrate");
-		 testColl.add("bargain");
-		 testColl.add("go between");
-		 testColl.add("intercede");
-		 testColl.add("intermediate");
-		 testColl.add("interpose");
-		 testColl.add("intervene");
-		 testColl.add("judge");
-		 testColl.add("make terms");
-		 testColl.add("mediate");
-		 testColl.add("meet halfway");
-		 testColl.add("moderate");
-		 testColl.add("negotiate");
-		 testColl.add("referee");
-		 testColl.add("represent");
-		 testColl.add("sit down with");
-		 testColl.add("step in");
-		 testColl.add("umpire");
-		 
-		 String test = "treat with";
-		 
-		 Collection<String> synonyms = thesaurus.getSynonyms(test);
-		 assertTrue(synonyms.size() == testColl.size());
-		 assertTrue(synonyms.containsAll(testColl));
+		Collection<String> testColl = new HashSet<>();
+		testColl.add("act between");
+		testColl.add("arbitrate");
+		testColl.add("bargain");
+		testColl.add("go between");
+		testColl.add("intercede");
+		testColl.add("intermediate");
+		testColl.add("interpose");
+		testColl.add("intervene");
+		testColl.add("judge");
+		testColl.add("make terms");
+		testColl.add("mediate");
+		testColl.add("meet halfway");
+		testColl.add("moderate");
+		testColl.add("negotiate");
+		testColl.add("referee");
+		testColl.add("represent");
+		testColl.add("sit down with");
+		testColl.add("step in");
+		testColl.add("umpire");
+
+		String test = "treat with";
+
+		Collection<String> synonyms = thesaurus.getSynonyms(test);
+		assertTrue(synonyms.size() == testColl.size());
+		assertTrue(synonyms.containsAll(testColl));
 	}
 
 	@Test
