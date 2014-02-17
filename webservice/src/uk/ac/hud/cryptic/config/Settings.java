@@ -158,6 +158,17 @@ public class Settings {
 	}
 
 	/**
+	 * This method will return the path to the natural language processing
+	 * parser model.
+	 * 
+	 * @return the file path to the NLP parser model
+	 */
+	public InputStream getParserModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/en-parser-chunking.bin");
+	}
+
+	/**
 	 * Set the <code>ServletContext</code> object, which should be done when the
 	 * application is run in a server environment to indicate this is the case
 	 * 
