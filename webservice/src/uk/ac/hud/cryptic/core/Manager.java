@@ -124,6 +124,11 @@ public class Manager {
 			// Read File Line By Line
 			while ((strLine = br.readLine()) != null) {
 
+				if (strLine.startsWith("#")) {
+					// Ignore commented lines
+					continue;
+				}
+
 				try {
 					// System.out.println(strLine);
 					// Load the class
