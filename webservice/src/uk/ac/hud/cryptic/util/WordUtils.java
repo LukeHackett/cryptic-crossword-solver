@@ -121,6 +121,30 @@ public class WordUtils {
 	}
 
 	/**
+	 * This method will reverse the ordering of a given String word input.
+	 * 
+	 * @param word
+	 *            the word to be reversed
+	 * @return String
+	 */
+	public static String reverseWord(String word) {
+		// no need to reverse over single letters
+		if (word.length() < 1) {
+			return word;
+		}
+
+		// The reversed word
+		String reversedWord = "";
+
+		// Loop over the word backwards and rebuild
+		for (int i = word.length() - 1; i >= 0; i--) {
+			reversedWord += word.charAt(i);
+		}
+
+		return reversedWord;
+	}
+
+	/**
 	 * Remove any non-alphabetical characters including spaces. This should be
 	 * used from input coming from the user, such as the Clue and Solution text.
 	 * 
