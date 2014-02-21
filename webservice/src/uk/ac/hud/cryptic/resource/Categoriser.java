@@ -56,7 +56,7 @@ public class Categoriser {
 					}
 					// Get the key (look-up) word
 					String solverType = settings.getFileName(file.getName(),
-							"txt");
+							"txt").toLowerCase();
 					// This will hold the indicators
 					Collection<String> words = new ArrayList<>();
 
@@ -143,21 +143,33 @@ public class Categoriser {
 		return matches;
 	}
 
+	/**
+	 * Remove likely indicator words from a given clue. E.g. if given
+	 * "Reportedly giant contract", then "giant contract" will be returned if
+	 * the clue type "homophone" is supplied.
+	 * 
+	 * @param c
+	 *            - the clue to remove any indicator words from
+	 * @param type
+	 *            - the indicators of a particular clue type to remove, e.g.
+	 *            "homophone"
+	 * @return the clue without any indicator words (hopefully)
+	 */
 	public String removeIndicatorWords(String c, String type) {
+		// Remove any punctuation
 		String clue = WordUtils.normaliseInput(c, false);
+		// The indicator words for the given type have to be present
 		if (indicators.containsKey(type)) {
-			String indicator = "";
 			for (String i : indicators.get(type)) {
-				// if (clue.contains(i) && i.length() > indicator.length()) {
-				// indicator = i;
-				// }
 				if (clue.contains(i)) {
+					// Only remove the first match
 					clue = clue.replace(i, "");
+					break;
 				}
 			}
-			clue = clue.replace(indicator, "");
 		}
-		return clue;
+		// Remove any double spaces, etc...
+		return WordUtils.normaliseInput(clue, false);
 	}
 
 	/**
