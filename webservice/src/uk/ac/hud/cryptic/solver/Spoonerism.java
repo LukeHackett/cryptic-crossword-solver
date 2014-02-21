@@ -10,6 +10,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 
 /**
  * Spoonerisms solver algorithm
@@ -66,6 +67,9 @@ public class Spoonerism extends Solver {
 		// Match up synonyms
 		sortSynonyms(pattern, c);
 
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
+
 		return solutions;
 	}
 
@@ -97,7 +101,8 @@ public class Spoonerism extends Solver {
 		for (String syn : synonyms) {
 			for (String nextSyn : nextSynonyms) {
 				if (!syn.equals(nextSyn)) {
-					if (pattern.getTotalLength() == (syn.length() + nextSyn.length())) {
+					if (pattern.getTotalLength() == (syn.length() + nextSyn
+							.length())) {
 						String possibleSpooner = swapFirstLetters(syn, nextSyn,
 								pattern);
 						solutions.add(new Solution(possibleSpooner, NAME));

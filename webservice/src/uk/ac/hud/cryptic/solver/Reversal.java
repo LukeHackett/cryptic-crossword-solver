@@ -2,6 +2,7 @@ package uk.ac.hud.cryptic.solver;
 
 import java.util.Set;
 
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.solver.Solver;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -81,9 +82,12 @@ public class Reversal extends Solver {
 
 			// Add as a solution if the reversed word is a real word
 			if (DICTIONARY.isWord(reversedWord)) {
-				collection.add(new Solution(reversedWord));
+				collection.add(new Solution(reversedWord, NAME));
 			}
 		}
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, collection);
 
 		return collection;
 	}

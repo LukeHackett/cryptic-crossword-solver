@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.resource.Categoriser;
-import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.solver.Acrostic;
 import uk.ac.hud.cryptic.solver.Hidden;
 import uk.ac.hud.cryptic.solver.Pattern;
@@ -63,8 +62,6 @@ public class Manager {
 			}
 		}
 
-		// Adjust confidence scores based on synonym matches
-		Thesaurus.getInstance().confidenceAdjust(clue, allSolutions);
 		// Adjust confidence scores based on cateogory matches
 		Categoriser.getInstance().confidenceAdjust(clue, allSolutions);
 

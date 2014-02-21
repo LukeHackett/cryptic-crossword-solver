@@ -7,6 +7,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.Confidence;
 
 /**
@@ -134,6 +135,9 @@ public class Hidden extends Solver {
 
 		// Hidden words from right-to-left
 		solutions.addAll(calculateHiddenWords(c, true));
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
 	}
