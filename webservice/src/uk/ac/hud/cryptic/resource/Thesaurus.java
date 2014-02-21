@@ -244,7 +244,8 @@ public class Thesaurus {
 				for (String clueWord : clueWords) {
 					if (synonyms.contains(clueWord)) {
 						solution.addToTrace("Confidence rating slightly increased as the clue word \""
-								+ clueWord + "\"is a synonym of this solution.");
+								+ clueWord
+								+ "\" is a synonym of this solution.");
 						return true;
 					}
 				}
