@@ -46,9 +46,6 @@ public class Homophone extends Solver {
 	@Override
 	public SolutionCollection solve(Clue c) {
 
-		System.out.println("Now trying to solve " + c.getClue() + ": "
-				+ c.getActualSolution());
-
 		SolutionCollection solutions = new SolutionCollection();
 
 		final SolutionPattern pattern = c.getPattern();
