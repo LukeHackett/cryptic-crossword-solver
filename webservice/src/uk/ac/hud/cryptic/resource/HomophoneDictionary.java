@@ -169,7 +169,7 @@ public class HomophoneDictionary {
 	 * @return a set of words which share the same pronunciation (homonyms) as
 	 *         the supplied word
 	 */
-	public Set<String> getHomonyms(String word) {
+	public synchronized Set<String> getHomonyms(String word) {
 		// First check the cache
 		if (cache.containsKey(word)) {
 			return cache.get(word);

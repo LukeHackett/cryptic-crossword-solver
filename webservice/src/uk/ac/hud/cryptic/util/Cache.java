@@ -1,9 +1,9 @@
 package uk.ac.hud.cryptic.util;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A cache to speed up common requests to find all matching elements to a given
@@ -16,7 +16,7 @@ import java.util.Queue;
 public class Cache<K, V> {
 
 	// The maximum number of elements that may be cached
-	protected static final int MAX_CAPACITY = 1000;
+	protected static final int MAX_CAPACITY = 10000;
 
 	// Our cache object
 	private Map<K, V> cache;
@@ -28,7 +28,7 @@ public class Cache<K, V> {
 	 */
 	public Cache() {
 		// Initialise our objects
-		cache = new HashMap<>();
+		cache = new ConcurrentHashMap<>(MAX_CAPACITY);
 		keys = new LinkedList<>();
 	}
 
