@@ -7,7 +7,10 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.HomophoneDictionary;
+import uk.ac.hud.cryptic.util.Confidence;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * Homophone solver algorithm
@@ -43,11 +46,17 @@ public class Homophone extends Solver {
 	@Override
 	public SolutionCollection solve(Clue c) {
 
+		System.out.println("Now trying to solve " + c.getClue() + ": "
+				+ c.getActualSolution());
+
 		SolutionCollection solutions = new SolutionCollection();
 
 		final SolutionPattern pattern = c.getPattern();
 
-		String[] words = c.getClueWords();
+		// Remove indicator word(s) from the clue to decrease the solve time
+		String clue = c.getClueNoPunctuation(false);
+		clue = Categoriser.getInstance().removeIndicatorWords(clue, NAME);
+		String[] words = clue.split(WordUtils.REGEX_WHITESPACE);
 
 		// Find direct homonyms
 		solutions.addAll(findDirectHomonyms(words));
@@ -76,6 +85,10 @@ public class Homophone extends Solver {
 				Solution s = new Solution(homonym, NAME);
 				s.addToTrace("Pronunciation of " + word + " matches with "
 						+ homonym);
+				// Adjust the solution's confidence
+				double confidence = Confidence.multiply(s.getConfidence(),
+						Confidence.HOMOPHONE_MULTIPLIER);
+				s.setConfidence(confidence);
 				solutions.add(s);
 			}
 		}
@@ -95,6 +108,10 @@ public class Homophone extends Solver {
 					s.addToTrace("Pronunciation of \"" + synonym
 							+ "\" (synonym of " + word + ") matches with \""
 							+ homonym + "\"");
+					// Adjust the solution's confidence
+					double confidence = Confidence.multiply(s.getConfidence(),
+							Confidence.HOMOPHONE_MULTIPLIER);
+					s.setConfidence(confidence);
 					solutions.add(s);
 				}
 			}

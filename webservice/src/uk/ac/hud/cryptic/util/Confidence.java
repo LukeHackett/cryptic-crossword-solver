@@ -21,6 +21,8 @@ public class Confidence {
 	// Multiplier for solutions which are solved by an algorithm, for which
 	// there is an indicator word(s) in the clue
 	public static final double CATEGORY_MULTIPLIER = 1.2d;
+	// Multiplier for homophone matches
+	public static final double HOMOPHONE_MULTIPLIER = 2d;
 
 	/**
 	 * @param value
