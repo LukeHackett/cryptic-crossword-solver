@@ -4,6 +4,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 
 /**
  * Acrostic solver algorithm
@@ -66,9 +67,10 @@ public class Acrostic extends Solver {
 				subStr += termToSearch.substring(j, j + 1);
 			}
 			Solution s = new Solution(subStr, NAME);
-			s.addToTrace("Initial letters taken from clue words, starting with \"" + words[i]
-					+ "\", to clue word \"" + words[i + solutionLength - 1]
-					+ "\".");
+			s.addToTrace("Initial letters taken from clue words, starting with \""
+					+ words[i]
+					+ "\", to clue word \""
+					+ words[i + solutionLength - 1] + "\".");
 			solutions.add(s);
 		}
 
@@ -77,6 +79,9 @@ public class Acrostic extends Solver {
 
 		// Remove words not in the dictionary
 		DICTIONARY.dictionaryFilter(solutions, pattern);
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
 	}

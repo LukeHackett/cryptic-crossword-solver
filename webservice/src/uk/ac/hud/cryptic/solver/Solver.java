@@ -94,7 +94,7 @@ public abstract class Solver implements Callable<SolutionCollection> {
 			Solver s = solver.newInstance();
 
 			// Obtain some test data from the database
-			Collection<Clue> clues = DB.getTestClues(s.toString(), true);
+			Collection<Clue> clues = DB.getTestClues(s.toString(), true, 99999);
 
 			// Solve 1 clue on each thread available
 			int processors = Runtime.getRuntime().availableProcessors();

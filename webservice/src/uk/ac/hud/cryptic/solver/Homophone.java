@@ -9,6 +9,7 @@ import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.HomophoneDictionary;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -69,6 +70,9 @@ public class Homophone extends Solver {
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
 	}
@@ -131,6 +135,10 @@ public class Homophone extends Solver {
 	 */
 	public static void main(String[] args) {
 		testSolver(Homophone.class);
+		// Clue c = new Clue("way said to be problematic for lame dog", "?????",
+		// "style", NAME);
+		// Homophone h = new Homophone();
+		// h.solve(c);
 	}
 
 } // End of class Homophone
