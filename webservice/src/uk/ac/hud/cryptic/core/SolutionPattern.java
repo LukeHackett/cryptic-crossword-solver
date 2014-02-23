@@ -204,8 +204,8 @@ public class SolutionPattern {
 	 * @return <code>true</code> if the proposed solution matches the pattern,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean match(String solution) {
-		solution = WordUtils.removeSpacesAndHyphens(solution);
+	public boolean match(String solutionToCheck) {
+		String solution = WordUtils.removeSpacesAndHyphens(solutionToCheck);
 		// Assume a match until proven otherwise
 		boolean match = true;
 
@@ -215,10 +215,8 @@ public class SolutionPattern {
 		} else if (allUnknown) {
 			// Handle multi-word solutions
 			if (hasMultipleWords()) {
-				// Format proposed solution in line with the pattern
-				String multiWord = recomposeSolution(solution);
 				// Break the solution into the separate word components
-				String[] indWords = multiWord.split(WordUtils.SPACE_AND_HYPHEN);
+				String[] indWords = solutionToCheck.split(WordUtils.SPACE_AND_HYPHEN);
 				// Must contain same number of words
 				if (indWordPatterns.length != indWords.length) {
 					match = false;
