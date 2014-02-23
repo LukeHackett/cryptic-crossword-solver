@@ -191,7 +191,7 @@ public class Thesaurus {
 	 *            <code>false</code> to only return the second level synonyms
 	 * @return a set of synonyms of a word's synonyms
 	 */
-	public Set<String> getSecondSynonyms(String word, boolean includeFirstLevel) {
+	public Set<String> getSecondSynonyms(String word, int maxLength, boolean includeFirstLevel) {
 		// Go and fetch the first level synonyms
 		Set<String> firstLevelSynonyms = getSynonyms(word);
 		// This will hold the results of this method
@@ -200,18 +200,41 @@ public class Thesaurus {
 		// Include first level synonyms if requested
 		if (includeFirstLevel) {
 			// But only those that match the specified pattern
-			Set<String> matchingFirstLevel = getSynonyms(word);
+			Set<String> matchingFirstLevel = getSynonyms(word, maxLength);
 			secondLevelSynonyms.addAll(matchingFirstLevel);
 		}
 
 		// Get the synonyms for each first level synonym
 		for (String synonym : firstLevelSynonyms) {
 			// The second level synonyms for this first level synonym
-			Set<String> newSynonyms = getSynonyms(synonym);
+			Set<String> newSynonyms = getSynonyms(synonym, maxLength);
 			secondLevelSynonyms.addAll(newSynonyms);
 		}
 
 		return secondLevelSynonyms;
+	}
+	
+	/**
+	 * Retrieve all synonyms of a given word with a maximum length
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms of the given word
+	 */
+	public Set<String> getSynonyms(String word, int maxLength) {
+		// Use of HashSet prevents duplicates
+		Set<String> synonyms = new HashSet<>();
+		if (thesaurus.containsKey(word)) {
+			Collection<String> wordSyns = thesaurus.get(word);
+			for(String synonym : wordSyns) {
+				if(synonym.length() <= maxLength) {
+					synonyms.add(synonym);
+				}
+			}
+		}
+		// Remove the original word which was passed in (if present)
+		synonyms.remove(word);
+		return synonyms;
 	}
 
 	/**
