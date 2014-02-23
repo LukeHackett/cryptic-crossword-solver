@@ -57,7 +57,8 @@ public class Spoonerism extends Solver {
 			if (!word.startsWith("Spoon")) {
 				if (word.length() > 2) {
 					// Get all synonyms for words
-					Set<String> synonyms = THESAURUS.getSecondSynonyms(word, true);
+					Set<String> synonyms = THESAURUS.getSecondSynonyms(word,
+							true);
 
 					// Filter synonyms longer than length - not on pattern
 					filterSynonyms(synonyms, pattern.getTotalLength());
@@ -92,7 +93,6 @@ public class Spoonerism extends Solver {
 		return solutions;
 	}
 
-
 	public void matchSynonyms(Collection<String> synonyms,
 			Collection<String> nextSynonyms, SolutionPattern pattern) {
 		for (String syn : synonyms) {
@@ -106,12 +106,12 @@ public class Spoonerism extends Solver {
 			}
 		}
 	}
-	
-		public void swapFirstLetters(String firstWord, String secondWord,
-				SolutionPattern pattern) {
-			if (firstWord == "deep" || firstWord == "ship") {
-				boolean here = true;
-			}
+
+	public void swapFirstLetters(String firstWord, String secondWord,
+			SolutionPattern pattern) {
+		if (firstWord == "deep" || firstWord == "ship") {
+			boolean here = true;
+		}
 		// First word, first letter
 		String fWfL = firstWord.substring(0, 1);
 		// Second word, first letter
