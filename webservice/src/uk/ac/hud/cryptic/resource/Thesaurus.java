@@ -153,6 +153,40 @@ public class Thesaurus {
 
 		return secondLevelSynonyms;
 	}
+	
+	/**
+	 * Obtain a list of "synonyms of a word's synonyms" to increase the chances
+	 * of finding the correct solution. 
+	 * 
+	 * @param word
+	 *            - the word to find two levels of synonyms for
+	 * @param includeFirstLevel
+	 *            - <code>true</code> to return the first level synonyms also,
+	 *            <code>false</code> to only return the second level synonyms
+	 * @return a set of synonyms of a word's synonyms
+	 */
+	public Set<String> getSecondSynonyms(String word, boolean includeFirstLevel) {
+		// Go and fetch the first level synonyms
+		Set<String> firstLevelSynonyms = getSynonyms(word);
+		// This will hold the results of this method
+		Set<String> secondLevelSynonyms = new HashSet<>();
+
+		// Include first level synonyms if requested
+		if (includeFirstLevel) {
+			// But only those that match the specified pattern
+			Set<String> matchingFirstLevel = getSynonyms(word);
+			secondLevelSynonyms.addAll(matchingFirstLevel);
+		}
+
+		// Get the synonyms for each first level synonym
+		for (String synonym : firstLevelSynonyms) {
+			// The second level synonyms for this first level synonym
+			Set<String> newSynonyms = getSynonyms(synonym);
+			secondLevelSynonyms.addAll(newSynonyms);
+		}
+
+		return secondLevelSynonyms;
+	}
 
 	/**
 	 * Retrieve all synonyms of a given word
