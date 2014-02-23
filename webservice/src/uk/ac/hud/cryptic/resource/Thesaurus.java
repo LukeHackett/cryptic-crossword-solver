@@ -47,6 +47,32 @@ public class Thesaurus {
 		populateThesaurusFromFile();
 		cache = new Cache<>();
 	}
+	
+	public static void main(String[] args) {
+		Thesaurus t = Thesaurus.getInstance();
+	// Go and fetch the first level synonyms
+		Set<String> firstLevelSynonyms = t.getSynonyms("beer");
+		// This will hold the results of this method
+		Set<String> secondLevelSynonyms = new HashSet<>();
+
+		// Include first level synonyms if requested
+		if (true) {
+			// But only those that match the specified pattern
+			Set<String> matchingFirstLevel = t.getSynonyms("beer");
+			secondLevelSynonyms.addAll(matchingFirstLevel);
+		}
+
+		// Get the synonyms for each first level synonym
+		for (String synonym : firstLevelSynonyms) {
+			// The second level synonyms for this first level synonym
+			Set<String> newSynonyms = t.getSynonyms(synonym);
+			secondLevelSynonyms.addAll(newSynonyms);
+		}
+		
+		for (String syn : secondLevelSynonyms) {
+			System.out.println(syn);
+		}
+	}
 
 	/**
 	 * Load the thesaurus into a HashSet to allow for much faster access
@@ -214,7 +240,7 @@ public class Thesaurus {
 	 *            of the words returned
 	 * @return a list of words which contain the passed word as a synonym
 	 */
-	public Collection<String> getWordsContainingSynonym(String synonym) {
+	public synchronized Collection<String> getWordsContainingSynonym(String synonym) {
 		// The collection that will be returned
 		Collection<String> results = new HashSet<>();
 
@@ -278,7 +304,8 @@ public class Thesaurus {
 				for (String clueWord : clueWords) {
 					if (synonyms.contains(clueWord)) {
 						solution.addToTrace("Confidence rating slightly increased as the clue word \""
-								+ clueWord + "\"is a synonym of this solution.");
+								+ clueWord
+								+ "\" is a synonym of this solution.");
 						return true;
 					}
 				}

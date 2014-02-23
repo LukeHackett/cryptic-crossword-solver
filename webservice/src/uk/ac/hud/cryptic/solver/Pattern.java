@@ -4,6 +4,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 
 /**
  * Pattern solver algorithm
@@ -73,7 +74,7 @@ public class Pattern extends Solver {
 			} while (word == null);
 
 			s.addToTrace("Every other character taken from the clue, starting with the clue word \""
-							+ word + "\".");
+					+ word + "\".");
 			solutions.add(s);
 		}
 
@@ -83,11 +84,8 @@ public class Pattern extends Solver {
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
 
-		// TODO Don't match words that aren't hidden, for example, the word
-		// STEER in Steerer or ALLOW in Allows.
-
-		// TODO Assign probabilities to each. This could try to use the
-		// word definition component of the clue.
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
 	}

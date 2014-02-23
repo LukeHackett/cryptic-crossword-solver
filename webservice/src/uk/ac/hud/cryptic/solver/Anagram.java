@@ -13,6 +13,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -209,6 +210,9 @@ public class Anagram extends Solver {
 
 		// Don't dictionary filter as it's handled by anagram()
 
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
+
 		return solutions;
 	}
 
@@ -240,9 +244,10 @@ public class Anagram extends Solver {
 						.submit(new Callable<SolutionCollection>() {
 							@Override
 							public SolutionCollection call() throws Exception {
-								SolutionCollection solutions = anagram(characters, pattern);
+								SolutionCollection solutions = anagram(
+										characters, pattern);
 								for (Solution s : solutions) {
-									s.addToTrace("Word is an anagram of the clue word \""
+									s.addToTrace("Word is an anagram of the clue text \""
 											+ characters + "\".");
 								}
 								return solutions;

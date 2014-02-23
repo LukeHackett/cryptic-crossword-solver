@@ -8,6 +8,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -61,6 +62,9 @@ public class Palindrome extends Solver {
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
+
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
 	}

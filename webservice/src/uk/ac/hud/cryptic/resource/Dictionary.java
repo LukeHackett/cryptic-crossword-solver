@@ -174,7 +174,7 @@ public class Dictionary {
 	 * @return a list of words from the dictionary which match against the
 	 *         pattern provided
 	 */
-	public Collection<String> getMatches(SolutionPattern pattern) {
+	public synchronized Collection<String> getMatches(SolutionPattern pattern) {
 		final String patternString = pattern.toString();
 		// Check the cache first for faster retrieval
 		if (cache.containsKey(patternString)) {
@@ -203,7 +203,7 @@ public class Dictionary {
 	 *            pattern
 	 * @return a list of words which match against the specified pattern
 	 */
-	public Collection<String> getMatchingWords(String pattern) {
+	public synchronized Collection<String> getMatchingWords(String pattern) {
 		// Check the cache first for faster retrieval
 		if (cache.containsKey(pattern)) {
 			return cache.get(pattern);

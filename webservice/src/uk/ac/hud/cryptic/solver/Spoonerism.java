@@ -12,6 +12,7 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 
 /**
  * Spoonerisms solver algorithm
@@ -70,6 +71,9 @@ public class Spoonerism extends Solver {
 		// Match up synonyms
 		sortSynonyms(pattern, c);
 
+		// Adjust confidence scores based on synonym matches
+		Thesaurus.getInstance().confidenceAdjust(c, solutions);
+
 		return solutions;
 	}
 
@@ -88,12 +92,26 @@ public class Spoonerism extends Solver {
 		return solutions;
 	}
 
-	public void swapFirstLetters(String firstWord, String secondWord,
-			SolutionPattern pattern) {
-		if (firstWord == "deep" || firstWord == "ship") {
-			boolean here = true;
-		}
 
+	public void matchSynonyms(Collection<String> synonyms,
+			Collection<String> nextSynonyms, SolutionPattern pattern) {
+		for (String syn : synonyms) {
+			for (String nextSyn : nextSynonyms) {
+				if (!syn.equals(nextSyn)) {
+					if (pattern.getTotalLength() == (syn.length() + nextSyn
+							.length())) {
+						swapFirstLetters(syn, nextSyn, pattern);
+					}
+				}
+			}
+		}
+	}
+	
+		public void swapFirstLetters(String firstWord, String secondWord,
+				SolutionPattern pattern) {
+			if (firstWord == "deep" || firstWord == "ship") {
+				boolean here = true;
+			}
 		// First word, first letter
 		String fWfL = firstWord.substring(0, 1);
 		// Second word, first letter
