@@ -78,7 +78,7 @@ public class SolutionPattern {
 		}
 
 		// Are all characters unknown?
-		final String regex = "[?]+[-?]*";
+		final String regex = "[?]+[-?][,?]*";
 		allUnknown = Pattern.matches(regex, pattern);
 
 		// For 5-4,2 this will be 3
