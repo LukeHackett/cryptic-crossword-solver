@@ -138,10 +138,6 @@
 				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 			</link>
 		</node>
-		<node uin="gj7tthhq3nagje58qbpm">
-			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Rate a solution"/>
-		</node>
 	</node>
 	<node uin="p6a7y8hou5boizu2lpx6">
 		<property name="$metaclass" value="UseCaseClassifier20"/>
@@ -154,11 +150,6 @@
 			<property name="$metaclass" value="KernelAssociation20"/>
 			<participant referencedUin="design:node:::8bho0jhou5atnokr39m3" role="Client"></participant>
 			<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Supplier"></participant>
-		</link>
-		<link uin="ieje0rhq3nbhkk-nzz9pr">
-			<property name="$metaclass" value="KernelAssociation20"/>
-			<participant referencedUin="design:node:::8bho0jhou5atnokr39m3" role="Client"></participant>
-			<participant referencedUin="design:node:::gj7tthhq3nagje58qbpm:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 		</link>
 	</node>
 	<node uin="-yrgd8ehq3ndaenjm592e">
