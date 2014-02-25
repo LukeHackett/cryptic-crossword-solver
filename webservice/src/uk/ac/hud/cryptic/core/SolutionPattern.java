@@ -78,7 +78,7 @@ public class SolutionPattern {
 		}
 
 		// Are all characters unknown?
-		final String regex = "[?]+[-?][,?]*";
+		final String regex = "\\?+((" + SPACE + "|" + HYPHEN + ")*\\?+)+";
 		allUnknown = Pattern.matches(regex, pattern);
 
 		// For 5-4,2 this will be 3
@@ -216,7 +216,8 @@ public class SolutionPattern {
 			// Handle multi-word solutions
 			if (hasMultipleWords()) {
 				// Break the solution into the separate word components
-				String[] indWords = solutionToCheck.split(WordUtils.SPACE_AND_HYPHEN);
+				String[] indWords = recomposeSolution(solutionToCheck).split(
+						WordUtils.SPACE_AND_HYPHEN);
 				// Must contain same number of words
 				if (indWordPatterns.length != indWords.length) {
 					match = false;
@@ -292,7 +293,11 @@ public class SolutionPattern {
 
 			// Insert the separators in the correct positions of the solution
 			// (managed by an offset value)
-			sb.insert(indLengths[i] + offset, separator);
+			int index = indLengths[i] + offset;
+			if (sb.length() > index && sb.charAt(index) != ' '
+					&& sb.charAt(index) != '-') {
+				sb.insert(indLengths[i] + offset, separator);
+			}
 			offset += indLengths[i] + 1;
 		}
 		return sb.toString();
