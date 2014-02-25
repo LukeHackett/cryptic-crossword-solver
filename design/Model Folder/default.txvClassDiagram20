@@ -12,18 +12,28 @@
 			<property name="collapsedCompartments" value=""/>
 		</reference>
 		<reference referencedUin="design:view:::V-jr6xbahou56tdd-yljm1n">
-			<property name="bounds" value="35,115,197,96"/>
+			<property name="bounds" value="35,235,197,96"/>
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhhou6m66f-n7ajv2">
-			<property name="bounds" value="35,235,197,141"/>
+			<property name="bounds" value="35,355,197,141"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<property name="collapsedCompartments" value="Package"/>
 		</reference>
 		<reference referencedUin="design:view:::Vam8ynkhq3ndaea-5hfhv8">
-			<property name="bounds" value="275,15,182,79"/>
+			<property name="bounds" value="255,235,182,79"/>
 			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs39gfs3r0cf3i">
+			<property name="bounds" value="255,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs39zx5z-1tqha7">
+			<property name="bounds" value="475,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>
