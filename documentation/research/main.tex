@@ -1,0 +1,36 @@
+\documentclass[12pt]{report}
+\usepackage[round,authoryear]{natbib}
+\usepackage[margin=2cm]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+
+\begin{document}
+
+% Title Page 
+\input{title}
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% Table of Figures
+\newpage
+\listoffigures
+
+% Table of Tables
+\newpage
+\listoftables
+
+% Document Content
+\include{research}
+
+% Citations
+\bibliographystyle{../apalike-url}
+\bibliography{../citations}
+\end{document}
