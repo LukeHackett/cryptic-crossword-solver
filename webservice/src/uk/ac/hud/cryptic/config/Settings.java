@@ -169,6 +169,17 @@ public class Settings {
 	}
 
 	/**
+	 * This method will return the path to the natural language processing
+	 * categoriser model, which has been trained using the Guardian's data.
+	 * 
+	 * @return the file path to the NLP categoriser model
+	 */
+	public InputStream getCategoriserModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/cryptic-categoriser.bin");
+	}
+
+	/**
 	 * Set the <code>ServletContext</code> object, which should be done when the
 	 * application is run in a server environment to indicate this is the case
 	 * 
