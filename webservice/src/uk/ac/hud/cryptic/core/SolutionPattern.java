@@ -78,7 +78,7 @@ public class SolutionPattern {
 		}
 
 		// Are all characters unknown?
-		final String regex = "\\?+((" + SPACE + "|" + HYPHEN + ")*\\?+)+";
+		final String regex = "\\?+((" + SPACE + "|" + HYPHEN + "){1}\\?+)+";
 		allUnknown = Pattern.matches(regex, pattern);
 
 		// For 5-4,2 this will be 3
