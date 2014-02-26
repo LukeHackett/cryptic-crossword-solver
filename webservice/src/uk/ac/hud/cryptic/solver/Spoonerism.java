@@ -2,11 +2,8 @@ package uk.ac.hud.cryptic.solver;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -24,8 +21,6 @@ public class Spoonerism extends Solver {
 
 	// A readable (and DB-valid) name for the solver
 	private static final String NAME = "spoonerism";
-	private List<String> synonymList;
-	private SolutionCollection solutions;
 
 	/**
 	 * Default constructor for solver class
@@ -46,22 +41,36 @@ public class Spoonerism extends Solver {
 
 	@Override
 	public SolutionCollection solve(Clue c) {
-		solutions = new SolutionCollection();
+		SolutionCollection solutions = new SolutionCollection();
 		final SolutionPattern pattern = c.getPattern();
 
 		String[] words = c.getClueWords();
 
-		synonymList = new ArrayList<String>();
+		List<String> synonymList = new ArrayList<String>();
+
+		int synonymMinLength = pattern.getTotalLength();
+		int synonymMaxLength = pattern.getTotalLength();
+
+		if (pattern.hasMultipleWords()) {
+			int[] indWordLengths = pattern.getIndividualWordLengths();
+			int longest = indWordLengths[0];
+			for (int i = 0; i < indWordLengths.length; i++) {
+				if (indWordLengths[i] > longest) {
+					longest = indWordLengths[i];
+					synonymMaxLength = longest;
+				}
+				if (indWordLengths[i] < synonymMinLength) {
+					synonymMinLength = indWordLengths[i];
+				}
+			}
+		}
 
 		for (String word : words) {
-			if (!word.startsWith("Spoon")) {
+			if (!word.startsWith("spoon")) {
 				if (word.length() > 2) {
 					// Get all synonyms for words
-					Set<String> synonyms = THESAURUS.getSecondSynonyms(word,
-							true);
-
-					// Filter synonyms longer than length - not on pattern
-					filterSynonyms(synonyms, pattern.getTotalLength());
+					Collection<String> synonyms = THESAURUS.getSecondSynonyms(
+							word, synonymMaxLength, synonymMinLength, true);
 
 					// Put synonyms into list
 					synonymList.addAll(synonyms);
@@ -70,48 +79,35 @@ public class Spoonerism extends Solver {
 		}
 
 		// Match up synonyms
-		sortSynonyms(pattern, c);
+		sortSynonyms(pattern, synonymList, solutions);
 
 		// Adjust confidence scores based on synonym matches
 		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
+		pattern.filterSolutions(solutions);
+
 		return solutions;
 	}
 
-	public SolutionCollection sortSynonyms(SolutionPattern pattern, Clue clue) {
-		for (String synonym : synonymList) {
+	public void sortSynonyms(SolutionPattern pattern, List<String> synonymList,
+			SolutionCollection solutions) {
+		Iterator<String> synonym = synonymList.iterator();
+		while (synonym.hasNext()) {
+			String syn = synonym.next();
 			for (String nextSyn : synonymList) {
-				if (!synonym.equals(nextSyn)) {
-					if (pattern.getTotalLength() == (synonym.length() + nextSyn
-							.length())) {
-						swapFirstLetters(synonym, nextSyn, pattern);
-					}
-				}
-			}
-		}
-
-		return solutions;
-	}
-
-	public void matchSynonyms(Collection<String> synonyms,
-			Collection<String> nextSynonyms, SolutionPattern pattern) {
-		for (String syn : synonyms) {
-			for (String nextSyn : nextSynonyms) {
 				if (!syn.equals(nextSyn)) {
 					if (pattern.getTotalLength() == (syn.length() + nextSyn
 							.length())) {
-						swapFirstLetters(syn, nextSyn, pattern);
+						swapFirstLetters(syn, nextSyn, pattern, solutions);
 					}
 				}
 			}
+			synonym.remove();
 		}
 	}
 
 	public void swapFirstLetters(String firstWord, String secondWord,
-			SolutionPattern pattern) {
-		if (firstWord == "deep" || firstWord == "ship") {
-			boolean here = true;
-		}
+			SolutionPattern pattern, SolutionCollection solutions) {
 		// First word, first letter
 		String fWfL = firstWord.substring(0, 1);
 		// Second word, first letter
@@ -125,7 +121,7 @@ public class Spoonerism extends Solver {
 		// Swap first two letters CAMP DLOWN
 		swappedFirstWord = firstWord.replace(fWfL, sWfL);
 		swappedSecondWord = secondWord.replace(sWfL, fWfL);
-		checkIfWords(swappedFirstWord, swappedSecondWord);
+		checkIfWords(swappedFirstWord, swappedSecondWord, pattern, solutions);
 
 		if (firstWord.length() > 2 && secondWord.length() > 2) {
 			// Swap first two letters with second one letter DALOWN CMP
@@ -133,42 +129,51 @@ public class Spoonerism extends Solver {
 					+ firstWord.substring(2);
 			swappedSecondWord = firstWord.substring(0, 2)
 					+ secondWord.substring(1);
-			checkIfWords(swappedFirstWord, swappedSecondWord);
+			checkIfWords(swappedFirstWord, swappedSecondWord, pattern,
+					solutions);
 
 			// Swap first one letter with second two letters DOWN CLAMP
 			swappedFirstWord = secondWord.substring(0, 2)
 					+ firstWord.substring(1);
 			swappedSecondWord = firstWord.substring(0, 1)
 					+ secondWord.substring(2);
-			checkIfWords(swappedFirstWord, swappedSecondWord);
+			checkIfWords(swappedFirstWord, swappedSecondWord, pattern,
+					solutions);
 
 			// Swap first two letters with second two letters DAOWN CLMP
 			swappedFirstWord = secondWord.substring(0, 2)
 					+ firstWord.substring(2);
 			swappedSecondWord = firstWord.substring(0, 2)
 					+ secondWord.substring(2);
-			checkIfWords(swappedFirstWord, swappedSecondWord);
+			checkIfWords(swappedFirstWord, swappedSecondWord, pattern,
+					solutions);
 		}
 	}
 
-	public void checkIfWords(String firstWord, String secondWord) {
+	public void checkIfWords(String firstWord, String secondWord,
+			SolutionPattern pattern, SolutionCollection solutions) {
 		boolean firstIsWord = DICTIONARY.isWord(firstWord);
 		boolean secondIsWord = DICTIONARY.isWord(secondWord);
 
 		if (firstIsWord && secondIsWord) {
-			solutions.add(new Solution(firstWord + secondWord, NAME));
-		}
-	}
-
-	public Set<String> filterSynonyms(Set<String> synonyms,
-			int totalSolutionLength) {
-		for (Iterator<String> it = synonyms.iterator(); it.hasNext();) {
-			if (it.next().length() > totalSolutionLength) {
-				it.remove();
+			if (pattern.hasMultipleWords()) {
+				if (pattern.match(firstWord + " " + secondWord)) {
+					solutions.add(new Solution(firstWord + " " + secondWord,
+							NAME));
+				} else if (pattern.match(secondWord + " " + firstWord)) {
+					solutions.add(new Solution(secondWord + " " + firstWord,
+							NAME));
+				}
+			} else {
+				if (DICTIONARY.isWord(firstWord + secondWord)) {
+					solutions.add(new Solution(firstWord + secondWord, NAME));
+				}
+				if (DICTIONARY.isWord(secondWord + firstWord)) {
+					solutions.add(new Solution(secondWord + firstWord, NAME));
+				}
 			}
-		}
 
-		return synonyms;
+		}
 	}
 
 	@Override
