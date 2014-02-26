@@ -1,19 +1,18 @@
 \documentclass[12pt]{report}
 \usepackage[round,authoryear]{natbib}
-\usepackage{fullpage}
 \usepackage[margin=2cm]{geometry}
 \usepackage[parfill]{parskip}
 \usepackage[hyphens]{url}
 \usepackage[hidelinks]{hyperref}
+\usepackage{pdflscape}
+\usepackage{enumerate}
 \usepackage{titlesec}
 \usepackage{graphicx}
-\usepackage{pdflscape}
+\usepackage{fullpage}
+\usepackage{nameref}
+\usepackage{import}
+\usepackage{lipsum}
 \usepackage{float}
-\usepackage{enumerate}
-
-% Global Commands
-\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-\newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
 
 \setcounter{tocdepth}{1}
 
@@ -37,26 +36,17 @@
 \newpage
 \listoftables
 
-% Problem Analysis
-\newpage
-\input{problem_analysis/analysis}
+% Introduction & Problem Analysis
+\subimport*{analysis/}{analysis}
 
 % Research 
-\newpage
-\input{research/research}
+\subimport*{research/}{research}
 
-% Development Methodologies
-\newpage
-\input{development_methodologies/development_methodologies}
-
-% Requirements
-\newpage
-\input{requirements/requirements}
+% Specification (Requirements & Development Methodology)
+\subimport*{specification/}{specification}
 
 % Glossary of Terms
-\addcontentsline{toc}{chapter}{Glossary of Terms}
-\chapter*{Glossary of Terms}
-\input{requirements/project_constraints/naming_conventions_and_terminology}
+\input{terminology}
 
 % Citations
 \bibliographystyle{apalike-url}
