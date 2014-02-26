@@ -201,7 +201,7 @@ public class Thesaurus {
 		// Include first level synonyms if requested
 		if (includeFirstLevel) {
 			// But only those that match the specified pattern
-			Set<String> matchingFirstLevel = getSingleWordSynonyms(word,
+			Set<String> matchingFirstLevel = getSynonymsWithMinMaxLength(word,
 					maxLength, minLength);
 			secondLevelSynonyms.addAll(matchingFirstLevel);
 		}
@@ -209,7 +209,7 @@ public class Thesaurus {
 		// Get the synonyms for each first level synonym
 		for (String synonym : firstLevelSynonyms) {
 			// The second level synonyms for this first level synonym
-			Set<String> newSynonyms = getSingleWordSynonyms(synonym, maxLength,
+			Set<String> newSynonyms = getSynonymsWithMinMaxLength(synonym, maxLength,
 					minLength);
 			secondLevelSynonyms.addAll(newSynonyms);
 		}
@@ -225,7 +225,7 @@ public class Thesaurus {
 	 *            - the word to get synonyms for
 	 * @return the synonyms of the given word
 	 */
-	public Set<String> getSingleWordSynonyms(String word, int maxLength,
+	public Set<String> getSynonymsWithMinMaxLength(String word, int maxLength,
 			int minLength) {
 		// Use of HashSet prevents duplicates
 		Set<String> synonyms = new HashSet<>();
@@ -237,6 +237,11 @@ public class Thesaurus {
 				if (checkForMultipleWords.length == 1) {
 					if (synonym.length() <= maxLength
 							&& synonym.length() >= minLength) {
+						synonyms.add(synonym);
+					}
+				}
+				else {
+					if(synonym.length() <= maxLength) {
 						synonyms.add(synonym);
 					}
 				}
