@@ -1,9 +1,13 @@
 package uk.ac.hud.cryptic.solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
@@ -46,40 +50,83 @@ public class Spoonerism extends Solver {
 
 		String[] words = c.getClueWords();
 
-		List<String> synonymList = new ArrayList<String>();
+		// Remove "Spoon*" and short words
+		List<String> clueWords = new ArrayList<>(Arrays.asList(words));
+		Iterator<String> it = clueWords.iterator();
+		while (it.hasNext()) {
+			String word = it.next();
+			if (word.length() <= 2) {
+				it.remove();
+			}
+		}
 
-		int synonymMinLength = pattern.getTotalLength();
+		List<List<String>> fodder = new ArrayList<>();
+		String spoonerWord = null;
+
+		for (String word : clueWords) {
+			if (word.startsWith("spoon")) {
+				spoonerWord = word;
+				break;
+			}
+		}
+		if (spoonerWord == null) {
+			return solutions;
+		}
+		int spoonerPos = clueWords.indexOf(spoonerWord);
+
+		// To the left
+		if (spoonerPos >= 2) {
+			List<String> foundFodder = new ArrayList<>();
+			foundFodder.add(clueWords.get(spoonerPos - 2));
+			foundFodder.add(clueWords.get(spoonerPos - 1));
+			fodder.add(foundFodder);
+		}
+
+		// To the right
+		if (clueWords.size() - spoonerPos > 2) {
+			List<String> foundFodder = new ArrayList<>();
+			foundFodder.add(clueWords.get(spoonerPos + 1));
+			foundFodder.add(clueWords.get(spoonerPos + 2));
+			fodder.add(foundFodder);
+		}
+
+		int synonymMinLength = 1;
 		int synonymMaxLength = pattern.getTotalLength();
 
 		if (pattern.hasMultipleWords()) {
 			int[] indWordLengths = pattern.getIndividualWordLengths();
 			int longest = indWordLengths[0];
-			for (int i = 0; i < indWordLengths.length; i++) {
-				if (indWordLengths[i] > longest) {
-					longest = indWordLengths[i];
+			for (int indWordLength : indWordLengths) {
+				if (indWordLength > longest) {
+					longest = indWordLength;
 					synonymMaxLength = longest;
 				}
-				if (indWordLengths[i] < synonymMinLength) {
-					synonymMinLength = indWordLengths[i];
+				if (indWordLength < synonymMinLength) {
+					synonymMinLength = indWordLength;
 				}
 			}
 		}
 
-		for (String word : words) {
-			if (!word.startsWith("spoon")) {
-				if (word.length() > 2) {
-					// Get all synonyms for words
-					Collection<String> synonyms = THESAURUS.getSecondSynonyms(
-							word, synonymMaxLength, synonymMinLength, true);
+		List<List<String>> temp = new ArrayList<>();
+		temp.add(clueWords);
 
-					// Put synonyms into list
-					synonymList.addAll(synonyms);
-				}
+		for (Collection<String> fod : temp) {
+
+			Map<String, Collection<String>> synonymList = new HashMap<>();
+
+			for (String word : fod) {
+				// Get all synonyms for words
+				Collection<String> synonyms = THESAURUS.getSecondSynonyms(word,
+						synonymMaxLength, synonymMinLength, true);
+
+				// Put synonyms into map
+				synonymList.put(word, synonyms);
 			}
-		}
 
-		// Match up synonyms
-		sortSynonyms(pattern, synonymList, solutions);
+			// Match up synonyms
+			sortSynonyms(pattern, synonymList, solutions);
+
+		}
 
 		// Adjust confidence scores based on synonym matches
 		Thesaurus.getInstance().confidenceAdjust(c, solutions);
@@ -89,21 +136,44 @@ public class Spoonerism extends Solver {
 		return solutions;
 	}
 
-	public void sortSynonyms(SolutionPattern pattern, List<String> synonymList,
+	public void sortSynonyms(SolutionPattern pattern,
+			Map<String, Collection<String>> synonymList,
 			SolutionCollection solutions) {
-		Iterator<String> synonym = synonymList.iterator();
-		while (synonym.hasNext()) {
-			String syn = synonym.next();
-			for (String nextSyn : synonymList) {
-				if (!syn.equals(nextSyn)) {
-					if (pattern.getTotalLength() == (syn.length() + nextSyn
-							.length())) {
-						swapFirstLetters(syn, nextSyn, pattern, solutions);
+		// Iterator<String> synonym = synonymList.iterator();
+		// while (synonym.hasNext()) {
+		// String syn = synonym.next();
+		// for (String nextSyn : synonymList) {
+		// if (!syn.equals(nextSyn)) {
+		// if (pattern.getTotalLength() == syn.length()
+		// + nextSyn.length()) {
+		// swapFirstLetters(syn, nextSyn, pattern, solutions);
+		// }
+		// }
+		// }
+		// synonym.remove();
+		// }
+
+		final int length = pattern.getTotalLength();
+
+		for (Entry<String, Collection<String>> outer : synonymList.entrySet()) {
+			for (Entry<String, Collection<String>> inner : synonymList
+					.entrySet()) {
+				if (outer.equals(inner)) {
+					continue;
+				}
+
+				for (String firstSynonym : outer.getValue()) {
+					for (String secondSynonym : inner.getValue()) {
+						if (length == firstSynonym.length()
+								+ secondSynonym.length()) {
+							swapFirstLetters(firstSynonym, secondSynonym,
+									pattern, solutions);
+						}
 					}
 				}
 			}
-			synonym.remove();
 		}
+
 	}
 
 	public void swapFirstLetters(String firstWord, String secondWord,
@@ -152,27 +222,15 @@ public class Spoonerism extends Solver {
 
 	public void checkIfWords(String firstWord, String secondWord,
 			SolutionPattern pattern, SolutionCollection solutions) {
-		boolean firstIsWord = DICTIONARY.isWord(firstWord);
-		boolean secondIsWord = DICTIONARY.isWord(secondWord);
 
-		if (firstIsWord && secondIsWord) {
-			if (pattern.hasMultipleWords()) {
-				if (pattern.match(firstWord + " " + secondWord)) {
-					solutions.add(new Solution(firstWord + " " + secondWord,
-							NAME));
-				} else if (pattern.match(secondWord + " " + firstWord)) {
-					solutions.add(new Solution(secondWord + " " + firstWord,
-							NAME));
-				}
-			} else {
-				if (DICTIONARY.isWord(firstWord + secondWord)) {
-					solutions.add(new Solution(firstWord + secondWord, NAME));
-				}
-				if (DICTIONARY.isWord(secondWord + firstWord)) {
-					solutions.add(new Solution(secondWord + firstWord, NAME));
-				}
+		if (pattern.hasMultipleWords()) {
+			if (pattern.match(firstWord + " " + secondWord)) {
+				solutions.add(new Solution(firstWord + " " + secondWord, NAME));
 			}
-
+		} else {
+			if (DICTIONARY.isWord(firstWord + secondWord)) {
+				solutions.add(new Solution(firstWord + secondWord, NAME));
+			}
 		}
 	}
 
@@ -185,6 +243,12 @@ public class Spoonerism extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Spoonerism.class);
+		testSolver(CopyOfSpoonerism.class);
+		// Clue c = new Clue("immerse beasts spooner's ocean liner",
+		// "?????,???",
+		// "sheep dip", NAME);
+		// CopyOfSpoonerism s = new CopyOfSpoonerism();
+		// s.solve(c);
 	}
+
 } // End of class Spoonerism
