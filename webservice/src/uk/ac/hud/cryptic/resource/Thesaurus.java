@@ -201,7 +201,7 @@ public class Thesaurus {
 		// Include first level synonyms if requested
 		if (includeFirstLevel) {
 			// But only those that match the specified pattern
-			Set<String> matchingFirstLevel = getSynonymsWithMinMaxLength(word,
+			Set<String> matchingFirstLevel = filterSynonyms(firstLevelSynonyms,
 					maxLength, minLength);
 			secondLevelSynonyms.addAll(matchingFirstLevel);
 		}
@@ -209,8 +209,8 @@ public class Thesaurus {
 		// Get the synonyms for each first level synonym
 		for (String synonym : firstLevelSynonyms) {
 			// The second level synonyms for this first level synonym
-			Set<String> newSynonyms = getSynonymsWithMinMaxLength(synonym, maxLength,
-					minLength);
+			Set<String> newSynonyms = getSynonymsWithMinMaxLength(synonym,
+					maxLength, minLength);
 			secondLevelSynonyms.addAll(newSynonyms);
 		}
 
@@ -239,9 +239,8 @@ public class Thesaurus {
 							&& synonym.length() >= minLength) {
 						synonyms.add(synonym);
 					}
-				}
-				else {
-					if(synonym.length() <= maxLength) {
+				} else {
+					if (synonym.length() <= maxLength) {
 						synonyms.add(synonym);
 					}
 				}
@@ -250,6 +249,27 @@ public class Thesaurus {
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
+	}
+
+	/**
+	 * Retrieve all single word synonyms of a given word with a maximum and
+	 * minimum length
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms of the given word
+	 */
+	public Set<String> filterSynonyms(Set<String> synonyms, int maxLength,
+			int minLength) {
+		// Use of HashSet prevents duplicates
+		Set<String> filteredSynonyms = new HashSet<>();
+		for (String synonym : synonyms) {
+			int length = synonym.length();
+			if (length >= minLength && length <= maxLength) {
+				filteredSynonyms.add(synonym);
+			}
+		}
+		return filteredSynonyms;
 	}
 
 	/**
