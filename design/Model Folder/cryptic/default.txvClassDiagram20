@@ -21,5 +21,7 @@
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
+		<reference referencedUin="design:view:::V1hexuhhs3b8z3c-9s75eh">
+		</reference>
 	</view>
 </nodeSet>

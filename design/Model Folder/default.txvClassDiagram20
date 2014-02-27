@@ -16,10 +16,10 @@
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhhou6m66f-n7ajv2">
-			<property name="bounds" value="495,415,197,141"/>
+			<property name="bounds" value="35,395,197,161"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
-			<property name="collapsedCompartments" value="Package"/>
+			<property name="collapsedCompartments" value=""/>
 		</reference>
 		<reference referencedUin="design:view:::Vam8ynkhq3ndaea-5hfhv8">
 			<property name="bounds" value="35,275,197,79"/>
@@ -33,6 +33,11 @@
 		</reference>
 		<reference referencedUin="design:view:::V-b8dyjihs39zx5z-1tqha7">
 			<property name="bounds" value="475,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs6cby818pcxmu">
+			<property name="bounds" value="695,15,197,79"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
