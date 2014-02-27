@@ -264,9 +264,13 @@ public class Thesaurus {
 		// Use of HashSet prevents duplicates
 		Set<String> filteredSynonyms = new HashSet<>();
 		for (String synonym : synonyms) {
-			int length = synonym.length();
-			if (length >= minLength && length <= maxLength) {
-				filteredSynonyms.add(synonym);
+			String[] checkForMultipleWords = synonym
+					.split(WordUtils.SPACE_AND_HYPHEN);
+			if (checkForMultipleWords.length == 1) {
+				int length = synonym.length();
+				if (length >= minLength && length <= maxLength) {
+					filteredSynonyms.add(synonym);
+				}
 			}
 		}
 		return filteredSynonyms;
