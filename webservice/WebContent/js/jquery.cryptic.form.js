@@ -303,7 +303,7 @@
         // Display the single result
         createPanel('#accordion', 'solution0', results);
         // Set the panel colour (NOTE: only one solution)
-        setPanelColour('#accordion', solution.confidence, solution.confidence);
+        setPanelColour('#accordion', results.confidence, results.confidence);
       }
       // Set the first result to show the trace path
       $(settings.results).find('.panel-collapse:first').addClass('in');
