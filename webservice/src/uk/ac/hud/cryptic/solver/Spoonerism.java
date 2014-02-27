@@ -48,48 +48,32 @@ public class Spoonerism extends Solver {
 		SolutionCollection solutions = new SolutionCollection();
 		final SolutionPattern pattern = c.getPattern();
 
+		// Get clue words
 		String[] words = c.getClueWords();
-
-		// Remove "Spoon*" and short words
 		List<String> clueWords = new ArrayList<>(Arrays.asList(words));
-		Iterator<String> it = clueWords.iterator();
-		while (it.hasNext()) {
-			String word = it.next();
-			if (word.length() <= 2) {
-				it.remove();
-			}
-		}
+		// Remove words with length less than or equal to 2
+		removeShortWords(clueWords);
 
-		List<List<String>> fodder = new ArrayList<>();
+		// Find index of Spooner word
 		String spoonerWord = null;
-
 		for (String word : clueWords) {
 			if (word.startsWith("spoon")) {
 				spoonerWord = word;
 				break;
 			}
 		}
+		// If Spooner word not found, not a spoonerism clue, return solutions
 		if (spoonerWord == null) {
 			return solutions;
 		}
+
 		int spoonerPos = clueWords.indexOf(spoonerWord);
 
-		// To the left
-		if (spoonerPos >= 2) {
-			List<String> foundFodder = new ArrayList<>();
-			foundFodder.add(clueWords.get(spoonerPos - 2));
-			foundFodder.add(clueWords.get(spoonerPos - 1));
-			fodder.add(foundFodder);
-		}
+		// Get words next to Spooner word
+		List<List<String>> fodder = getWordsToLeftAndRight(spoonerPos,
+				clueWords);
 
-		// To the right
-		if (clueWords.size() - spoonerPos > 2) {
-			List<String> foundFodder = new ArrayList<>();
-			foundFodder.add(clueWords.get(spoonerPos + 1));
-			foundFodder.add(clueWords.get(spoonerPos + 2));
-			fodder.add(foundFodder);
-		}
-
+		// Get max and min length of synonyms to get
 		int synonymMinLength = 1;
 		int synonymMaxLength = pattern.getTotalLength();
 
@@ -107,10 +91,10 @@ public class Spoonerism extends Solver {
 			}
 		}
 
-		List<List<String>> temp = new ArrayList<>();
-		temp.add(clueWords);
+		// List<List<String>> temp = new ArrayList<>();
+		// temp.add(clueWords);
 
-		for (Collection<String> fod : temp) {
+		for (Collection<String> fod : fodder) {
 
 			Map<String, Collection<String>> synonymList = new HashMap<>();
 
@@ -136,23 +120,42 @@ public class Spoonerism extends Solver {
 		return solutions;
 	}
 
+	public void removeShortWords(List<String> clueWords) {
+		// Remove short words
+		Iterator<String> it = clueWords.iterator();
+		while (it.hasNext()) {
+			String word = it.next();
+			if (word.length() <= 2) {
+				it.remove();
+			}
+		}
+	}
+
+	public List<List<String>> getWordsToLeftAndRight(int spoonerPos,
+			List<String> clueWords) {
+		List<List<String>> fodder = new ArrayList<>();
+		// To the left
+		if (spoonerPos >= 2) {
+			List<String> foundFodder = new ArrayList<>();
+			foundFodder.add(clueWords.get(spoonerPos - 2));
+			foundFodder.add(clueWords.get(spoonerPos - 1));
+			fodder.add(foundFodder);
+		}
+
+		// To the right
+		if (clueWords.size() - spoonerPos > 2) {
+			List<String> foundFodder = new ArrayList<>();
+			foundFodder.add(clueWords.get(spoonerPos + 1));
+			foundFodder.add(clueWords.get(spoonerPos + 2));
+			fodder.add(foundFodder);
+		}
+
+		return fodder;
+	}
+
 	public void sortSynonyms(SolutionPattern pattern,
 			Map<String, Collection<String>> synonymList,
 			SolutionCollection solutions) {
-		// Iterator<String> synonym = synonymList.iterator();
-		// while (synonym.hasNext()) {
-		// String syn = synonym.next();
-		// for (String nextSyn : synonymList) {
-		// if (!syn.equals(nextSyn)) {
-		// if (pattern.getTotalLength() == syn.length()
-		// + nextSyn.length()) {
-		// swapFirstLetters(syn, nextSyn, pattern, solutions);
-		// }
-		// }
-		// }
-		// synonym.remove();
-		// }
-
 		final int length = pattern.getTotalLength();
 
 		for (Entry<String, Collection<String>> outer : synonymList.entrySet()) {
@@ -243,7 +246,7 @@ public class Spoonerism extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(CopyOfSpoonerism.class);
+		testSolver(Spoonerism.class);
 		// Clue c = new Clue("immerse beasts spooner's ocean liner",
 		// "?????,???",
 		// "sheep dip", NAME);
