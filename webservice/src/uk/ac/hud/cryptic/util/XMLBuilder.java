@@ -87,8 +87,14 @@ public class XMLBuilder {
 	 *            the error that has occurred
 	 */
 	public void addError(String error) {
-		Element message = new Element("message").setText(error);
-		xml.getRootElement().getChild("errors").addContent(message);
+		// Get the root element
+		Element errors = xml.getRootElement().getChild("errors");
+		// Create the errors element if doesn't exist
+		if(errors == null){
+		    errors = xml.getRootElement().addContent(new Element("errors"));
+		}
+		// Add the error message to the messages list
+		errors.addContent(new Element("message").setText(error));
 	}
 
 	/**
