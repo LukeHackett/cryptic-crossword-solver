@@ -167,6 +167,50 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "nlp/en-parser-chunking.bin");
 	}
+	
+	/**
+	 * This method will return the path to the natural language processing
+	 * tokeniser model.
+	 * 
+	 * @return the file path to the NLP tokeniser model
+	 */
+	public InputStream getTokeniserModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/en-token.bin");
+	}
+	
+	/**
+	 * This method will return the path to the natural language processing
+	 * sentence detector model.
+	 * 
+	 * @return the file path to the NLP sentence detector model
+	 */
+	public InputStream getSentenceDetectorModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/en-sent.bin");
+	}
+	
+	/**
+	 * This method will return the path to the natural language processing
+	 * POS tagging model.
+	 * 
+	 * @return the file path to the NLP POS tagging model
+	 */
+	public InputStream getPOSModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/en-pos-maxent.bin");
+	}
+	
+	/**
+	 * This method will return the path to the natural language processing
+	 * chunker model.
+	 * 
+	 * @return the file path to the NLP chunker model
+	 */
+	public InputStream getChunkerModelStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "nlp/en-chunker.bin");
+	}
 
 	/**
 	 * This method will return the path to the natural language processing
