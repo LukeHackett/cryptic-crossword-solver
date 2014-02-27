@@ -9,56 +9,25 @@ import java.util.Map;
 
 import opennlp.tools.chunker.ChunkerME;
 import opennlp.tools.chunker.ChunkerModel;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
-import opennlp.tools.sentdetect.SentenceDetectorME;
-import opennlp.tools.sentdetect.SentenceModel;
-import opennlp.tools.tokenize.TokenizerME;
-import opennlp.tools.tokenize.TokenizerModel;
 import uk.ac.hud.cryptic.config.Settings;
 
 public class NLPChunker {
 
-	public static final String TOKENS = "tokens";
-	public static final String POS_TAGS = "pos";
-	public static final String CHUNKED = "chunk";
-
 	private static NLPChunker instance;
+	private static CoreTools nlpCore = CoreTools.getInstance();
 	private final Settings settings = Settings.getInstance();
 	private ChunkerME chunker;
-	private POSTaggerME posTagger;
-	private SentenceDetectorME sentenceDetector;
-	private TokenizerME tokeniser;
 
 	/**
 	 * Initialise the parser by loading in the parser model
 	 */
 	private NLPChunker() {
 		try {
-			// Initialise tokeniser
-			InputStream sStream = settings.getSentenceDetectorModelStream();
-			SentenceModel sModel = new SentenceModel(sStream);
-			sStream.close();
-			sentenceDetector = new SentenceDetectorME(sModel);
-
-			// Initialise tokeniser
-			InputStream tStream = settings.getTokeniserModelStream();
-			TokenizerModel tModel = new TokenizerModel(tStream);
-			tStream.close();
-			tokeniser = new TokenizerME(tModel);
-
-			// Initialise POS tagger
-			InputStream pStream = settings.getPOSModelStream();
-			POSModel pModel = new POSModel(pStream);
-			pStream.close();
-			posTagger = new POSTaggerME(pModel);
-
 			// Initialise chunker
 			InputStream cStream = settings.getChunkerModelStream();
 			ChunkerModel cModel = new ChunkerModel(cStream);
 			cStream.close();
 			chunker = new ChunkerME(cModel);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,23 +58,27 @@ public class NLPChunker {
 		Map<String, List<String>> info = new HashMap<>(3);
 
 		// Split the input into sentences. There should typically only be one.
-		String[] sentences = sentenceDetector.sentDetect(clue);
+		String[] sentences = nlpCore.detectSentences(clue);
 
 		// For each identified sentence
 		for (String sentence : sentences) {
 			// Tokenise it - i.e. separate the words and punctuation into
 			// separate elements
-			String[] tokens = tokeniser.tokenize(sentence);
-			addToMap(info, TOKENS, tokens);
+			String[] tokens = nlpCore.tokenise(sentence);
+			addToMap(info, CoreTools.TOKENS, tokens);
 
 			// Get the parts-of-speech tags for each token (needed for chunking)
-			String[] posTags = posTagger.tag(tokens);
-			addToMap(info, POS_TAGS, posTags);
+			String[] posTags = nlpCore.tag(tokens);
+			addToMap(info, CoreTools.POS_TAGS, posTags);
 
 			// And chunk using the pre-calculated information
 			String[] chunk = chunker.chunk(tokens, posTags);
-			addToMap(info, CHUNKED, chunk);
+			addToMap(info, CoreTools.CHUNKED, chunk);
 		}
+		
+		System.out.println(info.get(CoreTools.TOKENS));
+		System.out.println(info.get(CoreTools.POS_TAGS));
+		System.out.println(info.get(CoreTools.CHUNKED));
 
 		return info;
 	}

@@ -13,6 +13,7 @@ import uk.ac.hud.cryptic.config.Settings;
 public class NLPParser {
 
 	private static NLPParser instance;
+	// private static CoreTools nlpCore = CoreTools.getInstance();
 	private final Settings settings = Settings.getInstance();
 	private Parser parser;
 
@@ -21,9 +22,10 @@ public class NLPParser {
 	 */
 	private NLPParser() {
 		try {
-			InputStream modelIn = settings.getParserModelStream();
-			ParserModel model = new ParserModel(modelIn);
-			parser = ParserFactory.create(model);
+			InputStream pStream = settings.getParserModelStream();
+			ParserModel pModel = new ParserModel(pStream);
+			pStream.close();
+			parser = ParserFactory.create(pModel);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -51,13 +53,11 @@ public class NLPParser {
 	 */
 	public Parse parseClue(String clue) {
 
-		Parse[] topParses = ParserTool.parseLine(clue, parser, 1);
-
+		Parse parse = ParserTool.parseLine(clue, parser, 1)[0];
 		// Print the parse to console
-		for (Parse p : topParses)
-			p.show();
+		parse.show();
 
-		return topParses[0];
+		return parse;
 	}
 
 	public static void main(String[] args) {
