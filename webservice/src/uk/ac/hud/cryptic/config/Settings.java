@@ -92,7 +92,7 @@ public class Settings {
 	 * @return the url of the MySQL database
 	 */
 	public String getDBURL() {
-		return "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+		return "jdbc:mysql://crypticsolver.com:3306";
 	}
 
 	/**

@@ -93,7 +93,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDBURL() {
-		String url = "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+		String url = "jdbc:mysql://crypticsolver.com:3306";
 		assertEquals(url, settings.getDBURL());
 	}
 
