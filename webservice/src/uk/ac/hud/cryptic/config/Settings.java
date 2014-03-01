@@ -19,27 +19,11 @@ public class Settings {
 	private static final String SERVER_PRE_PATH = "/WEB-INF/";
 	// Pre-path for local environment
 	private static final String LOCAL_PRE_PATH = "/";
+	// The database instance to use (currently AWS EC2 or Helios)
+	private final Database db;
 
-	/**
-	 * Allows one to specify whether a requested resource is an asset or a
-	 * class. Other types could be added to this if necessary. This is used in
-	 * the creation of the path to the specified resource.
-	 * 
-	 * @author Stuart Leader
-	 * @version 0.2
-	 */
-	public enum ResourceType {
-		ASSET("assets/"), CLASS("classes/uk/ac/hud/cryptic/");
-
-		private final String path;
-
-		ResourceType(String path) {
-			this.path = path;
-		}
-
-		String getPath() {
-			return path;
-		}
+	private Settings() {
+		db = Database.HELIOS;
 	}
 
 	/**
@@ -83,7 +67,7 @@ public class Settings {
 	 * @return the password of the MySQL database
 	 */
 	public String getDBPassword() {
-		return "du4hacrEKa";
+		return db.getPassword();
 	}
 
 	/**
@@ -92,7 +76,7 @@ public class Settings {
 	 * @return the url of the MySQL database
 	 */
 	public String getDBURL() {
-		return "jdbc:mysql://crypticsolver.com:3306";
+		return db.getURL();
 	}
 
 	/**
@@ -101,7 +85,7 @@ public class Settings {
 	 * @return the username of the MySQL database
 	 */
 	public String getDBUsername() {
-		return "cryptic";
+		return db.getUsername();
 	}
 
 	/**
@@ -167,7 +151,7 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "nlp/en-parser-chunking.bin");
 	}
-	
+
 	/**
 	 * This method will return the path to the natural language processing
 	 * tokeniser model.
@@ -178,7 +162,7 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "nlp/en-token.bin");
 	}
-	
+
 	/**
 	 * This method will return the path to the natural language processing
 	 * sentence detector model.
@@ -189,10 +173,10 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "nlp/en-sent.bin");
 	}
-	
+
 	/**
-	 * This method will return the path to the natural language processing
-	 * POS tagging model.
+	 * This method will return the path to the natural language processing POS
+	 * tagging model.
 	 * 
 	 * @return the file path to the NLP POS tagging model
 	 */
@@ -200,7 +184,7 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "nlp/en-pos-maxent.bin");
 	}
-	
+
 	/**
 	 * This method will return the path to the natural language processing
 	 * chunker model.
@@ -277,6 +261,56 @@ public class Settings {
 			instance = new Settings();
 		}
 		return instance;
+	}
+
+	/**
+	 * Allows one to specify whether a requested resource is an asset or a
+	 * class. Other types could be added to this if necessary. This is used in
+	 * the creation of the path to the specified resource.
+	 * 
+	 * @author Stuart Leader
+	 * @version 0.2
+	 */
+	public enum ResourceType {
+		ASSET("assets/"), CLASS("classes/uk/ac/hud/cryptic/");
+
+		private final String path;
+
+		ResourceType(String path) {
+			this.path = path;
+		}
+
+		String getPath() {
+			return path;
+		}
+	}
+
+	private enum Database {
+		AWS("jdbc:mysql://crypticsolver.com:3306", "cryptic", "du4hacrEKa"), HELIOS(
+				"jdbc:mysql://helios.hud.ac.uk:3306/cryptic", "cryptic",
+				"du4hacrEKa");
+
+		private final String url;
+		private final String username;
+		private final String password;
+
+		Database(String url, String username, String password) {
+			this.url = url;
+			this.username = username;
+			this.password = password;
+		}
+
+		String getURL() {
+			return url;
+		}
+
+		String getUsername() {
+			return username;
+		}
+
+		String getPassword() {
+			return password;
+		}
 	}
 
 } // End of class Settings

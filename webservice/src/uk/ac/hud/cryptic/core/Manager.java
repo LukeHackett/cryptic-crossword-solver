@@ -109,7 +109,9 @@ public class Manager {
 
 		// Create a new instance of Settings file to reload solvers in
 		// use
-		Settings settings = new Settings();
+		// TODO Shouldn't do this as Settings is a Singleton
+		// Settings settings = new Settings();
+		Settings settings = Settings.getInstance();
 
 		// Locate the properties file which contains available solvers
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(
