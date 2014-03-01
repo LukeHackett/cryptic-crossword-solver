@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -206,6 +207,9 @@ public class Anagram extends Solver {
 		// Remove risk of matching original words
 		solutions.removeAllStrings(Arrays.asList(c.getClueWords()));
 
+		// Remove solutions which would be better described as type Hidden
+		removeHiddenSolutions(c, solutions);
+
 		// Don't "pattern.filterSolutions() as it's handled by anagram()
 
 		// Don't dictionary filter as it's handled by anagram()
@@ -214,6 +218,32 @@ public class Anagram extends Solver {
 		Thesaurus.getInstance().confidenceAdjust(c, solutions);
 
 		return solutions;
+	}
+
+	/**
+	 * Remove solutions from those which have been found which would be better
+	 * described as Hidden solutions
+	 * 
+	 * @param c
+	 *            - the clue
+	 * @param solutions
+	 *            - the collection of found solutions
+	 */
+	private void removeHiddenSolutions(Clue c, SolutionCollection solutions) {
+		final String forwardClue = c.getClueNoPunctuation(true);
+		final String reverseClue = new StringBuilder(forwardClue).reverse()
+				.toString();
+
+		Iterator<Solution> it = solutions.iterator();
+		while (it.hasNext()) {
+			Solution s = it.next();
+			String solution = WordUtils.removeSpacesAndHyphens(s.getSolution());
+			if (forwardClue.contains(solution)
+					|| reverseClue.contains(solution)) {
+				it.remove();
+			}
+		}
+
 	}
 
 	/**
