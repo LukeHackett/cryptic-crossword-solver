@@ -23,6 +23,8 @@ public class Confidence {
 	public static final double CATEGORY_MULTIPLIER = 1.25d;
 	// Multiplier for homophone matches
 	public static final double HOMOPHONE_MULTIPLIER = 1.1d;
+	// Multiplier for when more than one solver returns the same solution
+	public static final double MULTI_SOLVER_MULTIPLIER = 1.1d;
 
 	/**
 	 * @param value

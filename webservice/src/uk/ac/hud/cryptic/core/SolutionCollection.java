@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -154,6 +155,77 @@ public class SolutionCollection extends HashSet<Solution> {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Add a new solution to the collection. If an equivalent of this solution
+	 * is already present, increase the confidence and add a message to the
+	 * trace. If not, simply add it.
+	 */
+	@Override
+	public boolean add(Solution s) {
+		boolean added = false;
+
+		// The solution text
+		final String solutionText = s.getSolution();
+
+		if (contains(s)) {
+			// Solution already present. Make adjustment.
+			Solution duplicateSolution = null;
+
+			// Have to iterate
+			for (Solution solution : this) {
+				if (solutionText.equals(solution.getSolution())) {
+					duplicateSolution = solution;
+					break;
+				}
+			}
+
+			// Don't accept the same solution from the same solver
+			if (!s.getSolverType().equals(duplicateSolution.getSolverType())) {
+				System.out.println("Duplicate solution: " + s);
+				System.out.println("s solver type: " + s.getSolverType());
+				System.out.println("dup solver type: "
+						+ duplicateSolution.getSolverType());
+
+				// Increase confidence and add message
+				double confidence = Confidence.multiply(
+						duplicateSolution.getConfidence(),
+						Confidence.MULTI_SOLVER_MULTIPLIER);
+				duplicateSolution.setConfidence(confidence);
+				duplicateSolution
+						.addToTrace("Confidence rating increased as this solution has also been found by the \""
+								+ s.getSolverType() + "\" solver.");
+
+				// Can return true to indicate solution has been added (kind of)
+				added = true;
+			}
+		} else {
+			// Solution not already contained in the set
+			added = super.add(s);
+		}
+		return added;
+	}
+
+	/**
+	 * Add all the given solutions to the set, following the rules explain in
+	 * the <code>add()</code> method
+	 * 
+	 * @see SolutionCollection.add()
+	 */
+	@Override
+	public boolean addAll(Collection<? extends Solution> c) {
+		boolean changed = false;
+		if (c != null && !c.isEmpty()) {
+			for (Solution s : c) {
+				boolean added = add(s);
+				if (!changed && added) {
+					changed = true;
+				}
+			}
+		}
+		return false;
+
 	}
 
 } // End of class SolutionCollection
