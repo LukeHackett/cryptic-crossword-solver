@@ -183,10 +183,6 @@ public class SolutionCollection extends HashSet<Solution> {
 
 			// Don't accept the same solution from the same solver
 			if (!s.getSolverType().equals(duplicateSolution.getSolverType())) {
-				System.out.println("Duplicate solution: " + s);
-				System.out.println("s solver type: " + s.getSolverType());
-				System.out.println("dup solver type: "
-						+ duplicateSolution.getSolverType());
 
 				// Increase confidence and add message
 				double confidence = Confidence.multiply(
