@@ -9,7 +9,7 @@
 		<property name="$name" value="Solving a Clue"/>
 		<reference referencedUin="design:node:::-yrgd8ehsa99kovuon6es">
 			<property name="$shortcutReference" value="true"/>
-			<property name="bounds" value="-5,15,854,611"/>
+			<property name="bounds" value="-5,15,841,611"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<reference referencedUin="design:node:::-y8nsowhsa9fjyj8f3g1z:-yrgd8ehsa99kovuon6es">

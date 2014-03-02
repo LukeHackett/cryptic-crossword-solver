@@ -43,6 +43,11 @@
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::Vam8ynkhsa99kooxwo5dq">
+			<property name="bounds" value="255,255,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::Vam8ynkhsa9u3vsvlrsrf">
 			<property name="bounds" value="35,255,197,96"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
