@@ -5,6 +5,7 @@
 	<view uin="V1hexuhhotwokmg423muz">
 		<property name="$defaultDiagram" value="true"/>
 		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="visibility" value="public"/>
 		<reference referencedUin="design:view:::V-b8dyjihotwp3z3rm9btd">
 			<property name="bounds" value="35,15,197,79"/>
 			<property name="location_set_by_user" value="true"/>
@@ -20,11 +21,6 @@
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<property name="collapsedCompartments" value=""/>
-		</reference>
-		<reference referencedUin="design:view:::Vam8ynkhq3ndaea-5hfhv8">
-			<property name="bounds" value="35,275,197,79"/>
-			<property name="location_set_by_user" value="true"/>
-			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V-b8dyjihs39gfs3r0cf3i">
 			<property name="bounds" value="255,15,197,79"/>
@@ -43,6 +39,11 @@
 		</reference>
 		<reference referencedUin="design:view:::V-jr6xbahsa8jsg2-29ahtm">
 			<property name="bounds" value="255,135,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::Vam8ynkhsa99kooxwo5dq">
+			<property name="bounds" value="35,255,197,96"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
