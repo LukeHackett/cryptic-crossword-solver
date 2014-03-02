@@ -92,51 +92,59 @@
 		<node uin="1fuqqphou5eano-oeg7ol">
 			<property name="$metaclass" value="UseCase20"/>
 			<property name="$name" value="Submit a new clue"/>
-			<link uin="ieje0rhou5eojn-5u9rpv">
+			<link uin="ieje0rhsa8rm2r-bmi85s">
 				<property name="$metaclass" value="Include20"/>
 				<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::3ovsg3hou5edqvap6bls:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+				<participant referencedUin="design:node:::ikcrrdhsa8pq8seor7uu:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 			</link>
-			<link uin="ieje0rhou632mr-2oui84">
+			<link uin="ieje0rhsa8roe3-dwgoq6">
 				<property name="$metaclass" value="Include20"/>
 				<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+				<participant referencedUin="design:node:::tg300yhsa8q6f6ernd3t:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+			</link>
+			<link uin="ieje0rhsa8rpxn458j1f">
+				<property name="$metaclass" value="Include20"/>
+				<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Client"></participant>
+				<participant referencedUin="design:node:::tg300yhsa8r2uz-m4c5gp:8krugmhou58egs-mmnoj" role="Supplier"></participant>
 			</link>
 		</node>
-		<node uin="3ovsg3hou5edqvap6bls">
+		<node uin="ikcrrdhsa8pq8seor7uu">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Specify solution length"/>
+			<property name="$name" value="Specify Clue"/>
 		</node>
-		<node uin="j4iszwhou5flq8-lwio23">
+		<node uin="tg300yhsa8r2uz-m4c5gp">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Specify solution pattern"/>
-			<link uin="ieje0rhou5gqmc-t7xuwm">
-				<property name="$metaclass" value="Extend20"/>
-				<participant referencedUin="design:node:::j4iszwhou5flq8-lwio23:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+			<property name="$name" value="Specify Solution Pattern"/>
+		</node>
+		<node uin="tg300yhsa8q6f6ernd3t">
+			<property name="$metaclass" value="UseCase20"/>
+			<property name="$name" value="Specify Solution Length"/>
+		</node>
+	</node>
+	<node uin="ibft6zhsa8nvub-p15p65">
+		<property name="$metaclass" value="UseCaseClassifier20"/>
+		<property name="$name" value="Cryptic Crossword Solver"/>
+		<node uin="ikcrrdhsa8nvubd4n0a1">
+			<property name="$metaclass" value="UseCase20"/>
+			<property name="$name" value="Submit a new clue"/>
+			<link uin="pl392ohsa8nvub-iav2lo">
+				<property name="$metaclass" value="Include20"/>
+				<participant referencedUin="design:node:::ikcrrdhsa8nvubd4n0a1:ibft6zhsa8nvub-p15p65" role="Client"></participant>
+				<participant referencedUin="design:node:::qefuschsa8nvub-kd3cyj:ibft6zhsa8nvub-p15p65" role="Supplier"></participant>
 			</link>
 		</node>
-		<node uin="u8mvujhou62ux0-aj746j">
+		<node uin="qefuschsa8nvub-kd3cyj">
 			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Solve clue"/>
+			<property name="$name" value="Solve Clue"/>
+			<link uin="5deschsa8nvubv4xtka">
+				<property name="$metaclass" value="Include20"/>
+				<participant referencedUin="design:node:::qefuschsa8nvub-kd3cyj:ibft6zhsa8nvub-p15p65" role="Client"></participant>
+				<participant referencedUin="design:node:::m50knehsa8nvub-73emtc:ibft6zhsa8nvub-p15p65" role="Supplier"></participant>
+			</link>
 		</node>
-		<node uin="wimmjnhou63lxamx2ew6">
+		<node uin="m50knehsa8nvub-73emtc">
 			<property name="$metaclass" value="UseCase20"/>
 			<property name="$name" value="Run one or more solvers"/>
-			<link uin="94pshdhou63lxa2tyoqb">
-				<property name="$metaclass" value="Extend20"/>
-				<participant referencedUin="design:node:::wimmjnhou63lxamx2ew6:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
-			</link>
-		</node>
-		<node uin="n1980rhou641czv54uge">
-			<property name="$metaclass" value="UseCase20"/>
-			<property name="$name" value="Check for known solutions"/>
-			<link uin="t0wt4hhou641cz-kcasar">
-				<property name="$metaclass" value="Extend20"/>
-				<participant referencedUin="design:node:::n1980rhou641czv54uge:8krugmhou58egs-mmnoj" role="Client"></participant>
-				<participant referencedUin="design:node:::u8mvujhou62ux0-aj746j:8krugmhou58egs-mmnoj" role="Supplier"></participant>
-			</link>
 		</node>
 	</node>
 	<node uin="p6a7y8hou5boizu2lpx6">
@@ -150,6 +158,15 @@
 			<property name="$metaclass" value="KernelAssociation20"/>
 			<participant referencedUin="design:node:::8bho0jhou5atnokr39m3" role="Client"></participant>
 			<participant referencedUin="design:node:::1fuqqphou5eano-oeg7ol:8krugmhou58egs-mmnoj" role="Supplier"></participant>
+		</link>
+	</node>
+	<node uin="r6461shsa8nvuab9e1n">
+		<property name="$metaclass" value="Actor20"/>
+		<property name="$name" value="User"/>
+		<link uin="m1brmhhsa8nvua-9aaxhl">
+			<property name="$metaclass" value="KernelAssociation20"/>
+			<participant referencedUin="design:node:::r6461shsa8nvuab9e1n" role="Client"></participant>
+			<participant referencedUin="design:node:::ikcrrdhsa8nvubd4n0a1:ibft6zhsa8nvub-p15p65" role="Supplier"></participant>
 		</link>
 	</node>
 	<node uin="-yrgd8ehq3ndaenjm592e">
