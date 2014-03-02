@@ -12,6 +12,8 @@ public class Confidence {
 
 	// Each generated solution will start with this confidence score
 	public static final double INITIAL = 42d;
+	// As there are so many Double Definition solutions, start with lower confidence
+	public static final double DOUBLE_DEFINITION_INITIAL = 40d;
 	// Multiplier if a solution is a synonym of the clue's definition word
 	public static final double SYNONYM_MULTIPLIER = 1.5d;
 	// Multiplier if a solution has a synonym of the clue's definition word
@@ -25,6 +27,8 @@ public class Confidence {
 	public static final double HOMOPHONE_MULTIPLIER = 1.1d;
 	// Multiplier for when more than one solver returns the same solution
 	public static final double MULTI_SOLVER_MULTIPLIER = 1.1d;
+	// If a double-definition with two first-level synonyms is found
+	public static final double DOUBLE_DEFINITION_FIRST_LEVEL_MULTIPLIER = 1.4d;
 
 	/**
 	 * @param value
