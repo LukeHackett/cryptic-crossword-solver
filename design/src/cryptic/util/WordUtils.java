@@ -1,6 +1,7 @@
 package cryptic.util;
 import java.util.*;
 
+import cryptic.resource.Dictionary;
 import cryptic.solver.SolutionCollection;
 public class WordUtils {
 

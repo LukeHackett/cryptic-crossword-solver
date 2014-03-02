@@ -5,28 +5,6 @@
 	<view uin="V1hexuhhowvb8261ls8fz">
 		<property name="$defaultDiagram" value="true"/>
 		<property name="$metaclass" value="ClassDiagram20"/>
-		<reference referencedUin="jdt:e_class:src:cryptic.util.Thesaurus">
-			<property name="bounds" value="34,35,261,221"/>
-			<property name="location_set_by_user" value="true"/>
-			<property name="bounds_setted_by_user" value="true"/>
-			<reference referencedUin="jdt:l_ast:src:cryptic.util.Thesaurus:instance">
-				<property name="sourceAnchor" value="300,257"/>
-				<property name="targetAnchor" value="296,261"/>
-				<property name="bendpoints" value="329,257,329,290,296,290"/>
-				<property name="smooth_bendpoints" value="329,257,329,290,296,290"/>
-			</reference>
-		</reference>
-		<reference referencedUin="jdt:e_class:src:cryptic.util.Dictionary">
-			<property name="bounds" value="355,35,260,221"/>
-			<property name="location_set_by_user" value="true"/>
-			<property name="bounds_setted_by_user" value="true"/>
-			<reference referencedUin="jdt:l_ast:src:cryptic.util.Dictionary:instance">
-				<property name="sourceAnchor" value="620,257"/>
-				<property name="targetAnchor" value="616,261"/>
-				<property name="bendpoints" value="649,257,649,290,616,290"/>
-				<property name="smooth_bendpoints" value="649,257,649,290,616,290"/>
-			</reference>
-		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.util.WordUtils">
 			<property name="bounds" value="203,355,292,220"/>
 			<property name="location_set_by_user" value="true"/>
@@ -36,6 +14,18 @@
 				<property name="sourceAnchor" value="384,360"/>
 				<property name="targetAnchor" value="384,261"/>
 			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.Cache">
+			<property name="bounds" value="915,115,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.Confidence">
+			<property name="bounds" value="815,315,109,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.util.XMLBuilder">
+			<property name="bounds" value="755,555,111,80"/>
+			<property name="location_set_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>

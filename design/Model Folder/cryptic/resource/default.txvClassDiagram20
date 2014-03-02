@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhsaauqk32xiupw">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<reference referencedUin="jdt:e_class:src:cryptic.resource.Categoriser">
+			<property name="bounds" value="115,75,112,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.resource.Dictionary">
+			<property name="bounds" value="775,4,260,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.resource.Dictionary:dictionary">
+				<property name="sourceAnchor" value="620,257"/>
+				<property name="targetAnchor" value="616,261"/>
+				<property name="bendpoints" value="294,222,294,255,261,255"/>
+				<property name="smooth_bendpoints" value="649,257,649,290,616,290"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:cryptic.resource.Dictionary:instance">
+				<property name="sourceAnchor" value="1040,226"/>
+				<property name="targetAnchor" value="1036,230"/>
+				<property name="bendpoints" value="1069,226,1069,259,1036,259"/>
+				<property name="smooth_bendpoints" value="1069,226,1069,259,1036,259"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.resource.Thesaurus">
+			<property name="bounds" value="435,4,261,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.resource.Thesaurus:instance">
+				<property name="sourceAnchor" value="701,226"/>
+				<property name="targetAnchor" value="697,230"/>
+				<property name="bendpoints" value="730,226,730,259,697,259"/>
+				<property name="smooth_bendpoints" value="730,226,730,259,697,259"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.resource.HomophoneDictionary">
+			<property name="bounds" value="135,315,188,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>

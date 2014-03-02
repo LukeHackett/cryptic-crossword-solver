@@ -1,4 +1,4 @@
-package cryptic.util;
+package cryptic.resource;
 
 import java.util.Collection;
 
