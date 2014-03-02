@@ -12,9 +12,9 @@
 			<property name="bounds_setted_by_user" value="true"/>
 			<reference referencedUin="jdt:l_ast:src:cryptic.config.Settings:instance">
 				<property name="sourceAnchor" value="401,455"/>
-				<property name="targetAnchor" value="397,461"/>
-				<property name="bendpoints" value="432,455,432,492,397,492"/>
-				<property name="smooth_bendpoints" value="432,455,432,492,397,492"/>
+				<property name="targetAnchor" value="396,461"/>
+				<property name="bendpoints" value="432,455,432,492,396,492"/>
+				<property name="smooth_bendpoints" value="432,455,432,492,396,492"/>
 			</reference>
 		</reference>
 	</view>

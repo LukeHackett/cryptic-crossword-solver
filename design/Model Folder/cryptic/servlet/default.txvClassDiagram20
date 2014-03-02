@@ -6,12 +6,12 @@
 		<property name="$defaultDiagram" value="true"/>
 		<property name="$metaclass" value="ClassDiagram20"/>
 		<reference referencedUin="jdt:e_class:src:cryptic.servlet.Servlet">
-			<property name="bounds" value="35,35,221,181"/>
+			<property name="bounds" value="35,35,221,241"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.servlet.SolverServlet">
-			<property name="bounds" value="355,35,201,181"/>
+			<property name="bounds" value="355,35,201,241"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<reference referencedUin="jdt:l_gnt:src:cryptic.servlet.SolverServlet:Servlet">

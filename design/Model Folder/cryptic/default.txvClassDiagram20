@@ -8,16 +8,16 @@
 		<property name="__options" value="option.nlayout.recursive=true"/>
 		<reference referencedUin="design:view:::V1hexuhhou6nbujz9b46t">
 			<property name="location_set_by_user" value="true"/>
-			<property name="bounds" value="455,15,181,461"/>
+			<property name="bounds" value="675,15,181,361"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhhowvb8261ls8fz">
-			<property name="bounds" value="235,415,181,161"/>
+			<property name="bounds" value="455,215,181,161"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhhowwoh6t-qbw0pf">
-			<property name="bounds" value="15,415,181,161"/>
+			<property name="bounds" value="455,15,181,161"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>

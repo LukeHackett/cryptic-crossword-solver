@@ -6,20 +6,38 @@
 		<property name="$defaultDiagram" value="true"/>
 		<property name="$metaclass" value="ClassDiagram20"/>
 		<reference referencedUin="jdt:e_class:src:cryptic.core.Clue">
-			<property name="bounds" value="103,89,80,80"/>
+			<property name="bounds" value="235,35,241,269"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.core.Clue:pattern">
+				<property name="sourceAnchor" value="250,309"/>
+				<property name="targetAnchor" value="250,360"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:cryptic.core.Clue:solutions">
+				<property name="sourceAnchor" value="430,309"/>
+				<property name="targetAnchor" value="430,360"/>
+			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.core.Manager">
-			<property name="bounds" value="318,131,90,80"/>
+			<property name="bounds" value="55,915,401,161"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.core.Solution">
-			<property name="bounds" value="121,224,89,80"/>
+			<property name="bounds" value="496,655,240,422"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.core.SolutionCollection">
-			<property name="bounds" value="475,52,163,80"/>
+			<property name="bounds" value="375,355,361,261"/>
 			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.core.SolutionPattern">
-			<property name="bounds" value="308,298,144,80"/>
+			<property name="bounds" value="55,355,281,441"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
 		</reference>
 	</view>
 </nodeSet>

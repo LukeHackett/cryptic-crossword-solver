@@ -6,7 +6,7 @@
 		<property name="$defaultDiagram" value="true"/>
 		<property name="$metaclass" value="ClassDiagram20"/>
 		<reference referencedUin="jdt:e_class:src:cryptic.util.WordUtils">
-			<property name="bounds" value="203,355,292,220"/>
+			<property name="bounds" value="35,35,292,300"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<property name="collapsedCompartments" value=""/>
@@ -16,16 +16,22 @@
 			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.util.Cache">
-			<property name="bounds" value="915,115,80,80"/>
+			<property name="bounds" value="375,375,301,260"/>
 			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:e_tsig:src:cryptic.util.Cache:e_class">
+				<property name="bounds" value="276,-12,49,25"/>
+			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.util.Confidence">
-			<property name="bounds" value="815,315,109,80"/>
+			<property name="bounds" value="375,35,300,300"/>
 			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:cryptic.util.XMLBuilder">
-			<property name="bounds" value="755,555,111,80"/>
+			<property name="bounds" value="35,375,292,260"/>
 			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>

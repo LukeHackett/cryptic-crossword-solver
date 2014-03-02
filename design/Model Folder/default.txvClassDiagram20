@@ -17,7 +17,7 @@
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhhou6m66f-n7ajv2">
-			<property name="bounds" value="35,395,197,161"/>
+			<property name="bounds" value="35,395,197,201"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
 			<property name="collapsedCompartments" value=""/>
