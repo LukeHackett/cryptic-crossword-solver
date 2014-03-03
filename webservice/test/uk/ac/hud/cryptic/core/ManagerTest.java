@@ -3,13 +3,11 @@
  * The tests are written and compiled in accordance to JUnit 4
  *
  * @author Mohammad Rahman
- * @version 0.1
- * 
+ * @version 0.2
  */
 package uk.ac.hud.cryptic.core;
 
 import static org.junit.Assert.*;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
