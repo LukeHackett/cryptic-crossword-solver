@@ -93,8 +93,13 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDBURL() {
-		String url = "jdbc:mysql://crypticsolver.com:3306";
-		assertEquals(url, settings.getDBURL());
+		String helios = "jdbc:mysql://helios.hud.ac.uk:3306/cryptic";
+		if (settings.getDBURL() == helios){
+			
+		}else{
+			String aws = "jdbc:mysql://crypticsolver.com:3306";
+			assertEquals(aws, settings.getDBURL());
+		}
 	}
 
 	/**
