@@ -3,16 +3,19 @@
  * class. The tests are written and compiled in accordance to JUnit 4
  * 
  * @author Mohammad Rahman
- * @version 0.1
+ * @version 0.2
  */
 
 package uk.ac.hud.cryptic.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +25,7 @@ public class SolutionCollectionTest {
 
 	private static SolutionPattern pattern;
 	private static Clue clue;
+	private SolutionCollection sols;
 
 	@Before
 	public void setUp() throws Exception {
@@ -29,7 +33,7 @@ public class SolutionCollectionTest {
 		clue = new Clue("Air that's more usually seen in cheerleaders",
 				pattern.toString());
 
-		SolutionCollection sols = new SolutionCollection();
+		sols = new SolutionCollection();
 		sols.add(new Solution("smore", 10, "undefined"));
 		sols.add(new Solution("usual", 13, "undefined"));
 		sols.add(new Solution("taths", 20, "undefined"));
@@ -44,6 +48,7 @@ public class SolutionCollectionTest {
 	public void tearDown() throws Exception {
 		pattern = null;
 		clue = null;
+		sols = null;
 	}
 
 	/**
@@ -128,4 +133,80 @@ public class SolutionCollectionTest {
 
 	}
 
+	/**
+	 * Test the returned solutions are sorted by their confidence ratings
+	 */
+	@Test
+	public final void testSortSolutions() {
+
+		Set<Solution> set = sols.sortSolutions(); //Converting to TreeSet
+		Boolean sorted = null;
+		Solution current;
+		Solution previous = new Solution("","");
+		previous.setConfidence(100);
+
+		Iterator<Solution> itr = set.iterator();
+		while(itr.hasNext()) {
+			current = itr.next();
+			if(current.getConfidence() <= previous.getConfidence()){
+				sorted = true;
+				previous = current;
+			}else{
+				sorted = false;
+				break;
+			}
+		}
+		Boolean pass = true;
+		assertEquals(pass,sorted);
+	}
+
+	/**
+	 * Test the Solution object matches the passed String solution
+	 */
+	@Test
+	public final void testGetSolutions() {
+		Solution test = new Solution("music");
+		test.setConfidence(90);
+		assertEquals(sols.getSolution("music"),test );
+	}
+
+	/**
+	 * Test a new solution is added to the collection.
+	 */
+	@Test
+	public final void testAddNewSolution() {
+		boolean result;
+			Solution solution = new Solution("usimu");
+			solution.setConfidence(1);
+			sols.add(solution);
+			result = true;
+			assertTrue(result); //New Solution added
+	}
+	
+	/**
+	 * Test a duplicate solutions are not added to the collection
+	 */
+	@Test
+	public final void testAddDuplicate() {
+		boolean result;
+		if(sols.contains("music")){
+			result = false;
+			assertFalse(result); //Cannot add duplicates
+		}
+	}
+	
+	/**
+	 * Test when a duplicate solution is entered with a higher confidence it replaces
+	 * the previous solution.
+	 */
+	@Test
+	public final void testAddIncreaseConfidence() {
+
+		Solution solution = new Solution("music");
+		solution.setConfidence(99);
+		sols.add(solution);
+		Solution res = sols.getSolution("music");
+		assertEquals(solution, res);
+	}
+	
 }
