@@ -22,6 +22,22 @@ import org.jdom2.output.XMLOutputter;
 public class XMLBuilder {
 	// XML document
 	private Document xml;
+	// Determines if the builder is in error mode
+	private boolean errorMode = false;
+
+	/**
+	 * Default Constructor - Error Mode
+	 */
+	public XMLBuilder() {
+		// Create a new XML document and set the ROOT element
+		Element root = new Element("solver");
+		// Add an errors list
+		root.addContent(new Element("errors"));
+		// Put the builder into "error" mode
+		errorMode = true;
+		// Formulate a new document
+		xml = new Document(root);
+	}
 
 	/**
 	 * Default constructor
@@ -87,14 +103,11 @@ public class XMLBuilder {
 	 *            the error that has occurred
 	 */
 	public void addError(String error) {
-		// Get the root element
-		Element errors = xml.getRootElement().getChild("errors");
-		// Create the errors element if doesn't exist
-		if(errors == null){
-		    errors = xml.getRootElement().addContent(new Element("errors"));
+		// Add the error message to the messages list if in error mode
+		if (errorMode) {
+			xml.getRootElement().getChild("errors")
+					.addContent(new Element("message").setText(error));
 		}
-		// Add the error message to the messages list
-		errors.addContent(new Element("message").setText(error));
 	}
 
 	/**
@@ -105,8 +118,10 @@ public class XMLBuilder {
 	 *            A list of errors that occurred
 	 */
 	public void addErrors(String[] errors) {
-		for (String error : errors) {
-			addError(error);
+		if (errorMode) {
+			for (String error : errors) {
+				addError(error);
+			}
 		}
 	}
 
@@ -126,20 +141,24 @@ public class XMLBuilder {
 	 */
 	public void addSolution(String solver, String solution, String confidence,
 			List<String> trace) {
-		// Build a new Solution Element
-		Element solElement = new Element("solution");
-		// Add the solver that was used to obtain the solution
-		solElement.addContent(new Element("solver").setText(solver));
-		// Add the solution value
-		solElement.addContent(new Element("value").setText(solution));
-		// Add the confidence rating
-		solElement.addContent(new Element("confidence").setText(confidence));
-		// Add each of the traces
-		for (String t : trace) {
-			solElement.addContent(new Element("trace").setText(t));
+		// only add if we are not in "error" mode
+		if (!errorMode) {
+			// Build a new Solution Element
+			Element solElement = new Element("solution");
+			// Add the solver that was used to obtain the solution
+			solElement.addContent(new Element("solver").setText(solver));
+			// Add the solution value
+			solElement.addContent(new Element("value").setText(solution));
+			// Add the confidence rating
+			solElement
+					.addContent(new Element("confidence").setText(confidence));
+			// Add each of the traces
+			for (String t : trace) {
+				solElement.addContent(new Element("trace").setText(t));
+			}
+			// Add the Solution Element to the root element
+			xml.getRootElement().addContent(solElement);
 		}
-		// Add the Solution Element to the root element
-		xml.getRootElement().addContent(solElement);
 	}
 
 	/**

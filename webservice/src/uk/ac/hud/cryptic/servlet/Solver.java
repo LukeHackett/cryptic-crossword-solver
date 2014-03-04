@@ -321,7 +321,7 @@ public class Solver extends Servlet {
 			// Send errors and cancel the current request if required
 			if (errors.length > 0) {
 				// Build a new XML document
-				XMLBuilder builder = new XMLBuilder(clue, solution);
+				XMLBuilder builder = new XMLBuilder();
 				builder.addErrors(errors);
 
 				sendError(response, builder.toString(), json,
