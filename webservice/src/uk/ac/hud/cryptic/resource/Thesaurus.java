@@ -225,7 +225,7 @@ public class Thesaurus {
 	 *            - the word to get synonyms for
 	 * @return the synonyms of the given word
 	 */
-	public Set<String> getSynonymsWithMinMaxLength(String word, int maxLength,
+	private Set<String> getSynonymsWithMinMaxLength(String word, int maxLength,
 			int minLength) {
 		// Use of HashSet prevents duplicates
 		Set<String> synonyms = new HashSet<>();
@@ -259,7 +259,7 @@ public class Thesaurus {
 	 *            - the word to get synonyms for
 	 * @return the synonyms of the given word
 	 */
-	public Set<String> filterSynonyms(Set<String> synonyms, int maxLength,
+	private Set<String> filterSynonyms(Set<String> synonyms, int maxLength,
 			int minLength) {
 		// Use of HashSet prevents duplicates
 		Set<String> filteredSynonyms = new HashSet<>();
@@ -336,7 +336,7 @@ public class Thesaurus {
 	 *         solution and a clue word is present as a synonym,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean reverseMatch(Clue clue, Solution solution) {
+	private boolean reverseMatch(Clue clue, Solution solution) {
 		// Populate an array with the separate words of the clue
 		String[] clueWords = clue.getClueWords();
 		SolutionPattern pattern = clue.getPattern();
