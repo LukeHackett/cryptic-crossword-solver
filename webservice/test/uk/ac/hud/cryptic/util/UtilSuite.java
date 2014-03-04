@@ -14,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 
 @RunWith(value = Suite.class)
-@SuiteClasses(value = { DBTest.class, WordUtilsTest.class })
+@SuiteClasses(value = { DBTest.class, WordUtilsTest.class, ConfidenceTest.class })
 public class UtilSuite {
 
 }
