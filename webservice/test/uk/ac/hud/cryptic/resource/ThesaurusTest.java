@@ -80,7 +80,7 @@ public class ThesaurusTest {
 		SolutionPattern pattern = new SolutionPattern("???????-??-????");
 		assertEquals(testColl, thesaurus.getMatchingSynonyms(test, pattern));
 	}
-	
+
 	@Test
 	public void testGetSecondSynonymsWithPattern() {
 		Collection<String> testColl = new HashSet<>();
@@ -98,12 +98,12 @@ public class ThesaurusTest {
 		testColl.add("alluvium");
 		testColl.add("alluvion");
 		testColl.add("adequacy");
-		
+
 		String word = "ocean";
 		SolutionPattern pattern = new SolutionPattern("a???????");
 		assertEquals(testColl, thesaurus.getSecondSynonyms(word, pattern, true));
 	}
-	
+
 	@Test
 	public void testGetSecondSynonymsMinMaxLength() {
 		Collection<String> testColl = new HashSet<>();
@@ -115,18 +115,14 @@ public class ThesaurusTest {
 		testColl.add("inconsiderable");
 		testColl.add("intercessional");
 		testColl.add("unobjectionable");
-		
+
 		String word = "treat with";
 		int maxLength = 15;
 		int minLength = 14;
-		assertEquals(testColl, thesaurus.getSecondSynonyms(word, maxLength, minLength, true));
+		assertEquals(testColl,
+				thesaurus.getSecondSynonyms(word, maxLength, minLength, true));
 	}
-	
-	@Test 
-	public void testGetWordContainingSynonym() {
-		//TODO can't think of a way to test this 
-	}
-	
+
 	@Test
 	public void testConfidenceAdjust() {
 		Clue c = new Clue("See six points", "????");
@@ -134,11 +130,12 @@ public class ThesaurusTest {
 		testColl.add(new Solution("view"));
 		testColl.add(new Solution("lollipop"));
 		thesaurus.confidenceAdjust(c, testColl);
-		
+
 		int highConfidence = (int) testColl.getSolution("view").getConfidence();
 		assertEquals(highConfidence, 69);
-		
-		int lowConfidence = (int) testColl.getSolution("lollipop").getConfidence();
-		assertEquals(lowConfidence, 42);		
+
+		int lowConfidence = (int) testColl.getSolution("lollipop")
+				.getConfidence();
+		assertEquals(lowConfidence, 42);
 	}
 }

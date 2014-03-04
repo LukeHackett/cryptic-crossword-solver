@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
@@ -18,7 +17,6 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
-import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -37,15 +35,11 @@ public class Thesaurus {
 	// Actual thesaurus data structure
 	private Map<String, Collection<String>> thesaurus;
 
-	// Cache to speed up common requests
-	private Cache<String, Collection<String>> cache;
-
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
 		populateThesaurusFromFile();
-		cache = new Cache<>();
 	}
 
 	public static void main(String[] args) {
@@ -288,36 +282,6 @@ public class Thesaurus {
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
 		return synonyms;
-	}
-
-	/**
-	 * Get the words for which the passed parameter is a synonym of
-	 * 
-	 * @param synonym
-	 *            - the synonym that should be present in the list of synonyms
-	 *            of the words returned
-	 * @return a list of words which contain the passed word as a synonym
-	 */
-	public synchronized Collection<String> getWordsContainingSynonym(
-			String synonym) {
-		// The collection that will be returned
-		Collection<String> results = new HashSet<>();
-
-		// Check the cache first to avoid a full thesaurus lookup
-		if (cache.containsKey(synonym)) {
-			results = cache.get(synonym);
-		} else {
-			// Have to go through the entire thesaurus
-			for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
-				// If an entry contains the specified word as a synonym
-				if (entry.getValue().contains(synonym)) {
-					// Return it
-					results.addAll(entry.getValue());
-				}
-			}
-			cache.put(synonym, results);
-		}
-		return results;
 	}
 
 	/**
