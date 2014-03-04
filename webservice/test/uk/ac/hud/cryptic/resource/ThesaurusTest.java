@@ -79,4 +79,34 @@ public class ThesaurusTest {
 		SolutionPattern pattern = new SolutionPattern("???????-??-????");
 		assertEquals(testColl, thesaurus.getMatchingSynonyms(test, pattern));
 	}
+	
+	@Test
+	public void testGetSecondSynonymsWithPattern() {
+		
+	}
+	
+	@Test
+	public void testGetSecondSynonymsMinMaxLength() {
+		
+	}
+	
+	@Test
+	public void testFilterSynonyms() {
+		
+	}
+	
+	@Test 
+	public void testGetWordContainingSynonym() {
+		
+	}
+	
+	@Test
+	public void testReverseMatch() {
+		
+	}
+	
+	@Test
+	public void testConfidenceAdjust() {
+		
+	}
 }
