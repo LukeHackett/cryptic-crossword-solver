@@ -75,7 +75,7 @@ public class Palindrome extends Solver {
 	 * @param solutions
 	 *            - the solutions to filter
 	 */
-	public void filterNonePalindromes(Collection<String> solutions) {
+	private void filterNonePalindromes(Collection<String> solutions) {
 		// Iterate through
 		for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
 			String normal = WordUtils.removeSpacesAndHyphens(it.next());
