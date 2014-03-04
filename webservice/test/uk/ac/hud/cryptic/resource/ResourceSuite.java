@@ -9,11 +9,12 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author Mohammad Rahman
- * @version 0.1
+ * @version 0.2
  */
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { 
+		HomophoneDictionaryTest.class,
 		DictionaryTest.class,
 		ThesaurusTest.class
 		})
