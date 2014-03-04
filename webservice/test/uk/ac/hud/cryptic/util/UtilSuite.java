@@ -9,13 +9,13 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * @author Mohammad Rahman, Stuart Leader
- * @version 0.1
+ * @author Mohammad Rahman, Stuart Leader, Luke Hackett
+ * @version 0.2
  */
 
 @RunWith(value = Suite.class)
 @SuiteClasses(value = { DBTest.class, WordUtilsTest.class,
-		ConfidenceTest.class, CacheTest.class })
+		ConfidenceTest.class, CacheTest.class, XMLBuilderTest.class })
 public class UtilSuite {
 
 }
