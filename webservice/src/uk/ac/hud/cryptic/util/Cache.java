@@ -55,17 +55,18 @@ public class Cache<K, V> {
 	 *            - the value of the cache item
 	 */
 	public void put(K key, V value) {
-		// Pointless if the cache already contains the given key
-		if (!cache.containsKey(key)) {
-			// If capacity has been reached
-			if (cache.size() >= MAX_CAPACITY) {
-				// Remove the oldest cache element
-				cache.remove(keys.poll());
-			}
-			// Add the new item
-			cache.put(key, value);
-			keys.add(key);
+		// Replace old key, if present
+		if (cache.containsKey(key)) {
+			keys.remove(key);
 		}
+		// If capacity has been reached
+		if (cache.size() >= MAX_CAPACITY) {
+			// Remove the oldest cache element
+			cache.remove(keys.poll());
+		}
+		// Add the new item
+		cache.put(key, value);
+		keys.add(key);
 	}
 
 	/**
