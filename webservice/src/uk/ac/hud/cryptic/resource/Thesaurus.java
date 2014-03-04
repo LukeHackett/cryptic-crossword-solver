@@ -239,10 +239,6 @@ public class Thesaurus {
 							&& synonym.length() >= minLength) {
 						synonyms.add(synonym);
 					}
-				} else {
-					if (synonym.length() <= maxLength) {
-						synonyms.add(synonym);
-					}
 				}
 			}
 		}
