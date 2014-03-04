@@ -17,8 +17,8 @@ public class DoubleDefinitionTest extends SolverTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		type = new Hidden().toString();
-		solver = Hidden.class;
+		type = new DoubleDefinition().toString();
+		solver = DoubleDefinition.class;
 		testCount = 20;
 		unknownCharacters = true;
 	}
