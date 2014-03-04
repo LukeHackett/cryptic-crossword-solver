@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
+import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 
 /**
@@ -82,21 +83,62 @@ public class ThesaurusTest {
 	
 	@Test
 	public void testGetSecondSynonymsWithPattern() {
+		Collection<String> testColl = new HashSet<>();
+		testColl.add("abstract");
+		testColl.add("abstruse");
+		testColl.add("adequate");
+		testColl.add("addition");
+		testColl.add("ambrosia");
+		testColl.add("abundant");
+		testColl.add("absolute");
+		testColl.add("assemble");
+		testColl.add("affluent");
+		testColl.add("absorbed");
+		testColl.add("aperitif");
+		testColl.add("alluvium");
+		testColl.add("alluvion");
+		testColl.add("adequacy");
 		
+		String word = "ocean";
+		SolutionPattern pattern = new SolutionPattern("a???????");
+		assertEquals(testColl, thesaurus.getSecondSynonyms(word, pattern, true));
 	}
 	
 	@Test
 	public void testGetSecondSynonymsMinMaxLength() {
+		Collection<String> testColl = new HashSet<>();
+		testColl.add("inconsequential");
+		testColl.add("intermediatory");
+		testColl.add("commissionaire");
+		testColl.add("unexceptionable");
+		testColl.add("interventionist");
+		testColl.add("inconsiderable");
+		testColl.add("intercessional");
+		testColl.add("unobjectionable");
 		
+		String word = "treat with";
+		int maxLength = 15;
+		int minLength = 14;
+		assertEquals(testColl, thesaurus.getSecondSynonyms(word, maxLength, minLength, true));
 	}
 	
 	@Test 
 	public void testGetWordContainingSynonym() {
-		
+		//TODO can't think of a way to test this 
 	}
 	
 	@Test
 	public void testConfidenceAdjust() {
+		Clue c = new Clue("See six points", "????");
+		SolutionCollection testColl = new SolutionCollection();
+		testColl.add(new Solution("view"));
+		testColl.add(new Solution("lollipop"));
+		thesaurus.confidenceAdjust(c, testColl);
 		
+		int highConfidence = (int) testColl.getSolution("view").getConfidence();
+		assertEquals(highConfidence, 69);
+		
+		int lowConfidence = (int) testColl.getSolution("lollipop").getConfidence();
+		assertEquals(lowConfidence, 42);		
 	}
 }
