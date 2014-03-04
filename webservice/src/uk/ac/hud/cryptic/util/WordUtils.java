@@ -19,10 +19,10 @@ public class WordUtils {
 	public static final String REGEX_LETTER = "[A-Za-z]";
 
 	// Will match anything that isn't [A-Z] or [a-z] including spaces
-	public static final String REGEX_NON_LETTERS_SPACES = "(\\W|_|[0-9])+";
+	public static final String REGEX_NON_LETTERS_SPACES = "(\\W|_)+";
 
 	// Will match anything that isn't [A-Z] or [a-z] excluding spaces
-	public static final String REGEX_NON_LETTERS = "[^A-Za-z\\s]+";
+	public static final String REGEX_NON_LETTERS = "[^A-Za-z0-9\\s]+";
 
 	// Will match characters used to separate solution patterns
 	public static final String REGEX_SEPARATORS = "(" + SolutionPattern.SPACE

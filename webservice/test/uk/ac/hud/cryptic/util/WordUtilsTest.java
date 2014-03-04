@@ -72,13 +72,13 @@ public class WordUtilsTest {
 				spaces,
 				WordUtils
 						.normaliseInput(
-								"\"[This!\"£$%&^$ is986 (5486409-*/)a ~}{@#]['¬`¬test-sentence…!?]|\\/\"",
+								"\"[This!\"£$%&^$ is (-*/)a ~}{@#]['¬`¬test-sentence…!?]|\\/\"",
 								false));
 		assertEquals(
 				noSpaces,
 				WordUtils
 						.normaliseInput(
-								"\"[This!\"£$%&^$ is986 (5486409-*/)a ~}{@#]['¬`¬test-sentence…!?]|\\/\"",
+								"\"[This!\"£$%&^$ is (-*/)a ~}{@#]['¬`¬test-sentence…!?]|\\/\"",
 								true));
 		// Nothing
 		assertEquals("", WordUtils.normaliseInput("", false));
