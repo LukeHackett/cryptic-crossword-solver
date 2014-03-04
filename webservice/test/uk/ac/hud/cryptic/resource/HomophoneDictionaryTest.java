@@ -12,4 +12,9 @@ public class HomophoneDictionaryTest {
 	public void testGetHomonyms() {
 		
 	}
+	
+	@Test
+	public void testReverseDictionary() {
+		
+	}
 }
