@@ -134,7 +134,7 @@ public class Anagram extends Solver {
 	 * @return a collection of all terms present in the clue which match up with
 	 *         the length of the solution
 	 */
-	public Collection<String> getPossibleFodder(String[] words,
+	private Collection<String> getPossibleFodder(String[] words,
 			int solutionLength) {
 
 		// Structure for potential fodder
