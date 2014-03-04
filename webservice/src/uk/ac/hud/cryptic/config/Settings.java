@@ -313,4 +313,14 @@ public class Settings {
 		}
 	}
 
+	/**
+	 * This method will return the path to the abbreviations file.
+	 * 
+	 * @return the file path to the abbreviations
+	 */
+	public InputStream getAbbreviationsStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "abbreviations/abbreviations.json");
+	}
+
 } // End of class Settings

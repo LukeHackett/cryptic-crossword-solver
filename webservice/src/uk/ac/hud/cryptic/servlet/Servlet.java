@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.json.XML;
 
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.resource.Abbreviations;
 import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.resource.Dictionary;
 import uk.ac.hud.cryptic.resource.HomophoneDictionary;
@@ -157,5 +158,6 @@ public class Servlet extends HttpServlet {
 		Thesaurus.getInstance();
 		Categoriser.getInstance();
 		HomophoneDictionary.getInstance();
+		Abbreviations.getInstance();
 	}
 }
