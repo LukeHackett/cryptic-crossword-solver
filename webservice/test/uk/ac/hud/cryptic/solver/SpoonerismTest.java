@@ -17,8 +17,8 @@ public class SpoonerismTest extends SolverTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		type = new Acrostic().toString();
-		solver = Acrostic.class;
+		type = new Spoonerism().toString();
+		solver = Spoonerism.class;
 		testCount = 20;
 		unknownCharacters = true;
 	}

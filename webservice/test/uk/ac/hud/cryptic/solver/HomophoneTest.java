@@ -17,8 +17,8 @@ public class HomophoneTest extends SolverTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		type = new Acrostic().toString();
-		solver = Acrostic.class;
+		type = new Homophone().toString();
+		solver = Homophone.class;
 		testCount = 20;
 		unknownCharacters = true;
 	}
