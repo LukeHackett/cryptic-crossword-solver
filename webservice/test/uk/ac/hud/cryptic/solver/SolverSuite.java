@@ -18,6 +18,10 @@ import org.junit.runners.Suite.SuiteClasses;
 		AnagramTest.class,
 		HiddenTest.class,
 		PatternTest.class,
+		DoubleDefinitionTest.class,
+		HomophoneTest.class,
+		SpoonerismTest.class,
+		PalindromeTest.class
 		})
 
 public class SolverSuite {
