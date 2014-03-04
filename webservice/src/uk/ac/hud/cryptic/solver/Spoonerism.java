@@ -120,7 +120,7 @@ public class Spoonerism extends Solver {
 		return solutions;
 	}
 
-	public void removeShortWords(List<String> clueWords) {
+	private void removeShortWords(List<String> clueWords) {
 		// Remove short words
 		Iterator<String> it = clueWords.iterator();
 		while (it.hasNext()) {
@@ -131,7 +131,7 @@ public class Spoonerism extends Solver {
 		}
 	}
 
-	public List<List<String>> getWordsToLeftAndRight(int spoonerPos,
+	private List<List<String>> getWordsToLeftAndRight(int spoonerPos,
 			List<String> clueWords) {
 		List<List<String>> fodder = new ArrayList<>();
 		// To the left
@@ -153,7 +153,7 @@ public class Spoonerism extends Solver {
 		return fodder;
 	}
 
-	public void sortSynonyms(SolutionPattern pattern,
+	private void sortSynonyms(SolutionPattern pattern,
 			Map<String, Collection<String>> synonymList,
 			SolutionCollection solutions) {
 		final int length = pattern.getTotalLength();
@@ -179,7 +179,7 @@ public class Spoonerism extends Solver {
 
 	}
 
-	public void swapFirstLetters(String firstWord, String secondWord,
+	private void swapFirstLetters(String firstWord, String secondWord,
 			SolutionPattern pattern, SolutionCollection solutions) {
 		// First word, first letter
 		String fWfL = firstWord.substring(0, 1);
@@ -223,7 +223,7 @@ public class Spoonerism extends Solver {
 		}
 	}
 
-	public void checkIfWords(String firstWord, String secondWord,
+	private void checkIfWords(String firstWord, String secondWord,
 			SolutionPattern pattern, SolutionCollection solutions) {
 
 		if (pattern.hasMultipleWords()) {
