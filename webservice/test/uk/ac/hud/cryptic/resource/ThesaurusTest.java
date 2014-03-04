@@ -90,18 +90,8 @@ public class ThesaurusTest {
 		
 	}
 	
-	@Test
-	public void testFilterSynonyms() {
-		
-	}
-	
 	@Test 
 	public void testGetWordContainingSynonym() {
-		
-	}
-	
-	@Test
-	public void testReverseMatch() {
 		
 	}
 	
