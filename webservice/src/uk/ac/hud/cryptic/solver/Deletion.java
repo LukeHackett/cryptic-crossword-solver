@@ -1,19 +1,15 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.resource.Categoriser;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -47,12 +43,14 @@ public class Deletion extends Solver {
 	public SolutionCollection solve(Clue c) {
 		SolutionCollection solutions = new SolutionCollection();
 		final SolutionPattern pattern = c.getPattern();
-		List<String> indicators = readIndicators("assets/indicators/deletion.txt");
+		Collection<String> indicators = Categoriser.getInstance()
+				.getIndicators(NAME);
 		String clue = c.getClue();
 
 		boolean headIndicator = false;
 		boolean tailIndicator = false;
 		boolean edgeIndicator = false;
+
 		for (String indicator : indicators) {
 			switch (indicator) {
 				case "*HEAD*":
@@ -98,11 +96,11 @@ public class Deletion extends Solver {
 		SolutionCollection solutions = new SolutionCollection();
 		for (String synonym : synonyms) {
 			if (synonym.length() > 2) {
-				if (head == true || edge == true) {
+				if (head || edge) {
 					synonym = synonym.replaceFirst(synonym.substring(0, 1), "");
 				}
 
-				if (tail == true || edge == true) {
+				if (tail || edge) {
 					synonym = synonym.substring(0, synonym.length() - 1);
 				}
 
@@ -126,27 +124,6 @@ public class Deletion extends Solver {
 		}
 	}
 
-	private List<String> readIndicators(String indicatorFile) {
-		List<String> indicators = new ArrayList<>();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(indicatorFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				indicators.add(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return indicators;
-	}
-
 	/**
 	 * Get the database name for this type of clue
 	 * 
@@ -161,15 +138,16 @@ public class Deletion extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		 testSolver(Deletion.class);
+		testSolver(Deletion.class);
 		// Clue c = new Clue("dog beheaded bird", "?????");
 		// Clue c = new Clue("head off champion worker", "???????");
 		// Clue c = new Clue("suggest not starting in a flabby way", "?????");
 		// Clue c = new Clue("circuits almost falling", "????");
 		// Clue c = new Clue("alter without finishing the last word", "????");
-		//Clue c = new Clue("little shark edges away from diver's equipment","???");
-		//Deletion s = new Deletion();
-		//s.solve(c);
+		// Clue c = new
+		// Clue("little shark edges away from diver's equipment","???");
+		// Deletion s = new Deletion();
+		// s.solve(c);
 	}
 
-}
+} // End of class Deletion
