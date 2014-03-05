@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
@@ -281,6 +282,25 @@ public class Thesaurus {
 		}
 		// Remove the original word which was passed in (if present)
 		synonyms.remove(word);
+		return synonyms;
+	}
+
+	/**
+	 * Retrieve all synonyms in the same entry in the thesaurus as a given word
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms in the same entry as the given word
+	 */
+	public Set<String> getSynonymsInSameEntry(String word) {
+		Set<String> synonyms = new HashSet<>();
+		for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
+			if (entry.getValue().contains(word)) {
+				synonyms.addAll(entry.getValue());
+				synonyms.add(entry.getKey());
+			}
+		}
+
 		return synonyms;
 	}
 
