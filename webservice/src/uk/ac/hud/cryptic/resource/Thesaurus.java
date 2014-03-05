@@ -10,14 +10,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.Confidence;
 import uk.ac.hud.cryptic.util.WordUtils;
 
@@ -32,14 +33,16 @@ public class Thesaurus {
 	private static Thesaurus instance;
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
-
 	// Actual thesaurus data structure
 	private Map<String, Collection<String>> thesaurus;
+	// Cache to speed up some operations
+	private Cache<String, Set<String>> cache;
 
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
+		cache = new Cache<>();
 		populateThesaurusFromFile();
 	}
 
@@ -293,6 +296,9 @@ public class Thesaurus {
 	 * @return the synonyms in the same entry as the given word
 	 */
 	public Set<String> getSynonymsInSameEntry(String word) {
+		if (cache.containsKey(word)) {
+			return cache.get(word);
+		}
 		Set<String> synonyms = new HashSet<>();
 		for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
 			if (entry.getValue().contains(word)) {
@@ -300,6 +306,7 @@ public class Thesaurus {
 				synonyms.add(entry.getKey());
 			}
 		}
+		cache.put(word, synonyms);
 
 		return synonyms;
 	}
