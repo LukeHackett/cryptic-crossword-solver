@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -33,7 +36,7 @@ public class Thesaurus {
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
 	// Actual thesaurus data structure
-	private Map<String, Collection<String>> thesaurus;
+	private Map<String, Set<String>> thesaurus;
 	// Cache to speed up some operations
 	private Cache<String, Set<String>> cache;
 
@@ -103,11 +106,11 @@ public class Thesaurus {
 				// Separate the individual words
 				String[] words = line.split(",");
 				// Get the key (look-up) word
-				String lookupWord = words[0];
+				String lookupWord = words[0].toLowerCase();
 				// Rest of the words are synonyms
 				words = Arrays.copyOfRange(words, 1, words.length);
 				// Add words to a list
-				Collection<String> entry = new HashSet<>();
+				Set<String> entry = new HashSet<>();
 				for (String word : words) {
 					if (Dictionary.getInstance().areWords(word)) {
 						entry.add(word.toLowerCase());
@@ -307,6 +310,71 @@ public class Thesaurus {
 	}
 
 	/**
+	 * Get the synonyms for as many words as possible in the given clue. For
+	 * example, in the clue "help the medic", look for synonyms of
+	 * "help the medic", "help the", "the medic", "help", "the", "medic".
+	 * 
+	 * @param clue
+	 *            - the clue to look for synonyms
+	 * @return a LinkedHashMap of all the synonyms that have been found
+	 */
+	public synchronized Map<String, Set<String>> getSynonymsForClue(String clue) {
+		// This will be returned and will contain any found abbreviations
+		LinkedHashMap<String, Set<String>> synonymMap = new LinkedHashMap<>();
+
+		// Synonyms can span across multiple words
+		// Convert clue to List
+		List<String> clueList = new ArrayList<>(Arrays.asList(clue
+				.split(WordUtils.REGEX_WHITESPACE)));
+
+		// The index of the last clue word
+		int maxIndex = clueList.size() - 1;
+
+		// Starting FROM the first word of the clue for the beginning of the
+		// substring
+		for (int i = 0; i <= maxIndex; i++) {
+			// Start with the biggest index (TO) for the end of the
+			// substring
+			for (int j = maxIndex; j >= i; j--) {
+				// Create a string from the current indexes
+				String clueWords = composeClueSubstring(clueList, i, j);
+				System.out.println(clueWords);
+				// If this String has registered abbreviations, note them!
+				if (thesaurus.containsKey(clueWords)) {
+					synonymMap.put(clueWords, thesaurus.get(clueWords));
+					break;
+				}
+
+			}
+		}
+		return synonymMap;
+	}
+
+	/**
+	 * Create a String of words using the indexes of a List of words.
+	 * 
+	 * @param clue
+	 *            - A clue represented as a list, with an entry for each word
+	 * @param fromIndex
+	 *            - The first index to create a substring from
+	 * @param toIndex
+	 *            - The last index to create a substring to
+	 * @return the complete substring
+	 */
+	private String composeClueSubstring(List<String> clue, int fromIndex,
+			int toIndex) {
+		// The initial substring. This will be returned
+		String substring = "";
+
+		// From the start index to the end index
+		for (int i = fromIndex; i <= toIndex; i++) {
+			// Add the corresponding word
+			substring += clue.get(i) + " ";
+		}
+		return substring.trim();
+	}
+
+	/**
 	 * Retrieve all synonyms in the same entry in the thesaurus as a given word
 	 * 
 	 * @param word
@@ -318,7 +386,7 @@ public class Thesaurus {
 			return cache.get(word);
 		}
 		Set<String> synonyms = new HashSet<>();
-		for (Entry<String, Collection<String>> entry : thesaurus.entrySet()) {
+		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
 			if (entry.getValue().contains(word)) {
 				synonyms.addAll(entry.getValue());
 				synonyms.add(entry.getKey());
