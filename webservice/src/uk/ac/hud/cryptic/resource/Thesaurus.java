@@ -334,7 +334,6 @@ public class Thesaurus {
 			for (int j = maxIndex; j >= i; j--) {
 				// Create a string from the current indexes
 				String clueWords = composeClueSubstring(clueList, i, j);
-				System.out.println(clueWords);
 				// If this String has registered abbreviations, note them!
 				if (thesaurus.containsKey(clueWords)) {
 					synonymMap.put(clueWords, thesaurus.get(clueWords));
