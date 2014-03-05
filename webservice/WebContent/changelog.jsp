@@ -15,8 +15,8 @@
       <p>Today marks the completion of the second iteration. Within this 
         iteration a large amount of time has been spent adding additional 
         solvers, which will help in solving a wider range of clues. The user 
-        interface improvements, not only fix bugs, but add additional 
-        functionality which will aid users in solver cryptic crosswords.</p>
+        interface improvements not only fix bugs, but add additional 
+        functionality which will aid users in solving cryptic crosswords.</p>
       <div class="row">
         <!-- Key Changes -->
         <div class="col-md-4">
@@ -27,12 +27,12 @@
             </li>
             <li>All styling issues have now been resolved.</li>
             <li>The UI now handles results more effectively, including 
-              displaying the type of solver that obtained the solution, and how 
+              displaying the type of solver that obtained the solution and how 
               the solution was obtained.</li>
             <li>Additional support has been added for Double Definition, 
-              Homophone, Palindrome, Solver and Spoonerism cryptic clues.
+              Homophone, Palindrome and Spoonerism cryptic clues.
             </li>
-            <li>Confidence rating have been improved across the board, allowing 
+            <li>Confidence ratings have been improved across the board, allowing 
               for various factors to be taken in to consideration when 
               calculating the confidence of a solution.</li>
           </ul>
@@ -52,9 +52,9 @@
           <h4>In Progress</h4>
           <ul>
             <li>Integration of Natural Language Processing to help with 
-              detecting the type of clue</li>
-            <li>Addition of new solvers including Charades, Deletions and 
-              Reversals.</li>
+              detecting the type of clue.</li>
+            <li>Addition of new solvers including Charade, Deletion and 
+              Reversal.</li>
           </ul>
         </div>
       </div>
