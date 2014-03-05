@@ -22,6 +22,7 @@ import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.Confidence;
+import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -116,12 +117,7 @@ public class Thesaurus {
 						entry.add(word.toLowerCase());
 					}
 				}
-				if (thesaurus.containsKey(lookupWord)) {
-					thesaurus.get(lookupWord).addAll(entry);
-				} else {
-					// And add them to the dictionary
-					thesaurus.put(lookupWord, entry);
-				}
+				Util.addAllToMap(thesaurus, lookupWord, entry, HashSet.class);
 			}
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");

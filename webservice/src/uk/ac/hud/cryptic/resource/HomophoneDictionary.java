@@ -16,6 +16,7 @@ import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.util.Cache;
+import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -111,13 +112,7 @@ public class HomophoneDictionary {
 			// and the key (the word itself) now becomes the value
 			String value = e.getKey().replaceAll("\\(\\d+\\)", "");
 			// Note that a pronunciation can have multiple words attached to it
-			if (reverseDictionary.containsKey(key)) {
-				reverseDictionary.get(key).add(value);
-			} else {
-				List<String> words = new ArrayList<>();
-				words.add(value);
-				reverseDictionary.put(key, words);
-			}
+			Util.addToMap(reverseDictionary, key, value, ArrayList.class);
 		}
 	}
 

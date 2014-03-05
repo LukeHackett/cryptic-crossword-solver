@@ -110,7 +110,7 @@ public class Abbreviations {
 	}
 
 	/**
-	 * Get the abbreviations for as many word as possible in the given clue. For
+	 * Get the abbreviations for as many words as possible in the given clue. For
 	 * example, "help the medic" will contain 7 abbreviations for the word
 	 * medic. "medal for the medic" will contain 4 abbreviations for medal and 7
 	 * for medic. However, the clue "master of ceremonies" will return 1
@@ -123,13 +123,13 @@ public class Abbreviations {
 	 *            - the clue to look for abbreviations
 	 * @return a LinkedHashMap of all the abbreviations that have been found
 	 */
-	public synchronized LinkedHashMap<String, Set<String>> getAbbreviationsForClue(
+	public synchronized Map<String, Set<String>> getAbbreviationsForClue(
 			String clue) {
 		// This will be returned and will contain any found abbreviations
 		LinkedHashMap<String, Set<String>> abbrMap = new LinkedHashMap<>();
 
 		// Abbreviations can span across multiple words
-		// Convert clue to LinkedList
+		// Convert clue to List
 		List<String> clueList = new ArrayList<>(Arrays.asList(clue
 				.split(WordUtils.REGEX_WHITESPACE)));
 
@@ -193,6 +193,7 @@ public class Abbreviations {
 	public static void main(String[] args) {
 		Abbreviations a = Abbreviations.getInstance();
 		a.getAbbreviationsForClue("medal the medic map makers master of arts");
+		a.getAbbreviationsForClue("cricketer is on 50 again");
 	}
 
 } // End of class Abbreviations

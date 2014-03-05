@@ -10,6 +10,7 @@ import java.util.Map;
 import opennlp.tools.chunker.ChunkerME;
 import opennlp.tools.chunker.ChunkerModel;
 import uk.ac.hud.cryptic.config.Settings;
+import uk.ac.hud.cryptic.util.Util;
 
 public class NLPChunker {
 
@@ -75,7 +76,7 @@ public class NLPChunker {
 			String[] chunk = chunker.chunk(tokens, posTags);
 			addToMap(info, CoreTools.CHUNKED, chunk);
 		}
-		
+
 		System.out.println(info.get(CoreTools.TOKENS));
 		System.out.println(info.get(CoreTools.POS_TAGS));
 		System.out.println(info.get(CoreTools.CHUNKED));
@@ -104,11 +105,7 @@ public class NLPChunker {
 		}
 
 		// Add to map, or add to existing value if present
-		if (!map.containsKey(key)) {
-			map.put(key, toAdd);
-		} else {
-			map.get(key).addAll(toAdd);
-		}
+		Util.addAllToMap(map, key, toAdd, ArrayList.class);
 	}
 
 	/**
