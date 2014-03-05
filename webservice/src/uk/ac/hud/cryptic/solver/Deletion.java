@@ -22,6 +22,11 @@ public class Deletion extends Solver {
 	// A readable (and DB-valid) name for the solver
 	private static final String NAME = "deletion";
 
+	// Indicator headings
+	private static final String HEAD = "*HEAD*";
+	private static final String TAIL = "*TAIL*";
+	private static final String EDGE = "*EDGE*";
+
 	/**
 	 * Default constructor for solver class
 	 */
@@ -53,17 +58,17 @@ public class Deletion extends Solver {
 
 		for (String indicator : indicators) {
 			switch (indicator) {
-				case "*HEAD*":
+				case HEAD:
 					headIndicator = true;
 					tailIndicator = false;
 					edgeIndicator = false;
 					break;
-				case "*TAIL*":
+				case TAIL:
 					headIndicator = false;
 					tailIndicator = true;
 					edgeIndicator = false;
 					break;
-				case "*EDGES*":
+				case EDGE:
 					headIndicator = false;
 					tailIndicator = false;
 					edgeIndicator = true;
@@ -105,7 +110,7 @@ public class Deletion extends Solver {
 				}
 
 				if (DICTIONARY.isWord(synonym)) {
-					solutions.add(new Solution(synonym));
+					solutions.add(new Solution(synonym, NAME));
 				}
 			}
 		}
@@ -113,7 +118,8 @@ public class Deletion extends Solver {
 	}
 
 	private void filterSynonyms(Set<String> synonyms, SolutionPattern pattern) {
-		for (Iterator<String> it = synonyms.iterator(); it.hasNext();) {
+		Iterator<String> it = synonyms.iterator();
+		while (it.hasNext()) {
 			String synonym = it.next();
 			String[] syn = synonym.split(WordUtils.SPACE_AND_HYPHEN);
 			if ((synonym.length() >= (pattern.getTotalLength() + 2))
@@ -144,7 +150,6 @@ public class Deletion extends Solver {
 		// Clue c = new Clue("suggest not starting in a flabby way", "?????");
 		// Clue c = new Clue("circuits almost falling", "????");
 		// Clue c = new Clue("alter without finishing the last word", "????");
-		// Clue c = new
 		// Clue("little shark edges away from diver's equipment","???");
 		// Deletion s = new Deletion();
 		// s.solve(c);

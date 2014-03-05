@@ -1,70 +1,70 @@
 *HEAD*
-head
-after commencement
-beginning to go
-behead
-beheaded
-beheading 
+needing_no_introduction
+after_commencement
+missing_the_first
+initially_lacking
+scratch_the_head
+beginning_to_go
+strike_the_head
+not_commencing
+without_origin
+losing_opener
+not_beginning
+not_starting
 decapitated
-first off
-headless
-head off
-initially lacking
-leaderless
-losing opener
-missing the first
-needing no introduction
-not beginning
-not commencing
-not starting
-starting
-start off
-start to go
-scratch the head
-strike the head
+start_to_go
 uninitiated
+leaderless
+beheading
+start_off
+first_off
 unstarted
-without origin
+head_off
+headless
+beheaded
+starting
+behead
+head
 *TAIL*
-tail
-abridged
-almost
-back off
-clipped
-curtailed
-cut short
-detailed
-early closing
-endless
-falling short
-finish off
-for the most part
-incomplete
+without_finishing
+for_the_most_part
+missing_the_last
+not_completely
+lacking_finish
+early_closing
+falling_short
 interminable
-lacking finish
-missing the last
-most
+without_end
+incomplete
+shortening
+finish_off
+unfinished
+not_fully
+not_quite
+unending
+cut_short
+curtailed
+abridged
+back_off
+tailless
+detailed
+endless
+clipped
 mostly
 nearly
-not completely
-not fully
-not quite
+almost
 short
-shortening
-tailless
-unending 
-unfinished
-without end
-without finishing
+most
+tail
 *EDGES*
-edges
-edges away
-lacking wings
-limitless
-losing margins
-shelled
-sides splitting
-trimmed
+sides_splitting
+losing_margins
+without_limits
+lacking_wings
+edges_away
 unlimited
+limitless
 wingless
-without limits
+shelled
+trimmed
+edges
