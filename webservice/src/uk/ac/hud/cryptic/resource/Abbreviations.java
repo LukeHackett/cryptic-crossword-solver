@@ -59,7 +59,7 @@ public class Abbreviations {
 			}
 		} catch (IOException e) {
 			System.err
-					.println("Exception in Homophone Dictionary initialisation.");
+					.println("Exception in Abbreviations initialisation.");
 		}
 
 		// Represent the String as a JSON object
