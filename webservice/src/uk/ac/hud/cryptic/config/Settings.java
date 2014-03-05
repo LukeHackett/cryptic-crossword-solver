@@ -130,6 +130,16 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "thesaurus/gutenberg/mthesaur.txt");
 	}
+	
+	/**
+	 * This method will return the path to the custom thesaurus file.
+	 * 
+	 * @return the file path to the thesaurus
+	 */
+	public InputStream getCustomThesaurusStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "thesaurus/custom.txt");
+	}
 
 	/**
 	 * This method will return the path to the homophone dictionary file.

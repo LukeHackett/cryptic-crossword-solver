@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -76,13 +75,28 @@ public class Thesaurus {
 	 * Load the thesaurus into a HashSet to allow for much faster access
 	 */
 	private void populateThesaurusFromFile() {
-		InputStream is = settings.getThesaurusStream();
+		InputStream[] is = { settings.getThesaurusStream(),
+				settings.getCustomThesaurusStream() };
 
 		// Instantiate the thesaurus object
 		thesaurus = new HashMap<>();
 
+		// Read specified dictionary to internal data structure
+		for (InputStream element : is) {
+			readFile(element);
+		}
+	}
+
+	/**
+	 * Read an <code>InputStream</code> and add the contents to the thesaurus.
+	 * 
+	 * @param element
+	 *            - the Stream to read in
+	 */
+	private void readFile(InputStream element) {
 		// Try-with-resources. Readers are automatically closed after use
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				element))) {
 			String line = null;
 			// For each entry of the thesaurus
 			while ((line = br.readLine()) != null) {
@@ -93,14 +107,18 @@ public class Thesaurus {
 				// Rest of the words are synonyms
 				words = Arrays.copyOfRange(words, 1, words.length);
 				// Add words to a list
-				Collection<String> entry = new ArrayList<>();
+				Collection<String> entry = new HashSet<>();
 				for (String word : words) {
 					if (Dictionary.getInstance().areWords(word)) {
 						entry.add(word.toLowerCase());
 					}
 				}
-				// And add them to the dictionary
-				thesaurus.put(lookupWord, entry);
+				if (thesaurus.containsKey(lookupWord)) {
+					thesaurus.get(lookupWord).addAll(entry);
+				} else {
+					// And add them to the dictionary
+					thesaurus.put(lookupWord, entry);
+				}
 			}
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");
