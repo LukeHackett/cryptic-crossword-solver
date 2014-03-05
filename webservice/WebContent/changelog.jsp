@@ -53,7 +53,7 @@
           <ul>
             <li>Integration of Natural Language Processing to help with 
               detecting the type of clue.</li>
-            <li>Addition of new solvers including Charade, Deletion and 
+            <li>Addition of new solvers including Charade, Deletion, Container and 
               Reversal.</li>
           </ul>
         </div>
