@@ -1,22 +1,12 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.ICsvListReader;
-import org.supercsv.prefs.CsvPreference;
-
-import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -40,16 +30,22 @@ public class Deletion extends Solver {
 	private static final String TAIL = "0tail0";
 	private static final String EDGE = "0edges0";
 
+	/**
+	 * Enum for the positions of letter to delete
+	 */
 	private enum Position {
 		HEAD("the first letter"), TAIL("the last letter"), EDGE(
 				"the first and last letters"), NONE("");
 
+		// Position of letter
 		private final String text;
 
+		// Set position of letter to delete
 		Position(String text) {
 			this.text = text;
 		}
 
+		// Get position of letter to delete
 		private String getText() {
 			return text;
 		}
@@ -74,27 +70,38 @@ public class Deletion extends Solver {
 
 	@Override
 	public SolutionCollection solve(Clue c) {
+		// Solutions for clue
 		SolutionCollection solutions = new SolutionCollection();
+		// Pattern which solutions must match
 		final SolutionPattern pattern = c.getPattern();
+		// Read in indicators for deletion clue types
 		Collection<String> indicators = Categoriser.getInstance()
 				.getIndicators(NAME);
 		String clue = c.getClue();
 
+		// Set the initial position of letter to be deleted to none
 		Position position = Position.NONE;
 
+		// Look through indicators to determine the position of the letter which
+		// should be removed
 		loop: for (String indicator : indicators) {
 			switch (indicator) {
 				case HEAD:
+					// First letter
 					position = Position.HEAD;
 					break;
 				case TAIL:
+					// Last letter
 					position = Position.TAIL;
 					break;
 				case EDGE:
+					// First and last letter
 					position = Position.EDGE;
 					break;
 				default:
+					// Check if the clue contains the indicator being checked
 					if (clue.contains(indicator)) {
+						// Find solutions
 						solutions.addAll(findSynonymsToDeleteFrom(c, pattern,
 								position, indicator));
 						break loop;
@@ -102,35 +109,64 @@ public class Deletion extends Solver {
 					break;
 			}
 		}
+		
+		// Filter solutions against pattern
 		pattern.filterSolutions(solutions);
 
 		return solutions;
 	}
 
+	/**
+	 * Get synonyms from the thesaurus and delete the correct letters from the
+	 * correct position
+	 * 
+	 * @param clue
+	 *            - clue
+	 * @param pattern
+	 *            - clue pattern
+	 * @param position
+	 *            - position of letter that needs deleting
+	 * @param indicator
+	 *            - indicator for trace information
+	 * @return
+	 */
 	private SolutionCollection findSynonymsToDeleteFrom(Clue clue,
 			SolutionPattern pattern, Position position, String indicator) {
 		Map<String, Set<String>> synonyms = new HashMap<>();
+		// Retrieve synonyms from the thesaurus
 		for (String word : clue.getClueWords()) {
 			synonyms.put(word, THESAURUS.getSynonymsInSameEntry(word));
 		}
 
+		// Filter synonyms which will not fit the pattern once letters are
+		// removed
 		filterSynonyms(synonyms, pattern);
 
+		// Solutions
 		SolutionCollection solutions = new SolutionCollection();
+
+		// Loop through synonyms for each word in the clue
 		for (Entry<String, Set<String>> entry : synonyms.entrySet()) {
 			for (final String synonym : entry.getValue()) {
 				String solution = synonym;
+				// If solution is less than or equal to 2 edges of the word
+				// cannot be removed and therefore not a possible solution
 				if (solution.length() > 2) {
+					// Remove head/head edge of a word
 					if (position == Position.HEAD || position == Position.EDGE) {
 						solution = solution.substring(1);
 					}
 
+					// Remove tail/tail edge of a word
 					if (position == Position.TAIL || position == Position.EDGE) {
 						solution = solution.substring(0, solution.length() - 1);
 					}
 
+					// Check solution is in the dictionary and matches the
+					// pattern
 					if (DICTIONARY.isWord(solution) && pattern.match(solution)) {
 						Solution s = new Solution(solution, NAME);
+						// Create solution trace
 						s.addToTrace("Synonym is \"" + synonym
 								+ "\", from clue word \"" + entry.getKey()
 								+ "\"");
@@ -141,6 +177,7 @@ public class Deletion extends Solver {
 								+ position.getText() + " of \"" + synonym
 								+ "\".");
 
+						// Add the solution
 						solutions.add(s);
 					}
 				}
@@ -149,6 +186,15 @@ public class Deletion extends Solver {
 		return solutions;
 	}
 
+	/**
+	 * Filter synonyms which will not match the solution pattern when letters
+	 * have been removed
+	 * 
+	 * @param synonyms
+	 *            - synonyms to check
+	 * @param pattern
+	 *            - solution pattern to check against
+	 */
 	private void filterSynonyms(Map<String, Set<String>> synonyms,
 			SolutionPattern pattern) {
 		// This way rather than iterators to avoid
@@ -184,57 +230,11 @@ public class Deletion extends Solver {
 		return NAME;
 	}
 
-	private static void tagDB() {
-		Deletion d = new Deletion();
-
-		InputStream is = Settings.class.getResourceAsStream("/cryptic.csv");
-
-		try (ICsvListReader reader = new CsvListReader(
-				new InputStreamReader(is), CsvPreference.STANDARD_PREFERENCE)) {
-
-			List<String> line;
-			while ((line = reader.read()) != null) {
-				String clue = WordUtils.normaliseInput(line.get(0), false);
-				String solution = WordUtils.normaliseInput(line.get(1), true);
-
-				Clue c = new Clue(clue, SolutionPattern.toPattern(solution,
-						false), solution, NAME);
-				SolutionCollection sc = d.solve(c);
-				if (sc.contains(solution)) {
-					System.out
-							.println("UPDATE `cryptic_clues` SET `type`='deletion' WHERE `clue` = \""
-									+ line.get(0).trim()
-									+ "\" AND `solution` = \""
-									+ line.get(1).trim()
-									+ "\" AND `type` IS NULL;");
-					System.out.println("-- "
-							+ sc.getSolution(solution).getSolutionTrace() + " ("
-							+ sc.size() + " solution"
-							+ (sc.size() > 1 ? "s)" : ")"));
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		// tagDB();
 		testSolver(Deletion.class);
-		// Clue c = new Clue(
-		// "'the church' is incomplete as the address for the priest",
-		// "????", "ABBE", NAME);
-		// Clue c = new Clue("dog beheaded bird", "?????");
-		// Clue c = new Clue("head off champion worker", "???????");
-		// Clue c = new Clue("suggest not starting in a flabby way", "?????");
-		// Clue c = new Clue("circuits almost falling", "????");
-		// Clue c = new Clue("alter without finishing the last word", "????");
-		// Clue("little shark edges away from diver's equipment","???");
-		// Deletion s = new Deletion();
-		// s.solve(c);
 	}
 
 } // End of class Deletion
