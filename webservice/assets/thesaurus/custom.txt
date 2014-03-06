@@ -1,2 +1,3 @@
 leader,king
 David,patron,saint
+locust,insect
