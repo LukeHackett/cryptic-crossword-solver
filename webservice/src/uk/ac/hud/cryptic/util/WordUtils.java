@@ -196,4 +196,15 @@ public class WordUtils {
 		return input.replaceAll(SPACE_AND_HYPHEN, "");
 	}
 
+	/**
+	 * This method will split the given String into an array of words.
+	 * 
+	 * @param input
+	 *            the string to be split
+	 * @return A String array of words
+	 */
+	public static String[] getWords(String input) {
+		return input.split(REGEX_WHITESPACE);
+	}
+
 } // End of class WordUtils
