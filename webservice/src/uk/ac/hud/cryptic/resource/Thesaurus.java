@@ -382,11 +382,12 @@ public class Thesaurus {
 		}
 		Set<String> synonyms = new HashSet<>();
 		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
-			if (entry.getValue().contains(word)) {
+			if (entry.getKey().equals(word) || entry.getValue().contains(word)) {
 				synonyms.addAll(entry.getValue());
 				synonyms.add(entry.getKey());
 			}
 		}
+		synonyms.remove(word);
 		cache.put(word, synonyms);
 
 		return synonyms;
