@@ -176,7 +176,7 @@ public class Charade extends Solver {
 				String solution = WordUtils.normaliseInput(line.get(1), true);
 
 				Set<String> abbreviations = new HashSet<>();
-				for (String word : clue.split(WordUtils.REGEX_WHITESPACE)) {
+				for (String word : WordUtils.getWords(clue)) {
 					abbreviations.addAll(ABBR.getAbbreviationsForWord(word));
 				}
 

@@ -54,7 +54,7 @@ public class Homophone extends Solver {
 		// Remove indicator word(s) from the clue to decrease the solve time
 		String clue = c.getClueNoPunctuation(false);
 		clue = Categoriser.getInstance().removeIndicatorWords(clue, NAME);
-		String[] words = clue.split(WordUtils.REGEX_WHITESPACE);
+		String[] words = WordUtils.getWords(clue);
 
 		// Find direct homonyms
 		solutions.addAll(findDirectHomonyms(words));

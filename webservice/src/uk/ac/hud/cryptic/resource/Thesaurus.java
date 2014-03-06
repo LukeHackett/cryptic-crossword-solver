@@ -320,8 +320,8 @@ public class Thesaurus {
 
 		// Synonyms can span across multiple words
 		// Convert clue to List
-		List<String> clueList = new ArrayList<>(Arrays.asList(clue
-				.split(WordUtils.REGEX_WHITESPACE)));
+		List<String> clueList = new ArrayList<>(Arrays.asList(WordUtils
+				.getWords(clue)));
 
 		// The index of the last clue word
 		int maxIndex = clueList.size() - 1;
@@ -418,7 +418,7 @@ public class Thesaurus {
 			String recomposed = pattern.recomposeSolution(solution
 					.getSolution());
 			// e,g. { "strain" , "a" , "muscle" }
-			String[] words = recomposed.split(WordUtils.REGEX_WHITESPACE);
+			String[] words = WordUtils.getWords(recomposed);
 			solutions = new String[words.length + 2];
 			// i.e. "strainamuscle"
 			solutions[0] = solution.getSolution().toLowerCase();
@@ -477,8 +477,7 @@ public class Thesaurus {
 							+ clueWord + "\".");
 					return true;
 				} else if (multipleWords) {
-					for (String word : solutions[1]
-							.split(WordUtils.REGEX_WHITESPACE)) {
+					for (String word : WordUtils.getWords(solutions[1])) {
 						if (synonyms.contains(word)) {
 							solution.addToTrace("Confidence rating increased as this solution is a synonym of the clue word \""
 									+ clueWord + "\".");

@@ -58,8 +58,7 @@ public class Abbreviations {
 				jsonRaw += line;
 			}
 		} catch (IOException e) {
-			System.err
-					.println("Exception in Abbreviations initialisation.");
+			System.err.println("Exception in Abbreviations initialisation.");
 		}
 
 		// Represent the String as a JSON object
@@ -110,8 +109,8 @@ public class Abbreviations {
 	}
 
 	/**
-	 * Get the abbreviations for as many words as possible in the given clue. For
-	 * example, "help the medic" will contain 7 abbreviations for the word
+	 * Get the abbreviations for as many words as possible in the given clue.
+	 * For example, "help the medic" will contain 7 abbreviations for the word
 	 * medic. "medal for the medic" will contain 4 abbreviations for medal and 7
 	 * for medic. However, the clue "master of ceremonies" will return 1
 	 * abbreviation which matches the entire clue (i.e. "master of ceremonies").
@@ -130,8 +129,8 @@ public class Abbreviations {
 
 		// Abbreviations can span across multiple words
 		// Convert clue to List
-		List<String> clueList = new ArrayList<>(Arrays.asList(clue
-				.split(WordUtils.REGEX_WHITESPACE)));
+		List<String> clueList = new ArrayList<>(Arrays.asList(WordUtils
+				.getWords(clue)));
 
 		// The index of the last clue word
 		int maxIndex = clueList.size() - 1;

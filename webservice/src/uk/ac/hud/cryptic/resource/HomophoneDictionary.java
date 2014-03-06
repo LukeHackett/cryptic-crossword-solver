@@ -81,8 +81,8 @@ public class HomophoneDictionary {
 					// Normalise the lookup word
 					String word = components[0].toLowerCase().trim();
 					// Create a list of the pronunciation elements
-					List<String> pronunciation = Arrays.asList(components[1]
-							.split(WordUtils.REGEX_WHITESPACE));
+					List<String> pronunciation = Arrays.asList(WordUtils
+							.getWords(components[1]));
 					// Add to the homophone dictionary
 					dictionary.put(word, pronunciation);
 				}
