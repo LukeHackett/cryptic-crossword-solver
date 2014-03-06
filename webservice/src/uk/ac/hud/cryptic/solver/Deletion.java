@@ -1,21 +1,34 @@
 package uk.ac.hud.cryptic.solver;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.supercsv.io.CsvListReader;
+import org.supercsv.io.ICsvListReader;
+import org.supercsv.prefs.CsvPreference;
+
+import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.resource.Categoriser;
+import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
  * Deletion solver algorithm
  * 
- * @author Leanne Butcher
+ * @author Leanne Butcher, Stuart Leader
  * @version 0.3
  */
 public class Deletion extends Solver {
@@ -23,9 +36,24 @@ public class Deletion extends Solver {
 	private static final String NAME = "deletion";
 
 	// Indicator headings
-	private static final String HEAD = "*HEAD*";
-	private static final String TAIL = "*TAIL*";
-	private static final String EDGE = "*EDGE*";
+	private static final String HEAD = "0head0";
+	private static final String TAIL = "0tail0";
+	private static final String EDGE = "0edges0";
+
+	private enum Position {
+		HEAD("the first letter"), TAIL("the last letter"), EDGE(
+				"the first and last letters"), NONE("");
+
+		private final String text;
+
+		Position(String text) {
+			this.text = text;
+		}
+
+		private String getText() {
+			return text;
+		}
+	}
 
 	/**
 	 * Default constructor for solver class
@@ -52,80 +80,96 @@ public class Deletion extends Solver {
 				.getIndicators(NAME);
 		String clue = c.getClue();
 
-		boolean headIndicator = false;
-		boolean tailIndicator = false;
-		boolean edgeIndicator = false;
+		Position position = Position.NONE;
 
-		for (String indicator : indicators) {
+		loop: for (String indicator : indicators) {
 			switch (indicator) {
 				case HEAD:
-					headIndicator = true;
-					tailIndicator = false;
-					edgeIndicator = false;
+					position = Position.HEAD;
 					break;
 				case TAIL:
-					headIndicator = false;
-					tailIndicator = true;
-					edgeIndicator = false;
+					position = Position.TAIL;
 					break;
 				case EDGE:
-					headIndicator = false;
-					tailIndicator = false;
-					edgeIndicator = true;
+					position = Position.EDGE;
 					break;
 				default:
 					if (clue.contains(indicator)) {
-						solutions.addAll(findSynonymsToDeleteFrom(clue,
-								pattern, headIndicator, tailIndicator,
-								edgeIndicator));
+						solutions.addAll(findSynonymsToDeleteFrom(c, pattern,
+								position, indicator));
+						break loop;
 					}
 					break;
 			}
 		}
-
 		pattern.filterSolutions(solutions);
 
 		return solutions;
 	}
 
-	private SolutionCollection findSynonymsToDeleteFrom(String clue,
-			SolutionPattern pattern, boolean head, boolean tail, boolean edge) {
-		String[] clueWords = clue.split(WordUtils.SPACE_AND_HYPHEN);
-		Set<String> synonyms = new HashSet<>();
-		for (String word : clueWords) {
-			synonyms.addAll(THESAURUS.getSynonymsInSameEntry(word));
+	private SolutionCollection findSynonymsToDeleteFrom(Clue clue,
+			SolutionPattern pattern, Position position, String indicator) {
+		Map<String, Set<String>> synonyms = new HashMap<>();
+		for (String word : clue.getClueWords()) {
+			synonyms.put(word, THESAURUS.getSynonymsInSameEntry(word));
 		}
 
 		filterSynonyms(synonyms, pattern);
 
 		SolutionCollection solutions = new SolutionCollection();
-		for (String synonym : synonyms) {
-			if (synonym.length() > 2) {
-				if (head || edge) {
-					synonym = synonym.replaceFirst(synonym.substring(0, 1), "");
-				}
+		for (Entry<String, Set<String>> entry : synonyms.entrySet()) {
+			for (final String synonym : entry.getValue()) {
+				String solution = synonym;
+				if (solution.length() > 2) {
+					if (position == Position.HEAD || position == Position.EDGE) {
+						solution = solution.substring(1);
+					}
 
-				if (tail || edge) {
-					synonym = synonym.substring(0, synonym.length() - 1);
-				}
+					if (position == Position.TAIL || position == Position.EDGE) {
+						solution = solution.substring(0, solution.length() - 1);
+					}
 
-				if (DICTIONARY.isWord(synonym)) {
-					solutions.add(new Solution(synonym, NAME));
+					if (DICTIONARY.isWord(solution) && pattern.match(solution)) {
+						Solution s = new Solution(solution, NAME);
+						s.addToTrace("Synonym is \"" + synonym
+								+ "\", from clue word \"" + entry.getKey()
+								+ "\"");
+						s.addToTrace("Take the clue word \"" + entry.getKey()
+								+ "\" and get its synonym \"" + synonym + "\".");
+						s.addToTrace("The clue contains the indicator \""
+								+ indicator + "\", which means to remove "
+								+ position.getText() + " of \"" + synonym
+								+ "\".");
+
+						solutions.add(s);
+					}
 				}
 			}
 		}
 		return solutions;
 	}
 
-	private void filterSynonyms(Set<String> synonyms, SolutionPattern pattern) {
-		Iterator<String> it = synonyms.iterator();
-		while (it.hasNext()) {
-			String synonym = it.next();
-			String[] syn = synonym.split(WordUtils.SPACE_AND_HYPHEN);
-			if ((synonym.length() >= (pattern.getTotalLength() + 2))
-					&& (synonym.length() <= pattern.getTotalLength())
-					|| (syn.length != 1)) {
-				it.remove();
+	private void filterSynonyms(Map<String, Set<String>> synonyms,
+			SolutionPattern pattern) {
+		// This way rather than iterators to avoid
+		// ConcurrentModificationExceptions :(
+		Map<String, Set<String>> toRemove = new HashMap<>();
+		for (Entry<String, Set<String>> entry : synonyms.entrySet()) {
+			for (String synonym : entry.getValue()) {
+				String[] syn = synonym.split(WordUtils.SPACE_AND_HYPHEN);
+				if (synonym.length() >= pattern.getTotalLength() + 2
+						&& synonym.length() <= pattern.getTotalLength()
+						|| syn.length != 1) {
+					Util.addToMap(toRemove, entry.getKey(), synonym,
+							HashSet.class);
+				}
+			}
+		}
+
+		// Now remove those which are not valid
+		for (Entry<String, Set<String>> entry : toRemove.entrySet()) {
+			for (String synonym : entry.getValue()) {
+				synonyms.get(entry.getKey()).remove(synonym);
 			}
 		}
 	}
@@ -140,11 +184,49 @@ public class Deletion extends Solver {
 		return NAME;
 	}
 
+	private static void tagDB() {
+		Deletion d = new Deletion();
+
+		InputStream is = Settings.class.getResourceAsStream("/cryptic.csv");
+
+		try (ICsvListReader reader = new CsvListReader(
+				new InputStreamReader(is), CsvPreference.STANDARD_PREFERENCE)) {
+
+			List<String> line;
+			while ((line = reader.read()) != null) {
+				String clue = WordUtils.normaliseInput(line.get(0), false);
+				String solution = WordUtils.normaliseInput(line.get(1), true);
+
+				Clue c = new Clue(clue, SolutionPattern.toPattern(solution,
+						false), solution, NAME);
+				SolutionCollection sc = d.solve(c);
+				if (sc.contains(solution)) {
+					System.out
+							.println("UPDATE `cryptic_clues` SET `type`='deletion' WHERE `clue` = \""
+									+ line.get(0).trim()
+									+ "\" AND `solution` = \""
+									+ line.get(1).trim()
+									+ "\" AND `type` IS NULL;");
+					System.out.println("-- "
+							+ sc.getSolution(solution).getSolutionTrace() + " ("
+							+ sc.size() + " solution"
+							+ (sc.size() > 1 ? "s)" : ")"));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
+		// tagDB();
 		testSolver(Deletion.class);
+		// Clue c = new Clue(
+		// "'the church' is incomplete as the address for the priest",
+		// "????", "ABBE", NAME);
 		// Clue c = new Clue("dog beheaded bird", "?????");
 		// Clue c = new Clue("head off champion worker", "???????");
 		// Clue c = new Clue("suggest not starting in a flabby way", "?????");
