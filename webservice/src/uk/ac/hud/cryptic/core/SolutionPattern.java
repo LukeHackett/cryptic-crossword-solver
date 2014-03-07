@@ -458,4 +458,14 @@ public class SolutionPattern {
 		return pattern;
 	}
 
+	/**
+	 * Is the entire pattern unknown?
+	 * 
+	 * @return <code>true</code> if no characters are known, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean isAllUnknown() {
+		return allUnknown;
+	}
+
 } // End of class SolutionPattern

@@ -54,12 +54,19 @@ public class DoubleDefinition extends Solver {
 		// Second-level synonyms
 		Map<String, Collection<String>> secondSynonyms = new HashMap<>();
 
+		boolean unknown = pattern.isAllUnknown();
+
 		// Populate the synonym maps
 		for (String word : words) {
 			firstSynonyms.put(word,
 					THESAURUS.getMatchingSynonyms(word, pattern));
-			secondSynonyms.put(word,
-					THESAURUS.getSecondSynonyms(word, pattern, false));
+			if (unknown) {
+				secondSynonyms.put(word, THESAURUS.getEntriesContainingSynonym(
+						word, pattern, false));
+			} else {
+				secondSynonyms.put(word, THESAURUS.getEntriesContainingSynonym(
+						word, pattern, true));
+			}
 		}
 
 		// Look for matches... this is where it gets messy
@@ -70,7 +77,7 @@ public class DoubleDefinition extends Solver {
 		// First-second (or vice-versa) matching
 		solutions.addAll(findSynonymMatches(firstSynonyms, secondSynonyms));
 
-		// Note no second-second matching. That's too vague.
+		// Note no second-second matching. That's too vague
 
 		return solutions;
 	}

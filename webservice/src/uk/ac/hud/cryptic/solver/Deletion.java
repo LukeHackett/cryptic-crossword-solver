@@ -109,7 +109,7 @@ public class Deletion extends Solver {
 					break;
 			}
 		}
-		
+
 		// Filter solutions against pattern
 		pattern.filterSolutions(solutions);
 
@@ -134,8 +134,16 @@ public class Deletion extends Solver {
 			SolutionPattern pattern, Position position, String indicator) {
 		Map<String, Set<String>> synonyms = new HashMap<>();
 		// Retrieve synonyms from the thesaurus
+		// Reduce the number of results if no character are supplied
+		boolean unknown = pattern.isAllUnknown();
 		for (String word : clue.getClueWords()) {
-			synonyms.put(word, THESAURUS.getSynonymsInSameEntry(word));
+			if (unknown) {
+				synonyms.put(word,
+						THESAURUS.getEntriesContainingSynonym(word, false));
+			} else {
+				synonyms.put(word,
+						THESAURUS.getEntriesContainingSynonym(word, true));
+			}
 		}
 
 		// Filter synonyms which will not fit the pattern once letters are

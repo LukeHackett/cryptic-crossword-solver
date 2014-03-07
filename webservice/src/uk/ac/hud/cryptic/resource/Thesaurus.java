@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -376,18 +377,59 @@ public class Thesaurus {
 	 *            - the word to get synonyms for
 	 * @return the synonyms in the same entry as the given word
 	 */
-	public Set<String> getSynonymsInSameEntry(String word) {
+	public Set<String> getEntriesContainingSynonym(String word,
+			boolean includeSiblings) {
 		if (cache.containsKey(word)) {
 			return cache.get(word);
 		}
 		Set<String> synonyms = new HashSet<>();
 		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
 			if (entry.getKey().equals(word) || entry.getValue().contains(word)) {
-				synonyms.addAll(entry.getValue());
+				if (includeSiblings) {
+					synonyms.addAll(entry.getValue());
+				}
 				synonyms.add(entry.getKey());
 			}
 		}
 		synonyms.remove(word);
+		cache.put(word, synonyms);
+
+		return synonyms;
+	}
+
+	/**
+	 * Retrieve all synonyms in the same entry in the thesaurus as a given word
+	 * which match against the given pattern
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @param pattern
+	 *            - the pattern the synonyms should match against
+	 * @return the synonyms in the same entry as the given word which match the
+	 *         given pattern
+	 */
+	public Set<String> getEntriesContainingSynonym(String word,
+			SolutionPattern pattern, boolean includeSiblings) {
+		if (cache.containsKey(word)) {
+			return cache.get(word);
+		}
+		Set<String> synonyms = new HashSet<>();
+		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
+			if (entry.getKey().equals(word) || entry.getValue().contains(word)) {
+				if (includeSiblings) {
+					synonyms.addAll(entry.getValue());
+				}
+				synonyms.add(entry.getKey());
+			}
+		}
+		synonyms.remove(word);
+		Iterator<String> it = synonyms.iterator();
+		while (it.hasNext()) {
+			String synonym = it.next();
+			if (!pattern.match(synonym)) {
+				it.remove();
+			}
+		}
 		cache.put(word, synonyms);
 
 		return synonyms;
