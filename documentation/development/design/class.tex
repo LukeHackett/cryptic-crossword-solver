@@ -20,6 +20,15 @@ packages will be described in more detail.
   \label{fig:package_overview}
 \end{figure}
 
+The architecture of the system will utilise a `plug and play' approach. This 
+approach, will allow for various numbers of solvers to be added at run time, 
+rather than a compile time.
+
+From a development point this will allow for the underlying system to be 
+developed and tested utilising a limited number of solvers. Once the underlying 
+system has been completed, solvers can then be added at any time, without having 
+to alter any previously written code.
+
 
 %%%%
 %% Design :: Class Diagrams :: Config
@@ -197,8 +206,13 @@ to run a class in it's own thread. A design decision was taken that the Callable
 interface was to be used, as once it has finished executing it is able to return
 an object unlike similar interfaces such as Runnable.
 
-In this case the Solver class will return a SolutionCollection object, which 
-contains all the solutions that the given solver has managed to compute.
+Each of solver classes implement the Abstract Factory design pattern via the 
+base class Solver. This pattern ``provides an interface for creating families of
+related objects without specifying their concrete class'' \citep{gof}.
+
+Each of the solvers is able to return a concrete product, which in this instance
+is a a SolutionCollection object. The SolutionCollection will contain all the 
+solutions that the given solver has managed to compute. 
 
 Figure \ref{fig:solver_package} illustrates the solver package, containing the
 various solving algorithms used by the system.
