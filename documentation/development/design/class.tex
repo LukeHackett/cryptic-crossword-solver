@@ -125,7 +125,13 @@ various NLP related classes.
 
 The resource package contains various classes that provide interfaces to the 
 array of resources that the system will use. As with the config package, all 
-classes utilise the Singleton design pattern.
+classes utilise the Singleton design pattern. 
+
+The reason for this is that it is to be expected that these classes will be used
+multiple times throughout the life of the system. To prevent multiple objects 
+being created and being left in memory, the singleton design pattern was 
+selected. The pattern will ``ensure that a class only has on instance, and 
+provide a global point of access to it'' \citep{gof}.
 
 The Dictionary, Thesaurus and HomophoneDictionary classes provide the 
 functionality that would be expected. For example the Dictionary has the ability
