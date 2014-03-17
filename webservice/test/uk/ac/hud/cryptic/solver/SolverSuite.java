@@ -21,7 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		DoubleDefinitionTest.class,
 		HomophoneTest.class,
 		SpoonerismTest.class,
-		PalindromeTest.class
+		PalindromeTest.class,
+		ReversalTest.class
 		})
 
 public class SolverSuite {
