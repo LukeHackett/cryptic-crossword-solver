@@ -1,0 +1,127 @@
+%%%%
+%% Implementation :: Web Service & Servlets
+%%%
+\section{Web Service \& Servlets}
+\label{sec:servlet}
+
+The core system is wrapped around a RESTful web service, that allows users from
+various devices to submit clues to be solved. Within this section both the web 
+service and the servlet implementations will be discussed and presented.
+
+
+%%%%
+%% Implementation :: Web Service & Servlets :: Web Service
+%%%
+\subsection{Web Service}
+\label{sub:servlet_web_service}
+
+During the project analysis phase the decision was taken that the system's
+functionality will be delivered via a web service. The web service was developed
+using Java Enterprise Edition (Java EE) and Tomcat 7.
+
+The main reason for using Java is that the web service could easily make use of
+the various packages that are provided by the chosen natural language processing
+library --- Apache OpenNLP written in Java.
+
+The web service has solely been produced using the Java EE platform and does not
+use any additional frameworks or libraries such as Apache Axis. The reason being
+is that the Java EE platform will run on any machine that is capable of running
+the Java virtual machine without any additional configuration.
+
+Although Apache Axis (for example) provides additional functionality in
+configuring the web service, it was decided that the project was to focus upon
+the solving of a clue. Therefore a `standard web service' setup would easily
+meet the requirements of the project.
+
+Another design decision was taken to ensure that the web service followed a
+RESTful style of communication. The mains reason for this is that some of the
+target devices (i.e. mobile and tablet platforms) do not support SOAP based
+communication without additional plug-ins. RESTful web services also provide a
+number of advantages over their SOAP-based counter parts, as was highlighted
+within the research section.
+
+
+%%%%
+%% Implementation :: Web Service & Servlets :: Servlets
+%%%
+\subsection{Servlets}
+\label{sub:servlet_servlets}
+
+The servlet design has been split across two classes --- \texttt{Servlet} and 
+\texttt{Solver}.
+
+The \texttt{Servlet} class extends the standard \texttt{HttpServlet} class and
+provides common functionality. The \texttt{Servlet} class provides a base for 
+all system Servlets to use the common functionality.
+
+The \texttt{Servlet} class is able to if a given request is from a JSON, XML or 
+Ajax background. For example if a client was to make a request to the web 
+service through a web browser utilising an Ajax request, then the 
+\texttt{isAjaxRequest}  method would return \texttt{true}.
+
+For illustrative proposes the \texttt{isAjaxRequest} method is shown below.
+
+\begin{verbatim}
+  protected boolean isAjaxRequest(HttpServletRequest request) {
+    String ajax = request.getHeader("x-requested-with");
+    return ajax != null && ajax.toLowerCase().contains("xmlhttprequest");
+  }
+\end{verbatim}
+
+The servlet also contains two customised methods -- one to handle errors, and 
+the other to handle a good response -- that are able to send a response back to 
+the requesting client based upon a number of factors.
+
+For example the methods are able to convert the return data into either XML or 
+JSON depending upon what the client has asked for. The \texttt{sendError} method
+will also set the HTTP status code correctly, allowing the client to correctly 
+authenticate the response.
+
+Finally the \texttt{Servlet} class overrides the \texttt{init} method, which 
+is automatically called as part of the object construction. This method will 
+initialise resources at servlet creation (i.e. first run-time within tomcat) 
+rather than during the first call to the servlet. 
+
+In doing this, Tomcat will take more time initially starting up, however the 
+user will notice that their queries are dealt with much quicker. In this project
+the \texttt{init} method has been used to initialise the various in-memory 
+dictionaries and thesauri.
+
+~\\
+
+The second class is the \texttt{Solver} servlet and handles all request that are
+specifically for solving a given clue. The \texttt{Solver} servlet accepts both
+GET and POST requests, with each requiring the clue, the length of the solution
+and the solution pattern.
+
+The \texttt{Solver} servlet upon receiving a request will validate the input 
+parameters, based upon a number of criteria including presence checks and 
+regular expressions. The code snippet below is an example validation rule, that 
+will validate the solution pattern against a regular expression.
+
+\begin{verbatim}
+ private boolean isPatternValid(String pattern) {
+    // Pattern string regular expression
+    final String regex = "[0-9A-Za-z?]+((,|-)[0-9A-Za-z?]+)*";
+    boolean match = Pattern.matches(regex, pattern);
+
+    // Pattern String must be present and of a valid format
+    return isPresent(pattern) && match;
+  }
+\end{verbatim}
+
+In order for validation to pass, the solution pattern must not be empty and must
+match to the regular expression stated in the method.
+
+The \texttt{Solver} servlet class will initialise the solving of a clue if the 
+three inputs are deemed to be valid. The \texttt{solveClue} method will utilise 
+the Clue manager class, that will handle the distributing of the clue to the 
+various solvers. 
+
+This has been designed so that the servlet and the solving processes are upon 
+separate threads. This prevents tomcat from freezing, and allows it to handle 
+requests from users.
+
+Once all the solvers have finished executing, the \texttt{Solver} servlet will 
+produce an XML document based upon the various elements. Once the XML document 
+has been created, will be sent back to the client as either XML or JSON.
