@@ -1,20 +1,15 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
-
-import uk.ac.hud.cryptic.resource.Thesaurus;
-import uk.ac.hud.cryptic.solver.Solver;
-import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.nlp.CoreTools;
+import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -27,8 +22,8 @@ import uk.ac.hud.cryptic.util.WordUtils;
 public class Reversal extends Solver {
 	// A readable (and DB-valid) name for the solver
 	private static final String NAME = "reversal";
-	// Settings instance
-	private Settings settings = Settings.getInstance();
+	// The NLP helpers
+	private static final CoreTools NLP = CoreTools.getInstance();
 
 	/**
 	 * Default constructor for the reversal solver class
@@ -66,7 +61,7 @@ public class Reversal extends Solver {
 		SolutionPattern pattern = new SolutionPattern(reversedPattern);
 
 		// Get the possible fodders
-		String[] fodders = getFodders(c);
+		List<String> fodders = getFodders(c);
 
 		// Loop over all calculated fodders
 		for (String fodder : fodders) {
@@ -104,36 +99,26 @@ public class Reversal extends Solver {
 	 *            - the clue to solve
 	 * @return An array of possible fodders
 	 */
-	private String[] getFodders(Clue clue) {
+	private List<String> getFodders(Clue clue) {
 		// A list of possible fodders
-		List<String> fodders = new ArrayList<String>();
+		List<String> fodders = new ArrayList<>();
 
-		try {
-			// Create a new POSModel
-			POSModel model = new POSModel(settings.getPOSModelStream());
+		// // Split on all whitespace
+		String words[] = clue.getClueWords();
 
-			// Apply to the tagger
-			POSTaggerME tagger = new POSTaggerME(model);
+		// Get a list of the tags
+		String[] tags = NLP.tag(words);
 
-			// Split on all whitespace
-			String words[] = WordUtils.getWords(clue.getClue());
-
-			// Get a list of the tags
-			String[] tags = tagger.tag(words);
-
-			// This is a guess...
-			for (int i = 0; i < tags.length; i++) {
-				// ...Fodders are marked with 'NN' or 'NNS'... usually
-				if (tags[i].equals("NN") || tags[i].equals("NNS")) {
-					fodders.add(words[i]);
-				}
+		// This is a guess...
+		for (int i = 0; i < tags.length; i++) {
+			// ...Fodders are marked with 'NN' or 'NNS'... usually
+			if (tags[i].equals("NN") || tags[i].equals("NNS")) {
+				fodders.add(words[i]);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
-		// Return the fodders as a String array
-		return fodders.toArray(new String[fodders.size()]);
+		// Return the fodders as a List
+		return fodders;
 	}
 
 	/**
@@ -153,4 +138,4 @@ public class Reversal extends Solver {
 		testSolver(Reversal.class);
 	}
 
-}
+} // End of class Reversal
