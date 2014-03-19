@@ -261,6 +261,33 @@ public class Dictionary {
 	}
 
 	/**
+	 * This method will return whether or not the given prefix matches with any
+	 * of the words of the dictionary.
+	 * 
+	 * @param prefix
+	 *            the word to be search for
+	 * @return <code>true</code> if a word exists with this prefix,
+	 *         <code>false</code> otherwise
+	 */
+	public synchronized boolean isPrefix(String prefix) {
+		prefix = prefix.toLowerCase().trim();
+
+		// Allow empty strings
+		if (prefix.isEmpty()) {
+			return true;
+		}
+
+		boolean valid = false;
+		for (String word : dictionary) {
+			if (word.startsWith(prefix)) {
+				valid = true;
+				break;
+			}
+		}
+		return valid;
+	}
+
+	/**
 	 * Just the same as "isWord", but this is to be used when the text may
 	 * contain more than one word
 	 * 

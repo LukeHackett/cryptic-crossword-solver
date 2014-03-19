@@ -3,9 +3,11 @@ package uk.ac.hud.cryptic.solver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,12 +18,15 @@ import org.supercsv.prefs.CsvPreference;
 
 import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
+import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.resource.Abbreviations;
 import uk.ac.hud.cryptic.resource.Thesaurus;
 import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
+
+import com.google.common.collect.Sets;
 
 /**
  * Charade solver algorithm
@@ -67,7 +72,7 @@ public class Charade extends Solver {
 
 		// Now get combinations of first / last letters of the clue which could
 		// be used to construct a solution
-		Map<String, Set<String>> substrings = new HashMap<>();
+		Map<String, Set<String>> substrings = new LinkedHashMap<>();
 		constructSubstrings(c.getClueWords(), substrings);
 
 		// Get synonyms of each clue word, which may also be used
@@ -80,7 +85,8 @@ public class Charade extends Solver {
 		reduceMap(synonyms, pattern);
 
 		// Generate solutions
-		generateSolutions(abbreviations, substrings, synonyms, c, pattern);
+		solutions.addAll(generateSolutions(abbreviations, substrings, synonyms,
+				c, pattern));
 
 		// Remove solutions which don't match the provided pattern
 		pattern.filterSolutions(solutions);
@@ -98,7 +104,7 @@ public class Charade extends Solver {
 			SolutionPattern pattern) {
 		// Min and max length a substring can be
 		final int minSubstringLength = 1;
-		final int maxSubstringLength = (pattern.getTotalLength() > 1) ? pattern
+		final int maxSubstringLength = pattern.getTotalLength() > 1 ? pattern
 				.getTotalLength() - 1 : 1;
 
 		// For each set of substrings
@@ -120,12 +126,93 @@ public class Charade extends Solver {
 	private SolutionCollection generateSolutions(
 			Map<String, Set<String>> abbreviations,
 			Map<String, Set<String>> substrings,
-			Map<String, Set<String>> patterns, Clue clue,
+			Map<String, Set<String>> synonyms, Clue clue,
 			SolutionPattern pattern) {
 
 		SolutionCollection sc = new SolutionCollection();
 
+		Set<Set<String>> powerSet = generatePowerSet(clue);
+
+		for (Set<String> combination : powerSet) {
+			generateSolutions("", abbreviations, substrings, synonyms,
+					combination.toArray(new String[combination.size()]),
+					pattern, sc);
+		}
+
 		return sc;
+	}
+
+	private void generateSolutions(String string,
+			Map<String, Set<String>> abbreviations,
+			Map<String, Set<String>> substrings,
+			Map<String, Set<String>> synonyms, String[] clueWords,
+			SolutionPattern pattern, SolutionCollection sc) {
+
+		// Integrate dictionary checking to check the generated String's
+		// prefix
+		if (!pattern.matchPrefix(string) || !DICTIONARY.isPrefix(string)) {
+			return;
+		}
+
+		if (string.length() >= pattern.getTotalLength()
+				|| clueWords.length == 0) {
+			if (string.length() == pattern.getTotalLength()) {
+				sc.add(new Solution(string, NAME));
+			}
+		} else {
+			// Take the first word of the current combination
+			String currentWord = clueWords[0];
+
+			// And remove it from the remaining words
+			String[] remainingWords = Arrays.copyOfRange(clueWords, 1,
+					clueWords.length);
+
+			Set<String> abbreviationMatches = abbreviations.get(currentWord);
+			if (abbreviationMatches != null) {
+				for (String abbreviation : abbreviationMatches) {
+					generateSolutions(string + abbreviation, abbreviations,
+							substrings, synonyms, remainingWords, pattern, sc);
+				}
+			}
+
+			Set<String> substringMatches = substrings.get(currentWord);
+			if (substringMatches != null) {
+				for (String substring : substringMatches) {
+					generateSolutions(string + substring, abbreviations,
+							substrings, synonyms, remainingWords, pattern, sc);
+				}
+			}
+
+			Set<String> synonymMatches = synonyms.get(currentWord);
+			if (synonymMatches != null) {
+				for (String synonym : synonymMatches) {
+					generateSolutions(string + synonym, abbreviations,
+							substrings, synonyms, remainingWords, pattern, sc);
+				}
+			}
+		}
+
+	}
+
+	private Set<Set<String>> generatePowerSet(Clue clue) {
+		Set<Set<String>> powerSet = Sets.powerSet(new LinkedHashSet<String>(
+				Arrays.asList(clue.getClueWords())));
+
+		Set<Set<String>> newSet = new LinkedHashSet<>(powerSet);
+
+		Iterator<Set<String>> it = newSet.iterator();
+		while (it.hasNext()) {
+			Set<String> next = it.next();
+			if (next.size() < 2) {
+				it.remove();
+			}
+		}
+
+		// for (Set<String> someSet : newSet) {
+		// System.out.println(someSet);
+		// }
+
+		return newSet;
 	}
 
 	private void constructSubstrings(String[] clue,
@@ -134,17 +221,22 @@ public class Charade extends Solver {
 		// For each clue word
 		for (String word : clue) {
 			int length = word.length();
-			if (length > 1) {
+			if (length == 1 || length == 2) {
+				Util.addToMap(components, word, word, HashSet.class);
+			} else if (length > 1) {
 				// For each substring, starting from the front
-				for (int i = 1; i < length - 1; i++) {
-					Util.addToMap(components, word, word.substring(0, i),
-							HashSet.class);
+				for (int i = 1; i < length; i++) {
+					String substring = word.substring(0, i);
+					if (!substring.equals(word)) {
+						Util.addToMap(components, word, substring,
+								HashSet.class);
+					}
 				}
 				// Now the ends of the words
-				final int lastIndex = length - 1;
-				for (int i = lastIndex - 1; i >= 0; i--) {
-					Util.addToMap(components, word,
-							word.substring(i, lastIndex), HashSet.class);
+				final int lastIndex = length;
+				for (int i = lastIndex - 1; i > 0; i--) {
+					String substring = word.substring(i, lastIndex);
+					Util.addToMap(components, word, substring, HashSet.class);
 				}
 			}
 		}
@@ -205,11 +297,13 @@ public class Charade extends Solver {
 		testSolver(Charade.class);
 		// Clue c = new Clue("Outlaw leader managing money", "???????",
 		// "BANKING",
+		// "charade");
+		// Clue c = new Clue("Quiet bird has a sign on a strange occurrence",
+		// "??????????", "PHENOMENON", "charade");
 		// NAME);
 		// Charade ch = new Charade();
 		// ch.solve(c);
-		// Charade c = new Charade();
-		// c.tagDB();
+		// ch.tagDB();
 	}
 
 } // End of class Charade
