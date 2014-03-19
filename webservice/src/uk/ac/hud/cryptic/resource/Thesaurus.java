@@ -338,7 +338,7 @@ public class Thesaurus {
 				// If this String has registered abbreviations, note them!
 				if (thesaurus.containsKey(clueWords)) {
 					synonymMap.put(clueWords, thesaurus.get(clueWords));
-					break;
+					// break;
 				}
 
 			}
