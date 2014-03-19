@@ -6,7 +6,7 @@
     <div class="col-md-12">
       <div class="jumbotron">
         <h1>Cryptic Crossword Solver</h1>
-        <p class="lead">Rude type making love twice on grass, perversely (5)</p>
+        <p class="lead">Creamy cheese used in apricot tart (7)</p>
       </div>
     </div>
   </div>
