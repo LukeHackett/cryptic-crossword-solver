@@ -3,6 +3,7 @@ package uk.ac.hud.cryptic.solver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -136,7 +137,7 @@ public class Charade extends Solver {
 		for (Set<String> combination : powerSet) {
 			generateSolutions("", abbreviations, substrings, synonyms,
 					combination.toArray(new String[combination.size()]),
-					pattern, sc);
+					pattern, sc, new ArrayList<String>());
 		}
 
 		return sc;
@@ -146,18 +147,24 @@ public class Charade extends Solver {
 			Map<String, Set<String>> abbreviations,
 			Map<String, Set<String>> substrings,
 			Map<String, Set<String>> synonyms, String[] clueWords,
-			SolutionPattern pattern, SolutionCollection sc) {
+			SolutionPattern pattern, SolutionCollection sc, List<String> trace) {
 
 		// Integrate dictionary checking to check the generated String's
 		// prefix
-		if (!pattern.matchPrefix(string) || !DICTIONARY.isPrefix(string)) {
+		if (!pattern.matchPrefix(string)) {
+			// TODO Also do DICTIONARY.isPrefix() here - but being slow?
 			return;
 		}
 
 		if (string.length() >= pattern.getTotalLength()
 				|| clueWords.length == 0) {
 			if (string.length() == pattern.getTotalLength()) {
-				sc.add(new Solution(string, NAME));
+				Solution s = new Solution(string, NAME);
+				for (String entry : trace) {
+					s.addToTrace(entry);
+				}
+				s.addToTrace("The above components have been put together to form the proposed solution.");
+				sc.add(s);
 			}
 		} else {
 			// Take the first word of the current combination
@@ -170,24 +177,49 @@ public class Charade extends Solver {
 			Set<String> abbreviationMatches = abbreviations.get(currentWord);
 			if (abbreviationMatches != null) {
 				for (String abbreviation : abbreviationMatches) {
+
+					List<String> newTrace = new ArrayList<String>(trace);
+					String message = "\"" + abbreviation
+							+ "\" is an abbreviation of the clue word \""
+							+ currentWord + "\".";
+					newTrace.add(message);
+
 					generateSolutions(string + abbreviation, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc);
+							substrings, synonyms, remainingWords, pattern, sc,
+							newTrace);
 				}
 			}
 
 			Set<String> substringMatches = substrings.get(currentWord);
 			if (substringMatches != null) {
 				for (String substring : substringMatches) {
+
+					List<String> newTrace = new ArrayList<String>(trace);
+					String message = "\""
+							+ substring
+							+ "\" has been taken as a substring of the clue word \""
+							+ currentWord + "\".";
+					newTrace.add(message);
+
 					generateSolutions(string + substring, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc);
+							substrings, synonyms, remainingWords, pattern, sc,
+							newTrace);
 				}
 			}
 
 			Set<String> synonymMatches = synonyms.get(currentWord);
 			if (synonymMatches != null) {
 				for (String synonym : synonymMatches) {
+
+					List<String> newTrace = new ArrayList<String>(trace);
+					String message = "\"" + synonym
+							+ "\" is a synonym of the clue word \""
+							+ currentWord + "\".";
+					newTrace.add(message);
+
 					generateSolutions(string + synonym, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc);
+							substrings, synonyms, remainingWords, pattern, sc,
+							newTrace);
 				}
 			}
 		}
