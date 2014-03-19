@@ -89,9 +89,6 @@ public class Charade extends Solver {
 		solutions.addAll(generateSolutions(abbreviations, substrings, synonyms,
 				c, pattern));
 
-		// Remove solutions which don't match the provided pattern
-		pattern.filterSolutions(solutions);
-
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
 
@@ -132,12 +129,16 @@ public class Charade extends Solver {
 
 		SolutionCollection sc = new SolutionCollection();
 
-		Set<Set<String>> powerSet = generatePowerSet(clue);
-
-		for (Set<String> combination : powerSet) {
-			generateSolutions("", abbreviations, substrings, synonyms,
-					combination.toArray(new String[combination.size()]),
-					pattern, sc, new ArrayList<String>());
+		try {
+			Set<Set<String>> powerSet = generatePowerSet(clue);
+			for (Set<String> combination : powerSet) {
+				generateSolutions("", abbreviations, substrings, synonyms,
+						combination.toArray(new String[combination.size()]),
+						pattern, sc, new ArrayList<String>());
+			}
+		} catch (IllegalArgumentException e) {
+			System.err.println("Too many clue words to look for charades.");
+			return sc;
 		}
 
 		return sc;
@@ -151,14 +152,14 @@ public class Charade extends Solver {
 
 		// Integrate dictionary checking to check the generated String's
 		// prefix
-		if (!pattern.matchPrefix(string)) {
+		if (!pattern.matchPrefix(string) || !DICTIONARY.isPrefix(string)) {
 			// TODO Also do DICTIONARY.isPrefix() here - but being slow?
 			return;
 		}
 
 		if (string.length() >= pattern.getTotalLength()
 				|| clueWords.length == 0) {
-			if (string.length() == pattern.getTotalLength()) {
+			if (pattern.match(string)) {
 				Solution s = new Solution(string, NAME);
 				for (String entry : trace) {
 					s.addToTrace(entry);
@@ -226,7 +227,8 @@ public class Charade extends Solver {
 
 	}
 
-	private Set<Set<String>> generatePowerSet(Clue clue) {
+	private Set<Set<String>> generatePowerSet(Clue clue)
+			throws IllegalArgumentException {
 		Set<Set<String>> powerSet = Sets.powerSet(new LinkedHashSet<String>(
 				Arrays.asList(clue.getClueWords())));
 
@@ -239,10 +241,6 @@ public class Charade extends Solver {
 				it.remove();
 			}
 		}
-
-		// for (Set<String> someSet : newSet) {
-		// System.out.println(someSet);
-		// }
 
 		return newSet;
 	}
@@ -287,9 +285,10 @@ public class Charade extends Solver {
 	/**
 	 * Stu's method to try and identify charade clues in the database
 	 */
-	private void tagDB() {
-		InputStream is = Settings.class
-				.getResourceAsStream("/abbreviations/cryptic.csv");
+	private static void tagDB() {
+		Charade c = new Charade();
+
+		InputStream is = Settings.class.getResourceAsStream("/cryptic.csv");
 
 		try (ICsvListReader reader = new CsvListReader(
 				new InputStreamReader(is), CsvPreference.STANDARD_PREFERENCE)) {
@@ -299,21 +298,19 @@ public class Charade extends Solver {
 				String clue = WordUtils.normaliseInput(line.get(0), false);
 				String solution = WordUtils.normaliseInput(line.get(1), true);
 
-				Set<String> abbreviations = new HashSet<>();
-				for (String word : WordUtils.getWords(clue)) {
-					abbreviations.addAll(ABBR.getAbbreviationsForWord(word));
-				}
-
-				for (String abbr : abbreviations) {
-					if (solution.contains(abbr)) {
-						System.out
-								.println("UPDATE `cryptic_clues` SET `type`='charade' WHERE `clue` = \""
-										+ line.get(0).trim()
-										+ "\" AND `solution` = \""
-										+ line.get(1).trim()
-										+ "\" AND `type` IS NULL;");
-						System.out.println("-- " + abbreviations);
-						break;
+				SolutionCollection solutions = c.solve(new Clue(clue,
+						SolutionPattern.toPattern(solution, false), solution,
+						NAME));
+				if (solutions.contains(solution)) {
+					System.out
+							.println("UPDATE `cryptic_clues` SET `type`='charade' WHERE `clue` = \""
+									+ line.get(0).trim()
+									+ "\" AND `solution` = \""
+									+ line.get(1).trim()
+									+ "\" AND `type` IS NULL;");
+					for (String entry : solutions.getSolution(solution)
+							.getSolutionTrace()) {
+						System.out.println("-- " + entry);
 					}
 				}
 			}
@@ -327,6 +324,7 @@ public class Charade extends Solver {
 	 */
 	public static void main(String[] args) {
 		testSolver(Charade.class);
+		// tagDB();
 		// Clue c = new Clue("Outlaw leader managing money", "???????",
 		// "BANKING",
 		// "charade");
