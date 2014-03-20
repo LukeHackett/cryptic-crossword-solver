@@ -308,8 +308,8 @@ public class Container extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		// testSolver(Container.class);
-		tagDB();
+		testSolver(Container.class);
+		// tagDB();
 		// Clue c = new Clue("Wear around the brave", "???????");
 		// Container co = new Container();
 		// co.solve(c);
