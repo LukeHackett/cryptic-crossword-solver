@@ -161,8 +161,7 @@ public class Charade extends Solver {
 
 		// Integrate dictionary checking to check the generated String's
 		// prefix
-		if (!pattern.matchPrefix(string) || !DICTIONARY.isPrefix(string)) {
-			// TODO Also do DICTIONARY.isPrefix() here - but being slow?
+		if (!pattern.matchPrefix(string) || !DICTIONARY.prefixMatch(string)) {
 			return;
 		}
 
@@ -307,7 +306,7 @@ public class Charade extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		// testSolver(Charade.class);
+		testSolver(Charade.class);
 		// tagDB();
 		// Clue c = new Clue("Outlaw leader managing money", "BANK???",
 		// "BANKING",
