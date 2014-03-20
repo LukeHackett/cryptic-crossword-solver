@@ -16,8 +16,10 @@ import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
- * Container solver algorithm ------------Example------------- Clue - Stash or
- * put in stage (7) Answer - Storage --------------------------------
+ * Container solver algorithm 
+ * ------------Example-------------
+ * Clue - Stash or put in stage (7) Answer - Storage 
+ * --------------------------------
  * 
  * @author Mohammad Rahman
  * @version 0.1
@@ -106,6 +108,8 @@ public class Container extends Solver {
 					break;
 			}
 		}
+		
+		pattern.filterSolutions(solutions);
 
 		return solutions;
 	}
@@ -121,7 +125,7 @@ public class Container extends Solver {
 		Map<String, Set<String>> synonyms = new HashMap<>();
 		for (String word : cluewords) {
 			synonyms.put(word,
-					THESAURUS.getEntriesContainingSynonym(word, true));
+					THESAURUS.getSynonyms(word));
 			synonyms.get(word).add(word);
 		}
 
@@ -158,9 +162,9 @@ public class Container extends Solver {
 			String secondWord, Position position, SolutionPattern pattern) {
 		if(firstWord.equals("stage") && secondWord.equals("or") || (secondWord.equals("stage")
 				&& (firstWord.equals("or")))) {
-	
+
 		}
-		
+
 		if ((firstWord.length() + secondWord.length()) == pattern.getTotalLength()) {
 			// If first word is going into second word
 			if (position == Position.LINR) {
@@ -220,7 +224,7 @@ public class Container extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		 testSolver(Container.class);
+		testSolver(Container.class);
 		//Clue c = new Clue("Wear around the brave", "???????");
 		//Container co = new Container();
 		//co.solve(c);
