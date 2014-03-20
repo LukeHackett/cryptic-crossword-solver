@@ -1,23 +1,24 @@
 package uk.ac.hud.cryptic.solver;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.resource.Categoriser;
+import uk.ac.hud.cryptic.util.Util;
+import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
- * Container solver algorithm
+ * Container solver algorithm ------------Example------------- Clue - Stash or
+ * put in stage (7) Answer - Storage --------------------------------
  * 
- * ------------Example-------------
- * Clue - Stash or put in stage (7)
- * Answer - Storage
- * --------------------------------
  * @author Mohammad Rahman
  * @version 0.1
  */
@@ -25,12 +26,34 @@ public class Container extends Solver {
 
 	// A readable (and DB-valid) name for the solver
 	private static final String NAME = "container";
+	private static final String LINR = "0linr0";
+	private static final String RINL = "0rinl0";
 
 	/**
 	 * Default constructor for solver class
 	 */
 	public Container() {
 		super();
+	}
+
+	/**
+	 * Enum for the positions of letter to delete
+	 */
+	private enum Position {
+		RINL("right in left"), LINR("left in right"), NONE("");
+
+		// Position of letter
+		private final String text;
+
+		// Set position of letter to delete
+		Position(String text) {
+			this.text = text;
+		}
+
+		// Get position of letter to delete
+		private String getText() {
+			return text;
+		}
 	}
 
 	/**
@@ -49,147 +72,158 @@ public class Container extends Solver {
 
 		// Get clue pattern
 		final SolutionPattern pattern = c.getPattern();
-		// Get length of full answer
-		int solutionLength = pattern.getTotalLength();
 
 		// Get clue with no punctuation
 		String clue = c.getClueNoPunctuation(true);
-
-		// Clue length must be greater than solution length
-		if (clue.length() < solutionLength) {
-			return solutions;
-		}
-
-		// Separate the words for fast comparison
-		String[] cluewords = c.getClueWords();
-		ArrayList<String> words = new ArrayList<String>();	
-		for(int i =0; i < c.getClueWords().length; i++){
-			words.add(cluewords[i]);
-		}
-
-		// To Store possible indicators
-		Map<Integer,String> containerIndicators = new HashMap<Integer,String>();
-
 
 		// Read in indicators for container clue types
 		Collection<String> indicators = Categoriser.getInstance()
 				.getIndicators(NAME);
 
-		// Temporarily hold indicators in file
-		ArrayList<String> theIndicators = new ArrayList<String>();
-		ArrayList<Integer> count = new ArrayList<Integer>();
-		for (String indicator : indicators) {
-			theIndicators.add(indicator);
-		}
+		// Set the initial position of letter to be deleted to none
+		Position position = Position.NONE;
 
-		//Search the clue for possible indicators that match from file
-		//NOTE* Indicators may be more than one word
-		for (int y = 0; y < words.size();y++) {
-			if(theIndicators.contains(words.get(y))){
-				//Position of indicator in the clue and the indicator string
-				//To be used to remove indicator words
-				count.add(y);
-				containerIndicators.put(y,words.get(y));
+		// Look through indicators to determine the position of the letter which
+		// should be removed
+		loop: for (String indicator : indicators) {
+			switch (indicator) {
+				case RINL:
+					// First letter
+					position = Position.RINL;
+					break;
+				case LINR:
+					// Last letter
+					position = Position.LINR;
+					break;
+				default:
+					// Check if the clue contains the indicator being checked
+					if (clue.contains(indicator)) {
+						// Find solutions
+						solutions.addAll(findSynonyms(c, pattern, position,
+								indicator));
+						break loop;
+					}
+					break;
 			}
 		}
 
-		// No matches from indicators return no solutions from solver
-		if(containerIndicators.isEmpty()){
-			return solutions;
-		}
-
-		//A copy of the words to alter
-		ArrayList<String> wordscp = words;
-
-		// Take out the indicator from the words
-		for (Map.Entry<Integer, String> entry : containerIndicators.entrySet()){
-			int r = entry.getKey();
-			wordscp.remove(r);
-		}
-
-		// Retrieve synonyms from the thesaurus for each word
-		Map<String, Set<String>> synonyms = new HashMap<>();
-		synonyms = getSynonyms(wordscp,synonyms);
-
-
-		//remove one word at a time and then look for matching
-		//container words equal to a synonym of the removed word
-
-		Set<String> syns= null;
-		ArrayList<String> copy = wordscp;
-		for (String word : wordscp) {
-			syns = synonyms.get(word);
-			solutions.addAll(findmatches(word, syns, copy, solutionLength));
-		}
-		
-		System.out.println(solutions);
 		return solutions;
 	}
 
+	private Collection<? extends Solution> findSynonyms(Clue c,
+			SolutionPattern pattern, Position position, String indicator) {
 
-	/**
-	 * A method which retrieves synonyms for a list of words
-	 * @param wordscp the list of words
-	 * @param synonyms a map to list the synonyms
-	 * @return the synonyms of the list of words
-	 */
-	private Map<String, Set<String>> getSynonyms(ArrayList<String> wordscp, 
-			Map<String, Set<String>> synonyms) {
-		for (String word : wordscp) {
-			synonyms.put(word, THESAURUS.getSynonyms(word));
+		SolutionCollection solutions = new SolutionCollection();
+
+		// Separate the words for fast comparison
+		String[] cluewords = c.getClueWords();
+
+		Map<String, Set<String>> synonyms = new HashMap<>();
+		for (String word : cluewords) {
+			synonyms.put(word,
+					THESAURUS.getEntriesContainingSynonym(word, true));
+			synonyms.get(word).add(word);
 		}
-		return synonyms;
+
+		filterSynonyms(synonyms, pattern);
+
+		solutions = matchUpSynonyms(synonyms, position, pattern);
+
+		return solutions;
 	}
 
+	private SolutionCollection matchUpSynonyms(
+			Map<String, Set<String>> synonyms, Position position,
+			SolutionPattern pattern) {
 
+		SolutionCollection solutions = new SolutionCollection();
 
-	/**
-	 * This method returns possible solutions by checking eliminating one word at a time
-	 * and checking if the remainder of the words put together in the form of a container
-	 * is a synonym of the word that has been eliminated
-	 * @param word the word to eliminate
-	 * @param syns the synonyms of the word to be elimated
-	 * @param copy a list of words that maybe the fodder of the container
-	 * @param solutionLength the length of the solution
-	 * @return
-	 */
-	private Collection<? extends Solution> findmatches(String word, Set<String> syns, 
-			ArrayList<String> copy, int solutionLength) {
-
-		//Create a copy to be alterd
-		ArrayList<String> wordsToCheck = new ArrayList<String>(copy);
-		System.out.println("word: " + word);
-		System.out.println("Synonyms of '" + word + "' : " + syns);
-		System.out.println("wordsToCheck: " + wordsToCheck);
-
-		//Remove the word which of which the synonym 
-		//list is for from the list of words
-		for(String st : copy) {
-			if(st.equals(word)) {                
-				wordsToCheck.remove(st);
-			}
-		}
-
-		//Create a  collection of solutions
-		SolutionCollection somesolutions = new SolutionCollection();
-
-		for(String w: wordsToCheck){
-			for(String synon: syns){
-				if(synon.contains(w) && synon.length() == solutionLength){
-					String syncopy = synon;
-					syncopy = syncopy.replace(w, "");
-					if(syncopy.equals(word)){
-						Solution s = new Solution(synon, NAME);			
-						somesolutions.add(s);}
+		for (Entry<String, Set<String>> outerEntry : synonyms.entrySet()) {
+			for (Entry<String, Set<String>> innerEntry : synonyms.entrySet()) {
+				if (!(outerEntry == innerEntry)) {
+					for (String outerString : outerEntry.getValue()) {
+						for (String innerString : innerEntry.getValue()) {
+							containWord(solutions, outerString, innerString,
+									position, pattern);
+						}
+					}
 				}
 			}
 		}
-		return somesolutions;
+
+		return solutions;
+	}
+
+	private void containWord(SolutionCollection solutions, String firstWord,
+			String secondWord, Position position, SolutionPattern pattern) {
+		if(firstWord.equals("stage") && secondWord.equals("or") || (secondWord.equals("stage")
+				&& (firstWord.equals("or")))) {
+	
+		}
+		
+		if ((firstWord.length() + secondWord.length()) == pattern.getTotalLength()) {
+			// If first word is going into second word
+			if (position == Position.LINR) {
+				for (int i = 1; i < secondWord.length(); i++) {
+					StringBuilder sb = new StringBuilder(secondWord);
+					sb.insert(i, firstWord);
+					if (DICTIONARY.isWord(sb.toString())) {
+						solutions.add(new Solution(sb.toString(), NAME));
+					}
+				}
+			}
+			// If second word is going into first word
+			else if (position == Position.RINL) {
+				for (int i = 1; i < firstWord.length(); i++) {
+					StringBuilder sb = new StringBuilder(firstWord);
+					sb.insert(i, secondWord);
+					if (DICTIONARY.isWord(sb.toString())) {
+						solutions.add(new Solution(sb.toString(), NAME));
+					}
+				}
+			}
+		}
+	}
+
+	private void filterSynonyms(Map<String, Set<String>> synonyms,
+			SolutionPattern pattern) {
+		// This way rather than iterators to avoid
+		// ConcurrentModificationExceptions :(
+		Map<String, Set<String>> toRemove = new HashMap<>();
+
+		for (Entry<String, Set<String>> entry : synonyms.entrySet()) {
+			for (String synonym : entry.getValue()) {
+				String[] syn = synonym.split(WordUtils.SPACE_AND_HYPHEN);
+				if (synonym.length() > pattern.getTotalLength()
+						|| syn.length > 1) {
+					Util.addToMap(toRemove, entry.getKey(), synonym,
+							HashSet.class);
+				}
+			}
+		}
+
+		// Now remove those which are not valid
+		for (Entry<String, Set<String>> entry : toRemove.entrySet()) {
+			for (String synonym : entry.getValue()) {
+				synonyms.get(entry.getKey()).remove(synonym);
+			}
+		}
+
 	}
 
 	@Override
 	public String toString() {
 		return NAME;
+	}
+
+	/**
+	 * Entry point to the code for testing purposes
+	 */
+	public static void main(String[] args) {
+		 testSolver(Container.class);
+		//Clue c = new Clue("Wear around the brave", "???????");
+		//Container co = new Container();
+		//co.solve(c);
 	}
 
 } // End of class Container
