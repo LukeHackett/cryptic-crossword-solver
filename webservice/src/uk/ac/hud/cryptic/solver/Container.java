@@ -1,12 +1,21 @@
 package uk.ac.hud.cryptic.solver;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.supercsv.io.CsvListReader;
+import org.supercsv.io.ICsvListReader;
+import org.supercsv.prefs.CsvPreference;
+
+import uk.ac.hud.cryptic.config.Settings;
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -16,10 +25,8 @@ import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
- * Container solver algorithm 
- * ------------Example-------------
- * Clue - Stash or put in stage (7) Answer - Storage 
- * --------------------------------
+ * Container solver algorithm ------------Example------------- Clue - Stash or
+ * put in stage (7) Answer - Storage --------------------------------
  * 
  * @author Mohammad Rahman
  * @version 0.1
@@ -108,14 +115,14 @@ public class Container extends Solver {
 					break;
 			}
 		}
-		
+
 		pattern.filterSolutions(solutions);
 
 		return solutions;
 	}
 
-	private Collection<? extends Solution> findSynonyms(Clue c,
-			SolutionPattern pattern, Position position, String indicator) {
+	private SolutionCollection findSynonyms(Clue c, SolutionPattern pattern,
+			Position position, String indicator) {
 
 		SolutionCollection solutions = new SolutionCollection();
 
@@ -124,8 +131,7 @@ public class Container extends Solver {
 
 		Map<String, Set<String>> synonyms = new HashMap<>();
 		for (String word : cluewords) {
-			synonyms.put(word,
-					THESAURUS.getSynonyms(word));
+			synonyms.put(word, THESAURUS.getSynonyms(word));
 			synonyms.get(word).add(word);
 		}
 
@@ -147,8 +153,9 @@ public class Container extends Solver {
 				if (!(outerEntry == innerEntry)) {
 					for (String outerString : outerEntry.getValue()) {
 						for (String innerString : innerEntry.getValue()) {
-							containWord(solutions, outerString, innerString,
-									position, pattern);
+							containWord(solutions, outerEntry.getKey(),
+									outerString, innerEntry.getKey(),
+									innerString, position, pattern);
 						}
 					}
 				}
@@ -158,21 +165,25 @@ public class Container extends Solver {
 		return solutions;
 	}
 
-	private void containWord(SolutionCollection solutions, String firstWord,
-			String secondWord, Position position, SolutionPattern pattern) {
-		if(firstWord.equals("stage") && secondWord.equals("or") || (secondWord.equals("stage")
-				&& (firstWord.equals("or")))) {
+	private void containWord(SolutionCollection solutions, String firstClue,
+			String firstWord, String secondClue, String secondWord,
+			Position position, SolutionPattern pattern) {
 
-		}
-
-		if ((firstWord.length() + secondWord.length()) == pattern.getTotalLength()) {
+		if (firstWord.length() + secondWord.length() == pattern
+				.getTotalLength()) {
 			// If first word is going into second word
 			if (position == Position.LINR) {
 				for (int i = 1; i < secondWord.length(); i++) {
 					StringBuilder sb = new StringBuilder(secondWord);
 					sb.insert(i, firstWord);
 					if (DICTIONARY.isWord(sb.toString())) {
-						solutions.add(new Solution(sb.toString(), NAME));
+						Solution s = new Solution(sb.toString(), NAME);
+						s.addToTrace(generateTrace(secondClue, secondWord));
+						s.addToTrace(generateTrace(firstClue, firstWord));
+						s.addToTrace("Insert the word \"" + firstWord
+								+ "\" into the middle of \"" + secondWord
+								+ "\".");
+						solutions.add(s);
 					}
 				}
 			}
@@ -182,11 +193,30 @@ public class Container extends Solver {
 					StringBuilder sb = new StringBuilder(firstWord);
 					sb.insert(i, secondWord);
 					if (DICTIONARY.isWord(sb.toString())) {
-						solutions.add(new Solution(sb.toString(), NAME));
+						Solution s = new Solution(sb.toString(), NAME);
+						s.addToTrace(generateTrace(firstClue, firstWord));
+						s.addToTrace(generateTrace(secondClue, secondWord));
+						s.addToTrace("Insert the word \"" + secondWord
+								+ "\" into the middle of \"" + firstWord
+								+ "\".");
+						solutions.add(s);
 					}
 				}
 			}
 		}
+	}
+
+	private String generateTrace(String clueWord, String synonym) {
+		boolean same = clueWord.equals(synonym);
+		String message = "Take the ";
+		message += same ? "clue word " : "synonym ";
+		message += "\"" + synonym + "\"";
+		if (!same) {
+			message += " of clue word \"" + clueWord + "\".";
+		} else {
+			message += ".";
+		}
+		return message;
 	}
 
 	private void filterSynonyms(Map<String, Set<String>> synonyms,
@@ -221,13 +251,68 @@ public class Container extends Solver {
 	}
 
 	/**
+	 * Stu's method to try and identify charade clues in the database
+	 */
+	private static void tagDB() {
+		Container c = new Container();
+
+		final Collection<String> indicators = Categoriser.getInstance()
+				.getIndicators("container");
+
+		// CSV file from the database
+		// SELECT `clue`, `solution` FROM `cryptic_clues` WHERE `type` IS NULL;
+		InputStream is = Settings.class.getResourceAsStream("/cryptic.csv");
+
+		try (ICsvListReader reader = new CsvListReader(
+				new InputStreamReader(is), CsvPreference.STANDARD_PREFERENCE)) {
+
+			List<String> line;
+			// For each "unmarked" clue
+			while ((line = reader.read()) != null) {
+				String clue = WordUtils.normaliseInput(line.get(0), false);
+				String solution = WordUtils.normaliseInput(line.get(1), true);
+
+				Clue clueObj = new Clue(clue, SolutionPattern.toPattern(
+						solution, false), solution, NAME);
+
+				for (String word : clueObj.getClueWords()) {
+					if (indicators.contains(word)) {
+						// Solve it, but all the characters are "known" to speed
+						// up
+						// solving
+						SolutionCollection solutions = c.solve(clueObj);
+						if (solutions.contains(solution)) {
+							System.out.println("-- " + clue + ": " + solution);
+							for (String entry : solutions.getSolution(solution)
+									.getSolutionTrace()) {
+								System.out.println("-- " + entry);
+							}
+							System.out
+									.println("UPDATE `cryptic_clues` SET `type`='container' WHERE `clue` = \""
+											+ line.get(0).trim()
+											+ "\" AND `solution` = \""
+											+ line.get(1).trim()
+											+ "\" AND `type` IS NULL;");
+						}
+
+						break;
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Container.class);
-		//Clue c = new Clue("Wear around the brave", "???????");
-		//Container co = new Container();
-		//co.solve(c);
+		// testSolver(Container.class);
+		tagDB();
+		// Clue c = new Clue("Wear around the brave", "???????");
+		// Container co = new Container();
+		// co.solve(c);
 	}
 
 } // End of class Container
