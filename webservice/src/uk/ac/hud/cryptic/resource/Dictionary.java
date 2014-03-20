@@ -15,6 +15,11 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.WordUtils;
 
+import com.googlecode.concurrenttrees.radix.ConcurrentRadixTree;
+import com.googlecode.concurrenttrees.radix.RadixTree;
+import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFactory;
+import com.googlecode.concurrenttrees.radix.node.concrete.voidvalue.VoidValue;
+
 /**
  * This class provides a wrapper around the dictionary words file found within
  * Linux systems.
@@ -30,6 +35,7 @@ public class Dictionary {
 
 	// Actual dictionary data structure
 	private Collection<String> dictionary;
+	private RadixTree<VoidValue> prefixDictionary;
 
 	// Cache to speed up common requests
 	private DictionaryCache cache;
@@ -53,6 +59,8 @@ public class Dictionary {
 
 		// Instantiate the dictionary object
 		dictionary = new HashSet<>();
+		prefixDictionary = new ConcurrentRadixTree<>(
+				new DefaultCharArrayNodeFactory());
 
 		// Read specified dictionary to internal data structure
 		for (InputStream element : is) {
@@ -87,10 +95,13 @@ public class Dictionary {
 
 			// Loop over every line
 			while ((line = br.readLine()) != null) {
+				String word = line.toLowerCase().trim();
 				if (add) {
-					dictionary.add(line.toLowerCase().trim());
+					dictionary.add(word);
+					prefixDictionary.put(word, VoidValue.SINGLETON);
 				} else {
-					dictionary.remove(line.toLowerCase().trim());
+					dictionary.remove(word);
+					prefixDictionary.remove(word);
 				}
 			}
 
@@ -261,33 +272,6 @@ public class Dictionary {
 	}
 
 	/**
-	 * This method will return whether or not the given prefix matches with any
-	 * of the words of the dictionary.
-	 * 
-	 * @param prefix
-	 *            the word to be search for
-	 * @return <code>true</code> if a word exists with this prefix,
-	 *         <code>false</code> otherwise
-	 */
-	public synchronized boolean isPrefix(String prefix) {
-		prefix = prefix.toLowerCase().trim();
-
-		// Allow empty strings
-		if (prefix.isEmpty()) {
-			return true;
-		}
-
-		boolean valid = false;
-		for (String word : dictionary) {
-			if (word.startsWith(prefix)) {
-				valid = true;
-				break;
-			}
-		}
-		return valid;
-	}
-
-	/**
 	 * Just the same as "isWord", but this is to be used when the text may
 	 * contain more than one word
 	 * 
@@ -322,12 +306,19 @@ public class Dictionary {
 		// Standarise the given prefix
 		prefix = prefix.toLowerCase().trim();
 		// Have the manually check all dictionary words until a match is found
-		for (String word : dictionary) {
-			if (word.startsWith(prefix)) {
-				return true;
-			}
-		}
-		return false;
+		// for (String word : dictionary) {
+		// if (word.startsWith(prefix)) {
+		// return true;
+		// }
+		// }
+		// return false;
+		System.out
+				.println("Words beginning with \""
+						+ prefix
+						+ "\"? "
+						+ (prefixDictionary.getKeysStartingWith(prefix).size() > 0 ? "Yes"
+								: "No"));
+		return prefixDictionary.getKeysStartingWith(prefix).size() > 0;
 	}
 
 	/**
