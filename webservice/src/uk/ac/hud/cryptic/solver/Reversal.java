@@ -79,7 +79,17 @@ public class Reversal extends Solver {
 
 				// Add as a solution if the reversed word is a real word
 				if (DICTIONARY.isWord(reversedWord)) {
-					collection.add(new Solution(reversedWord, NAME));
+					// Create a new solution
+					Solution solution = new Solution(reversedWord, NAME);
+					// Add the trace messages
+					solution.addToTrace(String.format(
+							"Using '%s' as the word play indicator", fodder));
+					solution.addToTrace(String.format("%s is synonym of %s",
+							synonym, fodder));
+					solution.addToTrace(String.format(
+							"%s can be reversed to get %s", synonym,
+							reversedWord));
+					collection.add(solution);
 				}
 			}
 		}
