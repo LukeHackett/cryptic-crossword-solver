@@ -192,7 +192,7 @@ public class SolutionCollection extends HashSet<Solution> {
 
 				// Increase confidence and add message
 				double confidence = Confidence.multiply(
-						duplicateSolution.getConfidence(),
+						bestSolution.getConfidence(),
 						Confidence.MULTI_SOLVER_MULTIPLIER);
 				bestSolution.setConfidence(confidence);
 				bestSolution
