@@ -5,12 +5,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.supercsv.io.CsvListReader;
@@ -32,7 +34,7 @@ import com.google.common.collect.Sets;
 /**
  * Charade solver algorithm
  * 
- * @author Stuart Leader
+ * @author Stuart Leader, Leanne Butcher
  * @version 0.3
  */
 public class Charade extends Solver {
@@ -42,6 +44,11 @@ public class Charade extends Solver {
 
 	// The abbreviations resource
 	private static final Abbreviations ABBR = Abbreviations.getInstance();
+
+	// The type of components that make up a charade solution
+	private enum MapType {
+		ABBREVIATION, SUBSTRING, SYNONYM
+	}
 
 	/**
 	 * Default constructor for solver class
@@ -79,15 +86,17 @@ public class Charade extends Solver {
 		// Get synonyms of each clue word, which may also be used
 		Map<String, Set<String>> synonyms = THESAURUS.getSynonymsForClue(clue);
 
+		Map<MapType, Map<String, Set<String>>> components = new HashMap<>();
+		components.put(MapType.ABBREVIATION, abbreviations);
+		components.put(MapType.SUBSTRING, substrings);
+		components.put(MapType.SYNONYM, synonyms);
+
 		// Reduce map to only valid data
 		// Separate maps to aid with trace messages
-		reduceMap(abbreviations, pattern);
-		reduceMap(substrings, pattern);
-		reduceMap(synonyms, pattern);
+		reduceMaps(components, pattern);
 
 		// Generate solutions
-		solutions.addAll(generateSolutions(abbreviations, substrings, synonyms,
-				c, pattern));
+		solutions.addAll(generateSolutions(components, c, pattern));
 
 		// Filter out invalid words
 		DICTIONARY.dictionaryFilter(solutions, pattern);
@@ -98,33 +107,34 @@ public class Charade extends Solver {
 		return solutions;
 	}
 
-	private void reduceMap(Map<String, Set<String>> components,
+	private void reduceMaps(Map<MapType, Map<String, Set<String>>> components,
 			SolutionPattern pattern) {
 		// Min and max length a substring can be
 		final int minSubstringLength = 1;
 		final int maxSubstringLength = pattern.getTotalLength() > 1 ? pattern
 				.getTotalLength() - 1 : 1;
 
-		// For each set of substrings
-		for (Set<String> set : components.values()) {
-			Iterator<String> it = set.iterator();
-			// For each calculated substring
-			while (it.hasNext()) {
-				String substring = it.next();
-				// 1 <= length <= pattern length ( - 2)
-				if (substring.length() < minSubstringLength
-						|| substring.length() > maxSubstringLength) {
-					it.remove();
-					continue;
+		for (Entry<MapType, Map<String, Set<String>>> map : components
+				.entrySet()) {
+			// For each set of substrings
+			for (Set<String> set : map.getValue().values()) {
+				Iterator<String> it = set.iterator();
+				// For each calculated substring
+				while (it.hasNext()) {
+					String substring = it.next();
+					// 1 <= length <= pattern length ( - 2)
+					if (substring.length() < minSubstringLength
+							|| substring.length() > maxSubstringLength) {
+						it.remove();
+						continue;
+					}
 				}
 			}
 		}
 	}
 
 	private SolutionCollection generateSolutions(
-			Map<String, Set<String>> abbreviations,
-			Map<String, Set<String>> substrings,
-			Map<String, Set<String>> synonyms, Clue clue,
+			Map<MapType, Map<String, Set<String>>> components, Clue clue,
 			SolutionPattern pattern) {
 
 		SolutionCollection sc = new SolutionCollection();
@@ -132,7 +142,7 @@ public class Charade extends Solver {
 		try {
 			Set<Set<String>> powerSet = generatePowerSet(clue);
 			for (Set<String> combination : powerSet) {
-				generateSolutions("", abbreviations, substrings, synonyms,
+				generateSolutions("", components,
 						combination.toArray(new String[combination.size()]),
 						pattern, sc, new ArrayList<String>());
 			}
@@ -145,10 +155,9 @@ public class Charade extends Solver {
 	}
 
 	private void generateSolutions(String string,
-			Map<String, Set<String>> abbreviations,
-			Map<String, Set<String>> substrings,
-			Map<String, Set<String>> synonyms, String[] clueWords,
-			SolutionPattern pattern, SolutionCollection sc, List<String> trace) {
+			Map<MapType, Map<String, Set<String>>> components,
+			String[] clueWords, SolutionPattern pattern, SolutionCollection sc,
+			List<String> trace) {
 
 		// Integrate dictionary checking to check the generated String's
 		// prefix
@@ -157,6 +166,7 @@ public class Charade extends Solver {
 			return;
 		}
 
+		// The base case
 		if (string.length() >= pattern.getTotalLength()
 				|| clueWords.length == 0) {
 			if (pattern.match(string)) {
@@ -175,52 +185,26 @@ public class Charade extends Solver {
 			String[] remainingWords = Arrays.copyOfRange(clueWords, 1,
 					clueWords.length);
 
-			Set<String> abbreviationMatches = abbreviations.get(currentWord);
-			if (abbreviationMatches != null) {
-				for (String abbreviation : abbreviationMatches) {
+			for (Entry<MapType, Map<String, Set<String>>> map : components
+					.entrySet()) {
+				Set<String> matches = map.getValue().get(currentWord);
+				if (matches != null) {
+					for (String match : matches) {
+						List<String> newTrace = new ArrayList<>(trace);
+						String message = "\"" + match + "\" ";
+						if (map.getKey() == MapType.ABBREVIATION) {
+							message += "is an abbreviation";
+						} else if (map.getKey() == MapType.SUBSTRING) {
+							message += "has been taken as a substring";
+						} else if (map.getKey() == MapType.SYNONYM) {
+							message += "is a synonym";
+						}
+						message += " of the clue word \"" + currentWord + "\".";
+						newTrace.add(message);
 
-					List<String> newTrace = new ArrayList<String>(trace);
-					String message = "\"" + abbreviation
-							+ "\" is an abbreviation of the clue word \""
-							+ currentWord + "\".";
-					newTrace.add(message);
-
-					generateSolutions(string + abbreviation, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc,
-							newTrace);
-				}
-			}
-
-			Set<String> substringMatches = substrings.get(currentWord);
-			if (substringMatches != null) {
-				for (String substring : substringMatches) {
-
-					List<String> newTrace = new ArrayList<String>(trace);
-					String message = "\""
-							+ substring
-							+ "\" has been taken as a substring of the clue word \""
-							+ currentWord + "\".";
-					newTrace.add(message);
-
-					generateSolutions(string + substring, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc,
-							newTrace);
-				}
-			}
-
-			Set<String> synonymMatches = synonyms.get(currentWord);
-			if (synonymMatches != null) {
-				for (String synonym : synonymMatches) {
-
-					List<String> newTrace = new ArrayList<String>(trace);
-					String message = "\"" + synonym
-							+ "\" is a synonym of the clue word \""
-							+ currentWord + "\".";
-					newTrace.add(message);
-
-					generateSolutions(string + synonym, abbreviations,
-							substrings, synonyms, remainingWords, pattern, sc,
-							newTrace);
+						generateSolutions(string + match, components,
+								remainingWords, pattern, sc, newTrace);
+					}
 				}
 			}
 		}
@@ -323,16 +307,15 @@ public class Charade extends Solver {
 	 * Entry point to the code for testing purposes
 	 */
 	public static void main(String[] args) {
-		testSolver(Charade.class);
+		// testSolver(Charade.class);
 		// tagDB();
-		// Clue c = new Clue("Outlaw leader managing money", "???????",
+		// Clue c = new Clue("Outlaw leader managing money", "BANK???",
 		// "BANKING",
 		// "charade");
-		// Clue c = new Clue("Quiet bird has a sign on a strange occurrence",
-		// "??????????", "PHENOMENON", "charade");
-		// NAME);
-		// Charade ch = new Charade();
-		// ch.solve(c);
+		Clue c = new Clue("Quiet bird has a sign on a strange occurrence",
+				"PHENO?????", "PHENOMENON", "charade");
+		Charade ch = new Charade();
+		ch.solve(c);
 		// ch.tagDB();
 	}
 
