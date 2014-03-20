@@ -305,19 +305,12 @@ public class Dictionary {
 	public boolean prefixMatch(String prefix) {
 		// Standarise the given prefix
 		prefix = prefix.toLowerCase().trim();
-		// Have the manually check all dictionary words until a match is found
-		// for (String word : dictionary) {
-		// if (word.startsWith(prefix)) {
-		// return true;
-		// }
-		// }
-		// return false;
-		System.out
-				.println("Words beginning with \""
-						+ prefix
-						+ "\"? "
-						+ (prefixDictionary.getKeysStartingWith(prefix).size() > 0 ? "Yes"
-								: "No"));
+		// System.out
+		// .println("Words beginning with \""
+		// + prefix
+		// + "\"? "
+		// + (prefixDictionary.getKeysStartingWith(prefix).size() > 0 ? "Yes"
+		// : "No"));
 		return prefixDictionary.getKeysStartingWith(prefix).size() > 0;
 	}
 
