@@ -22,7 +22,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		HomophoneTest.class,
 		SpoonerismTest.class,
 		PalindromeTest.class,
-		ReversalTest.class
+		ReversalTest.class,
+		DeletionTest.class,
+		ContainerTest.class
 		})
 
 public class SolverSuite {
