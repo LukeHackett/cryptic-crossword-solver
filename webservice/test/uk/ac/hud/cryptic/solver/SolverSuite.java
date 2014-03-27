@@ -24,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		PalindromeTest.class,
 		ReversalTest.class,
 		DeletionTest.class,
-		ContainerTest.class
+		ContainerTest.class,
+		CharadeTest.class
 		})
 
 public class SolverSuite {
