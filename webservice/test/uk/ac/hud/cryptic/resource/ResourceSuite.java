@@ -16,7 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses(value = { 
 		HomophoneDictionaryTest.class,
 		DictionaryTest.class,
-		ThesaurusTest.class
+		ThesaurusTest.class,
+		AbbreviationsTest.class
 		})
 
 public class ResourceSuite {
