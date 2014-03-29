@@ -1,10 +1,12 @@
+%%%
+%% Research :: Web Services 
+%%%
 \section{Web Services}
 
 Over the past decade web services have exploded into the computing space. 
 However the concepts that underlie web services are not new. Web services 
 originally evolved from the Remote Procedure Call mechanism that was found in a
-software development framework used in the 1990s (Distributed Computing 
-Environment) \citep{kalin13}.
+software development framework used in the 1990s \citep{kalin13}.
 
 During the late 1990s, XML-RPC was developed, which was a stripped down, light 
 weight version of the Remote Procedure Call mechanism. The XML-RPC system only 
@@ -15,18 +17,21 @@ for data types and the reliance on HTTP for transport XML-RPC \citep{kalin13}.
 XML-RPC is designed to be as lightweight as possible, and thus can be supported
 on a wide range of devices. XML-RPC was ultimately implemented fully and became
 known as SOAP. As well as SOAP, another implementation of XML-RPC occurred, 
-which was entitled REST. Both of these technologies fall under to the term web 
-services.
+which was entitled REST. Both of these technologies fall under the term `web 
+services'.
 
 Since 2001 a vast range of companies have adopted the web services movement 
 including (but not limited to) IBM, Oracle, Hewlett-Packard, Amazon, Google, 
 Facebook and Twitter \citep{sullivan01, kalin13}.
 
 Web services generally tend to reside upon public networks such as the 
-Internet. However it is possible for a web service to run upon a private 
-network, such as a company’s internal Intranet. 
+Internet. However it is possible for a web service to run within a private 
+network, such as a company's internal Intranet. 
 
 
+%%%
+%% Research :: Web Services :: What are Web Services?
+%%%
 \newpage
 \subsection{What are Web Services?}
 
@@ -80,17 +85,20 @@ start-up costs and promote interoperability between new and existing services
 
 It is the interoperability that allows web services to promote language 
 transparency. This means that web services and client programs do not need to 
-be programmed in the same language. Many of the popular languages (e.g. C/C++,
-Java, and Python) provide inbuilt libraries or frameworks in support of web 
-services \citep{kalin13}.
+be developed in the same language. Many popular languages (e.g. C/C++, Java, and
+Python) provide inbuilt libraries or frameworks in support of web services 
+\citep{kalin13}.
 
 Finally web services are designed to be modular in design. This allows new 
 services to be brought online in staggered stages, as well as allowing for 
 laying of existing services. Again as previously mentioned each new service, 
-can be written in the same language as the last service, or use a completely 
+can be written in the same language as the previous service, or use a completely 
 new language \citep{kalin13}. 
 
 
+%%%
+%% Research :: Web Services :: Web Service Categories
+%%%
 \subsection{Web Service Categories}
 
 Web services can be divided into two distinct groups --- SOAP based and 
@@ -98,6 +106,10 @@ REST-style \citep{kalin13}. Interestingly the distinction could be described
 as being little at most, but they are not necessarily directly compatible with 
 each other. 
 
+
+%%%
+%% Research :: Web Services :: Web Service Categories :: SOAP
+%%%
 \subsubsection{SOAP}
 
 SOAP originally stood for Simple Object Access Protocol, but is often referred 
@@ -129,11 +141,14 @@ the end service users. It is the configurable services aspect that is the
 central concept behind all service oriented architectures \citep{gershon04}. 
 
 
+%%%
+%% Research :: Web Services :: Web Service Categories :: REST
+%%%
 \subsubsection{REST}
 
 REST stands for Representational State Transfer, and is a relatively new 
 architecture for creating web services. Despite its relatively new architecture
-it is actively used by some of the larger vendors e.g. Google and Amazon 
+it is actively used by some of the larger vendors such as Google and Amazon 
 \citep{dospinescu13}.
 
 REST relies upon the emerging architecture known as resource-oriented 
@@ -183,19 +198,21 @@ operation.
   \end{center}
 \end{table}
 
-There are additional verbs, such as HEAD, TRACE, CONNECT, OPTIONS and INFO. 
-Some of the additional verbs may not be implemented by the server and/or 
-service for security reasons. Every HTTP request will include a verb to 
-indicate which CRUD operation should be performed upon the resource 
-\citep{dospinescu13}. 
+There are additional optional verbs, such as HEAD, TRACE, CONNECT, OPTIONS and 
+INFO, but these may not be implemented by the server and/or service for security
+reasons. Every HTTP request will include a verb to indicate which CRUD operation
+should be performed upon the resource \citep{dospinescu13}. 
 
 
+%%%
+%% Research :: Web Services :: Web Service Categories :: SOAP vs REST
+%%%
 \subsubsection{SOAP vs REST}
 
 Both REST and SOAP utilise standard protocols when communicating, and also 
-originate from the same/similar specification. The real difference between the 
-two technologies is that SOAP utilises it's own application protocol by 
-extending current protocols --- namely HTTP.
+originate from a similar specification. The real difference between the two 
+technologies is that SOAP utilises it's own application protocol by extending 
+current protocols.
 
 This causes a number of issues, such as protocol standardisation. Although SOAP
 is based upon the HTTP protocol, each client will have to correctly understand 
@@ -220,7 +237,7 @@ how it operates or what it will return.
 REST doesn't need to operate over HTTP, and doesn't contain the complexity that
 SOAP provides. Rather than utilising XML, REST uses the standard HTTP methods
 to describe what a service should do. For example obtaining a resource would
-use GET, and for creating a resource PUT would be used.
+use GET, and for creating a resource POST would be used.
 
 Clients do not require additional REST supporting libraries. As long as the
 language supports HTTP, the client will be able to consume a REST HTTP service
@@ -231,7 +248,11 @@ responses can be formatted to either XML or the more popular JSON (due to speed
 increases). 
 
 
+%%%
+%% Research :: Web Services :: Clients
+%%%
 \subsection{Clients}
+
 As previously mentioned, the broader web server architecture follows the 
 client-server application model. When designing a client-server application, a
 decision has to be made as to which operations (or parts of operations) should
@@ -246,7 +267,11 @@ In order to simplify the design the client will need to fall into one of the
 two categories --- `thin' client or a `thick' client. 
 
 
+%%%
+%% Research :: Web Services :: Clients :: Thin
+%%%
 \subsubsection{Thin}
+
 A thin client is a computer system that depends largely upon a main server, or 
 a number of servers in order to complete any computation tasks. The client has 
 no knowledge of how to process data, it simply knows how to pass data to 
@@ -284,7 +309,11 @@ to handle lots of potentially fast and slow connections, with each connection
 using a wide range of internal server resources (CPU, Memory etc). 
 
 
+%%%
+%% Research :: Web Services :: Thick
+%%%
 \subsubsection{Thick}
+
 A thick client is a computer system that has little dependency upon a main 
 server, or a number of servers in order to complete computational tasks. The 
 client will still require a limited connection to a server, but will not use 
