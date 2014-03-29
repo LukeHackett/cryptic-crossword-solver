@@ -41,7 +41,7 @@ designed to hold all application specific settings, and each setting can be
 altered based upon the mode it is being run under --- for example development, 
 testing or production.
 
-The Settings class follows the single design pattern which ensures that the 
+The Settings class follows the Singleton design pattern which ensures that the 
 class will have only one instance \citep{gof}. This prevents various numbers of
 the same Settings objects being used in memory, and thus wasting valuable space.
 
@@ -64,7 +64,7 @@ Settings class.
 
 The core package contains the various classes that are deemed to be at the heart
 of the system. A class has been devoted to the clue, a solution and a solution 
-pattern class various specific functionality.
+pattern providing various specific functionalities.
 
 For example the solution pattern provides methods that allow for words to be 
 computed, without having to work out the length of each word every time. The 
@@ -80,7 +80,7 @@ Finally the manager class is the heart of the system and was originally
 illustrated in the subsection \nameref{sub:solving_a_clue} on page 
 \pageref{sub:solving_a_clue}. It will be able distribute a clue and it's 
 solution pattern to the various solvers asynchronously. It also handles the 
-merging of results within the \texttt{distributeAndSolve} method.as
+merging of results within the \texttt{distributeAndSolve} method.
 
 Figure \ref{fig:core_package} illustrates the core package, containing the 
 various core classes.
@@ -99,12 +99,14 @@ various core classes.
 \subsection{NLP}
 \label{sub:nlp}
 
-The NLP package contains the various classes that are focus on providing the 
-system with an interface to the Apache OpenNLP library. This will allow the 
-system to be able to use natural language processing techniques from within the 
+The NLP package contains the various classes that focus on providing the system 
+with an interface to the Apache OpenNLP library. This will allow the system to 
+be able to use natural language processing techniques from within the 
 application.
 
-%% Additional write to be added here
+%%%
+%% Additional content to be added here
+%%%
 
 Figure \ref{fig:nlp_package} illustrates the NLP package, containing the 
 various NLP related classes.
@@ -165,11 +167,11 @@ the various resource classes.
 \label{sub:servlet}
 
 The servlet package contains two classes that provide the web service interface.
-Both classes tie into the Tomcat system, which allow provides a container for 
-the website to sit in. 
+Both classes tie into the Tomcat system, which provides a container for the web
+service to sit in. 
 
-The Servlet class is a custom base class that various levels of common 
-functionality, that other specific classes may which to utilise. This 
+The Servlet class is a customised base class that provides various levels of 
+common functionality, that other specific classes will utilise. This 
 functionality includes converting XML into JSON, and determining if a reject was
 made via AJAX.
 

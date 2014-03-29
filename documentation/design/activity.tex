@@ -60,9 +60,9 @@ three predefined `special characters', as outlined below:
 \end{itemize}
 
 For example, the pattern ``'????e?-in-???'' could match to ``mother-in-law'' or 
-``father-in-law'', just as ``??????? d?????'' could match to ``sitting ducks''.
-As identified upon the activity path, a user may simply present the correct 
-number of wild card characters to denote a unknown pattern.
+``father-in-law'', just as ``??????? d????'' could match to ``sitting ducks''.
+As previously mentioned, a user may simply present the correct number of wild 
+card characters to denote an unknown pattern.
 
 \begin{figure}[H]
   \centering
@@ -92,8 +92,8 @@ particular clue type. Once the system has finished applying the categorisation
 `tests' to the clues, it will select the top solver to try to solve the clue.
 
 If the chosen solver is unable to solve the clue, then the next ranking solver 
-will try to solve. This process will continue until a set of results have been 
-returned, or if all solvers have been used.
+will try to solve the clue. This process will continue until a set of results 
+have been returned, or if all solvers have been used.
 
 If the categorisation fails for some reason, then the system will try to brute 
 force it's way to answer, by using all solvers.
@@ -113,12 +113,12 @@ force it's way to answer, by using all solvers.
 \label{sub:results}
 
 Once the solving process has finished, the system will then attempt to apply a 
-`confidence rating'. The confidence rating of a clue is how close to the correct
-answer the system thinks it is. 
+`confidence rating'. The confidence rating of a solution is how close the system
+`thinks' the solution is to the correct answer.
 
-For example, if a clue had a confidence rating of 100\% it would deemed as the 
-only answer, whilst 0\% would indicate there is no chance of the answer being 
-correct.
+For example, if a solution had a confidence rating of 100\% it would deemed as 
+the only answer, whilst 0\% would indicate there is no chance of the solution
+being correct.
 
 It is intended that if there are a large number of results, then the system may
 choose to filter the results down. For example if thousands of results are 

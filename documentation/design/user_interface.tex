@@ -19,8 +19,8 @@ be discussed in more detail in the following subsections.
 \subsection{Platform Support} 
 \label{sub:platform_support}
 
-One of the main objective of the project is to develop a system that can be used
-upon a number of mobile platforms, as well as trying not to neglect 
+One of the main objectives of the project is to develop a system that can be 
+used upon a number of mobile platforms, as well as trying not to neglect 
 `traditional' desktop users.
 
 In order to complete both of these objectives, a responsive design is required.
@@ -28,9 +28,9 @@ A responsive design is one that is able to dynamically change based upon the
 screen size.
 
 This means that there will only be one code based for multiple screen sizes, and
-thus allowing for increases in maintainability. All of the designs within this
-section feature a responsive design. Figure \ref{fig:input_form_compare} 
-illustrates the power of responsive designs.
+thus allows for easier maintainability. All of the designs within this section 
+feature a responsive design. Figure \ref{fig:input_form_compare} illustrates the
+power of responsive designs.
 
 The left-hand side form shows a `traditional' desktop experience, whilst the 
 form upon the right-hand side, shows a mobile experience.
@@ -51,8 +51,8 @@ form upon the right-hand side, shows a mobile experience.
 
 In order for the system to solve the clue, it must first be given the clue, 
 along with additional supporting information. The additional information such as 
-the solution length and pattern is vital to the system in order for it to 
-compute the correct answer. 
+the solution length and solution pattern is vital to the system in order for it 
+to compute the correct answer. 
 
 However the intended users of the system are likely to be operating upon some 
 form of mobile device, meaning that a simple and power interface is required. It
@@ -91,12 +91,12 @@ not be utilising limited amount of space wisely.
 In order to combat this issue, validation will be displayed `inline' with the 
 form input elements, as seen within figure \ref{fig:input_form_error}. By 
 utilising an `inline' approach it recycles the screen space that has been made 
-available by the form.
+available to the form.
 
-For validations that have passed the input outline will change to green, and for
-validations that have failed the input group will change to red. This will 
-immediately alert the user to the various issues, and thus allows the user to 
-fix the errors in a quicker and more efficient manner.
+For inputs that have passed the validations the outline will change to green, 
+and for validations that have failed the input group will change to red. This 
+will immediately alert the user to the various issues, and thus allows the user 
+to fix the errors in a quicker and more efficient manner.
 
 \begin{figure}[H]
   \centering
@@ -122,7 +122,7 @@ solution trace. A solution trace provides a step by step account of how the
 solution was able to be computed. The solution trace may help to teach users how
 a particular type of clue is solved.
 
-The results are order by confidence rating in ascending order, and by default 
+The results are ordered by confidence rating in ascending order, and by default 
 the first panel will be `open', showing the solution trace. The reason for this
 is that the top answer is likely to be the answer the end user is looking for
 
