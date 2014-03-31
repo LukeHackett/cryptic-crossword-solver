@@ -1,0 +1,10 @@
+# Make the compiled book
+make
+
+# Make each of the books
+for dir in ./*/
+do
+  cd ${dir%*/}
+  make
+  cd ..
+done
