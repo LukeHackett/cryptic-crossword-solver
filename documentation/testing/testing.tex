@@ -1,6 +1,20 @@
+% Define new types of columns used within this book
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
 %%%%
 %% Testing
 %%%
 \chapter{Testing}
 \label{cha:testing}
 
+
+
+% Unit Tests
+\newpage
+\input{unit_tests}
+
+% Walkthrough
+\newpage
+\input{walkthrough}
