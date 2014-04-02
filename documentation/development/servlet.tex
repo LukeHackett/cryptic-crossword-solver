@@ -59,14 +59,16 @@ Ajax background. For example if a client was to make a request to the web
 service through a web browser utilising an Ajax request, then the 
 \texttt{isAjaxRequest}  method would return \texttt{true}.
 
-For illustrative proposes the \texttt{isAjaxRequest} method is shown below.
+For illustrative proposes the \texttt{isAjaxRequest} method is shown below in 
+listing \ref{isAjaxMethod}.
 
-\begin{verbatim}
+\begin{lstlisting}[caption={isAjaxMethod deduces if a request was made by AJAX},
+                   label=isAjaxMethod]  
   protected boolean isAjaxRequest(HttpServletRequest request) {
     String ajax = request.getHeader("x-requested-with");
     return ajax != null && ajax.toLowerCase().contains("xmlhttprequest");
   }
-\end{verbatim}
+\end{lstlisting}
 
 The servlet also contains two customised methods -- one to handle errors, and 
 the other to handle a good response -- that are able to send a response back to 
@@ -99,7 +101,8 @@ parameters, based upon a number of criteria including presence checks and
 regular expressions. The code snippet below is an example validation rule, that 
 will validate the solution pattern against a regular expression.
 
-\begin{verbatim}
+\begin{lstlisting}[caption={isPatternValid deduces if a given solution pattern 
+                            is valid}, label=isAjaxMethod] 
  private boolean isPatternValid(String pattern) {
     // Pattern string regular expression
     final String regex = "[0-9A-Za-z?]+((,|-)[0-9A-Za-z?]+)*";
@@ -108,7 +111,7 @@ will validate the solution pattern against a regular expression.
     // Pattern String must be present and of a valid format
     return isPresent(pattern) && match;
   }
-\end{verbatim}
+\end{lstlisting}
 
 In order for validation to pass, the solution pattern must not be empty and must
 match to the regular expression stated in the method.

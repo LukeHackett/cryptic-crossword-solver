@@ -6,8 +6,7 @@
 
 In order for users to use the system a simple and powerful user interface was 
 required. The design reasoning's behind the user interface were described in 
-the \nameref{sec:design_user_interface} design section, which can be found on 
-page \pageref{sec:design_user_interface}.
+the design section.
 
 The user interface has been designed utilising a fall-back system, which is a 
 standard web development approach. The majority of the user interface is 
@@ -19,10 +18,13 @@ Within this project an additional JavaServer Pages Standard Tag Library was
 used. The library -- xml -- provided additional functionality so that JSP was 
 able to directly utilise XML within it's rendering technique.
 
-An example code snippet has been presented below from the \texttt{solver.jsp} 
-file.
+Figure \ref{xmlOutput} illustrates an example XML parsing snippet from the 
+\texttt{solver.jsp} file.
 
-\begin{verbatim}
+\begin{lstlisting}[language=XML, 
+                   caption={isPatternValid deduces if a given solution pattern 
+                            is valid}, 
+                   label=xmlOutput] 
   <x:choose>
     <x:when select="$solution/trace">
       <p>Solution Trace:</p>
@@ -36,7 +38,7 @@ file.
       <p>Solution Trace Unavailable.</p>
     </x:otherwise>
   </x:choose>
-\end{verbatim}
+\end{lstlisting}
 
 The code snippet above shows use of the XML library, as denoted by the 
 `\texttt{x}' name space to certain elements. The code is utilising XPATH to find
