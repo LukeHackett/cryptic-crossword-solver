@@ -4,10 +4,44 @@
 <t:application>
   <div class="row">
     <div class="col-md-12">
-    <h2>Cryptic Crossword Solver <small>Changelog</small></h2>
-    <hr>
+      <h2>Development Changelog</h2>
+      <hr>
     </div>
   </div>
+  <!-- Iteration 3 -->
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Iteration 3 <small>4th April 2014</small></h3>
+      <p>Today marks the completion of the third and final iteration. Within 
+        this iteration a number of new solvers have been brought on line, as 
+        well as various improvements to the current range of solvers.</p>
+      <div class="row">
+      <!-- Key Changes -->
+        <div class="col-md-4">
+          <h4>Key Changes</h4>
+          <ul>
+            <li>Addition of a user manual, containing information for developers
+            and users of the system.</li>
+          </ul>
+        </div>
+        <!-- Known Bugs -->
+        <div class="col-md-4">
+          <h4>Known Bugs</h4>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
+        <!-- In Progress -->
+        <div class="col-md-4">
+          <h4>In Progress</h4>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
   <!-- Iteration 2 -->
   <div class="row">
     <div class="col-md-12">
