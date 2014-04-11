@@ -5,41 +5,45 @@
 \label{sec:solvers}
 
 A Feasibility Study was created to attempt to predict the difficulty of specific
- clue types and their regularity in cryptic crosswords. All seventeen clues
- types were analysed in order to plan which would be implemented in each
- iteration of the implementation process. The first iteration involved Hidden,
- Anagram, Acrostic and Pattern as they all had a low difficulty. The next iteration
- involved Homophones, Palindromes, Double Definition and Spoonerisms to step
- up the difficulty of the algorithms. Finally, the last solvers to be implemented were
- Charades, Deletions, Containers and Reversals as they were seen as the most
- beneficial to implement in the time left for the project. 
+clue types and their regularity in cryptic crosswords. All seventeen clues types
+were analysed in order to plan which would be implemented in each iteration of
+the implementation process. The first iteration involved Hidden, Anagram,
+Acrostic and Pattern as they all had a low difficulty. The next iteration
+involved Homophones, Palindromes, Double Definition and Spoonerisms to step up
+the difficulty of the algorithms. Finally, the last solvers to be implemented
+were Charades, Deletions, Containers and Reversals as they were seen as the most
+beneficial to implement in the time left for the project.
 
-Therefore, with the additional reason of a time limit,  Purely Cryptic and
- \& lit clue types were not implemented due to their high difficulty and Substitutions,
- Shifting and Exchange clue types were not implemented due to their rarity.
+Therefore, with the additional reason of a time limit,  Purely Cryptic and \&
+lit clue types were not implemented due to their high difficulty and
+Substitutions, Shifting and Exchange clue types were not implemented due to
+their rarity.
 
 %%%%
 %% Implementation :: Solvers :: Hidden
 %%%
 \subsection{Hidden}
 
-When investigating the Hidden clue type, it was found that the answer to the clue 
-would be within the clue itself. For example:
+When investigating the Hidden clue type, it was found that the answer to the
+clue  would be within the clue itself. For example:
 
 Creamy cheese used in apricot tart.
 
  
 ANSWER: Ricotta
 
-In the clue above the answer 'ricotta' is hidden within the two words 'apricot tart'.
-The algorithm takes the clue as a whole, without spaces, and then uses the substring method 
-within Java to find all possible hidden words (as the Hidden clue type can also hide words
- in reverse, the clue is also passed in reverse). It does this by taking the index of
- the for loop and length of the solution as boundaries. The following piece of code 
-illustrates how all possible solutions are found (without additional solution trace
-functionality):
+In the clue above the answer `ricotta' is hidden within the two words `apricot
+tart'. The algorithm takes the clue as a whole, without spaces, and then uses
+the substring method  within Java to find all possible hidden words (as the
+Hidden clue type can also hide words in reverse, the clue is also passed in
+reverse). It does this by taking the index of the for loop and length of the
+solution as boundaries.
 
-\begin{lstlisting}
+Listing \ref{hiddenSnippet} illustrates how all possible solutions are found 
+(without additional solution trace functionality):
+
+\begin{lstlisting}[caption={INSERT CAPTION},
+                   label=hiddenSnippet] 
  int index;
  for (index = 0; index <= limit; index++) {
 	Solution s = new Solution(clue.substring(index, index + totalLength), NAME);
@@ -47,15 +51,15 @@ functionality):
  }
 \end{lstlisting}
 
-For the above clue, where limit is equal to seven because 'ricotta' is seven letters 
-long, the first five iterations will add the following solutions to the list; 'creamyc', 
-'reamych', 'eamyche', 'amychee', 'mychees'. Eventually, the loop will pick up 
-'ricotta' and add it to the solution list. From the output gained in the first five 
+For the above clue, where limit is equal to seven because `ricotta' is seven letters 
+long, the first five iterations will add the following solutions to the list; `creamyc', 
+`reamych', `eamyche', `amychee', `mychees'. Eventually, the loop will pick up 
+`ricotta' and add it to the solution list. From the output gained in the first five 
 iterations it is apparent that a lot of invalid solutions are added to the list, therefore
 a number of steps are also implemented to eliminate invalid solutions.
 
 Once all possible solutions have been found, they are all checked to make sure they are
-not words from the original clue. For example, 'apricot' is seven letters long and will 
+not words from the original clue. For example, `apricot' is seven letters long and will 
 have been picked up through the algorithm, however it is not a hidden word and therefore 
 not a valid solution. 
 
