@@ -25,12 +25,12 @@ their rarity.
 \subsection{Hidden}
 
 When investigating the Hidden clue type, it was found that the answer to the
-clue  would be within the clue itself. For example:
+clue would be within the clue itself. For example:
 
 Creamy cheese used in apricot tart.
 
  
-ANSWER: Ricotta
+Answer: RICOTTA
 
 In the clue above the answer `ricotta' is hidden within the two words `apricot
 tart'. The algorithm takes the clue as a whole, without spaces, and then uses
@@ -79,6 +79,18 @@ are valid words. The solutions that are left are then returned to the user.
 %% Implementation :: Solvers :: Acrostic
 %%%
 \subsection{Acrostic}
+
+The Acrostic clue type is another of the types which have the end solution placed within 
+the clue itself which can be seen in the following clue:
+
+What’s seen at start of any road running one way?
+
+Answer: ARROW
+
+The answer to the above clue can be found by taking the first letter from each word in 
+the phrase `any road running one way'. The algorithm splits the clue into an array of words 
+to allow each word to be looked at individually. For each word, the first letter is taken 
+using the substring method in Java. 
 
 %%%%
 %% Implementation :: Solvers :: Pattern
