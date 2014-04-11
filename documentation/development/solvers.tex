@@ -51,24 +51,27 @@ Listing \ref{hiddenSnippet} illustrates how all possible solutions are found
  }
 \end{lstlisting}
 
-For the above clue, where limit is equal to seven because `ricotta' is seven letters 
-long, the first five iterations will add the following solutions to the list; `creamyc', 
-`reamych', `eamyche', `amychee', `mychees'. Eventually, the loop will pick up 
-`ricotta' and add it to the solution list. From the output gained in the first five 
-iterations it is apparent that a lot of invalid solutions are added to the list, therefore
-a number of steps are also implemented to eliminate invalid solutions.
+For the above clue, where limit is equal to seven because `ricotta' is seven
+letters  long, the first five iterations will add the following solutions to the
+list; `creamyc',  `reamych', `eamyche', `amychee', `mychees'. Eventually, the
+loop will pick up  `ricotta' and add it to the solution list. From the output
+gained in the first five  iterations it is apparent that a lot of invalid
+solutions are added to the list, therefore a number of steps are also
+implemented to eliminate invalid solutions.
 
-Once all possible solutions have been found, they are all checked to make sure they are
-not words from the original clue. For example, `apricot' is seven letters long and will 
-have been picked up through the algorithm, however it is not a hidden word and therefore 
-not a valid solution. 
+Once all possible solutions have been found, they are all checked to make sure
+they are not words from the original clue. For example, `apricot' is seven
+letters long and will  have been picked up through the algorithm, however it is
+not a hidden word and therefore  not a valid solution.
 
-Next, the solutions are checked against the pattern provided. This means if the user 
-has input known letters or there are spaces in the end solution but the solution being 
-checked does not match these requirements, these solutions are removed. 
+Next, the solutions are checked against the pattern provided. This means if the
+user  has input known letters or there are spaces in the end solution but the
+solution being  checked does not match these requirements, these solutions are
+removed.
 
-Finally, all solutions are checked against the dictionary to determine whether they 
-are valid words. The solutions that are left are then returned to the user.   
+Finally, all solutions are checked against the dictionary to determine whether
+they  are valid words. The solutions that are left are then returned to the
+user.
 
 %%%%
 %% Implementation :: Solvers :: Anagram
@@ -80,17 +83,17 @@ are valid words. The solutions that are left are then returned to the user.
 %%%
 \subsection{Acrostic}
 
-The Acrostic clue type is another of the types which have the end solution placed within 
-the clue itself which can be seen in the following clue:
+The Acrostic clue type is another of the types which have the end solution
+placed within  the clue itself which can be seen in the following clue:
 
-What’s seen at start of any road running one way?
+What's seen at start of any road running one way?
 
 Answer: ARROW
 
-The answer to the above clue can be found by taking the first letter from each word in 
-the phrase `any road running one way'. The algorithm splits the clue into an array of words 
-to allow each word to be looked at individually. For each word, the first letter is taken 
-using the substring method in Java. 
+The answer to the above clue can be found by taking the first letter from each
+word in  the phrase `any road running one way'. The algorithm splits the clue
+into an array of words  to allow each word to be looked at individually. For
+each word, the first letter is taken  using the substring method in Java.
 
 %%%%
 %% Implementation :: Solvers :: Pattern
@@ -136,3 +139,67 @@ using the substring method in Java.
 %% Implementation :: Solvers :: Reversal
 %%%
 \subsection{Reversal}
+
+The reversal algorithm is the only algorithm to make some use of the natural 
+language processing library (NLP) --- Apache OpenNLP. Although the algorithm 
+does not fully use the all capabilities of the NLP it does use it enough to 
+ensure that the algorithms are not being over worked.
+
+The algorithm will attempt to get a list of possible fodders that can be used 
+throughout the solving process. From a initial review it was clear that the 
+majority of the fodders within a reversal clue are a either a singular or plural
+noun.
+
+Apache OpenNLP has a number of methods that can tokenise a string, meaning that 
+each word in a sentence is aligned to it's type of word. For example if the 
+algorithm was given the clue:
+
+Secure weapons turned over (4)
+
+ANSWER: sung (reversal of guns)
+
+Then the only noun (or fodder) that would be returned is weapons. Although the 
+algorithm can handle multiple fodders it can not handle the rare clues in which
+the answer can not be deduced from a noun.
+
+Listing \ref{obtainFodders} illustrates the simply way in which the algorithm 
+utilises Apache OpenNLP's tokenising system to be able to pick out all nouns.
+
+\begin{lstlisting}[caption={Deducing all singular or plural nouns within the clue},
+                   label=obtainFodders]  
+for (int i = 0; i < tags.length; i++) {
+  // Obtain words that are a singular or plural noun
+  if (tags[i].equals("NN") || tags[i].equals("NNS")) {
+    fodders.add(words[i]);
+  }
+}
+\end{lstlisting}
+
+Once a list of fodders have been computed each of the fodders will have their
+synonyms computed and reversed. If the newly generated `word' can be found in 
+the dictionary, and can be matched to the given patter then it is marked as a 
+potential solution.
+
+Listing \ref{reversalAlgorthim} indicates the simplicity of the algorithm and 
+allows for an efficient approach to solving the clue.
+
+\begin{lstlisting}[caption={Core reversal algorthim deducing possbile solutions},
+                   label=reversalAlgorthim]  
+// Get all synonyms that match the reversed pattern
+Set<String> synonyms = THESAURUS.getSecondSynonyms(fodder, pattern, true);
+// Reverse all synonyms to try to create another word
+for (String synonym : synonyms) {
+  // Reverse the synonym
+  String reversedWord = WordUtils.reverseWord(synonym);
+  // Add as a solution if the reversed word is a real word
+  if (DICTIONARY.isWord(reversedWord)) {
+      // Add the solution to all possible solutions
+      collection.add(new Solution(reversedWord, NAME));
+  }
+}
+\end{lstlisting}
+
+However it must be stated that the algorithm (as with all other algorithms) does
+not have any understanding of the words it generates. For example it is unaware
+that Alpha and Beta are both types of characters. This can cause many issues for
+the reversal algorithm as it is depended upon additional/external `knowledge'.
