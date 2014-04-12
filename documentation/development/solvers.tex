@@ -260,6 +260,30 @@ that is why this design decision was made.
 %%%
 \subsection{Container}
 
+The Container clue type involves putting a word inside another word.
+ For example: 
+
+In appearance everyone is lacking in depth
+
+Answer: SHALLOW
+
+With the clue above, the synonym show for `appearance' is found 
+and thw synonym for everyone `all' is found. Placing all inside shallow 
+gives the solution `shallow'. 
+
+A clue word itself can be put inside or around the outside of another clue 
+word or synonym of clue word. Another possibility is a synonym can be 
+placed inside or around the outside of another clue word or synonym of 
+a clue word. These possibilities make the need for an indicator of which 
+possibility it is, necessary. 
+
+For the Container clue type, an indicator file was created which determined 
+which word went inside another. The indicators were seperated into two 
+lists, one where the indicators mean the word in the left of the clue goes in 
+the word in the right of the clue, and the other where the indicators mean 
+the word in the right of the clue goes in the word of the left of the clue. 
+ 
+
 %%%%
 %% Implementation :: Solvers :: Reversal
 %%%
