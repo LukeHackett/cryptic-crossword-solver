@@ -93,7 +93,22 @@ Answer: ARROW
 The answer to the above clue can be found by taking the first letter from each
 word in  the phrase `any road running one way'. The algorithm splits the clue
 into an array of words  to allow each word to be looked at individually. For
-each word, the first letter is taken  using the substring method in Java.
+each word, the first letter is taken using the substring method in Java. The 
+first letter of each word is stored in a string to use the substring method 
+once again to search through possible solutions within the string.
+
+To find the possible solutions from the string, it is done within a loop with the same number 
+of iterations as the length of the end solution. This means the loop will pick up the 
+following possible solutions for the above clue; `wsaso', `sasoa', `asoar', 
+`soarr', `oarro', `arrow'.
+
+As with previous algorithms (e.g. Hidden), this method adds various 
+invalid potential solutions into the list. To eliminate invalid solutions, the 
+potential solutions are run through the dictionary to determine whether 
+they are valid English words. Finally, the potential solutions will be run through 
+the pattern given by the user and the solution itself to ensure the 
+requirements for the end solution match up. Once all this has been completed, 
+the results are returned to the user. 
 
 %%%%
 %% Implementation :: Solvers :: Pattern
@@ -109,6 +124,60 @@ each word, the first letter is taken  using the substring method in Java.
 %% Implementation :: Solvers :: Palindrome
 %%%
 \subsection{Palindrome}
+
+The Palindrome clue type gets it's end solution by taking a word from 
+the clue itself and taking a synonym from it. This synonym must be 
+spelt the same whether the word is reversed or in it's normal state. 
+An example of a palindrome is `noon' because when the word is reversed 
+it still retains it's original spelling. Below is an example Palindrome clue:
+
+Look both ways
+
+Answer: PEEP
+
+As with `noon', `peep' can be reversed and still retains it's original spelling. 
+
+The algorithm for the Palindrome clue type first takes each word 
+from the clue and places them into a list. Each word is then run through 
+the thesaurus to find their synonyms. Once this has been completed a 
+filtering mechanism is needed to find all synonyms which follow the 
+rules of palindromes. 
+
+Listing \ref{hiddenSnippet} illustrates how all the synonyms that have
+ been found are filtered by the algorithm: 
+
+\begin{lstlisting}[caption={INSERT CAPTION},
+                   label=hiddenSnippet] 
+ private void filterNonePalindromes(Collection<String> solutions) {
+	for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
+		String normal = WordUtils.removeSpacesAndHyphens(it.next());
+		String reverse = new StringBuilder(normal).reverse().toString();
+
+		// If the word isn't "symmetrical" from both sides, remove it
+		if (!normal.equals(reverse)) {
+			it.remove();
+		}
+	}
+ }
+\end{lstlisting}
+
+The method to remove synonyms that are not palindromes uses an 
+iterator to loop through each one. For each one, spaces and hyphens 
+are removed to make the comparison possible. This step is essential for 
+palindromes such as `put up' because with the space present the 
+algorithm would not see `pu tup' as equal. Once all punctuation and
+spaces have been removed from the synonym, the alogorithm then 
+uses the reverse method within Java to retrieve the reversed synonym. 
+For example, if the word `cryptic' was passed to the reverse method 
+it would return `citpyrc'. This means when the normal word `cryptic' 
+and the reverse word `citpyrc' are passed to the if statement to check 
+whether they were equal, it would be false and therefore the synonym 
+`cryptic' would be removed as a potential solution.
+
+Once the synonyms have been filtered, the algorithm then does further 
+filtering to make sure the potential solutions fit the pattern and known 
+letters of the end solution. When the filtering has taken place, the 
+potential solutions are passed to the user.
 
 %%%%
 %% Implementation :: Solvers :: Double Defintion
