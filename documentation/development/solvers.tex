@@ -184,6 +184,62 @@ potential solutions are passed to the user.
 %%%
 \subsection{Double Defintion}
 
+The solution for a Double Defintion clue comes from taking two 
+words within the clue that could be the definition of the solution. 
+For example:
+
+Car plant
+
+Answer: LOTUS
+
+A `lotus' can be either a type of car or a type of plant, hence 
+why the clue is of type Double Definition. 
+
+To explain the algorithm for this clue type it is necessary to 
+also explain the functionality that comes with using the thesaurus. 
+The thesaurus used for the project is a text file where each line starts
+ with a word. Each of the following words on that line are synonyms of 
+the first word. From implementing the solvers different ways to access 
+synonyms were found, these different methods provide a range of 
+results which vary from vague to limited synoynms being found.
+ The Double Definition algorithm uses two of these methods, one 
+which takes a clue word and finds it in the thesaurus where it is the 
+first word and adds all the synonyms to a list, this method can be known 
+as getting `first level synonyms'. The second method does not only look 
+for the clue word as the first word of a row, it looks 
+for the clue word in any position in any row in the thesaurus, therefore 
+returning a wider range of results. This second method can be known as
+getting `second level synoynms'.
+
+The algorithm itself first splits the clue into an array so each word 
+can be looked at individually. For each word in the clue, both the 
+methods explained above are used. This means two maps are created,
+ one which contains the clue word along with it's first level synonyms 
+and a second which also contains the clue word but along with it's 
+second level synoynms. 
+
+Now the algorithm compares each of these maps to find different words 
+in the clue with the same synonym. This is firstly done by comparing 
+each word and it's synonyms for the first level synonyms. Next, it is done 
+by comparing first level synonyms with second level synonyms. If it occurs,
+ the synonym that has been found for two words in the clue, the potential 
+solution is added to a list. As the thesaurus methods check for invalid solutions
+ (potential solutions which do not match the length of the  end solution etc.), 
+once all synonyms have been matched up and checked, the results can 
+be returned to the user. 
+
+Second level synonyms are not compared with second level synonyms. 
+This is because second level synonyms can be extremely vague so the 
+chances of finding a synonym which links to two words in the clue is 
+more likely and less likely to be the correct answer. Another reason is 
+that the likelihood of this algorithm returning results for a clue that 
+is not in fact of Double Definition type is highly more likely if second 
+synonyms for one word are compared with second synoyms for 
+another. Although, the chances of finding the answer for all double 
+defintion clues by comparing two sets of second level synonyms is 
+highly beneficial, the downfalls outweigh the benefits and therefore 
+that is why this design decision was made. 
+
 %%%%
 %% Implementation :: Solvers :: Spoonerism
 %%%
