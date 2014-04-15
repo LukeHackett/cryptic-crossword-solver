@@ -115,6 +115,59 @@ the results are returned to the user.
 %%%
 \subsection{Pattern}
 
+The Pattern clue type is one which holds the end solution within the clue 
+itself. For example: 
+
+Beasts in tree sinned, we hear - nothing odd there
+
+Answer: REINDEER
+
+From the phrase `tree sinned, we hear', each odd letter spells `reindeer'. 
+
+The algorithm firstly checks that the pattern can potentially be of type 
+Pattern. This is done by taking the total length of the clue without any 
+punctuation and dividing it by two. By doing this, the maximum length 
+of any solution found by this algorithm is determined. This means  if the
+ end solution is longer, it cannot be a clue of this type and therefore the
+ algorithm ends. 
+
+The next step is to look for words in even positions. To do this a string of
+ letters to find potential solutions within it needs to be generated. 
+ Listing \ref{hiddenSnippet} illustrates how every other character is found 
+whether it is for even or odd letters:
+
+\begin{lstlisting}[caption={INSERT CAPTION},
+                   label=hiddenSnippet] 
+ private String getEveryOtherChar(Clue c, boolean even) {
+	final String text = c.getClueNoPunctuation(true);
+	String newString = "";
+	int i;
+	for (i = even ? 0 : 1; i < text.length(); i += 2) {
+		newString += text.charAt(i);
+	}
+	return newString;
+ }
+\end{lstlisting}
+
+The method above gets the clue as a string with no punctuation or spaces.
+It then takes the letter at an even index or an odd index depending on 
+the value of the boolean passed in. For finding letters in even positions, 
+the value will be true and for the example clue above the following string 
+will be generated; `batitesnewhantigdtee'. 
+
+With the string generated, substrings are found within a loop using 
+the length of the end solution as a boundary. This means with the 
+string generated above, the first five iterations within the loop will 
+find the following possible solutions; `batitesn', atitesne', `titesnew', 
+`itesnewh', `tesnewha'. 
+
+When all possible even solutions have been found, the algorithm then 
+repeats the same steps to find all possible odd solutions. The final steps 
+are to filter the solutions on their length and whether they match the known 
+letters, if any, that have been input by the user as well as checking 
+whether the words are valid dictionary words. Once all these steps 
+have been completed, the potential solutions are passed back to the user. 
+
 %%%%
 %% Implementation :: Solvers :: Homophone
 %%%
@@ -267,8 +320,8 @@ In appearance everyone is lacking in depth
 
 Answer: SHALLOW
 
-With the clue above, the synonym show for `appearance' is found 
-and thw synonym for everyone `all' is found. Placing all inside shallow 
+With the clue above, the synonym `show' for appearance is found 
+and the synonym for everyone, `all', is found. Placing all inside show 
 gives the solution `shallow'. 
 
 A clue word itself can be put inside or around the outside of another clue 
@@ -281,7 +334,26 @@ For the Container clue type, an indicator file was created which determined
 which word went inside another. The indicators were seperated into two 
 lists, one where the indicators mean the word in the left of the clue goes in 
 the word in the right of the clue, and the other where the indicators mean 
-the word in the right of the clue goes in the word of the left of the clue. 
+the word in the right of the clue goes in the word to the left of the clue. 
+
+Firstly, the algorithm reads in the indicator file and finds the word in the 
+clue which is an indicator. A variable is then set to determine whether the 
+word to the left goes in the word to the right or vice versa. 
+
+The algorithm then finds synonyms for each of the words in the clue and adds
+ them to a map. The synonyms are then filtered to make sure they are the 
+correct length for the end solution. Once this has been achieved the synonyms
+ are then matched up. This involves taking two synonyms for two words in the
+ clue and putting one inside the other. This is done within a loop where the 
+position of the word being contained is moved within the word acting as a 
+container. For example, for the clue above, if the synonyms `all' and `show' 
+are being matched, the loop will output the following potential solutions; 
+`sallhow', `shallow', `shoallw'. Once these potential solutions have been 
+found, they are passed to the dictionary to make sure they are valid words. 
+
+When all the potential solutions have been found, they are then filtered to
+ make sure any known letters input by the user match the potential solutions. 
+Finally, they are all passed back to the user.
  
 
 %%%%
