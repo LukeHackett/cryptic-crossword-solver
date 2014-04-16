@@ -4,3 +4,83 @@
 \section{Plug and Play Architecture}
 \label{sec:plug_and_play_architecture}
 
+One of the major aspects of the design and development of the system was the 
+underlying architecture. A well designed architecture would not only improve the
+overall efficiency of the system, it would also aid in reducing development time
+and improve the maintainability of the system.
+
+It was decided that a `plug and play' architecture would be adopted. A plug and
+play architecture allows for external components to be attached to a main 
+system, and thus allows for that system to be able to detect that component and 
+use it \citep{plug_play}.
+
+The plug and play architecture is a common model found within computing, an 
+example use age would be a network. A computing device is able to connect 
+(either via a wire or wireless) to a network and it will automatically be able 
+to access the network resources without having to reconfigure the computer, the 
+network or other devices connected to that network.
+
+The plug and play architecture would aim to solve the problem of having an 
+unknown number of solvers working within the overall system. By implementing the
+architecture, any number of solvers could be added and removed to the system at
+any time (compile time or run time). Thus allowing the system to be as flexible 
+as possible when it comes to handling the solvers. As a bi-product of this, it 
+would also enable any future developers to be able to add their own solver 
+without having to re-factor any core application code.
+
+The architecture uses an `includes' file which lists all solvers that are 
+intended to be included within the system. The file also supports the ability to
+ignore files which enables solvers to not be included in the system at run time.
+Listing \ref{solverImports} illustrates an example snippet. Lines that start 
+with `\#' are files that are to be ignored --- i.e. the class will not be 
+imported at run time. This is illustrated in listing \ref{solverImports}.
+
+\begin{lstlisting}[caption={plug and play solver import file}, label=solverImports]  
+uk.ac.hud.cryptic.solver.Acrostic
+uk.ac.hud.cryptic.solver.Anagram
+#uk.ac.hud.cryptic.solver.Homophone
+#uk.ac.hud.cryptic.solver.DoubleDefinition
+uk.ac.hud.cryptic.solver.Pattern
+\end{lstlisting}
+
+Listing \ref{solverImports} illustrates that the Acrostic, Anagram and Pattern 
+solvers will be `loaded' in to the system's list of available solvers. Whilst 
+the Homophone and DoubleDefinition solvers will not be loaded. It must be stated
+that currently the system only supports the loading of solvers at the initial 
+start up of the application. Solvers can not be added or removed during the use 
+of the application, but due to the flexibility of the architecture this could be
+easily added in a future revision.
+
+The loading and parsing of the classes are handled within the manager class 
+found within the core package, which was described in more in detail in section
+\ref{sub:manager} on page \pageref{sub:manager}.
+
+Each of the required classes added to the properties file are imported by 
+utilising Reflection. Reflection allows for the solver classes to be `loaded' at
+run time, by importing the Java class and then instantiating it at run time. 
+Listing \ref{loadSolver} illustrates the snippet of code that `imports' and 
+initialises the various solvers.
+
+\begin{lstlisting}[caption={run time class import using reflection}, label=loadSolver]  
+try {
+  // Name of the solver read from the propertes file
+  String solverName;
+  // Load the class
+  Class<?> cls = Class.forName(solverName);
+  Constructor<?> c = cls.getDeclaredConstructor(Clue.class);
+  // Instantiate the given solver class
+  Solver solver = (Solver) c.newInstance(clue);
+  // Add to the list of solvers
+  solvers.add(solver);
+} catch (Exception e) {
+  // Error handling omitted
+}
+\end{lstlisting}
+
+Although reflection may provide a number of issues such as security implications
+and performance issues in this instance it was deemed to be a benefit, as it 
+allows for extensible features (solvers) to be defined at run time, rather than
+at compile time.
+
+As long as all additional solvers extend the main solver class, then the above 
+reflection practise will work for all future solvers.
