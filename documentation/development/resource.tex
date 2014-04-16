@@ -177,3 +177,74 @@ get words which share the same pronunciation as the supplied word. This only wor
 %% Development :: Resources :: Categoriser
 %%%
 \subsection{Categoriser}
+
+Some algorithms for certain clue types require indicators to determine how to generate 
+the end solution. For example, the `Container' clue type requires an indicator to identify 
+which word is the container word and which word is to be contained. For the purpose of 
+providing a confidence score for an end solution, indicators can also be used. As the clue 
+is passed to all solvers, it is possible that two solvers may return the same answer back to the user.
+ By using the indicator file associated with the clue type it is possible to assign a higher rating 
+to a solution from a solver if the clue has an indicator within it from the associated file.
+
+To provide faster access to the indicators for each clue type, the files listing the indicators 
+are read in and stored within a map in the Categoriser class with the name of the clue type 
+and a collection of the indicators. 
+
+One use of the Categoriser class is to retrieve the indicators simply by passing in a clue type. 
+Another, is the functionality to remove the indicator from a clue to potentially speed up a solver 
+algorithm by removing extra unnecessary checking on an indicator word.  
+
+Listing \ref{removing} illustrates how the indicator is removed from the clue:
+
+\begin{lstlisting}[caption={Removing the indicator from the clue},
+                   label=removing]  
+ public String removeIndicatorWords(String c, String type) {
+	// Remove any punctuation
+	String clue = WordUtils.normaliseInput(c, false);
+	// The indicator words for the given type have to be present
+	if (indicators.containsKey(type)) {
+		for (String i : indicators.get(type)) {
+			if (clue.contains(i)) {
+				// Only remove the first match
+				clue = clue.replace(i, "");
+				break;
+			}
+		}
+	}
+	// Remove any double spaces, etc...
+	return WordUtils.normaliseInput(clue, false);
+ }
+\end{lstlisting}
+
+The code above uses another class to remove any punctuation from the clue 
+itself, then it checks to see if the clue type has an entry within the map storing all 
+the indicators. If a word in the clue matches an indicator in the indicator file, it is 
+removed and the modified clue is returned. 
+
+As mentioned, the Categoriser class can also boost the confidence of a solution if 
+it contains an indicator within the clue that is featured in the indicator file. 
+
+Listing \ref{conf} illustrates how the confidence is boosted using indicators:
+
+\begin{lstlisting}[caption={Boosting the confidence of a solution},
+                   label=conf]  
+ public void confidenceAdjust(Clue c, SolutionCollection solutions) {
+	Collection<String> matchingTypes = getMatchingClueTypes(c);
+	for (String clueType : matchingTypes) {
+		for (Solution s : solutions) {
+			if (clueType.equals(s.getSolverType())) {
+				double confidence = Confidence.multiply(s.getConfidence(),
+						Confidence.CATEGORY_MULTIPLIER);
+				s.setConfidence(confidence);
+				s.addToTrace("Confidence rating increased as the clue contains indicator word(s) suggesting the solution is 					of type \"" + clueType + "\".");
+			}
+		}
+	}
+ }
+\end{lstlisting}
+
+The first line of code in the method above calls another method to retrieve 
+a list of clue types that have an indicator in the associated indicator file which matches a word 
+within the clue passed in. Then, all the solutions found from all the solvers for the clue passed in
+ are matched against the clue types that have been found and if the solver the solution has come
+ from matches a clue type found, the confidence is boosted using a method in the Confidence class.
