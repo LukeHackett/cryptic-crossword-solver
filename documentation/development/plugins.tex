@@ -1,0 +1,60 @@
+%%%
+%% Development :: Plug-ins
+%%%
+\section{Plug-ins}
+\label{sec:plugins}
+
+Section \ref{sec:plug_and_play_architecture} on page
+\pageref{sec:plug_and_play_architecture} described the overall system's plug and
+play architecture and how it has helped the overall project development phase.
+Within this section an in depth description and small example will be presented
+to help future developers create a new solver that can be plugged into the
+system.
+
+All solvers must be placed within the \texttt{uk.ac.hud.cryptic.solver} package.
+This package will be the base package in which the run time class importer will
+attempt to import the various solver classes.
+
+Once developed, the new solver class must be added (with it's full package name)
+to the properties file which was described in section 
+\ref{sec:plug_and_play_architecture}.
+
+Each solver must extend the \texttt{Solver} base abstract class. The newly 
+extended class can have various methods but must implement the \texttt{solve} 
+and \texttt{toString} methods.
+
+The \texttt{toString} method should return a String representation of the type 
+of solver that the solver is, for example ``container'' or ``anagram''. The 
+\texttt{solve} method will be automatically called by the system, and the core 
+algorithm must be placed within this method (or utilise class specific methods).
+
+Listing \ref{simpleSolver} illustrates a basic acrostic solver template.
+
+\begin{lstlisting}[caption={An example user-defined solver}, label=simpleSolver]  
+public class MyAcrosticSolver extends Solver {
+
+  public MyAcrosticSolver() {
+    super();
+  }
+
+  public MyAcrosticSolver(Clue clue) {
+    super(clue);
+  }
+
+  @Override
+  public SolutionCollection solve(Clue c) {
+    // Add the algorithm here
+  }
+
+  @Override
+  public String toString() {
+    return "acrostic";
+  }
+
+}
+\end{lstlisting}
+
+As shown in listing \ref{simpleSolver} the solve method returns a 
+SolutionCollection which is added to an overall collection to deduce the likely
+correct solution to the clue. This was described within sub-section 
+\ref{sub:manager} on page \pageref{sub:manager}.
