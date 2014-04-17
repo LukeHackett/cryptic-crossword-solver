@@ -4,3 +4,254 @@
 \section{Unit Testing}
 \label{sec:unit_testing}
 
+
+%%%
+%% Testing :: Unit Testing :: Core Suite
+%%%
+\subsection{Core Suite}
+\label{sub:test_core_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries Clue Test}}                     \\  \hline
+  testClueStringString                                     & PASS \\  \hline
+  testGetActualSolution                                    & PASS \\  \hline
+  testGetPattern                                           & PASS \\  \hline
+  testGetSolutions                                         & PASS \\  \hline
+  testGetType                                              & PASS \\  \hline
+  testGetClueNoWithPunctuation                             & PASS \\  \hline
+  testGetClueNoPunctuationNoSpaces                         & PASS \\  \hline
+  testGetClueWords                                         & PASS \\  \hline
+  testGetBestSolution                                      & PASS \\  \hline
+  testGetClue                                              & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Manager Test}}                  \\  \hline
+  testDistributeAndSolveClue                               & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Solution Test}}                 \\  \hline
+  testCompareToSameConfidencesAndDifferentSolutions        & PASS \\  \hline
+  testCompareToDifferentConfidencesAndSameSolutions        & PASS \\  \hline
+  testCompareToDifferentConfidencesAndSolutions            & PASS \\  \hline
+  testEqualsDifferentSolutionAndConfidence                 & PASS \\  \hline
+  testEqualsSameSolutionAndConfidence                      & PASS \\  \hline
+  testEqualsSameSolutionAndDifferentConfidence             & PASS \\  \hline
+  testEqualsDifferentSolutionAndSameConfidence             & PASS \\  \hline
+  testGetConfidence                                        & PASS \\  \hline
+  testGetSolution                                          & PASS \\  \hline
+  testSetConfidence                                        & PASS \\  \hline
+  testToString                                             & PASS \\  \hline
+  testAddToTraceAndGetSolutionTrace                        & PASS \\  \hline
+  testCompareToSameConfidencesAndSolutions                 & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries SolutionCollection Test}}       \\  \hline
+  testContainsString                                       & PASS \\  \hline
+  testGetSolutionsGreaterThan                              & PASS \\  \hline
+  testGetSolutions                                         & PASS \\  \hline
+  testGetSolutionsLessThan                                 & PASS \\  \hline
+  testRemoveAllStrings                                     & PASS \\  \hline
+  testSortSolutions                                        & PASS \\  \hline
+  testAddNewSolution                                       & PASS \\  \hline
+  testAddDuplicate                                         & PASS \\  \hline
+  testAddIncreaseConfidence                                & PASS \\  \hline
+  testGetBestSolution                                      & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries SolutionPattern Test}}          \\  \hline
+  testToString                                             & PASS \\  \hline
+  testToPattern                                            & PASS \\  \hline
+  testStaticMatch                                          & PASS \\  \hline
+  testGetKnownChars                                        & PASS \\  \hline
+  testGetNumberOfWords                                     & PASS \\  \hline
+  testRecomposeSolution                                    & PASS \\  \hline
+  testGetTotalLength                                       & PASS \\  \hline
+  testHasMultipleWords                                     & PASS \\  \hline
+  testFilterSolutions                                      & PASS \\  \hline
+  testGetIndividualWordLengths                             & PASS \\  \hline
+  testMatch                                                & PASS \\  \hline
+  testGetPattern                                           & PASS \\  \hline
+  testSeparateSolution                                     & PASS \\  \hline
+  testSplitPattern                                         & PASS \\  \hline
+\end{longtable}
+
+
+%%%
+%% Testing :: Unit Testing :: Config Suite
+%%%
+\subsection{Config Suite}
+\label{sub:test_config_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\  
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries Settings Test}}                 \\  \hline
+  testGetCustomDictionaryStream                            & PASS \\  \hline
+  testGetDictionaryExclusionsStream                        & PASS \\  \hline
+  testGetPropertyStream                                    & PASS \\  \hline
+  testGetPOSModelStream                                    & PASS \\  \hline
+  testGetChunkerModelStream                                & PASS \\  \hline
+  testGetFilename                                          & PASS \\  \hline
+  testGetIndicatorsURL                                     & PASS \\  \hline
+  testGetDBURL                                             & PASS \\  \hline
+  testGetCategoriserModelStream                            & PASS \\  \hline
+  testGetSentenceDetectorModelStream                       & PASS \\  \hline
+  testGetParserModelStream                                 & PASS \\  \hline
+  testGetTokeniserModelStream                              & PASS \\  \hline
+  testGetThesaurusStream                                   & PASS \\  \hline
+  testGetHomophoneDictionaryStream                         & PASS \\  \hline
+  testGetDBUsername                                        & PASS \\  \hline
+  testGetDBPassword                                        & PASS \\  \hline
+  testGetDictionarStream                                   & PASS \\  \hline
+\end{longtable}
+
+
+%%%
+%% Testing :: Unit Testing :: Resource Suite
+%%%
+\subsection{Resource Suite}
+\label{sub:test_resource_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\  
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries HomophoneDictionary Test}}      \\  \hline
+  testGetPronunciations                                    & PASS \\  \hline
+  testGetHomonyms                                          & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Dictionary Test}}               \\  \hline
+  testMatchesWithPrefix                                    & PASS \\  \hline
+  testMatchesWithNonString                                 & PASS \\  \hline
+  testMatchesWithNonPrefix                                 & PASS \\  \hline
+  testDictionaryFilter                                     & PASS \\  \hline
+  testIsDictionaryWord                                     & PASS \\  \hline
+  testWrongDictionaryWord                                  & PASS \\  \hline
+  testBlankDictionaryWord                                  & PASS \\  \hline
+  testMatchingWords                                        & PASS \\  \hline
+  testMatchingWordsNonString                               & PASS \\  \hline
+  testMatchingWordsNonWord                                 & PASS \\  \hline
+  testPrefixMatch                                          & PASS \\  \hline
+  testPrefixMatchWithNonPrefix                             & PASS \\  \hline
+  testPrefixMatchWithNonString                             & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Thesaurus Test}}                \\  \hline
+  testSynonymMatch                                         & PASS \\  \hline
+  testGetSynonyms                                          & PASS \\  \hline
+  testGetSpecificSynonyms                                  & PASS \\  \hline
+  testGetSpecificSynonymsNoKnownChars                      & PASS \\  \hline
+  testGetSecondSynonymsWithPattern                         & PASS \\  \hline
+  testGetSecondSynonymsMinMaxLength                        & PASS \\  \hline
+  testConfidenceAdjust                                     & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Abbreviations Test}}            \\  \hline
+  testGetAbbreviationsForWord                              & PASS \\  \hline
+  testGetAbbreviationsForClue                              & PASS \\  \hline
+\end{longtable}
+
+
+%%%
+%% Testing :: Unit Testing :: Servlet Suite
+%%%
+\subsection{Servlet Suite}
+\label{sub:test_servlet_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\ 
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries Solver Test}}                   \\  \hline
+  testNoParameters                                         & PASS \\  \hline
+  testClueParameterOnly                                    & PASS \\  \hline
+  testClueSolutionParameterOnly                            & PASS \\  \hline
+  testCluePatternParameterOnly                             & PASS \\  \hline
+  testSolutionPatternParameterOnly                         & PASS \\  \hline
+  testSolutionParameterOnly                                & PASS \\  \hline
+  testPatternParameterOnly                                 & PASS \\  \hline
+  testInvalidPattern                                       & PASS \\  \hline
+  testInvalidSolution                                      & PASS \\  \hline
+\end{longtable}
+
+
+%%%
+%% Testing :: Unit Testing :: Solver Suite
+%%%
+\subsection{Solver Suite}
+\label{sub:test_solver_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries Acrostic Test}}                 \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Anagram Test}}                  \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Hidden Test}}                   \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Pattern Test}}                  \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries DoubleDefinition Test}}         \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Homophone Test}}                \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Spoonerism Test}}               \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Palindrome Test}}               \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Reversal Test}}                 \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Deletion Test}}                 \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Container Test}}                \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Charade Test}}                  \\  \hline
+  testAlgorithm                                            & PASS \\  \hline
+\end{longtable}
+
+
+%%%
+%% Testing :: Unit Testing :: Util Suite
+%%%
+\subsection{Util Suite}
+\label{sub:test_util_suite}
+
+
+
+\begin{longtable}{|L{14cm}|C{2cm}|}
+  \hline
+  {\bfseries Test} & {\bfseries Outcome}                          \\
+  \hline
+  \multicolumn{2}{|l|}{{\bfseries DB Test}}                       \\  \hline
+  testGetTestClues7                                        & PASS \\  \hline
+  testGetTestClues8                                        & PASS \\  \hline
+  testGetTestClues1                                        & PASS \\  \hline
+  testGetTestClues2                                        & PASS \\  \hline
+  testGetTestClues3                                        & PASS \\  \hline
+  testGetTestClues4                                        & PASS \\  \hline
+  testGetTestClues5                                        & PASS \\  \hline
+  testGetTestClues6                                        & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries WordUtils Test}}                \\  \hline
+  testHasCharacters                                        & PASS \\  \hline
+  testNormaliseInput                                       & PASS \\  \hline
+  testRemoveSpacesAndHyphens                               & PASS \\  \hline
+  testCharactersPresentInWord                              & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Confidence Test}}               \\  \hline
+  testMultiply & PASS                                             \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries Cache Test}}                    \\  \hline
+  testPut                                                  & PASS \\  \hline
+  testContainsKey                                          & PASS \\  \hline
+  testPrePut                                               & PASS \\  \hline
+  testGet                                                  & PASS \\  \hline
+  \multicolumn{2}{|l|}{{\bfseries XMLBuilder Test}}               \\  \hline
+  testXMLBuilder                                           & PASS \\  \hline
+  testXMLBuilderStringString                               & PASS \\  \hline
+  testXMLBuilderStringStringDouble                         & PASS \\  \hline
+  testAddKeyValue                                          & PASS \\  \hline
+  testAddError                                             & PASS \\  \hline
+  testAddErrors                                            & PASS \\  \hline
+  testAddSolution                                          & PASS \\  \hline
+\end{longtable}
