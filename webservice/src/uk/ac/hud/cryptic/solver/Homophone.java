@@ -84,8 +84,9 @@ public class Homophone extends Solver {
 			Set<String> homonyms = HOMOPHONE_DICT.getHomonyms(word);
 			for (String homonym : homonyms) {
 				Solution s = new Solution(homonym, NAME);
-				s.addToTrace("Pronunciation of " + word + " matches with "
-						+ homonym);
+				s.addToTrace(String.format(
+						"Pronunciation of \"%s\" matches with \"%s\"", word,
+						homonym));
 				// Adjust the solution's confidence
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.HOMOPHONE_MULTIPLIER);
@@ -106,9 +107,9 @@ public class Homophone extends Solver {
 				Set<String> homonyms = HOMOPHONE_DICT.getHomonyms(synonym);
 				for (String homonym : homonyms) {
 					Solution s = new Solution(homonym, NAME);
-					s.addToTrace("Pronunciation of \"" + synonym
-							+ "\" (synonym of " + word + ") matches with \""
-							+ homonym + "\"");
+					s.addToTrace(String
+							.format("Pronunciation of \"%s\" (synonym of %s) matches with \"%s\".",
+									synonym, word, homonym));
 					// Adjust the solution's confidence
 					double confidence = Confidence.multiply(s.getConfidence(),
 							Confidence.HOMOPHONE_MULTIPLIER);

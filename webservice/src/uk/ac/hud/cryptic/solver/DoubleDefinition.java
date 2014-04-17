@@ -116,12 +116,10 @@ public class DoubleDefinition extends Solver {
 								s.setConfidence(Confidence.DOUBLE_DEFINITION_INITIAL);
 
 								// Compile a detailed trace message
-								String trace = "The words of the clue, ";
-								trace += "\"" + e1.getKey() + "\" and ";
-								trace += "\"" + e2.getKey() + "\"";
-								trace += " share the synonym \"" + synonym1
-										+ "\".";
-								s.addToTrace(trace);
+								s.addToTrace(String
+										.format("The words of the clue, \"%s\" and \"%s\" share the synonym \"%s\".",
+												e1.getKey(), e2.getKey(),
+												synonym1));
 
 								// If both maps are equal, i.e. first and
 								// first-level synonyms,

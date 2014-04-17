@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
@@ -15,11 +16,8 @@ import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
- * Container solver algorithm 
- * ------------Example------------- 
- * Clue - Stash or put in stage (7) 
- * Answer - Storage 
- * --------------------------------
+ * Container solver algorithm ------------Example------------- Clue - Stash or
+ * put in stage (7) Answer - Storage --------------------------------
  * 
  * @authors Mohammad Rahman, Leanne Butcher, Stuart Leader
  * @version 0.1
@@ -49,7 +47,7 @@ public class Container extends Solver {
 		// Position of word
 		private final String text;
 
-		// Set position of word 
+		// Set position of word
 		Position(String text) {
 			this.text = text;
 		}
@@ -88,8 +86,8 @@ public class Container extends Solver {
 		// Set the initial position of a word
 		Position position = Position.NONE;
 
-		// Look through indicators to determine which word 
-		// (left or right of indicator) goes into the other 
+		// Look through indicators to determine which word
+		// (left or right of indicator) goes into the other
 		// words (left or right of indicator)
 		loop: for (String indicator : indicators) {
 			switch (indicator) {
@@ -118,13 +116,17 @@ public class Container extends Solver {
 		return solutions;
 	}
 
-	
 	/**
 	 * A method which finds all synonyms of the words in the given clue
-	 * @param c the clue
-	 * @param pattern the pattern of the clue
-	 * @param position whether the left word is in right or vice versa
-	 * @param indicator the indicator word from the clue
+	 * 
+	 * @param c
+	 *            the clue
+	 * @param pattern
+	 *            the pattern of the clue
+	 * @param position
+	 *            whether the left word is in right or vice versa
+	 * @param indicator
+	 *            the indicator word from the clue
 	 * @return the solutions
 	 */
 	private SolutionCollection findSynonyms(Clue c, SolutionPattern pattern,
@@ -138,7 +140,7 @@ public class Container extends Solver {
 
 		// To store the synonyms of each word
 		Map<String, Set<String>> synonyms = new HashMap<>();
-		
+
 		// Retrieve the synonyms of each word
 		for (String word : cluewords) {
 			synonyms.put(word, THESAURUS.getSynonyms(word));
@@ -154,9 +156,13 @@ public class Container extends Solver {
 
 	/**
 	 * A method to match synonyms of each word on either side of the indicator
-	 * @param synonyms the synonyms of each word
-	 * @param position which word contains the other
-	 * @param pattern the solution pattern
+	 * 
+	 * @param synonyms
+	 *            the synonyms of each word
+	 * @param position
+	 *            which word contains the other
+	 * @param pattern
+	 *            the solution pattern
 	 * @return the matching synonyms
 	 */
 	private SolutionCollection matchUpSynonyms(
@@ -186,13 +192,19 @@ public class Container extends Solver {
 
 	/**
 	 * A method to check the processed word is in the dictionary
-	 * @param solutions the solutions
-	 * @param firstClue 
-	 * @param firstWord the word before the indicator
+	 * 
+	 * @param solutions
+	 *            the solutions
+	 * @param firstClue
+	 * @param firstWord
+	 *            the word before the indicator
 	 * @param secondClue
-	 * @param secondWord the word after the indicator
-	 * @param position which word goes into which
-	 * @param pattern the solution pattern
+	 * @param secondWord
+	 *            the word after the indicator
+	 * @param position
+	 *            which word goes into which
+	 * @param pattern
+	 *            the solution pattern
 	 */
 	private void containWord(SolutionCollection solutions, String firstClue,
 			String firstWord, String secondClue, String secondWord,
@@ -209,9 +221,9 @@ public class Container extends Solver {
 						Solution s = new Solution(sb.toString(), NAME);
 						s.addToTrace(generateTrace(secondClue, secondWord));
 						s.addToTrace(generateTrace(firstClue, firstWord));
-						s.addToTrace("Insert the word \"" + firstWord
-								+ "\" into the middle of \"" + secondWord
-								+ "\".");
+						s.addToTrace(String
+								.format("Insert the word \"%s\" into the middle of \"%s\".",
+										firstWord, secondWord));
 						solutions.add(s);
 					}
 				}
@@ -225,9 +237,9 @@ public class Container extends Solver {
 						Solution s = new Solution(sb.toString(), NAME);
 						s.addToTrace(generateTrace(firstClue, firstWord));
 						s.addToTrace(generateTrace(secondClue, secondWord));
-						s.addToTrace("Insert the word \"" + secondWord
-								+ "\" into the middle of \"" + firstWord
-								+ "\".");
+						s.addToTrace(String
+								.format("Insert the word \"%s\" into the middle of \"%s\".",
+										secondWord, firstWord));
 						solutions.add(s);
 					}
 				}
@@ -237,7 +249,8 @@ public class Container extends Solver {
 
 	/**
 	 * A method to generate the trace of how the solution was found
-	 * @param clueWord 
+	 * 
+	 * @param clueWord
 	 * @param synonym
 	 * @return the trace message
 	 */
@@ -254,12 +267,14 @@ public class Container extends Solver {
 		return message;
 	}
 
-	
 	/**
-	 * A method to filter out synonyms that have a character length
-	 * greater than length of the solution
-	 * @param synonyms the synonyms of each word in the clue
-	 * @param pattern the solution pattern
+	 * A method to filter out synonyms that have a character length greater than
+	 * length of the solution
+	 * 
+	 * @param synonyms
+	 *            the synonyms of each word in the clue
+	 * @param pattern
+	 *            the solution pattern
 	 */
 	private void filterSynonyms(Map<String, Set<String>> synonyms,
 			SolutionPattern pattern) {

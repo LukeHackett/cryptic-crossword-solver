@@ -83,11 +83,11 @@ public class Reversal extends Solver {
 					Solution solution = new Solution(reversedWord, NAME);
 					// Add the trace messages
 					solution.addToTrace(String.format(
-							"Using '%s' as the word play indicator", fodder));
-					solution.addToTrace(String.format("%s is synonym of %s",
-							synonym, fodder));
+							"Using \"%s\" as the word play indicator.", fodder));
 					solution.addToTrace(String.format(
-							"%s can be reversed to get %s", synonym,
+							"\"%s\" is synonym of \"%s\".", synonym, fodder));
+					solution.addToTrace(String.format(
+							"\"%s\" can be reversed to get \"%s\".", synonym,
 							reversedWord));
 					collection.add(solution);
 				}

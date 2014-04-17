@@ -175,15 +175,15 @@ public class Deletion extends Solver {
 					if (DICTIONARY.isWord(solution) && pattern.match(solution)) {
 						Solution s = new Solution(solution, NAME);
 						// Create solution trace
-						s.addToTrace("Synonym is \"" + synonym
-								+ "\", from clue word \"" + entry.getKey()
-								+ "\"");
-						s.addToTrace("Take the clue word \"" + entry.getKey()
-								+ "\" and get its synonym \"" + synonym + "\".");
-						s.addToTrace("The clue contains the indicator \""
-								+ indicator + "\", which means to remove "
-								+ position.getText() + " of \"" + synonym
-								+ "\".");
+						s.addToTrace(String.format(
+								"Synonym is \"%s\", from clue word \"%s\"",
+								synonym, entry.getKey()));
+						s.addToTrace(String
+								.format("Take the clue word \"%s\" and get its synonym \"%s\".",
+										entry.getKey(), synonym));
+						s.addToTrace(String
+								.format("The clue contains the indicator \"%s\", which means to remove %s of \"%s\".",
+										indicator, position.getText(), synonym));
 
 						// Add the solution
 						solutions.add(s);

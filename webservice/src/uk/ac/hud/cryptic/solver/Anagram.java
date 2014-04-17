@@ -277,8 +277,9 @@ public class Anagram extends Solver {
 								SolutionCollection solutions = anagram(
 										characters, pattern);
 								for (Solution s : solutions) {
-									s.addToTrace("Word is an anagram of the clue text \""
-											+ characters + "\".");
+									s.addToTrace(String
+											.format("Word is an anagram of the clue text \"%s\".",
+													characters));
 								}
 								return solutions;
 							}
