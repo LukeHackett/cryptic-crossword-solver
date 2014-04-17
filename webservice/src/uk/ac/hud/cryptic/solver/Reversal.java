@@ -94,6 +94,12 @@ public class Reversal extends Solver {
 			}
 		}
 
+		// Remove solutions which don't match the provided pattern
+		pattern.filterSolutions(collection);
+
+		// Remove words not in the dictionary
+		DICTIONARY.dictionaryFilter(collection, pattern);
+
 		// Adjust confidence scores based on synonym matches
 		Thesaurus.getInstance().confidenceAdjust(c, collection);
 
