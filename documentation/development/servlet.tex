@@ -34,7 +34,7 @@ the solving of a clue. Therefore a `standard web service' setup would easily
 meet the requirements of the project.
 
 Another design decision was taken to ensure that the web service followed a
-RESTful style of communication. The mains reason for this is that some of the
+RESTful style of communication. The main reason for this is that some of the
 target devices (i.e. mobile and tablet platforms) do not support SOAP based
 communication without additional plug-ins. RESTful web services also provide a
 number of advantages over their SOAP-based counter parts, as was highlighted
@@ -55,11 +55,11 @@ provides common functionality. The \texttt{Servlet} class provides a base for
 all system Servlets to use the common functionality.
 
 The \texttt{Servlet} class is able to if a given request is from a JSON, XML or 
-Ajax background. For example if a client was to make a request to the web 
+Ajax background. For example, if a client was to make a request to the web 
 service through a web browser utilising an Ajax request, then the 
 \texttt{isAjaxRequest}  method would return \texttt{true}.
 
-For illustrative proposes the \texttt{isAjaxRequest} method is shown below in 
+For illustrative purposes the \texttt{isAjaxRequest} method is shown below in 
 listing \ref{isAjaxMethod}.
 
 \begin{lstlisting}[caption={isAjaxMethod deduces if a request was made by AJAX},
@@ -91,14 +91,14 @@ dictionaries and thesauri.
 
 ~\\
 
-The second class is the \texttt{Solver} servlet and handles all request that are
+The second class is the \texttt{Solver} servlet and handles all requests that are
 specifically for solving a given clue. The \texttt{Solver} servlet accepts both
 GET and POST requests, with each requiring the clue, the length of the solution
 and the solution pattern.
 
 The \texttt{Solver} servlet upon receiving a request will validate the input 
 parameters, based upon a number of criteria including presence checks and 
-regular expressions. The code snippet below is an example validation rule, that 
+regular expressions. The code snippet below is an example validation rule that 
 will validate the solution pattern against a regular expression.
 
 \begin{lstlisting}[caption={isPatternValid deduces if a given solution pattern 
@@ -122,9 +122,9 @@ the Clue manager class, that will handle the distributing of the clue to the
 various solvers. 
 
 This has been designed so that the servlet and the solving processes are upon 
-separate threads. This prevents tomcat from freezing, and allows it to handle 
+separate threads. This prevents Tomcat from freezing and allows it to handle 
 requests from users.
 
 Once all the solvers have finished executing, the \texttt{Solver} servlet will 
 produce an XML document based upon the various elements. Once the XML document 
-has been created, will be sent back to the client as either XML or JSON.
+has been created, it will be sent back to the client as either XML or JSON.

@@ -42,7 +42,7 @@ solutions can be compared.
 
 The comparing of solutions is perhaps one of the most common pieces of 
 functionality that the system will be required to do. An example use case would
-be comparing any number of solutions to deduce which is more likely to be 
+be comparing any number of solutions to deduce which is more likely to be the 
 correct answer.
 
 Listing \ref{compareToSolution} shows the implemented compareTo() method found
@@ -73,8 +73,8 @@ being correct. It does this by comparing their confidence ratings, to which
 every solution will have. If the solution is the same the 0 is returned, whist 
 -1 or +1 returned depending upon which solution is closest to being correct.
 
-As well as the housing the confidence rating, the solution class also houses the
-solution trace. The solution trace is a List of steps that were taken in order 
+As well as housing the confidence rating, the solution class also houses the
+solution trace. The solution trace is a list of steps that were taken in order 
 to compute the solution. It is intended that the solution traces will help to 
 teach the user how to complete similar clues in the future. 
 
@@ -89,11 +89,11 @@ The SolutionCollection class extends the standard Java HashSet class utilising
 the Solution class as the element type. Although a HashSet can not guarantee the
 order of the set, it can guarantee that no duplicates will be added to the set.
 This decision was taken to ensure that the system is not dealing with large 
-amounts of repetitive datasets, that will only harm the performance of the 
+amounts of repetitive datasets that will only harm the performance of the 
 system as whole.
 
-In order to get around the fact that the ordering of the set has not guarantee,
-the system makes use the of fact that the element type -- Solution -- implements
+In order to get around the fact that the ordering of the set has no guarantee,
+the system makes use of the fact that the element type -- Solution -- implements
 the Comparable interface. This means that a copy of the current collection can 
 be retuned in a sorted order if possible. This is illustrated in listing 
 \ref{sortSolutions_SolutionsCollection}.
@@ -129,7 +129,7 @@ The solution pattern is able to split a well-formed pattern and represent it
 as an in-memory object allowing for a faster clue matching process, in 
 comparison to constantly trying to match a string.
 
-An good example of the level of functionality available in this class is shown 
+A good example of the level of functionality available in this class is shown 
 in listing \ref{filter_SolutionsPattern}.
 
 \begin{lstlisting}[caption={Method returns collection of matched solutions},
@@ -157,7 +157,7 @@ thus ensures that the application is not dealing with too much data. In effect
 this helps the application become more efficient when solving solutions. 
 
 Obviously the efficiency of the matching process is directly linked to the 
-number of known characters. If large number of known characters are given by the
+number of known characters. If a large number of known characters is given by the
 user, then the total `search space' is dramatically reduced.
 
 As an example there are about 308 million different letter combinations within a
@@ -175,11 +175,11 @@ letters would reduce it down to around half a million ($26^4$).
 
 The Manager class manages the process of solving the given clue. The manager 
 class heavily utilises the standard Java future interface, which is designed to
-represents the result of asynchronous computation.
+represent the result of asynchronous computation.
 
 Listing \ref{distributeAndSolveClue} illustrates the distribution functionality 
 that distributes a copy of all the necessary resources --- such as the clue 
-and it's solution pattern -- and starts the computation upon various new 
+and its solution pattern -- and starts the computation upon various new 
 threads (if available upon the system).
 
 Each of the solvers are obtained dynamically via the plug and play system to 

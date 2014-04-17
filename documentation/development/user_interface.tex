@@ -5,7 +5,7 @@
 \label{sec:imp_user_interface}
 
 In order for users to use the system a simple and powerful user interface was 
-required. The design reasoning's behind the user interface were described in 
+required. The design reasonings behind the user interface were described in 
 the design section.
 
 The user interface has been designed utilising a fall-back system, which is a 
@@ -13,10 +13,10 @@ standard web development approach. The majority of the user interface is
 delivered by the server utilising JavaServer Pages (JSP) language.
 
 The JSP language essentially extends from XML, and allows for html-like code to 
-be written so that when complied with Java, a full server-side page is rendered.
+be written so that when compiled with Java, a full server-side page is rendered.
 Within this project an additional JavaServer Pages Standard Tag Library was 
 used. The library -- xml -- provided additional functionality so that JSP was 
-able to directly utilise XML within it's rendering technique.
+able to directly utilise XML within its rendering technique.
 
 Figure \ref{xmlOutput} illustrates an example XML parsing snippet from the 
 \texttt{solver.jsp} file.
@@ -58,12 +58,12 @@ Many modern browsers will support JavaScript in some form of fashion. This
 allows for various additional functionality to be provided to enhance the user's
 web browsing experience.
 
-The cryptic crossword website features a JavaScript override, that will override
-the default server-side rendering and provide it's owner rendering. For example
-when a user clicks upon the `solve' button, the web site will display a message
+The cryptic crossword website features a JavaScript override that will override
+the default server-side rendering and provide its own rendering. For example
+when a user clicks upon the `solve' button, the website will display a message
 informing the user that the clue is currently being solved as shown in figure 
 \ref{fig:solving_clue_message}. Under a non-JavaScript supporting browser this 
-would simply look like a normal page request that is taking it's time.
+would simply look like a normal page request that is taking its time.
 
 \begin{figure}[H]
   \centering
@@ -72,7 +72,7 @@ would simply look like a normal page request that is taking it's time.
   \label{fig:solving_clue_message}
 \end{figure}
 
-The JavsScript engine will also provide some basic forms of validation, to 
+The JavaScript engine will also provide some basic forms of validation, to 
 prevent the user from waiting a long time simply to find out that there was a 
 validation error. The validation occurs upon a key press, and hence the feedback
 is instant as shown in figure \ref{fig:validation_message}.
@@ -88,7 +88,7 @@ The JavaScript engine will also make POST requests to the server. This reduces
 the total amount of work the server will be required to do, as it only has to 
 return the requests (rather than render HTML).
 
-The fall-back system that was previously described is that if for some reason 
+The reason for the fall-back system that was previously described is that if for some reason 
 the JavaScript engine fails to load, or is incompatible with the device, then 
 the JavaScript will not load. However, the functionality of the site will still 
 continue to work, as the browser will `fall-back' to the standard server-side 
