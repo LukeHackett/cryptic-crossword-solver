@@ -4,6 +4,95 @@
 \section{Functional Testing}
 \label{sec:functional_testing}
 
+The purpose of the functional testing is to take all the requirements apart from 
+the non-functional requirements and determine whether they have been achieved 
+from the final system. This section will take all the requirements from the Functional 
+Requirements MoSCoW analysis section and the Usibility Requirements MoSCoW analysis 
+section and provide evidence of the requirements being fulfilled. If the requirements have 
+not been implemented, an explanation will be delivered as to the reasons why. 
+
+%%%
+%% Testing :: Functional Testing :: Functional Requirements
+%%%
+\subsection{Functional Requirements}
+\label{sub:test_func_func}
+
+\paragraph{Retrieve and process cryptic clues and output possible
+solutions}
+
+{\bf Overall:} 
+
+\paragraph{Obtain characteristics of the clue's solution (e.g. number of words, 
+word lengths and known letters) and
+match these against possible solutions}
+
+{\bf Overall:}
+
+\paragraph{Provide a web interface for users to interact with the
+system}
+
+{\bf Overall:}
+
+\paragraph{Provide a mobile-friendly interface for users to interact
+with the system}
+
+{\bf Overall:}
+
+\paragraph{Store clues and their corresponding solutions for future
+retrieval, including the clue type and solution length}
+
+{\bf Overall:}
+
+\paragraph{Take feedback from a user on a solution's accuracy and
+use this to rank solutions for a given clue}
+
+{\bf Overall:}
+
+\paragraph{Relay the process (solution trace) followed to arrive at
+a proposed solution to the user}
+
+{\bf Overall:}
+
+\paragraph{Holistically determine a confidence score for each proposed 
+solution, and relay this to the user}
+
+{\bf Overall:}
+
+\paragraph{Document and store the process (solution trace) followed to solve a given clue}
+
+{\bf Overall:}
+
+\paragraph{Solve clues which take cues from the clue's orientation
+or clue number in the crossword}
+
+{\bf Overall:}
+
+\paragraph{Provide real-time feedback of the processes being followed 
+by the application in an attempt to calculate the
+correct solution}
+
+{\bf Overall:}
+
+\paragraph{Take annotations provided by the user of the known
+aspects of a clue, such as the denition word(s), fodder
+or indicator word(s)}
+
+{\bf Overall:}
+
+\paragraph{Store a clue's orientation and clue number in the
+database}
+
+{\bf Overall:}
+
+\paragraph{Use stored data to generate complete cryptic crosswords}
+
+{\bf Overall:}
+
+\paragraph{Provide a personalised service, including a history of a
+user's interactions with the system}
+
+{\bf Overall:}
+
 %%%
 %% Testing :: Functional Testing :: Usability Requirements
 %%%
@@ -120,18 +209,21 @@ and the outline of the text box if the user clicks `Submit' without filling in
 \paragraph{Have a consistent layout avoid unnecessary scrolling}
     All pages within the website have the same colour scheme and fonts 
 with an additional consistency with menu items and bars. The web page 
-has also been implemented 
+has also been implemented to resize to the browser window. This means 
+there is no scrolling for full screen browser windows and limited horizontal 
+scrolling for smaller browser windows as the controls are moved into a linear 
+position. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.4]{evidence/scrolling.png}
-	\caption{If the user submits without filling in the clue field}
+	\caption{Web page in full screen browser window}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.5]{evidence/scrolling1.png}
-	\caption{If the user submits without filling in the clue field}
+	\caption{Web page in resized browser window}
 \end{figure}
 
 {\bf Overall:} Fully Implemented
@@ -166,6 +258,16 @@ alongside the solution.
 \paragraph{Display help buttons to indicate to the user the purpose
 and use of each control}
 
+Instead of implementing buttons to display help for each of the controls on the web page, 
+a user manual has been created which can be accessed through the menu bar. This explains 
+the web page functionality as well as some additional information on the web service. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true]{evidence/manual.png}
+	\caption{Introduction to the user manual}
+\end{figure}
+
 {\bf Overall:} Alternatively Implemented
 
 \paragraph{Provide a button to submit the user input to the appli-
@@ -185,14 +287,26 @@ the clue itself and the clues length.
 \paragraph{Provide a group of radio buttons for the user to select
 the clue's orientation in its containing crossword}
 
+There has been no functionality implemented to use the clue's orientation 
+within the solver algorithms, therefore it was unnecessary to implement 
+radio buttons for the user to select the orientation of the clue. 
+
 {\bf Overall:} Not Implemented
 
 \paragraph{Provide a text box to input the clue's number within its
 containing crossword}
+
+There has been no functionality implemented to use the clue's grid number 
+within the solver algorithms, therefore it was unnecessary to implement 
+a text box for the user to input the grid number of the clue. 
  
 {\bf Overall:} Not Implemented
 
 \paragraph{Provide mechanisms to accommodate for users with dif-
 ficulties, such as colour-blindness or poor eyesight}
     
-{\bf Overall:} Partially Implemented
+There has been no specific functionality implemented to accommodate for 
+users with difficulties. However, the user can disable CSS on their browser
+ to view the web page with no styling. 
+
+{\bf Overall:} Not Implemented
