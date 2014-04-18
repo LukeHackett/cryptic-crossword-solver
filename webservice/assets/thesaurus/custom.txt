@@ -1,0 +1,7 @@
+leader,king
+David,patron,saint
+locust,insect
+streetcars,trams
+weapons,guns
+junk,spam
+boast,brag

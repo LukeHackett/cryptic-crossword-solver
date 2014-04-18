@@ -4,10 +4,48 @@
 <t:application>
   <div class="row">
     <div class="col-md-12">
-    <h2>Cryptic Crossword Solver <small>Changelog</small></h2>
-    <hr>
+      <h2>Development Changelog</h2>
+      <hr>
     </div>
   </div>
+  <!-- Iteration 3 -->
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Iteration 3 <small>4th April 2014</small></h3>
+      <p>Today marks the completion of the third and final iteration. Within 
+        this iteration a number of new solvers have been brought on line, as 
+        well as various improvements to the current range of solvers.</p>
+      <div class="row">
+      <!-- Key Changes -->
+        <div class="col-md-4">
+          <h4>Key Changes</h4>
+          <ul>
+            <li>Addition of a user manual, containing information for developers
+            and users of the system.</li>
+            <li>Added support for Container, Charade, Deletion and Reversal clue
+            types.</li>
+            <li>Improved the solution traces to aid new users in solving clues
+            </li>
+          </ul>
+        </div>
+        <!-- Known Bugs -->
+        <div class="col-md-4">
+          <h4>Known Bugs</h4>
+          <ul>
+            <li>None</li>
+          </ul>
+        </div>
+        <!-- In Progress -->
+        <div class="col-md-4">
+          <h4>In Progress</h4>
+          <ul>
+            <li>None</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
   <!-- Iteration 2 -->
   <div class="row">
     <div class="col-md-12">
@@ -15,8 +53,8 @@
       <p>Today marks the completion of the second iteration. Within this 
         iteration a large amount of time has been spent adding additional 
         solvers, which will help in solving a wider range of clues. The user 
-        interface improvements, not only fix bugs, but add additional 
-        functionality which will aid users in solver cryptic crosswords.</p>
+        interface improvements not only fix bugs, but add additional 
+        functionality which will aid users in solving cryptic crosswords.</p>
       <div class="row">
         <!-- Key Changes -->
         <div class="col-md-4">
@@ -27,12 +65,12 @@
             </li>
             <li>All styling issues have now been resolved.</li>
             <li>The UI now handles results more effectively, including 
-              displaying the type of solver that obtained the solution, and how 
+              displaying the type of solver that obtained the solution and how 
               the solution was obtained.</li>
             <li>Additional support has been added for Double Definition, 
-              Homophone, Palindrome, Solver and Spoonerism cryptic clues.
+              Homophone, Palindrome and Spoonerism cryptic clues.
             </li>
-            <li>Confidence rating have been improved across the board, allowing 
+            <li>Confidence ratings have been improved across the board, allowing 
               for various factors to be taken in to consideration when 
               calculating the confidence of a solution.</li>
           </ul>
@@ -52,9 +90,9 @@
           <h4>In Progress</h4>
           <ul>
             <li>Integration of Natural Language Processing to help with 
-              detecting the type of clue</li>
-            <li>Addition of new solvers including Charades, Deletions and 
-              Reversals.</li>
+              detecting the type of clue.</li>
+            <li>Addition of new solvers including Charade, Deletion, Container and 
+              Reversal.</li>
           </ul>
         </div>
       </div>

@@ -104,7 +104,7 @@ public class Clue {
 		// Remove unwanted characters
 		String clue = getClueNoPunctuation(false).trim();
 		// Split around whitespace
-		return clue.split(WordUtils.REGEX_WHITESPACE);
+		return WordUtils.getWords(clue);
 	}
 
 	/**

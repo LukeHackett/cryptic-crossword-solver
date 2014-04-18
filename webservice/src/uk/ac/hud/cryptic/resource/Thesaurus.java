@@ -9,7 +9,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import uk.ac.hud.cryptic.config.Settings;
@@ -17,7 +21,9 @@ import uk.ac.hud.cryptic.core.Clue;
 import uk.ac.hud.cryptic.core.Solution;
 import uk.ac.hud.cryptic.core.SolutionCollection;
 import uk.ac.hud.cryptic.core.SolutionPattern;
+import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.Confidence;
+import uk.ac.hud.cryptic.util.Util;
 import uk.ac.hud.cryptic.util.WordUtils;
 
 /**
@@ -31,14 +37,16 @@ public class Thesaurus {
 	private static Thesaurus instance;
 	// Settings Instance
 	private static Settings settings = Settings.getInstance();
-
 	// Actual thesaurus data structure
-	private Map<String, Collection<String>> thesaurus;
+	private Map<String, Set<String>> thesaurus;
+	// Cache to speed up some operations
+	private Cache<String, Set<String>> cache;
 
 	/**
 	 * Default Constructor
 	 */
 	private Thesaurus() {
+		cache = new Cache<>();
 		populateThesaurusFromFile();
 	}
 
@@ -72,31 +80,45 @@ public class Thesaurus {
 	 * Load the thesaurus into a HashSet to allow for much faster access
 	 */
 	private void populateThesaurusFromFile() {
-		InputStream is = settings.getThesaurusStream();
+		InputStream[] is = { settings.getThesaurusStream(),
+				settings.getCustomThesaurusStream() };
 
 		// Instantiate the thesaurus object
 		thesaurus = new HashMap<>();
 
+		// Read specified dictionary to internal data structure
+		for (InputStream element : is) {
+			readFile(element);
+		}
+	}
+
+	/**
+	 * Read an <code>InputStream</code> and add the contents to the thesaurus.
+	 * 
+	 * @param element
+	 *            - the Stream to read in
+	 */
+	private void readFile(InputStream element) {
 		// Try-with-resources. Readers are automatically closed after use
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				element))) {
 			String line = null;
 			// For each entry of the thesaurus
 			while ((line = br.readLine()) != null) {
 				// Separate the individual words
 				String[] words = line.split(",");
 				// Get the key (look-up) word
-				String lookupWord = words[0];
+				String lookupWord = words[0].toLowerCase();
 				// Rest of the words are synonyms
 				words = Arrays.copyOfRange(words, 1, words.length);
 				// Add words to a list
-				Collection<String> entry = new ArrayList<>();
+				Set<String> entry = new HashSet<>();
 				for (String word : words) {
 					if (Dictionary.getInstance().areWords(word)) {
 						entry.add(word.toLowerCase());
 					}
 				}
-				// And add them to the dictionary
-				thesaurus.put(lookupWord, entry);
+				Util.addAllToMap(thesaurus, lookupWord, entry, HashSet.class);
 			}
 		} catch (IOException e) {
 			System.err.println("Exception in Thesaurus initialisation.");
@@ -285,6 +307,135 @@ public class Thesaurus {
 	}
 
 	/**
+	 * Get the synonyms for as many words as possible in the given clue. For
+	 * example, in the clue "help the medic", look for synonyms of
+	 * "help the medic", "help the", "the medic", "help", "the", "medic".
+	 * 
+	 * @param clue
+	 *            - the clue to look for synonyms
+	 * @return a LinkedHashMap of all the synonyms that have been found
+	 */
+	public synchronized Map<String, Set<String>> getSynonymsForClue(String clue) {
+		// This will be returned and will contain any found abbreviations
+		LinkedHashMap<String, Set<String>> synonymMap = new LinkedHashMap<>();
+
+		// Synonyms can span across multiple words
+		// Convert clue to List
+		List<String> clueList = new ArrayList<>(Arrays.asList(WordUtils
+				.getWords(clue)));
+
+		// The index of the last clue word
+		int maxIndex = clueList.size() - 1;
+
+		// Starting FROM the first word of the clue for the beginning of the
+		// substring
+		for (int i = 0; i <= maxIndex; i++) {
+			// Start with the biggest index (TO) for the end of the
+			// substring
+			for (int j = maxIndex; j >= i; j--) {
+				// Create a string from the current indexes
+				String clueWords = composeClueSubstring(clueList, i, j);
+				// If this String has registered abbreviations, note them!
+				if (thesaurus.containsKey(clueWords)) {
+					synonymMap.put(clueWords, thesaurus.get(clueWords));
+					// break;
+				}
+
+			}
+		}
+		return synonymMap;
+	}
+
+	/**
+	 * Create a String of words using the indexes of a List of words.
+	 * 
+	 * @param clue
+	 *            - A clue represented as a list, with an entry for each word
+	 * @param fromIndex
+	 *            - The first index to create a substring from
+	 * @param toIndex
+	 *            - The last index to create a substring to
+	 * @return the complete substring
+	 */
+	private String composeClueSubstring(List<String> clue, int fromIndex,
+			int toIndex) {
+		// The initial substring. This will be returned
+		String substring = "";
+
+		// From the start index to the end index
+		for (int i = fromIndex; i <= toIndex; i++) {
+			// Add the corresponding word
+			substring += clue.get(i) + " ";
+		}
+		return substring.trim();
+	}
+
+	/**
+	 * Retrieve all synonyms in the same entry in the thesaurus as a given word
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @return the synonyms in the same entry as the given word
+	 */
+	public Set<String> getEntriesContainingSynonym(String word,
+			boolean includeSiblings) {
+		if (cache.containsKey(word)) {
+			return cache.get(word);
+		}
+		Set<String> synonyms = new HashSet<>();
+		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
+			if (entry.getKey().equals(word) || entry.getValue().contains(word)) {
+				if (includeSiblings) {
+					synonyms.addAll(entry.getValue());
+				}
+				synonyms.add(entry.getKey());
+			}
+		}
+		synonyms.remove(word);
+		cache.put(word, synonyms);
+
+		return synonyms;
+	}
+
+	/**
+	 * Retrieve all synonyms in the same entry in the thesaurus as a given word
+	 * which match against the given pattern
+	 * 
+	 * @param word
+	 *            - the word to get synonyms for
+	 * @param pattern
+	 *            - the pattern the synonyms should match against
+	 * @return the synonyms in the same entry as the given word which match the
+	 *         given pattern
+	 */
+	public Set<String> getEntriesContainingSynonym(String word,
+			SolutionPattern pattern, boolean includeSiblings) {
+		if (cache.containsKey(word)) {
+			return cache.get(word);
+		}
+		Set<String> synonyms = new HashSet<>();
+		for (Entry<String, Set<String>> entry : thesaurus.entrySet()) {
+			if (entry.getKey().equals(word) || entry.getValue().contains(word)) {
+				if (includeSiblings) {
+					synonyms.addAll(entry.getValue());
+				}
+				synonyms.add(entry.getKey());
+			}
+		}
+		synonyms.remove(word);
+		Iterator<String> it = synonyms.iterator();
+		while (it.hasNext()) {
+			String synonym = it.next();
+			if (!pattern.match(synonym)) {
+				it.remove();
+			}
+		}
+		cache.put(word, synonyms);
+
+		return synonyms;
+	}
+
+	/**
 	 * Check if any of the words contained in a clue are present as synonyms to
 	 * the given solution.
 	 * 
@@ -310,7 +461,7 @@ public class Thesaurus {
 			String recomposed = pattern.recomposeSolution(solution
 					.getSolution());
 			// e,g. { "strain" , "a" , "muscle" }
-			String[] words = recomposed.split(WordUtils.REGEX_WHITESPACE);
+			String[] words = WordUtils.getWords(recomposed);
 			solutions = new String[words.length + 2];
 			// i.e. "strainamuscle"
 			solutions[0] = solution.getSolution().toLowerCase();
@@ -369,8 +520,7 @@ public class Thesaurus {
 							+ clueWord + "\".");
 					return true;
 				} else if (multipleWords) {
-					for (String word : solutions[1]
-							.split(WordUtils.REGEX_WHITESPACE)) {
+					for (String word : WordUtils.getWords(solutions[1])) {
 						if (synonyms.contains(word)) {
 							solution.addToTrace("Confidence rating increased as this solution is a synonym of the clue word \""
 									+ clueWord + "\".");

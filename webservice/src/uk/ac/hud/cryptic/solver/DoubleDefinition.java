@@ -54,12 +54,19 @@ public class DoubleDefinition extends Solver {
 		// Second-level synonyms
 		Map<String, Collection<String>> secondSynonyms = new HashMap<>();
 
+		boolean unknown = pattern.isAllUnknown();
+
 		// Populate the synonym maps
 		for (String word : words) {
 			firstSynonyms.put(word,
 					THESAURUS.getMatchingSynonyms(word, pattern));
-			secondSynonyms.put(word,
-					THESAURUS.getSecondSynonyms(word, pattern, false));
+			if (unknown) {
+				secondSynonyms.put(word, THESAURUS.getEntriesContainingSynonym(
+						word, pattern, false));
+			} else {
+				secondSynonyms.put(word, THESAURUS.getEntriesContainingSynonym(
+						word, pattern, true));
+			}
 		}
 
 		// Look for matches... this is where it gets messy
@@ -70,7 +77,7 @@ public class DoubleDefinition extends Solver {
 		// First-second (or vice-versa) matching
 		solutions.addAll(findSynonymMatches(firstSynonyms, secondSynonyms));
 
-		// Note no second-second matching. That's too vague.
+		// Note no second-second matching. That's too vague
 
 		return solutions;
 	}
@@ -109,12 +116,10 @@ public class DoubleDefinition extends Solver {
 								s.setConfidence(Confidence.DOUBLE_DEFINITION_INITIAL);
 
 								// Compile a detailed trace message
-								String trace = "The words of the clue, ";
-								trace += "\"" + e1.getKey() + "\" and ";
-								trace += "\"" + e2.getKey() + "\"";
-								trace += " share the synonym \"" + synonym1
-										+ "\".";
-								s.addToTrace(trace);
+								s.addToTrace(String
+										.format("The words of the clue, \"%s\" and \"%s\" share the synonym \"%s\".",
+												e1.getKey(), e2.getKey(),
+												synonym1));
 
 								// If both maps are equal, i.e. first and
 								// first-level synonyms,

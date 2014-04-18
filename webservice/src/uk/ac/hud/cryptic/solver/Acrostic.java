@@ -67,10 +67,9 @@ public class Acrostic extends Solver {
 				subStr += termToSearch.substring(j, j + 1);
 			}
 			Solution s = new Solution(subStr, NAME);
-			s.addToTrace("Initial letters taken from clue words, starting with \""
-					+ words[i]
-					+ "\", to clue word \""
-					+ words[i + solutionLength - 1] + "\".");
+			s.addToTrace(String
+					.format("Initial letters taken from clue words, starting with \"%s\", to clue word \"%s\".",
+							words[i], words[i + solutionLength - 1]));
 			solutions.add(s);
 		}
 

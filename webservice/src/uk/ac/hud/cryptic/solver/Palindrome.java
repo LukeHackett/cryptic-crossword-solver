@@ -54,8 +54,8 @@ public class Palindrome extends Solver {
 
 			for (String sol : synonyms) {
 				Solution s = new Solution(sol, NAME);
-				s.addToTrace("This is a synonym of the clue word \"" + clueWord
-						+ "\".");
+				s.addToTrace(String.format(
+						"This is a synonym of the clue word \"%s\".", clueWord));
 				solutions.add(s);
 			}
 		}

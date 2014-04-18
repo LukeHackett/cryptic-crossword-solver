@@ -173,6 +173,18 @@ public class Categoriser {
 	}
 
 	/**
+	 * Get a collection of the indicators for a given solver type
+	 * 
+	 * @param type
+	 *            - the type of solver to retrieve the indicators for
+	 * @return a collection of the speficied indicators, <code>null</code>
+	 *         otherwise
+	 */
+	public Collection<String> getIndicators(String type) {
+		return indicators.get(type);
+	}
+
+	/**
 	 * For testing purposes
 	 */
 	public static void main(String[] args) {

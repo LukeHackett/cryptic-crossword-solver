@@ -184,14 +184,27 @@ public class SolutionCollection extends HashSet<Solution> {
 			// Don't accept the same solution from the same solver
 			if (!s.getSolverType().equals(duplicateSolution.getSolverType())) {
 
+				// Solution with the greatest confidence
+				Solution bestSolution = s.getConfidence() > duplicateSolution
+						.getConfidence() ? s : duplicateSolution;
+				Solution worstSolution = bestSolution == s ? duplicateSolution
+						: s;
+
 				// Increase confidence and add message
 				double confidence = Confidence.multiply(
-						duplicateSolution.getConfidence(),
+						bestSolution.getConfidence(),
 						Confidence.MULTI_SOLVER_MULTIPLIER);
-				duplicateSolution.setConfidence(confidence);
-				duplicateSolution
+				bestSolution.setConfidence(confidence);
+				bestSolution
 						.addToTrace("Confidence rating increased as this solution has also been found by the \""
-								+ s.getSolverType() + "\" solver.");
+								+ worstSolution.getSolverType() + "\" solver.");
+
+				// If the best solution isn't current in the collection, remove
+				// old and add this one
+				if (bestSolution == s) {
+					remove(duplicateSolution);
+					super.add(bestSolution);
+				}
 
 				// Can return true to indicate solution has been added (kind of)
 				added = true;

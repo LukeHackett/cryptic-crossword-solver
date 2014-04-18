@@ -259,6 +259,56 @@ public class SolutionPattern {
 	}
 
 	/**
+	 * /** Determine if a given prefix matches against the solution pattern
+	 * provided by the user.
+	 * 
+	 * @param prefix
+	 *            - the prefix of a solution to check
+	 * @return <code>true</code> if the proposed prefix matches the pattern,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean matchPrefix(String prefix) {
+		int prefixLength = prefix.length();
+		// Assume a match until proven otherwise
+		boolean match = true;
+
+		// Match an empty prefix
+		if (prefix.length() == 0) {
+			return true;
+		}
+
+		// The length of the prefix has to be <= solution length
+		if (!(prefixLength <= totalLength)) {
+			match = false;
+		} else if (allUnknown) {
+			match = true;
+		} else {
+			// Some chars have been marked as known
+			int counter = 0;
+			// For the patterns representing each individual word
+			outer: for (String pattern : indWordPatterns) {
+				// For each character of this pattern ('?','-' or alphabet)
+				for (char item : pattern.toCharArray()) {
+					if (item == UNKNOWN_CHARACTER) {
+						counter++;
+					} else {
+						// If a known character given by the user conflicts with
+						// a character of the proposed solution, this is not a
+						// match
+						if (counter < prefixLength
+								&& Character.toLowerCase(item) != Character
+										.toLowerCase(prefix.charAt(counter++))) {
+							match = false;
+							break outer;
+						}
+					}
+				}
+			}
+		}
+		return match;
+	}
+
+	/**
 	 * Apply the correct formatting to a given solution to make it match the
 	 * original solution pattern. In other words, the solution will be spaced
 	 * according to the separators which are declared by the user. Solution
@@ -456,6 +506,16 @@ public class SolutionPattern {
 			}
 		}
 		return pattern;
+	}
+
+	/**
+	 * Is the entire pattern unknown?
+	 * 
+	 * @return <code>true</code> if no characters are known, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean isAllUnknown() {
+		return allUnknown;
 	}
 
 } // End of class SolutionPattern

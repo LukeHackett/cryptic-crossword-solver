@@ -130,6 +130,16 @@ public class Settings {
 		// Location of the resource
 		return getStream(ResourceType.ASSET, "thesaurus/gutenberg/mthesaur.txt");
 	}
+	
+	/**
+	 * This method will return the path to the custom thesaurus file.
+	 * 
+	 * @return the file path to the thesaurus
+	 */
+	public InputStream getCustomThesaurusStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "thesaurus/custom.txt");
+	}
 
 	/**
 	 * This method will return the path to the homophone dictionary file.
@@ -311,6 +321,16 @@ public class Settings {
 		String getPassword() {
 			return password;
 		}
+	}
+
+	/**
+	 * This method will return the path to the abbreviations file.
+	 * 
+	 * @return the file path to the abbreviations
+	 */
+	public InputStream getAbbreviationsStream() {
+		// Location of the resource
+		return getStream(ResourceType.ASSET, "abbreviations/abbreviations.json");
 	}
 
 } // End of class Settings

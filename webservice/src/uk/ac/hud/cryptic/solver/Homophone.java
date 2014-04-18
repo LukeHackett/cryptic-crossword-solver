@@ -54,7 +54,7 @@ public class Homophone extends Solver {
 		// Remove indicator word(s) from the clue to decrease the solve time
 		String clue = c.getClueNoPunctuation(false);
 		clue = Categoriser.getInstance().removeIndicatorWords(clue, NAME);
-		String[] words = clue.split(WordUtils.REGEX_WHITESPACE);
+		String[] words = WordUtils.getWords(clue);
 
 		// Find direct homonyms
 		solutions.addAll(findDirectHomonyms(words));
@@ -84,8 +84,9 @@ public class Homophone extends Solver {
 			Set<String> homonyms = HOMOPHONE_DICT.getHomonyms(word);
 			for (String homonym : homonyms) {
 				Solution s = new Solution(homonym, NAME);
-				s.addToTrace("Pronunciation of " + word + " matches with "
-						+ homonym);
+				s.addToTrace(String.format(
+						"Pronunciation of \"%s\" matches with \"%s\"", word,
+						homonym));
 				// Adjust the solution's confidence
 				double confidence = Confidence.multiply(s.getConfidence(),
 						Confidence.HOMOPHONE_MULTIPLIER);
@@ -106,9 +107,9 @@ public class Homophone extends Solver {
 				Set<String> homonyms = HOMOPHONE_DICT.getHomonyms(synonym);
 				for (String homonym : homonyms) {
 					Solution s = new Solution(homonym, NAME);
-					s.addToTrace("Pronunciation of \"" + synonym
-							+ "\" (synonym of " + word + ") matches with \""
-							+ homonym + "\"");
+					s.addToTrace(String
+							.format("Pronunciation of \"%s\" (synonym of %s) matches with \"%s\".",
+									synonym, word, homonym));
 					// Adjust the solution's confidence
 					double confidence = Confidence.multiply(s.getConfidence(),
 							Confidence.HOMOPHONE_MULTIPLIER);

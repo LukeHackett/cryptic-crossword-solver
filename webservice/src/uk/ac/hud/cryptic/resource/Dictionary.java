@@ -15,6 +15,11 @@ import uk.ac.hud.cryptic.core.SolutionPattern;
 import uk.ac.hud.cryptic.util.Cache;
 import uk.ac.hud.cryptic.util.WordUtils;
 
+import com.googlecode.concurrenttrees.radix.ConcurrentRadixTree;
+import com.googlecode.concurrenttrees.radix.RadixTree;
+import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFactory;
+import com.googlecode.concurrenttrees.radix.node.concrete.voidvalue.VoidValue;
+
 /**
  * This class provides a wrapper around the dictionary words file found within
  * Linux systems.
@@ -30,6 +35,7 @@ public class Dictionary {
 
 	// Actual dictionary data structure
 	private Collection<String> dictionary;
+	private RadixTree<VoidValue> prefixDictionary;
 
 	// Cache to speed up common requests
 	private DictionaryCache cache;
@@ -53,6 +59,8 @@ public class Dictionary {
 
 		// Instantiate the dictionary object
 		dictionary = new HashSet<>();
+		prefixDictionary = new ConcurrentRadixTree<>(
+				new DefaultCharArrayNodeFactory());
 
 		// Read specified dictionary to internal data structure
 		for (InputStream element : is) {
@@ -87,10 +95,13 @@ public class Dictionary {
 
 			// Loop over every line
 			while ((line = br.readLine()) != null) {
+				String word = line.toLowerCase().trim();
 				if (add) {
-					dictionary.add(line.toLowerCase().trim());
+					dictionary.add(word);
+					prefixDictionary.put(word, VoidValue.SINGLETON);
 				} else {
-					dictionary.remove(line.toLowerCase().trim());
+					dictionary.remove(word);
+					prefixDictionary.remove(word);
 				}
 			}
 
@@ -294,13 +305,13 @@ public class Dictionary {
 	public boolean prefixMatch(String prefix) {
 		// Standarise the given prefix
 		prefix = prefix.toLowerCase().trim();
-		// Have the manually check all dictionary words until a match is found
-		for (String word : dictionary) {
-			if (word.startsWith(prefix)) {
-				return true;
-			}
-		}
-		return false;
+		// System.out
+		// .println("Words beginning with \""
+		// + prefix
+		// + "\"? "
+		// + (prefixDictionary.getKeysStartingWith(prefix).size() > 0 ? "Yes"
+		// : "No"));
+		return prefixDictionary.getKeysStartingWith(prefix).size() > 0;
 	}
 
 	/**

@@ -73,8 +73,9 @@ public class Pattern extends Solver {
 				}
 			} while (word == null);
 
-			s.addToTrace("Every other character taken from the clue, starting with the clue word \""
-					+ word + "\".");
+			s.addToTrace(String
+					.format("Every other character taken from the clue, starting with the clue word \"%s\".",
+							word));
 			solutions.add(s);
 		}
 
