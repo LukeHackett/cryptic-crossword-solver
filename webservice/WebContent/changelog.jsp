@@ -22,20 +22,24 @@
           <ul>
             <li>Addition of a user manual, containing information for developers
             and users of the system.</li>
+            <li>Added support for Container, Charade, Deletion and Reversal clue
+            types.</li>
+            <li>Improved the solution traces to aid new users in solving clues
+            </li>
           </ul>
         </div>
         <!-- Known Bugs -->
         <div class="col-md-4">
           <h4>Known Bugs</h4>
           <ul>
-            <li></li>
+            <li>None</li>
           </ul>
         </div>
         <!-- In Progress -->
         <div class="col-md-4">
           <h4>In Progress</h4>
           <ul>
-            <li></li>
+            <li>None</li>
           </ul>
         </div>
       </div>
