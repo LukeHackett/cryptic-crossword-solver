@@ -6,10 +6,10 @@
     <div class="col-md-12">
       <h2>User Manual</h2>
       <p>The usage of the site has been designed to be as simple and free 
-      flowing as possible. However for total piece at mind there are two user 
-      guides that may be of some help</p>
+      flowing as possible. However for total piece of mind there are two user 
+      guides that may be of some help.</p>
       <p>The majority of users will use the simple HTML interface that has been
-      designed and implemented as part of this website. However there is also a 
+      designed and implemented as part of this website. However, there is also a 
       web service manual for those who are interested in utilising the RESTful 
       web service.</p>
       <ul>
@@ -25,13 +25,13 @@
       <h3>Website Manual</h3>
       <p>The main usage for many cryptic crossword solvers will be via the 
       dedicated website. The website has a <a href="solver.jsp">solving form</a>
-      that is able to viewed from within <strong>any</strong> HTML standard web 
+      that is able to be viewed from within <strong>any</strong> HTML standard web 
       browser upon <strong>any</strong> device.</p>
       <p>The website form has been designed so that as little input from the 
       user is required as possible.</p>
       <p>Upon inputting a correct clue and solution length pattern the text 
       boxes will turn green. If invalid data has been input, the text boxes will
-      turn read.</p>
+      turn red.</p>
       <p>Once both the clue and the solution length have been input, the user
       is able to add additional known characters (if possible) within the 
       various supplied text boxes. These text boxes are automatically generated
@@ -100,10 +100,10 @@
       must be given otherwise the response will be an error.</p>
       <br>
       <p>The clue can be of any length, and may contain spaces, however it is 
-      recommended that the data send is encoded if the request is being made 
+      recommended that the data sent is encoded if the request is being made 
       via AJAX.</p>
       <p>The solution length is a number or any combination of numbers, commas 
-      and hyphens to denoted a separate word or hyphened-word.</p>
+      and hyphens to denote a separate word or hyphenated word.</p>
       <p>The solution pattern must match exactly to the solution length, for 
       example a given clue length <kbd>4,3-3</kbd> would match to <kbd>????,???-???</kbd>
       or <kbd>?a??,???-??t</kbd> solution patterns but would not match to this
