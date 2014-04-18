@@ -172,6 +172,16 @@ implement.
 \paragraph{Provide real-time feedback of the processes being followed by the
 application in an attempt to calculate the correct solution}
 
+Although this would have been an ideal feature it was decided that this feature
+would break the over all underlying architecture of a web service. A web service
+should be a stateless service, meaning that a request is made and only one 
+response is made.
+
+In order to implement this feature it would require some form of server side 
+session, so that a client can `poll' for results, until an end of results 
+response is received . It was decided that the time spent implementing this 
+feature could be spent else where within the project.
+
 {\bf Overall:} Not Implemented
 
 
