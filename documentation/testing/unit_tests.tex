@@ -155,6 +155,22 @@
 \subsection{Servlet Suite}
 \label{sub:test_servlet_suite}
 
+The servlet suite focuses upon testing the server side request handling and 
+validations. The automated testing of the servlet required the use of the Apache
+HttpComponents project, which provides a number of low level tools that enables 
+HTTP protocols to be tested.
+
+In order for the system to be able to correctly compute a list of possible 
+solutions the servlet requires the clue, the solution pattern, and the solution
+length.
+
+Tests 89 -- 95 attempt to give only one or two of the required parameters to 
+ensure that the request is rejected. A rejected rejects will return an error 
+(in either XMl or JSON) explaining what is incorrect.
+
+Tests 96 and 97 give the three require parameters, but make the pattern and 
+solution lengths unmatchable --- for example a solution length of 3,4 should not
+be matched to ?????,?? as that would have a solution length of 5,2.
 
 \begin{longtable}{|C{2cm}|L{11.5cm}|C{2cm}|}
   \hline
