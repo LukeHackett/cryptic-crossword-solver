@@ -20,78 +20,179 @@ not been implemented, an explanation will be delivered as to the reasons why.
 \paragraph{Retrieve and process cryptic clues and output possible
 solutions}
 
-{\bf Overall:} 
+A website and a web service have been implemented. The website allows the input
+of cryptic clues and clue details from the user which are then passed to the web service 
+for all the solver algorithms to find potential solutions. These potential solutions are then 
+sent back to the website to be displayed for the user. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.4]{evidence/retrieve.png}
+	\caption{Cryptic clue with results retrieved from web service}
+\end{figure}
+
+{\bf Overall:} Fully Implemented
 
 \paragraph{Obtain characteristics of the clue's solution (e.g. number of words, 
 word lengths and known letters) and
 match these against possible solutions}
 
-{\bf Overall:}
+A web interface has been implemented with the necessary controls for the user 
+to successfully implement the required and optional information associated with a 
+cryptic clue. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true]{evidence/obtain.png}
+	\caption{Input fields for obtaining characteristics of a cryptic clue}
+\end{figure}
+
+{\bf Overall:} Fully Implemented
 
 \paragraph{Provide a web interface for users to interact with the
 system}
 
-{\bf Overall:}
+A web interface has been implemented to allow users to interact with the web 
+service. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.4]{evidence/scrolling.png}
+	\caption{Web page in full screen browser window}
+\end{figure}
+
+{\bf Overall:} Fully Implemented
 
 \paragraph{Provide a mobile-friendly interface for users to interact
 with the system}
 
-{\bf Overall:}
+The web interface that has been implemented has been implemented in such a way 
+that it resizes with the browser window. Therefore, even though it was not made for 
+mobile devices it has a mobile-friendly interface with as limited scrolling as possible. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.5]{evidence/scrolling1.png}
+	\caption{Web page in resized browser window}
+\end{figure}
+
+{\bf Overall:} Partially Implemented
 
 \paragraph{Store clues and their corresponding solutions for future
 retrieval, including the clue type and solution length}
 
-{\bf Overall:}
+The database used within the project is purely for testing purposes. 
+It was decided during the implementation stage that a database to store clues 
+along with their details for the use of the web service before passing the clue 
+to the solvers was not necessary because it may not be entirely beneficial. To store exact clues 
+in the database would mean the user would have to input the exact same 
+clue (wording and punctuation) for this to be beneficial. 
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Take feedback from a user on a solution's accuracy and
 use this to rank solutions for a given clue}
 
-{\bf Overall:}
+As a database has not been implemented for the uses other than testing, 
+this requirement was not possible.
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Relay the process (solution trace) followed to arrive at
 a proposed solution to the user}
 
-{\bf Overall:}
+Whilst the solvers are finding potential solutions, each solution builds up its 
+own trace. This trace holds important aspects of how the associated solution 
+has been found. These traces are then passed back to the web page to be displayed
+ with the solution for the user. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.5]{evidence/trace1.png}
+	\caption{Trace for solution `stolen' with clue; `Among library books to lend and not returned', with solution; `stolen'}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.5]{evidence/trace2.png}
+	\caption{Trace for solution `return' with clue; `Among library books to lend and not returned', with solution; `stolen'}
+	\label{fig:decCon}
+\end{figure}
+
+
+{\bf Overall:} Fully Implemented
 
 \paragraph{Holistically determine a confidence score for each proposed 
 solution, and relay this to the user}
 
-{\bf Overall:}
+The confidence score is increased if indicator words or synonyms that match clue words are found.
+Confidence scores can also be decreased, as shown in Figure \ref{fig:decCon}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio=true]{evidence/confidence.png}
+	\caption{A solution returned with a confidence score displayed of 87\% for the clue; `Advance in either direction'}
+\end{figure}
+
+{\bf Overall:} Fully Implemented
 
 \paragraph{Document and store the process (solution trace) followed to solve a given clue}
 
-{\bf Overall:}
+As a database has not been implemented for the uses other than testing, 
+this requirement was not possible.
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Solve clues which take cues from the clue's orientation
 or clue number in the crossword}
 
-{\bf Overall:}
+As the chance of this occuring is rare, it was not seen as beneficial to 
+implement. 
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Provide real-time feedback of the processes being followed 
 by the application in an attempt to calculate the
 correct solution}
 
-{\bf Overall:}
+{\bf Overall:} Not Implemented
 
 \paragraph{Take annotations provided by the user of the known
-aspects of a clue, such as the denition word(s), fodder
+aspects of a clue, such as the definition word(s), fodder
 or indicator word(s)}
 
-{\bf Overall:}
+Although this would have been a beneficial requirement to implement for the 
+project, unfortunately development time was limited. This could have been 
+integrated with the Categoriser to increase confidence scores and possibly 
+bring in the functionality to pass the clue to specific solvers rather than all of 
+them. 
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Store a clue's orientation and clue number in the
 database}
 
-{\bf Overall:}
+As a database has not been implemented for the uses other than testing, 
+this requirement was not possible.
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Use stored data to generate complete cryptic crosswords}
 
-{\bf Overall:}
+As a database has not been implemented for the uses other than testing, 
+this requirement was not possible. It was also stated as a `Not' requirement 
+within the MoSCoW analysis. 
+
+{\bf Overall:} Not Implemented
 
 \paragraph{Provide a personalised service, including a history of a
 user's interactions with the system}
 
-{\bf Overall:}
+As a database has not been implemented for the uses other than testing, 
+this requirement was not possible. It was also stated as a `Not' requirement 
+within the MoSCoW analysis. 
+
+{\bf Overall:} Not Implemented
 
 %%%
 %% Testing :: Functional Testing :: Usability Requirements
