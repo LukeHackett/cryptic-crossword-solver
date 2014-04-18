@@ -10,13 +10,19 @@
 \subsection{Usability Requirements}
 \label{sub:test_func_usability}
 
-\begin{longtable}{|L{14cm}|C{2cm}|}
-  \hline
-  {\bfseries Requirement} & {\bfseries Evidence/Comment} {\bfseries Outcome}   \\
-  \hline
-
-  Provide a text field for the user to input the cryptic clue
-to be solved            & Picture                             & PASS \\  \hline
-
-
-\end{longtable}
+\newgeometry{margin=2.5cm}
+\begin{landscape}
+  \centering
+  \setlength\LTleft{0pt}            % default: \parindent
+  \setlength\LTright{0pt}           % default: \fill
+  \LTcapwidth=\textwidth
+  \begin{longtable}{|L{10cm}|L{10cm}|C{2cm}|}
+    \hline
+    {\bfseries Requirement} & {\bfseries Evidence/Comment} & {\bfseries Outcome} \\
+    \hline
+    Provide a text field for the user to input the cryptic clue to be solved
+    & Picture   & PASS \\ \hline
+    Some requirement
+    & Picture & FAIL \\ \hline
+  \end{longtable}
+\end{landscape}
