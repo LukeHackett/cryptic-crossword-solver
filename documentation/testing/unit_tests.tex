@@ -139,7 +139,17 @@ case of ensuring the correct values are returned.
 \subsection{Resource Suite}
 \label{sub:test_resource_suite}
 
+The Resource Suite tests all the resources that are used to aid in the 
+solving of clues to ensure the methods interacting with them are 
+returning the correct data. The resources are the dictionary file, 
+the homonym dictionary file, the thesaurus file and the abbreviations 
+file. 
 
+By running the tests the initial reading in of the files and population of 
+collections to hold the data is tested. For testing the correct return of data, 
+samples were taken from the files themselves to make is possible to use the 
+`assertEquals' method provided within the JUnit library to get exact expected 
+matches. 
 
 \begin{longtable}{|C{2cm}|L{11.5cm}|C{2cm}|}
   \hline
@@ -222,7 +232,20 @@ be matched to ?????,?? as that would have a solution length of 5,2.
 \subsection{Solver Suite}
 \label{sub:test_solver_suite}
 
+Within the Solver Suite each solver has its own test class and each solver
+ is tested the same way. Each test class (e.g. `PalindromeTest', `HiddenTest', etc.)
+extends the `SolverTest' class and is set up to use the `testSolve' method in the 
+class being extended. The seperate solver classes use the `BeforeClass' annotation 
+within JUnit to get the name of the solver, the solver itself, the number of clues to 
+test against (twenty for each solver) and setting the unknown characters to true. 
 
+When the suite and each solver test is run, all the details are set and the 
+`testSolve' method is called passing in the details as paramaters. This method 
+retrieves twenty clues from the database to test (with the correct clue type assigned to it)
+ and runs one clue on each thread available. For each clue retrieved from the database, the 
+`solve'  method is called for the correct solver and the potential solutions returned from the solver 
+are checked to determine whether the actual solution, which is stored in the database with the clue, 
+has been found. 
 
 \begin{longtable}{|C{2cm}|L{11.5cm}|C{2cm}|}
   \hline
