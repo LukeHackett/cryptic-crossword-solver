@@ -17,11 +17,12 @@ mkdir $CLASS_DIR
 
 # Compile the java into the above output directories
 echo "compiling the project"
+find src/ -name "*.java" > sources.txt
 javac \
-  -sourcepath src/ \
   -classpath $TOMCAT_LIB:$PROJECT_LIB:. \
-  -d WebContent/WEB-INF/classes \
-  src/uk/ac/hud/cryptic/servlet/Solver.java
+  -d $CLASS_DIR \
+  @sources.txt
+rm sources.txt
 
 # Create the WAR file
 echo "producing the WAR file"
