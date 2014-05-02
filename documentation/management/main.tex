@@ -1,0 +1,44 @@
+\documentclass[12pt]{report}
+\usepackage[round,authoryear]{natbib}
+\usepackage[margin=2cm]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{array}
+
+\begin{document}
+
+% Title Page 
+\input{title}
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% Table of Figures
+\newpage
+\listoffigures
+
+% Table of Tables
+\newpage
+\listoftables
+
+% Document Content
+\include{management}
+
+% Terminology
+\input{../terminology}
+
+% Citations
+\bibliographystyle{../apalike-url}
+\bibliography{../citations}
+\end{document}
