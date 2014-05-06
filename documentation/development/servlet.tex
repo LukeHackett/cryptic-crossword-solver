@@ -21,7 +21,7 @@ using Java Enterprise Edition (Java EE) and Tomcat 7.
 
 The main reason for using Java is that the web service could easily make use of
 the various packages that are provided by the chosen natural language processing
-library --- Apache OpenNLP written in Java.
+library --- Apache OpenNLP also written in Java.
 
 The web service has solely been produced using the Java EE platform and does not
 use any additional frameworks or libraries such as Apache Axis. The reason being
@@ -51,16 +51,15 @@ The servlet design has been split across two classes --- \texttt{Servlet} and
 \texttt{Solver}.
 
 The \texttt{Servlet} class extends the standard \texttt{HttpServlet} class and
-provides common functionality. The \texttt{Servlet} class provides a base for 
-all system Servlets to use the common functionality.
+provides common functionality whilst also providing a standardised base for all 
+future system servlets.
 
-The \texttt{Servlet} class is able to if a given request is from a JSON, XML or 
-Ajax background. For example, if a client was to make a request to the web 
-service through a web browser utilising an Ajax request, then the 
-\texttt{isAjaxRequest}  method would return \texttt{true}.
-
-For illustrative purposes the \texttt{isAjaxRequest} method is shown below in 
-listing \ref{isAjaxMethod}.
+The \texttt{Servlet} class is able to deduce if a given request is from a JSON,
+XML or an Ajax background. For example, if a client was to make a request to the
+web  service through a web browser utilising an Ajax request, then the 
+\texttt{isAjaxRequest} method would return \texttt{true}. For illustrative 
+purposes the \texttt{isAjaxRequest} method is shown below in listing 
+\ref{isAjaxMethod}.
 
 \begin{lstlisting}[caption={isAjaxMethod deduces if a request was made by AJAX},
                    label=isAjaxMethod]  
@@ -89,8 +88,6 @@ user will notice that their queries are dealt with much quicker. In this project
 the \texttt{init} method has been used to initialise the various in-memory 
 dictionaries and thesauri.
 
-~\\
-
 The second class is the \texttt{Solver} servlet and handles all requests that are
 specifically for solving a given clue. The \texttt{Solver} servlet accepts both
 GET and POST requests, with each requiring the clue, the length of the solution
@@ -98,11 +95,11 @@ and the solution pattern.
 
 The \texttt{Solver} servlet upon receiving a request will validate the input 
 parameters, based upon a number of criteria including presence checks and 
-regular expressions. The code snippet below is an example validation rule that 
-will validate the solution pattern against a regular expression.
+regular expressions. Listing \ref{isPatternValid} shows an example validation 
+rule that will validate the solution pattern against a regular expression.
 
 \begin{lstlisting}[caption={isPatternValid deduces if a given solution pattern 
-                            is valid}, label=isAjaxMethod] 
+                            is valid}, label=isPatternValid] 
  private boolean isPatternValid(String pattern) {
     // Pattern string regular expression
     final String regex = "[0-9A-Za-z?]+((,|-)[0-9A-Za-z?]+)*";
@@ -114,7 +111,7 @@ will validate the solution pattern against a regular expression.
 \end{lstlisting}
 
 In order for validation to pass, the solution pattern must not be empty and must
-match to the regular expression stated in the method.
+match to the regular expression shown in the above method.
 
 The \texttt{Solver} servlet class will initialise the solving of a clue if the 
 three inputs are deemed to be valid. The \texttt{solveClue} method will utilise 
