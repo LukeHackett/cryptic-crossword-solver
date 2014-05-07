@@ -2,7 +2,7 @@ compile:
 	mkdir out/
 	latexmk -bibtex -pdf main
 	cp main.pdf out/main.pdf
-	mv out/main.pdf ../pdfs/project_management.pdf
+	mv out/main.pdf ../pdfs/management.pdf
 	make clean
 
 clean:
