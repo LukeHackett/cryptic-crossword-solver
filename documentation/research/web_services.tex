@@ -1,0 +1,356 @@
+%%%
+%% Research :: Web Services 
+%%%
+\section{Web Services}
+
+Over the past decade web services have exploded into the computing space. 
+However the concepts that underlie web services are not new. Web services 
+originally evolved from the Remote Procedure Call mechanism that was found in a
+software development framework used in the 1990s \citep{kalin13}.
+
+During the late 1990s, XML-RPC was developed, which was a stripped down, light 
+weight version of the Remote Procedure Call mechanism. The XML-RPC system only 
+supported a small number of data types along with a number of simple commands. 
+XML-RPC contained two key features, which are use of XML serialise/deserialise 
+for data types and the reliance on HTTP for transport XML-RPC \citep{kalin13}.
+
+XML-RPC is designed to be as lightweight as possible, and thus can be supported
+on a wide range of devices. XML-RPC was ultimately implemented fully and became
+known as SOAP. As well as SOAP, another implementation of XML-RPC occurred, 
+which was entitled REST. Both of these technologies fall under the term `web 
+services'.
+
+Since 2001 a vast range of companies have adopted the web services movement 
+including (but not limited to) IBM, Oracle, Hewlett-Packard, Amazon, Google, 
+Facebook and Twitter \citep{sullivan01, kalin13}.
+
+Web services generally tend to reside upon public networks such as the 
+Internet. However it is possible for a web service to run within a private 
+network, such as a company's internal Intranet. 
+
+
+%%%
+%% Research :: Web Services :: What are Web Services?
+%%%
+\newpage
+\subsection{What are Web Services?}
+
+Although there are many companies adopting web services, the term web service 
+has a diverse and loose definition (Kalin, 2013). During the initial explosion, 
+many providers created heavily detailed plans upon the direction of their web 
+service, but failed to exactly define what a web service is.
+
+It was only until the explosion subsided that authors were able to define what 
+a web service is \citep{kalin13}. \citet{kalin13} Kalin highlighted three 
+common characteristics between web service providers:
+
+\begin{enumerate}
+  \item Can be thought of as a  `webified application'
+  \item Typically delivered over Hyper Text Transport Protocol (HTTP)
+  \item Typically has some form of distributed nature allowing for components 
+  to be deployed and executed across multiple devices.
+\end{enumerate}
+
+For the purposes of this project a web service will be defined as:
+
+\begin{quote}
+  A service that contains one or more software components that are designed to 
+  allow machine-to-machine interaction over a network using standard protocols.
+\end{quote}
+
+Web services follow the client-server model, which is the standard architecture
+for accessing a website. However unlike the traditional approaches to 
+client/server models (such as a web server/web page setup), web services do not
+provide the end user with a Graphical User Interface (GUI).
+
+The web service will provide the end user with machine readable data --- i.e. 
+the data must be put into a pre-defined GUI. This architectural design concept 
+is not new and has been around for a number of years. Web services often can be
+thought of as imitating mainframes --- i.e. a `dumb terminal' sends a request 
+to a service hosted upon a central computer system.
+
+Web services can be broadly categorised into the distributed software systems 
+category \citep{kalin13}. Broadly speaking a distributed software system is a 
+system that is often split up into various components. Each component can run 
+upon a separate physical machine, and is able to communicate with other parts 
+of the system by passing `messages' around. Although a web service does fit 
+into that broad definition, there are several features that are unique to a 
+web service.
+
+Firstly web services heavily depend upon open, industry-standard, 
+vendor-independent protocols such as HTTP, JSON and XML. By adding networking, 
+data formatting and security features, web services can effectively lower 
+start-up costs and promote interoperability between new and existing services 
+\citep{kalin13}.
+
+It is the interoperability that allows web services to promote language 
+transparency. This means that web services and client programs do not need to 
+be developed in the same language. Many popular languages (e.g. C/C++, Java, and
+Python) provide inbuilt libraries or frameworks in support of web services 
+\citep{kalin13}.
+
+Finally web services are designed to be modular in design. This allows new 
+services to be brought online in staggered stages, as well as allowing for 
+laying of existing services. Again as previously mentioned each new service, 
+can be written in the same language as the previous service, or use a completely 
+new language \citep{kalin13}. 
+
+
+%%%
+%% Research :: Web Services :: Web Service Categories
+%%%
+\subsection{Web Service Categories}
+
+Web services can be divided into two distinct groups --- SOAP based and 
+REST-style \citep{kalin13}. Interestingly the distinction could be described 
+as being little at most, but they are not necessarily directly compatible with 
+each other. 
+
+
+%%%
+%% Research :: Web Services :: Web Service Categories :: SOAP
+%%%
+\subsubsection{SOAP}
+
+SOAP originally stood for Simple Object Access Protocol, but is often referred 
+to as Service Oriented Architecture (SOA) Protocol \citep{kalin13}. At a glance
+the name change doesn't appear to be too trivial, but it is acutely an example 
+of the technology becoming better defined \citep{kalin13}.
+
+SOAP utilises concepts that can be seen throughout the industry, but none more 
+so than the use of XML. One of the major advantages of XML, is that it is able 
+to provide flexible, self-describing data structures that can easily be 
+produced and read.
+
+SOAP tries to imitate the postal system --- i.e. allowing two machines to send 
+and receive letters. In this analogy, the letter is the raw XML data, and the 
+envelope is an additional data layer that wraps around the letter. The envelope
+adds additional information to the request, such as which operation is being 
+requested, and may also include authentication and session information in 
+envelope headers \citep{gershon04}.
+
+In order to ensure one client or service can `talk' to another service, SOAP 
+responses must use a Web Services Definition Language (WSDL). The WSDL defines 
+the inputs (e.g. parameters), the outputs, the operations, the protocols and 
+the network addresses that are required and used by the service 
+\citep{gershon04}.
+
+The underlying implementation is loosely coupled with WSDL, which means the 
+provider is able to change the implementation, without negatively impacting 
+the end service users. It is the configurable services aspect that is the 
+central concept behind all service oriented architectures \citep{gershon04}. 
+
+
+%%%
+%% Research :: Web Services :: Web Service Categories :: REST
+%%%
+\subsubsection{REST}
+
+REST stands for Representational State Transfer, and is a relatively new 
+architecture for creating web services. Despite its relatively new architecture
+it is actively used by some of the larger vendors such as Google and Amazon 
+\citep{dospinescu13}.
+
+REST relies upon the emerging architecture known as resource-oriented 
+architecture. Essentially, these resources are a number software components 
+that can be combined together to create reusable functionality.
+
+As well as using a resource-oriented architecture, REST makes clever and 
+effective use of open standard web technologies, such as the Hypertext Transfer
+Protocol (HTTP), the Uniform Resource Identifier (URL) and the Extensible 
+Mark-up Language (XML) \citep{dospinescu13}.
+
+Although not all of the features have been implemented, (mostly because they 
+are layout properties rather than data properties) the major concepts found in
+web technologies have been implemented and the most notable of these features 
+are:
+
+\begin{enumerate}
+  \item Data from the client is transmitted to the server via the URI
+  \item The server will perform the operation described by the HTTP method 
+  (such as GET, DELETE)
+  \item The URI for each resource will contain the server name and address
+\end{enumerate}
+
+As previously mentioned, HTTP methods are widely used within REST. A HTTP 
+method will describe the necessary action (Create, Read, Update and Delete --- 
+CRUD) that is required to be performed by the server \citep{dospinescu13}.
+
+The HTTP methods follow another standard in terms of the basic functions of a 
+database management system. It must be said that REST and the HTTP protocol are
+mutually exclusive --- REST doesn't require HTTP \citep{dospinescu13}. 
+
+Table \ref{tbl:http_crud} describes common HTTP verbs and the associated CRUD 
+operation. 
+
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{|ll|}
+    \hline
+    \textbf{HTTP verb} & \textbf{CRUD operation}      \\ \hline
+    \textbf{POST}      & Create a new resource        \\
+    \textbf{GET}       & Read a resource              \\
+    \textbf{PUT}       & Update an existing resource  \\
+    \textbf{DELETE}    & Delete a given resource      \\ \hline
+    \end{tabular}
+    \caption{HTTP verbs mapped to the associated CRUD operation.}
+    \label{tbl:http_crud}
+  \end{center}
+\end{table}
+
+There are additional optional verbs, such as HEAD, TRACE, CONNECT, OPTIONS and 
+INFO, but these may not be implemented by the server and/or service for security
+reasons. Every HTTP request will include a verb to indicate which CRUD operation
+should be performed upon the resource \citep{dospinescu13}. 
+
+
+%%%
+%% Research :: Web Services :: Web Service Categories :: SOAP vs REST
+%%%
+\subsubsection{SOAP vs REST}
+
+Both REST and SOAP utilise standard protocols when communicating, and also 
+originate from a similar specification. The real difference between the two 
+technologies is that SOAP utilises it's own application protocol by extending 
+current protocols.
+
+This causes a number of issues, such as protocol standardisation. Although SOAP
+is based upon the HTTP protocol, each client will have to correctly understand 
+the new extended protocol --- via an additional layer of software or libraries.
+This adds weight to the overall technology.
+
+SOAP describes functions, and the types of data, which requires large amount of
+documentation in order to use the service. As well as this there are several 
+protocols and technologies that directly relate to it, such as Web Services 
+Description Language, Web Servicing Addressing, XML Schema Definitions.
+
+All binary data that is to be transmitted must be first encoded in a supported
+format (e.g. base64), which increases processing power at both the client and
+server ends. All requests are transmitted via XML, which is much slower to
+parse and interpret than other text-based human readable data, such as 
+JavaScript Object Notation (JSON).
+
+REST on the other hand is based upon uniform interfaces. This means the various
+clients will have a small understanding of the web service, but not necessarily
+how it operates or what it will return.
+
+REST doesn't need to operate over HTTP, and doesn't contain the complexity that
+SOAP provides. Rather than utilising XML, REST uses the standard HTTP methods
+to describe what a service should do. For example obtaining a resource would
+use GET, and for creating a resource POST would be used.
+
+Clients do not require additional REST supporting libraries. As long as the
+language supports HTTP, the client will be able to consume a REST HTTP service
+easily.
+
+Unlike SOAP, REST can deliver binary data without having to encode, and
+responses can be formatted to either XML or the more popular JSON (due to speed
+increases). 
+
+
+%%%
+%% Research :: Web Services :: Clients
+%%%
+\subsection{Clients}
+
+As previously mentioned, the broader web server architecture follows the 
+client-server application model. When designing a client-server application, a
+decision has to be made as to which operations (or parts of operations) should
+be performed upon the client and the server.
+
+This decision is vitally important as it can affect the speed to which a system
+can be brought to market. It might also affect any additional extensions or
+updates that the system might receive in the future, as well as affecting the
+design flexibility.
+
+In order to simplify the design the client will need to fall into one of the
+two categories --- `thin' client or a `thick' client. 
+
+
+%%%
+%% Research :: Web Services :: Clients :: Thin
+%%%
+\subsubsection{Thin}
+
+A thin client is a computer system that depends largely upon a main server, or 
+a number of servers in order to complete any computation tasks. The client has 
+no knowledge of how to process data, it simply knows how to pass data to 
+another entity, and receive data from another entity.
+
+A recent example of a thin client is Google's Chromebook. Unlike typical 
+computers where by the applications are installed locally upon the computer, 
+the Chromebook allows for applications to be installed within the cloud --- 
+upon an external server.
+
+The thin client design presents a number of advantages and disadvantages. 
+Firstly an application that is hosted upon a central server can be easily 
+updated --- as there is only one code base. Once the application has been 
+updated, this will be pushed immediately to all thin clients.
+
+This obviously provides an advantage in some use cases such as trying to sell 
+goods over the Internet. For example if a product's price changes, the update 
+will only need to be applied once to the central server, rather than having to 
+update all clients wishing to purchase the product.
+
+Thin clients will utilise powerful servers to do the majority of the 
+processing. This allows for the thin clients to be less powerful, and hence the
+overall costing to reduce.
+
+However this will mean that thin clients will have poorer response times. The 
+main reason for this is the fact that the majority of the operations are being 
+complete upon another machine (potentially many miles away). Simple operations 
+such as populating a menu, might require a request to the main server, thus 
+increasing the overall time to achieve something.
+
+Resources within a thin client network will need to be managed more 
+effectively. Thin clients will use more bandwidth upon the network, and will 
+make more connections to the server. This would require the server to be able 
+to handle lots of potentially fast and slow connections, with each connection 
+using a wide range of internal server resources (CPU, Memory etc). 
+
+
+%%%
+%% Research :: Web Services :: Thick
+%%%
+\subsubsection{Thick}
+
+A thick client is a computer system that has little dependency upon a main 
+server, or a number of servers in order to complete computational tasks. The 
+client will still require a limited connection to a server, but will not use 
+the connection as often in comparison to a thin client. A thick click will 
+often be able to perform many operations without a connection to a network.
+
+An example of a thick client would be a standard desktop installation. The 
+desktop installation might provide various pieces of software that are 
+installed locally upon the computer. For example the computer would be able to 
+produce various documents regardless of the state of the network connection.
+
+The thick client design presents a number of advantages and disadvantages. 
+Firstly due to the fact that clients are able to do more of the computational 
+work, server specifications do not need to be as high. This allows for cheaper 
+servers to be purchased, and few overheads in terms of running and maintenance 
+costs.
+
+This will also lead to an increase in server capacity, again due to the fact 
+that the client is carrying out more work. This ultimately means that the 
+server is required to do less work, and can hence support a larger number of 
+users.
+
+Thick clients have an increased advantage over thin clients in terms of 
+network connectivity. Thick clients do not require a constant connection to a 
+server. This in turn frees up bandwidth that is being used upon the network, 
+as well as reducing server loads.
+
+Finally the end user is able to store files and applications locally upon the
+machine. This in turn allows for a faster application start up time, and a 
+reduced file access time. Hence increasing the speed of operations, as well as 
+reducing bandwidth upon the network.
+
+However thick clients are more expensive to purchase, deploy and maintain. The 
+reason being is that there will be more computers with higher specifications. 
+This can lead to more expensive repair bills, should systems fail.
+
+Fixing and troubleshooting become more difficult, simply because there are more
+machines to troubleshoot and fix should problems occur. This is obviously not a
+problem if there was a central server, such as found within the thin client 
+model. 

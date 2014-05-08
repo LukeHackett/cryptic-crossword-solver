@@ -1,0 +1,55 @@
+\ProvidesPackage{highlighting}[2014/04/01 Code Highlighting Package]
+
+% Package Requirements
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\RequirePackage{color}
+
+% Define Java syntax highlighting
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javablue}{rgb}{0.25,0.35,0.75} % javadoc
+
+\lstset{language=Java,
+  frame=shadowbox,
+  captionpos=b,
+  rulesepcolor=\color{black},
+  basicstyle=\ttfamily,
+  keywordstyle=\color{javapurple}\bfseries,
+  stringstyle=\color{javablue},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javagreen}]{/**}{*/},
+  stepnumber=2,
+  numbersep=10pt,
+  tabsize=4,
+  showtabs=false,
+  showspaces=false,
+  showstringspaces=false,
+  breaklines=true, 
+  breakatwhitespace=false,
+  aboveskip=2em, 
+  belowskip=1em
+}
+
+% Define XML syntax highlighting
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type,select,var}
+}
+
+\endinput

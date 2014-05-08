@@ -1,0 +1,69 @@
+%%%%
+%% Design :: Primary Path
+%%%
+\section{Primary Path}
+\label{sec:primary_path}
+
+Before being able to correctly design a large, complex system a good 
+understanding of the main scenario through the system will be required. The main
+scenario is ``a sequence of event or actions'' \citep{lunn03} in which many 
+smaller scenarios may occur.
+
+The main scenario of the proposed cryptic crossword solver system is outlined 
+below:
+
+\begin{enumerate}
+  \item Input the cryptic clue to be solved
+  \item Input the pattern of the solution
+  \item Process the data based upon a number of algorithms
+  \item Output the most confident results
+\end{enumerate}
+
+Based upon the previously given main scenario, the primary path of the entire 
+system can be proposed. The primary path is defined as the most commonly used 
+`route' though a system with as few variances as possible \citep{lunn03}.
+
+The proposed primary path for the cryptic crossword solver system is outlined 
+below:
+
+\begin{enumerate}
+  \item Input the cryptic clue to be solved
+  \item Input the solution length
+  \item Input the pattern of the solution
+  \item Determine the type of clue that has been given (e.g. anagram)
+  \item Run the given clue type algorithm 
+  \item Rank each of the results based upon a pre-defined criteria
+  \item Output the top ranking results
+\end{enumerate}
+
+The primary path outlined above takes a relatively generic approach with regards
+to how a clue should be solved. Ideally the clue would be categorised into a 
+certain type of clue, thus requiring that particular solver to be run.
+
+However the primary path does not illustrate the steps that are required to be 
+taken if the clue can not be categorised --- does the system simply stop or 
+would it try an alternative approach?
+
+These additional steps may often be `optional', and hence are described as 
+alternative paths. The alternative path will contain small and subtle changes 
+to the primary path \citep{lunn03}.
+
+If the system is unable to determine the type of clue that has been given then 
+an alternative approach is to be used. In this instance, the primary path would 
+house the following additions and changes:
+
+\begin{enumerate}
+  \item[3] Determine the type of clue that has been given (e.g. anagram)
+  \begin{enumerate}
+    \item[3.1] Start a new instance of each solver
+  \end{enumerate}
+  \item[4] Run the each of the solvers separately
+\end{enumerate}
+
+The above alternative path shows that if the clue can not be categorised, then 
+the system will attempt to solve the clue utilising a brute force approach. The 
+above alternative path, could also be regarded as a `worst case scenario'.
+
+The outlined primary and alternative paths are a simple way of illustrating the 
+the general ideas behind the system. These paths will be actively referred to 
+throughout the design process.

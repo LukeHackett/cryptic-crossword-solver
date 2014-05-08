@@ -1,0 +1,322 @@
+%%%
+%% Testing :: Walk-through
+%%%
+\section{Walk-through}
+\label{sec:walkthroughs}
+
+The previous section focused upon automated unit tests that were able to 
+programmatically deduce the correctness of output. Although unit testing is a 
+major part of the overall testing strategy it is not the only strategy.
+
+Within this section a number of objective based software walk-throughs will be 
+conducted. A software walk-through is an analysis technique that requires all 
+interested parties to ask questions and make comments about possible anomalies, 
+violation of development standards, and other problems \citep{ieee08}.
+
+As described within the development section, the user interface makes use of 
+JavaScript, and hence there will be two walk-throughs, one with JavaScript 
+enabled and another with JavaScript disabled.
+
+
+
+%%%
+%% Testing :: Walk-through :: Non-JavaScript
+%%%
+\subsubsection{Non-JavaScript} % (fold)
+\label{ssub:non_javascript}
+
+As part of the testing process, the user interface's default view will be tested
+through a series of walk-throughs. These tests are designed to test to ensure
+that a user is unable to break the user interface.
+
+All of the tests shown in table \ref{tbl:nonjs_tests} were conducted in a 
+browser that had JavaScript disabled.
+
+\newgeometry{margin=2.5cm}
+\begin{landscape}
+  \centering
+  \setlength\LTleft{0pt}            % default: \parindent
+  \setlength\LTright{0pt}           % default: \fill
+  \LTcapwidth=\textwidth
+  \begin{longtable}{|C{1.8cm}|L{4.5cm}|L{3.4cm}|L{3.4cm}|L{2.5cm}|L{2.5cm}|L{2.5cm}|}
+    \hline
+    {\bfseries Test Number} & {\bfseries Test Data} & 
+    {\bfseries Reason For Test} & {\bfseries Expected Outcome} &
+    {\bfseries Actual Outcome} & {\bfseries Corrective Action Key} & 
+    {\bfseries Notes} \\ 
+    \hline
+    \multicolumn{7}{|l|}{{\bfseries Clue Input}}                          \\
+    \hline
+    1                                                                     &
+    cryptic clue = nil \newline                       
+    solution length = nil \newline 
+    known characters = nil                                                &
+    To ensure that the server rejects incomplete submitted data.          &
+    When the page is reloaded, error messages are shown informing the 
+    user that required fields have not been given.                        &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    2                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = nil \newline 
+    known characters = nil                                                &
+    To ensure that the server rejects incomplete submitted data.          &
+    When the page is reloaded, error messages are shown informing the 
+    user that required fields have not been given.                        &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    3                                                                     &
+    cryptic clue = nil \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the server rejects incomplete submitted data.          &
+    When the page is reloaded, three error messages are shown informing 
+    that required fields have not been given.                             &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    4                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the server rejects incomplete submitted data.          &
+    When the page is reloaded, error messages are shown informing the 
+    user that required fields have not been given.                        &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    5                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``pr''                                             &
+    To ensure that the server rejects incomplete submitted data.          &
+    When the page is reloaded, an error message informing the user that 
+    the solution length and known characters do not match.                &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline                                                                
+    6                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``p??r''                                           &
+    To ensure that the server accepts correctly submitted data.           &
+    When the page is reloaded, a number of results are displayed.         &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    7                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``????''                                           &
+    To ensure that the server accepts correctly submitted data.           &
+    When the page is reloaded, a number of results are displayed.         &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    \multicolumn{7}{|l|}{{\bfseries Solution Output}}                     \\
+    \hline
+    8                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``????''                                           &
+    To ensure that the correct result is returned upon the submission of 
+    a valid form with a solvable clue.                                    &
+    A number of solutions should be returned, with the correct solution --
+    ``pair'' -- holding the highest confidence rating.                    &
+    As expected.                                                          &
+    None.                                                                 &
+    41 solutions were returned.                                           \\
+    \hline
+    9                                                                     &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``p??r''                                           &
+    To ensure that the correct result is returned upon the submission of 
+    a valid form with a solvable clue.                                    &
+    A reduced result set in comparison to test \#8, however the correct
+    solution -- ``pair'' -- should have the highest confidence rating.    &
+    As expected.                                                          &
+    None.                                                                 &
+    2 solutions were returned.                                           \\
+    \hline
+    10                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``????''                                           &
+    To ensure that the all results as shown, with their solution trace's
+    open, and viewable.                                                   &
+    All solution traces are open, and viewable by default.                &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    \caption{Non-JavaScript enabled walk-through test results}
+    \label{tbl:nonjs_tests}
+  \end{longtable}
+\end{landscape}
+
+
+
+%%%
+%% Testing :: Walk-through :: JavaScript
+%%%
+\subsubsection{JavaScript}
+\label{ssub:javascript}
+
+As described within the development section, the user interface by default will
+use JavaScript to reduce the amount of input the user is required to do. It also
+adds to the user experience, by removing the requirement for some pages to be 
+`reloaded'.
+
+Within this subsection, a number of software walk-throughs will be conducted 
+with JavaScript enabled. This will test the additional layer of functionality 
+that is brought by using JavaScript. Table \ref{tbl:js_tests} outlines the 
+results of each of the tests.
+
+\newgeometry{margin=2.5cm}
+\begin{landscape}
+  \centering
+  \setlength\LTleft{0pt}            % default: \parindent
+  \setlength\LTright{0pt}           % default: \fill
+  \begin{longtable}{|C{1.8cm}|L{4.5cm}|L{3.4cm}|L{3.4cm}|L{2.5cm}|L{2.5cm}|L{2.5cm}|}
+    \hline
+    {\bfseries Test Number} & {\bfseries Test Data} & 
+    {\bfseries Reason For Test} & {\bfseries Expected Outcome} &
+    {\bfseries Actual Outcome} & {\bfseries Corrective Action Key} & 
+    {\bfseries Notes} \\ 
+    \hline
+    \multicolumn{7}{|l|}{{\bfseries Clue Input}}                          \\
+    \hline
+    11                                                                    &
+    cryptic clue = nil \newline                       
+    solution length = nil \newline 
+    known characters = nil                                                &
+    To ensure that the JavaScript prevents submission of an invalid form. &
+    The `cryptic clue' and the `solution length' inputs should become 
+    red. The `known characters' input fields should not appear.           &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    12                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = nil \newline 
+    known characters = nil                                                &
+    To ensure that the JavaScript prevents submission of an invalid form. &
+    The `cryptic clue' input should become green, the `solution length' 
+    input should become red. The `known characters' input fields should 
+    not appear.                                                           &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    13                                                                    &
+    cryptic clue = nil \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the JavaScript prevents submission of an invalid form. &
+    The `solution length' input should become green, the `cryptic clue' 
+    input should become red. The `known characters' input fields should 
+    not appear.                                                           &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    14                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the JavaScript allows the submission of a valid form.  &
+    The `cryptic clue' and the `solution length' inputs should become 
+    green, and a ``Solving Clue'' message dialogue appears.               &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    15                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``p'', ``'', ``'', ``r''                           &
+    To ensure that the JavaScript allows the submission of a valid form.  &
+    The `cryptic clue' and the `solution length' inputs should become 
+    green, and a ``Solving Clue'' message dialogue appears.               &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    \multicolumn{7}{|l|}{{\bfseries Solution Output}}                     \\
+    \hline
+    16                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the correct result is returned upon the submission of 
+    a valid form with a solvable clue.                                    &
+    A number of solutions should be returned, with the correct solution --
+    ``pair'' -- holding the highest confidence rating.                    &
+    As expected.                                                          &
+    None.                                                                 &
+    41 solutions were returned.                                           \\
+    \hline
+    17                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = ``p'', ``'', ``'', ``r''                           &
+    To ensure that the correct result is returned upon the submission of 
+    a valid form with a solvable clue.                                    &
+    A reduced result set in comparison to test \#14, however the correct
+    solution -- ``pair'' -- should have the highest confidence rating.    &
+    As expected.                                                          &
+    None.                                                                 &
+    2 solutions were returned.                                           \\
+    \hline
+    18                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the results are paginated to 10 solutions per page.    &
+    41 solutions are expected, and therefore there should be 5 pages of 
+    results with no more than 10 solutions per page                       &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    19                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that the top solution's trace is opened, and viewable by 
+    default.                                                              &
+    The top solution's solution's trace is viewable by default.           &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    20                                                                    &
+    cryptic clue = ``We hear twins shave'' \newline                       
+    solution length = ``4'' \newline 
+    known characters = nil                                                &
+    To ensure that other solution traces can be viewed when clicked upon,
+    and any open solution traces are closed.                              &
+    Clicking upon a second solution opens the associated trace and closes
+    the original trace.                                                   &
+    As expected.                                                          &
+    None.                                                                 &
+    None.                                                                 \\
+    \hline
+    \caption{JavaScript enabled walk-through test results}
+    \label{tbl:js_tests}
+  \end{longtable}
+\end{landscape}
+
+
+

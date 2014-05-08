@@ -1,0 +1,59 @@
+\section{Functional Requirements}
+
+\subsection{MoSCoW Analysis}
+
+\begin{table}[H]
+  \centering
+  \small
+    \begin{tabular}{|p{9.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|}
+    \hline
+    \textbf{Functionality} & \textbf{Must} & \textbf{Should} & \textbf{Could} & \textbf{Won't} \\ \hline
+
+    Retrieve and process cryptic clues and output possible solutions &
+    Yes & - & - & - \\ \hline
+
+    Obtain characteristics of the clue's solution (e.g. number of words, word lengths and known letters) and match these against possible solutions &
+    Yes & - & - & - \\ \hline
+
+    Provide a web interface for users to interact with the system &
+    Yes & - & - & - \\ \hline
+
+    Provide a mobile-friendly interface for users to interact with the system &
+    - & Yes & - & - \\ \hline
+
+    Store clues and their corresponding solutions for future retrieval, including the clue type and solution length &
+    - & Yes & - & - \\ \hline
+
+    Take feedback from a user on a solution's accuracy and use this to rank solutions for a given clue &
+    - & Yes & - & - \\ \hline
+
+    Relay the process (solution trace) followed to arrive at a proposed solution to the user &
+    - & Yes & - & - \\ \hline
+
+    Holistically determine a confidence score for each proposed solution, and relay this to the user &
+    - & Yes & - & - \\ \hline
+
+    Document and store the process (solution trace) followed to solve a given clue &
+    - & - & Yes & - \\ \hline
+
+    Solve clues which take cues from the clue's orientation or clue number in the crossword &
+    - & - & Yes & - \\ \hline
+
+    Provide real-time feedback of the processes being followed by the application in an attempt to calculate the correct solution &
+    - & - & Yes & - \\ \hline
+
+    Take annotations provided by the user of the known aspects of a clue, such as the definition word(s), fodder or indicator word(s) &
+    - & - & Yes & - \\ \hline
+
+    Store a clue's orientation and clue number in the database &
+    - & - & Yes & - \\ \hline
+
+    Use stored data to generate complete cryptic crosswords &
+    - & - & - & Yes \\ \hline
+
+    Provide a personalised service, including a history of a user's interactions with the system &
+    - & - & - & Yes \\ \hline
+
+    \end{tabular}
+    \caption {MoSCoW analysis of the project's functional requirements}
+\end{table}

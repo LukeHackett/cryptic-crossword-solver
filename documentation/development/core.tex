@@ -1,0 +1,221 @@
+%%%
+%% Development :: Core
+%%%
+\section{Core}
+\label{sec:core}
+
+Within this section the core package will be presented. The core package is the 
+package that forms the heart of the system, and provides various base classes
+that when instantiated will represent Clues, Solutions and Solution Patterns.
+
+
+%%%
+%% Development :: Core :: Clue
+%%%
+\subsection{Clue}
+\label{sub:clue}
+
+The clue class represents an individual cryptic crossword clue, and will 
+maintain a list of possible solutions that have been computed. The Clue class is
+a basic class, that essentially provides references to other aspects of solving 
+a clue, such as the solution pattern (see subsection \ref{sub:solution_pattern}).
+
+A clue is able to have a number of solutions, and hence each clue will house a 
+SolutionsCollection, which is described in more detail in subsection 
+\ref{sub:solution_collection}.
+
+A clue will also have a solution pattern -- described in subsection 
+\ref{sub:solution_pattern} -- which allows for potential solutions to be matched 
+against an expected pattern.
+
+
+%%%
+%% Development :: Core :: Solution
+%%%
+\subsection{Solution}
+\label{sub:solution}
+
+The solution class implements the Comparable interface, which is a standard Java
+interface that imposes ordering upon the object that implements it. It was 
+decided that the solution class should implement the interface, so that 
+solutions can be compared.
+
+The comparing of solutions is perhaps one of the most common pieces of 
+functionality that the system will be required to do. An example use case would
+be comparing any number of solutions to deduce which is more likely to be the 
+correct answer.
+
+Listing \ref{compareToSolution} shows the implemented compareTo() method found
+within the Solution class.
+
+\begin{lstlisting}[caption={compareTo() compares two solutions},
+                   label=compareToSolution] 
+  public int compareTo(Solution o) {
+    int solutionCompare = solution.compareTo(o.getSolution());
+    int confidenceCompare = -1
+        * Double.compare(confidence, o.getConfidence());
+
+    if (solutionCompare == 0) {
+      // compare the actual solution text.
+      return 0;
+    } else if (confidenceCompare == 0) {
+      // return a comparison of the solution text. 
+      return solutionCompare;
+    } else {
+      // compare them based on their confidence.
+      return confidenceCompare;
+    }
+  }
+\end{lstlisting}
+
+The above code will try to deduce which of the two solutions are closest to 
+being correct. It does this by comparing their confidence ratings, to which 
+every solution will have. If the solution is the same the 0 is returned, whist 
+-1 or +1 returned depending upon which solution is closest to being correct.
+
+As well as housing the confidence rating, the solution class also houses the
+solution trace. The solution trace is a list of steps that were taken in order 
+to compute the solution. It is intended that the solution traces will help to 
+teach the user how to complete similar clues in the future. 
+
+
+%%%
+%% Development :: Core :: Solution
+%%%
+\subsection{SolutionCollection}
+\label{sub:solution_collection}
+
+The SolutionCollection class extends the standard Java HashSet class utilising 
+the Solution class as the element type. Although a HashSet can not guarantee the
+order of the set, it can guarantee that no duplicates will be added to the set.
+This decision was taken to ensure that the system is not dealing with large 
+amounts of repetitive datasets that will only harm the performance of the 
+system as whole.
+
+In order to get around the fact that the ordering of the set has no guarantee,
+the system makes use of the fact that the element type -- Solution -- implements
+the Comparable interface. This means that a copy of the current collection can 
+be retuned in a sorted order if possible. This is illustrated in listing 
+\ref{sortSolutions_SolutionsCollection}.
+
+\begin{lstlisting}[caption={Method returns a new sorted collection},
+                   label=sortSolutions_SolutionsCollection] 
+  public Set<Solution> sortSolutions() {
+    return new TreeSet<>(this);
+  }
+\end{lstlisting}
+
+As both the TreeSet class and the HashSet both share the same parent class Set,
+it is possible to cast the result of this method back to a SolutionCollection.
+
+The SolutionCollection class overrides basic methods found within the HashSet 
+class, such as \texttt{contains}, \texttt{add}, \texttt{addAll}, whilst 
+providing additional functionalities, such as returning all solutions whose 
+confidences are greater than (or less than) a given value.
+
+
+%%%
+%% Development :: Core :: Solution Pattern
+%%%
+\subsection{Solution Pattern}
+\label{sub:solution_pattern}
+
+The SolutionPattern class models the solution to a corresponding clue. For 
+example if the clue is nine letters long, then the SolutionPattern class would 
+provide information about the pattern of that solution using any given known 
+characters.
+
+The solution pattern is able to split a well-formed pattern and represent it 
+as an in-memory object allowing for a faster clue matching process, in 
+comparison to constantly trying to match a string.
+
+A good example of the level of functionality available in this class is shown 
+in listing \ref{filter_SolutionsPattern}.
+
+\begin{lstlisting}[caption={Method returns collection of matched solutions},
+                   label=filter_SolutionsPattern] 
+public void filterSolutions(Set<Solution> solutions) {
+  Collection<Solution> toRemove = new ArrayList<>();
+  // For each proposed solution
+  for (Solution solution : solutions) {
+    // If it doesn't match the pattern, throw it out
+    if (!match(solution.getSolution())) {
+      toRemove.add(solution);
+    }
+  }
+  solutions.removeAll(toRemove);
+}
+\end{lstlisting}  
+
+The code snippet will match the given set of solutions --- often a 
+SolutionCollection --- to the current object. A match can simply be described as
+matching a solution pattern to a possible solution, for example `d??k' could 
+match to `duck', `deck' or even `dork'.
+
+This method is often used within the filtering down of potential solutions, and
+thus ensures that the application is not dealing with too much data. In effect
+this helps the application become more efficient when solving solutions. 
+
+Obviously the efficiency of the matching process is directly linked to the 
+number of known characters. If a large number of known characters is given by the
+user, then the total `search space' is dramatically reduced.
+
+As an example there are about 308 million different letter combinations within a
+six letter word ($26^6$) -- this refers to the arrangement of letters, and not 
+`actual' words. If just one of those letters is known, this would be reduced 
+down to 11 million different letter combinations ($26^5$), and knowing two 
+letters would reduce it down to around half a million ($26^4$).
+
+
+%%%
+%% Development :: Core :: Manager
+%%%
+\subsection{Manager}
+\label{sub:manager}
+
+The Manager class manages the process of solving the given clue. The manager 
+class heavily utilises the standard Java future interface, which is designed to
+represent the result of asynchronous computation.
+
+Listing \ref{distributeAndSolveClue} illustrates the distribution functionality 
+that distributes a copy of all the necessary resources --- such as the clue 
+and its solution pattern -- and starts the computation upon various new 
+threads (if available upon the system).
+
+Each of the solvers are obtained dynamically via the plug and play system to 
+which more information can be found within section 
+\ref{sec:plug_and_play_architecture} on page \pageref{sec:plug_and_play_architecture}.
+Once the solvers are obtained they are initialised. The initialisation process
+simply creates a new object instance of the solvers, and starts them solving the
+clue.
+
+Once all solvers have finished, their computed solutions are added to an overall
+solutions collection, which will ignore duplicate solutions as explained in 
+section \ref{sub:solution_collection}.
+
+Each of the solutions will have their confidences adjusted based upon how 
+`correct' the solution is.
+
+\begin{lstlisting}[caption={Method to distrbute the clue out to all solvers},
+                   label=distributeAndSolveClue] 
+public SolutionCollection distributeAndSolveClue(Clue clue) {
+    // This will hold the solvers to be run at runtime
+    Collection<Solver> solvers = getSolversFromClasses(clue);
+    // This will hold the returned data from the solvers
+    Collection<Future<SolutionCollection>> solutions = initiateSolvers(solvers);
+    // This will hold all solutions that have been returned
+    SolutionCollection allSolutions = new SolutionCollection();
+    // Now we need to 'unpack' the SolutionCollections
+    for (Future<SolutionCollection> future : solutions) {
+      try {
+        allSolutions.addAll(future.get());
+      } catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+      }
+    }
+    // Adjust confidence scores based on category matches
+    Categoriser.getInstance().confidenceAdjust(clue, allSolutions);
+
+    return allSolutions;
+  }
+\end{lstlisting}  

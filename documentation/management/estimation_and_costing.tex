@@ -1,0 +1,111 @@
+%%% 
+%% Project Management :: Estimation and Costing 
+%%% 
+\section{Estimation and Costing} 
+\label{sec:estimation_and_costing}
+
+The costs of a software development project are primarily the costs of the
+effort involved. The three main areas which correspond to the cost of a software
+project include:
+
+\begin{itemize}
+  \item Hardware and software costs including maintenance
+  \item Travel and training costs
+  \item Effort costs (Costs of paying software engineers).
+\end{itemize}
+
+The main cost that will be discussed in this section is the effort costs as this
+is the most adequate cost that can be calculated for this project.
+
+In order to estimate the project costs the volume of the software must be
+calculated. This can be achieved by calculating number of Source lines of Code
+(SLOC) also calculated as Thousands of lines of Code (KLOC). The most common
+estimating metric is the Constructive Cost Model (COCOMO) and the newer COCOMO 
+II. Function points is another metrics that can be used to estimate the project.
+
+COCOMO was originally developed by \citet{see81}. It has since been redeveloped
+as COCOMO II \citep{cocomo2}.
+
+The basic COCOMO formula is:
+
+Effort Applied (Person Months)
+\[
+  E = a(KLOC)^{b}
+\]
+
+Development Time(Months)
+\[
+  DT = cE^{d}
+\]
+
+People Required
+\[
+  P = E/D
+\]
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    \textbf{Mode} & \textbf{a} & \textbf{b} & \textbf{c} & \textbf{d} \\ \hline
+    Organic       & 2.4        & 1.05       & 2.5        & 0.38       \\ \hline
+    Semi Detached & 3.0        & 1.12       & 2.5        & 0.35       \\ \hline
+    Embeded       & 3.6        & 1.20       & 2.5        & 0.32       \\ \hline
+  \end{tabular}
+  \caption{Basic COCOMO}
+\end{table}
+
+The cryptic solver best suits the Organic mode because the team is small 
+consisting of four members who have experience working with requirements. 
+
+On this basis and the time constraint factors the project can be estimated. 
+The estimated number of lines of code SLOC has been set to 5 thousand. The
+development time allocated for the project is 3.25 months which is the 98 days
+calculated from the project plan. This has been considered to exclude time for
+other academic deliverables and to mainly focus upon the actual development.
+There fore according to \citet{cocomo2} the project can be estimated as
+followed:
+
+Effort Applied (Person Months)
+\[
+  E = 2.4(5)^{1.05} = 13
+\]
+Development Time (Months)
+\[
+  DT = 2.5(13)^{0.38} = 6.5 
+\]
+People Required
+\[
+  P = 13/6.5 = 2
+\]
+
+Now to evaluate this against the number of actual team members we can do the 
+following.
+
+Development Time (Months)
+\[
+  DT = 2.5(13)^{0.38}/2 = 3.25
+\]
+People Required
+\[
+  P = 13/3.25 = 4
+\]
+
+Upon completion of the project the COCOMO model was applied to see how closely 
+the original estimation was made. In total there are 5721 SLOC and therefore 
+applying the same algorithms as before produced the following results:
+
+Effort Applied (Person Months)
+\[
+  E = 2.4(5.721)^{1.05} = 15
+\]
+
+Development Time (Months)
+\[
+  DT = 2.5(15)^{0.38}/2 = 3.5
+\]
+
+People Required
+\[
+  P = 15/3.5 = 4
+\]

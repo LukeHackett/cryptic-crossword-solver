@@ -1,0 +1,168 @@
+%%%
+%% Specification :: Non-Functional Requirements
+%%%
+\section{Non-Functional Requirements}
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Performance
+%%%
+\subsection{Performance}
+
+The performance of the system should be good, however it must be noted that the
+system is intended to run as a web service upon a server. The quality of the 
+connection between the end user and the web service will be out of the scope of
+this project.
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Legal and Access
+%%%
+\subsection{Legal and Access}
+
+Within the project a number of data sources will be used. Firstly an English
+dictionary will need to be accessed in order to allow the system to deduce if a 
+given arrangement of characters formulates an English word.
+
+In order to achieve this, an offline dictionary and an online dictionary will
+need to be used. The offline dictionary is a short dictionary and is provided as
+part of the GNU/Linux operating system under the GNU Licence Agreement.
+
+A number of cryptic crossword clues and solutions have been obtained from the
+Guardian's website. The data will be used as a training set of data, when
+testing the final software. The Guardian has given us permission to use their
+data as long as the project remains within an academic environment, and that no
+profit is made from the project.
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Backup and Recovery
+%%%
+\subsection{Backup and Recovery}
+
+The project will make use of the git revision control system over a secure shell 
+connection. The service provider is github, who offer a distributed setup to 
+ensure that data is always available. Using a secure revision control system 
+will ensure that:
+
+\begin{enumerate}
+  \item A copy of the project is stored upon a remote, secure server;
+  \item Changes are able to be tracked;
+  \item Issues and comments are able to be raised in a secure environment.
+\end{enumerate}
+
+The above measures will in effect be able to reduce against the loss, damage or 
+theft of all project information.
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Archiving and Retention
+%%%
+\subsection{Archiving and Retention}
+
+The University will retain a copy of the project (software product and the final
+report) for assessment and evaluation purposes. 
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Maintainability
+%%%
+\subsection{Maintainability}
+
+The project -- including the software product -- will be maintained up until the
+project hand in deadline: 9th May 2014.
+
+
+%%% 
+%% Specification :: Non-Functional Requirements :: Availability
+%%%
+\subsection{Availability}
+
+The software will not contain any request or time limitations for users, and 
+thus should be available at all times. However it must be stated that the server
+availability that will be hosting the web service is out of the scope of the 
+project.
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Capacity
+%%%
+\subsection{Capacity}
+
+The end product should be able to handle a number of requests from different 
+users at the same time. As the project is only intended as an academic project, 
+large scale user support will be out of the scope of this project.
+
+
+%%%
+%% Specification :: Non-Functional Requirements :: Usability Requirements
+%%%
+\subsection{Usability Requirements}
+
+\begin{table}[H]
+  \centering
+  \small
+    \begin{tabular}{|p{9.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|}
+    \hline
+    \textbf{Functionality} & \textbf{Must} & \textbf{Should} & \textbf{Could} & \textbf{Won't} \\ \hline
+
+    Provide a text field for the user to input the cryptic clue to be solved &
+    Yes & - & - & - \\ \hline
+
+    Provide a drop-down box allowing the user to input the number of words in 
+    the solution, with an initial upper-limit of 10 words &
+    Yes & - & - & - \\ \hline
+
+    Dynamically provide individual text boxes for each word of the solution, 
+    which allow the length of the words to be specified. Also provide 
+    check-boxes between these text-boxes to define whether they are separated by
+     a space or a hyphen &
+    Yes & - & - & - \\ \hline
+
+    Dynamically provide text boxes to represent each character of each word of 
+    the solution, allowing the user to input any known characters &
+    Yes & - & - & - \\ \hline
+
+    Provide a table of results which allow the user the to view the possible 
+    solutions &
+    Yes & - & - & - \\ \hline
+
+    Alert the user to required fields with red asterisks &
+    Yes & - & - & - \\ \hline
+
+    Have a consistent layout avoid unnecessary scrolling &
+    - & Yes & - & - \\ \hline
+
+    Alert the user to invalid input through validation checks with error 
+    messages &
+    - & Yes & - & - \\ \hline
+
+    Provide a confidence rating in the table of possible solutions &
+    - & Yes & - & - \\ \hline
+
+    Allow the user to select a proposed solution in the corresponding table and 
+    mark this as correct &
+    - & Yes & - & - \\ \hline
+
+    Display help buttons to indicate to the user the purpose and use of each 
+    control &
+    - & - & Yes & - \\ \hline
+
+    Provide a button to submit the user input to the application for processing &
+    - & - & Yes & - \\ \hline
+
+    Provide a group of radio buttons for the user to select the clue's orientation
+    in its containing crossword &
+    - & - & Yes & - \\ \hline
+
+      Provide a text box to input the clue's number within its containing 
+      crossword &
+    - & - & Yes & - \\ \hline
+
+    Provide mechanisms to accommodate for users with difficulties, such as 
+    colour-blindness or poor eyesight &
+    - & - & Yes & - \\ \hline
+
+    \end{tabular}
+    \caption {MoSCoW analysis of the project's usability requirements}
+\end{table}

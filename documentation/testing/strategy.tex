@@ -1,0 +1,150 @@
+%%%
+%% Testing :: Test Strategy
+%%%
+\section{Test Strategy}
+\label{sec:test_strategy}
+
+Within this section the proposed test strategy used through the testing stage of 
+the project will be outlined. A test strategy describes the various approaches 
+to testing the development phase of a software development project. 
+
+
+%%%
+%% Testing :: Test Strategy :: Approaches
+%%%
+\subsection{Approaches}
+\label{sub:approaches}
+
+The testing approaches that will be used during the testing of this project will
+be unit testing, integration testing, system testing and requirements testing. 
+Each of these types of tests will individually focus upon one aspect of testing,
+but when combined together will form a larger, more complete test approach.
+
+Due to the size of the group, the tests will be conducted by those who will have
+been developing the software --- ideally these two tasks would be completed by 
+separate teams.
+
+The unit testing will be completed using the JUnit test framework and will test
+the various `back end' classes that make up the system. The unit tests will also
+cover many of the integration tests, which ensures that the classes when 
+combined together are functioning correctly. 
+
+A number of full system walkthoughs will also be conducted manually. This will 
+ensure that the user interface has been correctly developed, as well as ensuring
+that the user interface is as fluid as possible. 
+
+Finally the software product will undergo requirements testing. This will 
+compare the original specification against the software product, and will 
+provide evidence of the feature being implemented. If a feature has not been 
+implemented, a reason as to why not will be discussed.
+
+
+%%%
+%% Testing :: Test Strategy :: Environments & Tools
+%%%
+\subsection{Environments \& Tools}
+\label{sub:environments_and_tools}
+
+The test environment and tools are similar to those required within the 
+development phase. To clarify these environments and tools are:
+
+\begin{itemize}
+  \item Java 7
+  \item Apache Tomcat 7
+\end{itemize}
+
+As well as the above fundamental tools, some additional testing tools and 
+libraries will be required, and are outlined below:
+
+\begin{itemize}
+  \item JUnit 4 library
+  \item Apache HTTP Components library
+  \item MySQL Database
+\end{itemize}
+
+The JUnit 4 library is used extensively throughout the testing phase to ensure
+that the code is correctly working upon various levels.
+
+The Apache HTTP Components library provides low level access to the HTTP
+protocol, which enables for responses to be tested against their subsequent
+requests. For example if the HTTP return type header was XML does the system
+actually deliver XML through the HTTP protocol.
+
+Finally the MySQL database stores a number of cryptic clues, their solutions and
+the type of clue it is. This will enable the system to be tested with real data
+and thus test to ensure the algorithms are correctly generating the correct 
+results. It will also help to test that the results are being `ranked' 
+appropriately using the confidence rating.
+
+
+%%%
+%% Testing :: Test Strategy :: Test Schedule
+%%%
+\subsection{Test Schedule}
+\label{sub:test_schedule}
+
+In order to prevent the testing phase becoming too long, a time limit of 20\% 
+per phase has been set. This means that up to 20\% of the allocated time for a 
+given phase will be devoted to testing that phase.
+
+It must be said that testing will be conducted alongside development, and 
+therefore many of the major and common aspects of the system should have had 
+some form of (basic) testing. The 20\% time limit has been put in place to 
+ensure that there is some time set a side for testing.
+
+The time allocation will also be used to help schedule how long a development 
+phase should last, and thus in directly controls how much testing will need to
+be conducted.
+
+
+%%%
+%% Testing :: Test Strategy :: Test Priorities
+%%%
+\subsection{Test Priorities}
+\label{sub:test_priorities}
+
+The test priorities will be in line with the MoSCoW analysis. This will mean 
+that requirements that fall under the `Must' and `Should' categories will by 
+default have a higher testing priority over `Could' categories.
+
+The project is focusing upon the `back end' functionality as much as possible, 
+and therefore there will be no automated user interface tests. This also means
+that `back end' tests will have a higher priority over user interface tests. 
+However it must be stated that the reduction in priority does not mean that 
+there will be a lack in quality.
+
+
+%%%
+%% Testing :: Test Strategy :: Test Groups
+%%%
+\subsection{Test Groups}
+\label{sub:test_groups}
+
+In order to ensure that the product is fit for it's intended purpose it was 
+proposed that a number of quality circles would be run. These circles known as 
+`test groups', would identify issues within the product whilst also providing an
+`idealistic solution'. The solutions are branded as idealistic as they may not 
+always be feasible with the resources that are available.
+
+Although one or more test groups would have provided various levels of feedback
+it was decided that the current levels of resources did not permit a full 
+evaluation of the results. However if more time (and resources) were available 
+the group would undertake one or more test groups as part of the testing cycle.
+
+
+%%%
+%% Testing :: Test Strategy :: Test Reports
+%%%
+\subsection{Test Reports}
+\label{sub:test_reports}
+
+For each of the highlighted testing areas --- unit testing, integration testing,
+system testing and requirements testing --- a dedicated subsection will be 
+made available as part of the testing section that makes up the written report.
+
+Each of the subsections will highlight the specific details of each type of 
+test, and present the results.
+
+It must be stated that the reports will only show the latest phase of tests. 
+Prehistoric tests will not be presented to avoid repetition and outdated
+information.

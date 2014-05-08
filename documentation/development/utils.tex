@@ -1,0 +1,89 @@
+%%%
+%% Development :: Utilities
+%%%
+\section{Utilities}
+\label{sec:utilities}
+
+The utilities package (named utils) is a package that contains various classes 
+that cannot be grouped together in their own package, and provide generic helper
+methods in the aiding the system as a whole.
+
+Within this section two commonly used classes --- Confidence and WordUtils --- 
+will be discussed in more detail.
+
+
+%%%
+%% Development :: Utilities :: Confidence
+%%%
+\subsection{Confidence}
+\label{sub:confidence}
+
+The confidence class will manage the various functions that are associated with
+calculating and assigning confidence scores. The calculating of any given 
+confidence score can be easily achieved across multiple solvers by focusing upon
+the `common elements' that are found between all solvers. Once the `common 
+elements' are calculated then specifics ratings can be applied on top.
+
+Each generated solution will start with an initial confidence of 42. The 
+confidence rating will then be increased or deceased based upon certain features
+that are found within the clue, solution and the solver that managed to generate
+the solution.
+
+As previously mentioned there are a number of features, and to describe all of 
+them would be laborious, however three example features will be presented 
+below:
+
+\begin{itemize}
+  \item if a solution is a synonym of the clue's definition word then the 
+        confidence is increased by 50\%
+  \item if a solution has a synonym of the clue's definition word then the 
+        confidence is increased by 10\%
+  \item if a double-definition with two first-level synonyms is found then the
+        confidence rating is increased by 40\%
+\end{itemize}
+
+It is possible for more than one confidence increase to be applied to one 
+solution, however it is not possible for a confidence to be less than 0 or 
+greater than 100.
+
+The confidence class is a `bear bones' class that simply stores the value of
+each type of confidence increase, and by how much that increase should be. The 
+confidences adjustments are often made by the various resources as shown in the
+\nameref{sec:resources} section.
+
+
+%%%
+%% Development :: Utilities :: WordUtils
+%%%
+\subsection{WordUtils}
+\label{sub:wordutils}
+
+The WordUtils class is a collection of helper methods relating to the 
+manipulation of words and sentences. The class is a static class, and has been 
+set as static due to the fact that the WordUtil functionality is used 
+extensively throughout the system.
+
+An example method is shown in listing \ref{hasCharacters}. This method will 
+deduce if a word can be `created' using the supplied string of characters. This
+method is often used in conjunction with the dictionary and thesaurus classes
+when trying to find hidden words.
+
+\begin{lstlisting}[caption={deduces if a word can be made with a given set of 
+                            unilearncharacters}, label=hasCharacters] 
+public static boolean hasCharacters(String targetWord, String characters) {
+  // This list will be reduced as characters are consumed
+  Collection<Character> remaining = new ArrayList<>();
+  for (char c : characters.toCharArray()) {
+    remaining.add(c);
+  }
+  // Loop over each of the target word's characters
+  for (char c : targetWord.toCharArray()) {
+    // Continue if the char is available in the character pool
+    if (!remaining.remove(c)) {
+      return false;
+    }
+  }
+  // the target word can be built
+  return true;
+}
+\end{lstlisting}

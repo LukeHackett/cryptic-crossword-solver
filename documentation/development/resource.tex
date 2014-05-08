@@ -1,0 +1,271 @@
+%%%
+%% Development :: Resources
+%%%
+\section{Resources}
+\label{sec:resources}
+
+There are a number of resources which were needed to aid with solving 
+the various clue types. As a lot of the solvers shared most of the resources 
+a design decision was made to keep the resources in their own package for 
+all solvers to access them as and when they need to.
+
+
+%%%%
+%% Development :: Resources :: Abbreviations
+%%%
+\subsection{Abbreviations}
+
+Some clue types, for example the `Charade' clue type, require the knowledge 
+of the different abbreviations that come with certain words. To provide this 
+knowledge a file was found with a list of words and abbreviations in JSON 
+format (JavaScript Object Notation). 
+
+Listing \ref{abbr} illustrates the way in which the abbreviations for `quiet' 
+are displayed in the file:
+
+\begin{lstlisting}[caption={A sample of the abbreviations file},
+                   label=abbr]  
+ "quiet": [
+  "p", 
+  "pp", 
+  "sh", 
+  "mum"
+ ], 
+\end{lstlisting}
+
+The Abbreviations class reads in all the possible abbreivations from the file 
+at run time and stores them within a map which includes the word to get the 
+abbreviations for and it's abbreviations as a set. 
+
+There are two ways in which abbreviations could be needed to solve a clue, 
+one way is to retrieve abbreivations for one word and the other is to 
+retrieve abbreviations for a phrase or a whole clue. 
+
+The method to retrieve abbreviations for one single word simply returns the 
+set of abbreviations for a given word (or key) in the map if it exists within the 
+file. 
+
+The method to get abbreviations for a phrase or a whole clue gets the
+abbreviations for as many words as possible in the given clue. For example,
+``help the medic'' will contain seven abbreviations for the word  medic. ``medal
+for the medic'' will contain four abbreviations for medal and seven  for medic.
+However, the clue ``master of ceremonies'' will return one  abbreviation which
+matches the entire clue (i.e. ``master of ceremonies'').  The algorithm is
+greedy, and will attempt to match the biggest String possible in the given clue.
+This means it will match all of the String  ``master of ceremonies'' before
+matching abbreviations for ``master''.
+
+%%%%
+%% Development :: Resources :: Dictionary
+%%%
+\subsection{Dictionary}
+
+The dictionary is an essential resource for the solving of clues to 
+programmatically determine whether a string of letters is a valid word. 
+A text file was found with a list of words within it which is read into the 
+Dictionary class when an instance is created.
+
+Listing \ref{dict} illustrates simply how the words in the dictionary file are
+displayed:
+
+\begin{lstlisting}[caption={A sample of the dictionary file},
+                   label=dict]  
+abaci
+aback
+abacs
+abactinal
+abactinally
+abactor
+abactors
+abacus
+\end{lstlisting}
+
+Once the file has been read in, there are a custom list of words to  exclude
+from the dictionary and a list of words that need to be added  found from
+solving particular clues.
+
+One of the methods used regularly is the filtering method which removes any
+words from a given collection that are not present in the dictionary. This is an
+effective way to remove words that have being constructed by a solver algorithm
+which are essentially just an assortment of letters which hold no identified
+meaning.  A similar method is used to filter any prefixes passed in within a
+collection that are  also not held in the dictionary.
+
+When potential solutions have been found by a solver, it is necessary to ensure
+the algorithm has returned solutions that fit the end solutions pattern.
+Requirements  such as the length input by the user and any known letters input
+by the user must  be adhered to. In the dictionary class there is a method which
+gets all word matches  within the dictionary for a given solution pattern. As
+with filtering solutions, there is  also a method to match up all words in the
+dictionary that have the same prefix as  a prefix passed in.
+
+There are also simple methods solvers can used to identify whether a single word
+or a  phrase is contained within the dictionary simply by checking whether the
+collection the  dictionary file has been read into contains the word or not.
+
+%%%%
+%% Development :: Resources :: Thesaurus
+%%%
+\subsection{Thesaurus}
+
+For clue types which do not have the answer itself nested within it, it is
+usually necessary  to take the clue words and find synonyms for them. This is
+where the necessity for a thesaurus  applies to aid the algorithms in solving
+clues. A thesaurus file was found which holds a vast number  of entries where
+each word after the first word in an entry is a synonym of the first word.
+
+Listing \ref{thes} illustrates how the words in the thesaurus file are displayed
+with the example word `dank':
+
+\begin{lstlisting}[caption={A sample of the thesaurus file for the word `dank'},
+                   label=thes]  
+dank,boggy,damp,dampish,dewy,fenny,humid,marshy,moist,muggy,
+     rainy,roric,roriferous,sticky,swampy,tacky,undried,wet,
+     wettish
+\end{lstlisting}
+
+As with the other resources the file is read in and stored within a collection,
+this  time in the form of a map where the first word is stored within an entry
+along with it's synonyms.
+
+There are a wide range of different methods that can be used to retrieve a
+different array  of synonyms from vague to specific. Below is a list of
+functionality that has been written  to retrieve synoynms:
+
+\begin{itemize}
+  \item Obtain a list of ``synonyms of a word's synonyms'' to increase the 
+        chances of finding the correct solution. These must match against a 
+        supplied pattern. 
+  \item Obtain a list of ``synonyms of a word's synonyms'' to increase the 
+        chances of finding the correct solution. These must match a minimum and
+        maximum length passed in for the synonym.
+  \item Retrieve all single word synonyms of a given word with a maximum and 
+        minimum length (because some synonyms can be more than one word long) 
+  \item Retrieve all synonyms of a given word with no pattern or minimum or 
+        maximum length
+  \item Get the synonyms for as many words as possible in the given clue. For 
+        example, in the clue ``help the medic'', look for synonyms of ``help the
+        medic'', ``help the'', ``the medic'', ``help'', ``the'', ``medic''.
+  \item Retrieve all synonyms in the same entry in the thesaurus as a given 
+        word. This means to not only look at the first word of an entry for 
+        synonyms, look through all entries and return every entry which contains
+        a given word.
+  \item Retrieve all synonyms in the same entry in the thesaurus as a given word
+        which match against the given pattern.
+  \item Check if a given potential solution found by a solver matches as a 
+        synonym against any of the words present in the clue.
+\end{itemize}
+
+
+%%%%
+%% Development :: Resources :: Homonym Dictionary
+%%%
+\subsection{Homonym Dictionary}
+
+The `Homophone' clue type requires a resource for retrieving homonyms for words.
+A file was found which lists words with a string representation of the words
+pronunciation  and as with the other resources, the file is read in and stored
+within a collection holding  the word and an list of the pronunciation split
+into chunks. 
+
+An additional collection  is formed which is essentially a reverse of the first
+collection created. This allows pronunciations  to be looked up faster. For
+example, looking up the pronunciation ``HH AH0 L OW1'' will return  ``hello''.
+This saves having to iterate the entire homophone map to search for words with
+the same pronunciation.
+
+Listing \ref{homonym} illustrates how the words in the homonym dictionary file 
+are displayed with the example word `hello':
+
+\begin{lstlisting}[caption={A sample of the homonym dictionary file for the word
+                            `hello'}, label=homonym]  
+HELLO  HH AH0 L OW1
+\end{lstlisting}
+
+The class allows the algorithm to retrieve the pronunciation of a given word as
+well as  get words which share the same pronunciation as the supplied word. This
+only works for words  which share the exact same pronunciation.
+
+
+%%%%
+%% Development :: Resources :: Categoriser
+%%%
+\subsection{Categoriser}
+
+Some algorithms for certain clue types require indicators to determine how to
+generate  the end solution. For example, the `Container' clue type requires an
+indicator to identify  which word is the container word and which word is to be
+contained. For the purpose of  providing a confidence score for an end solution,
+indicators can also be used. As the clue  is passed to all solvers, it is
+possible that two solvers may return the same answer back to the user.  By using
+the indicator file associated with the clue type it is possible to assign a
+higher rating  to a solution from a solver if the clue has an indicator within
+it from the associated file.
+
+To provide faster access to the indicators for each clue type, the files listing
+the indicators  are read in and stored within a map in the Categoriser class
+with the name of the clue type  and a collection of the indicators.
+
+One use of the Categoriser class is to retrieve the indicators simply by passing
+in a clue type.  Another, is the functionality to remove the indicator from a
+clue to potentially speed up a solver  algorithm by removing extra unnecessary
+checking on an indicator word.
+
+Listing \ref{removing} illustrates how the indicator is removed from the clue:
+
+\begin{lstlisting}[caption={Removing the indicator from the clue},
+                   label=removing]  
+ public String removeIndicatorWords(String c, String type) {
+	// Remove any punctuation
+	String clue = WordUtils.normaliseInput(c, false);
+	// The indicator words for the given type have to be present
+	if (indicators.containsKey(type)) {
+		for (String i : indicators.get(type)) {
+			if (clue.contains(i)) {
+				// Only remove the first match
+				clue = clue.replace(i, "");
+				break;
+			}
+		}
+	}
+	// Remove any double spaces, etc...
+	return WordUtils.normaliseInput(clue, false);
+ }
+\end{lstlisting}
+
+The code above uses another class to remove any punctuation from the clue
+itself, then it checks to see if the clue type has an entry within the map
+storing all  the indicators. If a word in the clue matches an indicator in the
+indicator file, it is  removed and the modified clue is returned.
+
+As mentioned, the Categoriser class can also boost the confidence of a solution
+if  it contains an indicator within the clue that is featured in the indicator
+file.
+
+Listing \ref{conf} illustrates how the confidence is boosted using indicators:
+
+\begin{lstlisting}[caption={Boosting the confidence of a solution},
+                   label=conf]  
+ public void confidenceAdjust(Clue c, SolutionCollection solutions) {
+	Collection<String> matchingTypes = getMatchingClueTypes(c);
+	for (String clueType : matchingTypes) {
+		for (Solution s : solutions) {
+			if (clueType.equals(s.getSolverType())) {
+				double confidence = Confidence.multiply(s.getConfidence(),
+						Confidence.CATEGORY_MULTIPLIER);
+				s.setConfidence(confidence);
+				s.addToTrace("Confidence rating increased as the clue contains indicator
+                      word(s) suggesting the solution is of type \"" + 
+                      clueType + "\".");
+			}
+		}
+	}
+ }
+\end{lstlisting}
+
+The first line of code in the method above calls another method to retrieve  a
+list of clue types that have an indicator in the associated indicator file which
+matches a word  within the clue passed in. Then, all the solutions found from
+all the solvers for the clue passed in  are matched against the clue types that
+have been found and if the solver the solution has come  from matches a clue
+type found, the confidence is boosted using a method in the Confidence class.

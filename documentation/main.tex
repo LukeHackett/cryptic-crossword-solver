@@ -1,0 +1,70 @@
+\documentclass[12pt]{report}
+\usepackage[round,authoryear]{natbib}
+\usepackage[margin=2cm]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{highlighting}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{nameref}
+\usepackage{import}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{array}
+
+% Set TOC depth
+\setcounter{tocdepth}{1}
+
+\begin{document}
+
+% Title Page 
+\input{title}
+
+% Abstract
+\input{abstract}
+
+% Table of Contents
+\newpage
+\tableofcontents
+
+% Table of Figures
+\newpage
+\listoffigures
+
+% Table of Tables
+\newpage
+\listoftables
+
+% Introduction & Problem Analysis
+\subimport*{analysis/}{analysis}
+
+% Research 
+\subimport*{research/}{research}
+
+% Specification (Requirements & Development Methodology)
+\subimport*{specification/}{specification}
+
+% Design
+\subimport*{design/}{design}
+
+% Development
+\subimport*{development/}{development}
+
+% Testing
+\subimport*{testing/}{testing}
+
+% Project Management
+\subimport*{management/}{management}
+
+% Glossary of Terms
+\input{terminology}
+
+% Citations
+\bibliographystyle{apalike-url}
+\bibliography{citations}
+\end{document}

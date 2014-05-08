@@ -1,0 +1,608 @@
+%%%
+%% Development :: Solvers
+%%%
+\section{Solvers}
+\label{sec:solvers}
+
+A Feasibility Study was created to attempt to predict the difficulty of specific
+clue types and their regularity in cryptic crosswords. All seventeen clues types
+were analysed in order to plan which would be implemented in each iteration of
+the implementation process. The first iteration involved Hidden, Anagram,
+Acrostic and Pattern as they all had a low difficulty. The next iteration
+involved Homophones, Palindromes, Double Definition and Spoonerisms to step up
+the difficulty of the algorithms. Finally, the last solvers to be implemented
+were Charades, Deletions, Containers and Reversals as they were seen as the most
+beneficial to implement in the time left for the project.
+
+Therefore, with the additional reason of a time limit,  Purely Cryptic and \&
+lit clue types were not implemented due to their high difficulty and
+Substitutions, Shifting and Exchange clue types were not implemented due to
+their rarity.
+
+%%%%
+%% Implementation :: Solvers :: Hidden
+%%%
+\subsection{Hidden}
+
+When investigating the Hidden clue type, it was found that the answer to the
+clue would be within the clue itself. For example:
+
+Creamy cheese used in apricot tart.
+
+Answer: RICOTTA
+
+In the clue above the answer `ricotta' is hidden within the two words `apricot
+tart'. The algorithm takes the clue as a whole, without spaces, and then uses
+the substring method  within Java to find all possible hidden words (as the
+Hidden clue type can also hide words in reverse, the clue is also passed in
+reverse). It does this by taking the index of the for loop and length of the
+solution as boundaries.
+
+Listing \ref{hiddenSnippet} illustrates how all possible solutions are found 
+(without additional solution trace functionality):
+
+\begin{lstlisting}[caption={Retrieving all possible solutions using the substring method in Java},
+                   label=hiddenSnippet] 
+ int index;
+ for (index = 0; index <= limit; index++) {
+	Solution s = new Solution(clue.substring(index, index + totalLength), NAME);
+	solutions.add(s);
+ }
+\end{lstlisting}
+
+For the above clue, where limit is equal to seven because `ricotta' is seven
+letters  long, the first five iterations will add the following solutions to the
+list; `creamyc',  `reamych', `eamyche', `amychee', `mychees'. Eventually, the
+loop will pick up  `ricotta' and add it to the solution list. From the output
+gained in the first five  iterations it is apparent that a lot of invalid
+solutions are added to the list, therefore a number of steps are also
+implemented to eliminate invalid solutions.
+
+Once all possible solutions have been found, they are all checked to make sure
+they are not words from the original clue. For example, `apricot' is seven
+letters long and will  have been picked up through the algorithm, however it is
+not a hidden word and therefore  not a valid solution.
+
+Next, the solutions are checked against the pattern provided. This means if the
+user  has input known letters or there are spaces in the end solution but the
+solution being  checked does not match these requirements, these solutions are
+removed.
+
+Finally, all solutions are checked against the dictionary to determine whether
+they  are valid words. The solutions that are left are then returned to the
+user.
+
+%%%%
+%% Implementation :: Solvers :: Anagram
+%%%
+\subsection{Anagram}
+
+Within a clue in the form of an `Anagram' the end solution is placed within 
+the clue itself. For example:
+
+A sportsman spinning the tale
+
+Answer: ATHLETE
+
+The answer comes from rearranging the letters in `the tale' to get athlete.
+
+The algorithm first checks whether it is possible to be an algorithm clue type. This 
+is done by checking the length of the clue is greater than the solution length.
+ The solution should be composed of all the characters from one (or more)
+ words contained within the clue. In other words, the anagram solution
+ cannot be formed from characters that have been picked and chosen across
+ all the words of the clue. The next step creates a list of possible
+ substrings of the entire clue, which match up with the length of the solution.
+
+Once all the substrings have been collected from the clue, for each substring 
+a new thread is created to speed up the algorithm as finding all possible 
+combinations of letters within a clue on one thread is slow. Within each thread, 
+the combination is passed to a recursive method which attempts to build up 
+more combinations which could potentially be the solution. Dictionary filters 
+and pattern filters are handled within the recursive method meaning 
+once all possible solutions have been found, they are returned to the user. 
+
+
+%%%%
+%% Implementation :: Solvers :: Acrostic
+%%%
+\subsection{Acrostic}
+
+The Acrostic clue type is another of the types which have the end solution
+placed within  the clue itself which can be seen in the following clue:
+
+What's seen at start of any road running one way?
+
+Answer: ARROW
+
+The answer to the above clue can be found by taking the first letter from each
+word in  the phrase `any road running one way'. The algorithm splits the clue
+into an array of words  to allow each word to be looked at individually. For
+each word, the first letter is taken using the substring method in Java. The 
+first letter of each word is stored in a string to use the substring method 
+once again to search through possible solutions within the string.
+
+To find the possible solutions from the string, it is done within a loop with the same number 
+of iterations as the length of the end solution. This means the loop will pick up the 
+following possible solutions for the above clue; `wsaso', `sasoa', `asoar', 
+`soarr', `oarro', `arrow'.
+
+As with previous algorithms (e.g. Hidden), this method adds various 
+invalid potential solutions into the list. To eliminate invalid solutions, the 
+potential solutions are run through the dictionary to determine whether 
+they are valid English words. Finally, the potential solutions will be run through 
+the pattern given by the user and the solution itself to ensure the 
+requirements for the end solution match up. Once all this has been completed, 
+the results are returned to the user. 
+
+%%%%
+%% Implementation :: Solvers :: Pattern
+%%%
+\subsection{Pattern}
+
+The Pattern clue type is one which holds the end solution within the clue 
+itself. For example: 
+
+Beasts in tree sinned, we hear - nothing odd there
+
+Answer: REINDEER
+
+From the phrase `tree sinned, we hear', each odd letter spells `reindeer'. 
+
+The algorithm firstly checks that the pattern can potentially be of type 
+Pattern. This is done by taking the total length of the clue without any 
+punctuation and dividing it by two. By doing this, the maximum length 
+of any solution found by this algorithm is determined. This means  if the
+ end solution is longer, it cannot be a clue of this type and therefore the
+ algorithm ends. 
+
+The next step is to look for words in even positions. To do this a string of
+ letters to find potential solutions within it needs to be generated. 
+ Listing \ref{patternSnippet} illustrates how every other character is found 
+whether it is for even or odd letters:
+
+\begin{lstlisting}[caption={Retrieving every other character from a string},
+                   label=patternSnippet] 
+ private String getEveryOtherChar(Clue c, boolean even) {
+	final String text = c.getClueNoPunctuation(true);
+	String newString = "";
+	int i;
+	for (i = even ? 0 : 1; i < text.length(); i += 2) {
+		newString += text.charAt(i);
+	}
+	return newString;
+ }
+\end{lstlisting}
+
+The method above gets the clue as a string with no punctuation or spaces.
+It then takes the letter at an even index or an odd index depending on 
+the value of the boolean passed in. For finding letters in even positions, 
+the value will be true and for the example clue above the following string 
+will be generated; `batitesnewhantigdtee'. 
+
+With the string generated, substrings are found within a loop using 
+the length of the end solution as a boundary. This means with the 
+string generated above, the first five iterations within the loop will 
+find the following possible solutions; `batitesn', atitesne', `titesnew', 
+`itesnewh', `tesnewha'. 
+
+When all possible even solutions have been found, the algorithm then 
+repeats the same steps to find all possible odd solutions. The final steps 
+are to filter the solutions on their length and whether they match the known 
+letters, if any, that have been input by the user as well as checking 
+whether the words are valid dictionary words. Once all these steps 
+have been completed, the potential solutions are passed back to the user. 
+
+%%%%
+%% Implementation :: Solvers :: Homophone
+%%%
+\subsection{Homophone}
+
+A 'Homophone' clue solution is a word which sounds the same as a word 
+in the clue or a synonym of a word in the clue. For example:
+
+Animal said to have connections
+
+Answer: LINKS
+
+The answer comes from an animal called `lynx' which has the same 
+pronunciation as the solution `links'. 
+
+The algorithm uses a homonym dictionary to retrieve pronunciations 
+for clue types and synonyms. Each word of the clue is taken and 
+firstly run through a method which gets all homonyms of that word. 
+Then, the algorithm retrieves all the synonyms for each clue word 
+and in turn finds all the homonyms of each of the synonyms. 
+
+Once all the homonyms have been found the algorithm checks to 
+make sure none of the clue words themselves have been added as 
+potential solutions and removes them if so. They are then checked to 
+determine that they are valid dictionary words and match the 
+pattern given by the user. Finally, all potential solutions are passed 
+back to the user. 
+
+%%%%
+%% Implementation :: Solvers :: Palindrome
+%%%
+\subsection{Palindrome}
+
+The Palindrome clue type gets it's end solution by taking a word from 
+the clue itself and taking a synonym from it. This synonym must be 
+spelt the same whether the word is reversed or in it's normal state. 
+An example of a palindrome is `noon' because when the word is reversed 
+it still retains it's original spelling. Below is an example Palindrome clue:
+
+Look both ways
+
+Answer: PEEP
+
+As with `noon', `peep' can be reversed and still retains it's original spelling. 
+
+The algorithm for the Palindrome clue type first takes each word 
+from the clue and places them into a list. Each word is then run through 
+the thesaurus to find their synonyms. Once this has been completed a 
+filtering mechanism is needed to find all synonyms which follow the 
+rules of palindromes. 
+
+Listing \ref{palindromeSnippet} illustrates how all the synonyms that have
+ been found are filtered by the algorithm: 
+
+\begin{lstlisting}[caption={Checking to see if a word is a palindrome},
+                   label=palindromeSnippet] 
+ private void filterNonePalindromes(Collection<String> solutions) {
+	for (Iterator<String> it = solutions.iterator(); it.hasNext();) {
+		String normal = WordUtils.removeSpacesAndHyphens(it.next());
+		String reverse = new StringBuilder(normal).reverse().toString();
+
+		// If the word isn't "symmetrical" from both sides, remove it
+		if (!normal.equals(reverse)) {
+			it.remove();
+		}
+	}
+ }
+\end{lstlisting}
+
+The method to remove synonyms that are not palindromes uses an 
+iterator to loop through each one. For each one, spaces and hyphens 
+are removed to make the comparison possible. This step is essential for 
+palindromes such as `put up' because with the space present the 
+algorithm would not see `pu tup' as equal. Once all punctuation and
+spaces have been removed from the synonym, the alogorithm then 
+uses the reverse method within Java to retrieve the reversed synonym. 
+For example, if the word `cryptic' was passed to the reverse method 
+it would return `citpyrc'. This means when the normal word `cryptic' 
+and the reverse word `citpyrc' are passed to the if statement to check 
+whether they were equal, it would be false and therefore the synonym 
+`cryptic' would be removed as a potential solution.
+
+Once the synonyms have been filtered, the algorithm then does further 
+filtering to make sure the potential solutions fit the pattern and known 
+letters of the end solution. When the filtering has taken place, the 
+potential solutions are passed to the user.
+
+%%%%
+%% Implementation :: Solvers :: Double Defintion
+%%%
+\subsection{Double Defintion}
+
+The solution for a Double Defintion clue comes from taking two 
+words within the clue that could be the definition of the solution. 
+For example:
+
+Car plant
+
+Answer: LOTUS
+
+A `lotus' can be either a type of car or a type of plant, hence 
+why the clue is of type Double Definition. 
+
+To explain the algorithm for this clue type it is necessary to 
+also explain the functionality that comes with using the thesaurus. 
+The thesaurus used for the project is a text file where each line starts
+ with a word. Each of the following words on that line are synonyms of 
+the first word. From implementing the solvers different ways to access 
+synonyms were found, these different methods provide a range of 
+results which vary from vague to limited synoynms being found.
+ The Double Definition algorithm uses two of these methods, one 
+which takes a clue word and finds it in the thesaurus where it is the 
+first word and adds all the synonyms to a list, this method can be known 
+as getting `first level synonyms'. The second method does not only look 
+for the clue word as the first word of a row, it looks 
+for the clue word in any position in any row in the thesaurus, therefore 
+returning a wider range of results. This second method can be known as
+getting `second level synoynms'.
+
+The algorithm itself first splits the clue into an array so each word 
+can be looked at individually. For each word in the clue, both the 
+methods explained above are used. This means two maps are created,
+ one which contains the clue word along with it's first level synonyms 
+and a second which also contains the clue word but along with it's 
+second level synoynms. 
+
+Now the algorithm compares each of these maps to find different words 
+in the clue with the same synonym. This is firstly done by comparing 
+each word and it's synonyms for the first level synonyms. Next, it is done 
+by comparing first level synonyms with second level synonyms. If it occurs,
+ the synonym that has been found for two words in the clue, the potential 
+solution is added to a list. As the thesaurus methods check for invalid solutions
+ (potential solutions which do not match the length of the  end solution etc.), 
+once all synonyms have been matched up and checked, the results can 
+be returned to the user. 
+
+Second level synonyms are not compared with second level synonyms. 
+This is because second level synonyms can be extremely vague so the 
+chances of finding a synonym which links to two words in the clue is 
+more likely and less likely to be the correct answer. Another reason is 
+that the likelihood of this algorithm returning results for a clue that 
+is not in fact of Double Definition type is highly more likely if second 
+synonyms for one word are compared with second synoyms for 
+another. Although, the chances of finding the answer for all double 
+defintion clues by comparing two sets of second level synonyms is 
+highly beneficial, the downfalls outweigh the benefits and therefore 
+that is why this design decision was made. 
+
+%%%%
+%% Implementation :: Solvers :: Spoonerism
+%%%
+\subsection{Spoonerism}
+
+A `Spoonerism' clue type involves swapping the first one or two letters 
+from two words to retrieve a new phrase. For example:
+
+In which to immerse the beasts of Spooner's ocean liner
+
+Answer: SHEEP DIP
+
+A synonym for `ocean' is deep and a synonym for `liner' is ship. When 
+the first letter from one of these synonyms is swapped for the first two 
+letters from the other synonym, the phrase `sheep dip' is created.
+
+The first task the algorithm completes involves removing all words within 
+the clue that have less than or a length of two letters. This is because 
+the swapping of two letters would not be possible on a word of two letters 
+meaning it should potentially also speed up the algorithm by removing 
+extra words to complete functionality on. The next step checks to see 
+if the clue contains a word which starts with `spoon' to determine whether 
+the clue is of this type. This step is necessary as all `Spoonerism' clues have
+an indicator like `Spooner' or `Spooner's' meaning the algorithm can 
+terminate if it is not found. 
+
+It is also common for the words that have their synonyms manipulated are 
+close to the indicator either to the left or the right so the algorithm takes 
+two words to the left of the indicator and two words to the right. Then, 
+the minimum and maximum length of synonyms to find are then calculated 
+if the solution is one word or multiple words. 
+
+With the words found around the indicator and the minimum and maximum 
+lengths of synonyms retrieved, synonyms are found for each of the 
+words and put into a list. Next, each synonym is paired up with every 
+other synonym and they are passed in as a pair to another method which 
+swaps their first letter or letters around. This method does the following 
+possible combinations to find the potential solutions; for `deep' and `ship',
+the first two letters (`seep', `dhip'), two letters with one letter (`sheep',`dip'), 
+one letter with two letters (`sep',`dehip'), two letters with two letters (`shep',`deip'). 
+
+Each combination is checked against the pattern and the dictionary. If they are 
+valid they are added to a list of possible solutions which are returned to the user. 
+
+%%%%
+%% Implementation :: Solvers :: Charade
+%%%
+\subsection{Charade}
+
+The 'Charade' clue type can take a range of different aspects of a clue 
+to get to the end solution. The example below shows a clue which uses 
+all possible aspects which can be used: 
+
+Quiet bird has a sign on a strange occurrence
+
+Answer: PHENOMENON
+
+In the clue above, abbreviations, synonyms and clue words themselves are 
+used (it is also possible for substrings of clue words to be used). To get to 
+the answer; `P' is an abbreviation of `quiet', `HEN' is a synonym of `bird', 
+`OMEN' is a synonym of `sign' and `ON' is a full word taken from the clue 
+itself. All these appended together make up the end solution `phenomenon'.
+
+The first step for the algorithm is to take each of the clue words and get 
+synonyms, construct substrings and retrieve abbreviations for each word. 
+It then attempts to reduce all the data retrieved by comparing to the pattern 
+input by the user.  
+
+With all the possible abbreviations, substrings and synonyms possible 
+solutions are generated. To do this a set is created first.
+Charades can be constructed from any sequential components from the clue.
+ For example, if the clue words are "one two three", then a solution may
+ be constructed by using components for clue words "one, two, three",
+ "one, three", "one, two" or "two, three". A method in the algorithm 
+ generates these combinations of clue words which will be processed 
+one by one in an attempt to find the solution.
+
+Once these combinations have been found, they are processed one by one 
+to attempt to find solutions. This is done using recursion with a base case of
+ the potential solution being longer or of equal length to the end solution or 
+running out of data to append to the solution. The recursive method takes 
+ an abbreviation or a substring or a synonym for a word in the combination 
+passed in and appends another abbreviation, substring or synonym from another 
+word featured in the combination passed in and carries on until it hits the base case.
+ This generates a string which could be a potential solution. Once this has been 
+achieved, possible solutions are checked against the dictionary and if they are 
+valid they are returned to the user. 
+
+Retrieving all possible combinations makes the algorithm slow in speed. This 
+means the solver has not been deployed on to the Cryptic Crossword Solver 
+and will only be used for demonstration purposes. 
+
+%%%%
+%% Implementation :: Solvers :: Deletion
+%%%
+\subsection{Deletion}
+
+The solution for a 'Deletion' clue type comes from taking the first letter, 
+last letter or both from a word. For example: 
+
+Dog beheaded bird
+
+Answer: EAGLE
+
+From taking the first letter from the word `beagle' (a type of dog) the 
+solution `eagle' is found. `Beheaded' is the indicator word for the example 
+clue which tells the solver that the first letter must be taken. For the 
+algorithm to determine whether the first letter, last letter or both must be 
+taken from a word, an indicator file was created. The indicator file was 
+split into three lists, one to determine the first letter being taken, another 
+for the last and a final list for both letters to be taken. 
+
+The first task the algorithm completes is to read in the indicator file and 
+compare it against the clue to determine which letter or letters need to 
+be removed. Once this has been determined, the algorithm then finds 
+synonym for each of these words using the thesaurus. All the synonyms 
+are then filtered to remove the ones that will be longer than the end 
+solution length when letters are removed. 
+
+When all the valid synonyms have been found, the algorithm then uses 
+the substring method within Java to remove certain letters. 
+
+Listing \ref{deletionSnippet} illustrates how the synonyms have letters 
+removed depending on the position which has been determined by 
+the indicator file: 
+
+\begin{lstlisting}[caption={Removing letters from a word depending on the indicator},
+                   label=deletionSnippet] 
+ // Remove head/head edge of a word
+ if (position == Position.HEAD || position == Position.EDGE) {
+ 	solution = solution.substring(1);
+ }
+
+ // Remove tail/tail edge of a word
+ if (position == Position.TAIL || position == Position.EDGE) {
+ 	solution = solution.substring(0, solution.length() - 1);
+ }
+\end{lstlisting}
+
+The code above compares the position found with the positions 
+stored in the enum within the class then the letters are removed. 
+If the synonym requires both the first and last letters to be removed, 
+it will fall into both of the if statements and remove both. 
+
+After the correct letters have been removed, the algorithm checks 
+if the word is still a valid dicationary word and matches the pattern 
+provided by the user. If they are valid, they are added to a list and 
+finally this list of potential solutions is returned to the user. 
+
+%%%%
+%% Implementation :: Solvers :: Container
+%%%
+\subsection{Container}
+
+The Container clue type involves putting a word inside another word.
+ For example: 
+
+In appearance everyone is lacking in depth
+
+Answer: SHALLOW
+
+With the clue above, the synonym `show' for appearance is found 
+and the synonym for everyone, `all', is found. Placing all inside show 
+gives the solution `shallow'. 
+
+A clue word itself can be put inside or around the outside of another clue 
+word or synonym of clue word. Another possibility is a synonym can be 
+placed inside or around the outside of another clue word or synonym of 
+a clue word. These possibilities make the need for an indicator of which 
+possibility it is, necessary. 
+
+For the Container clue type, an indicator file was created which determined 
+which word went inside another. The indicators were seperated into two 
+lists, one where the indicators mean the word in the left of the clue goes in 
+the word in the right of the clue, and the other where the indicators mean 
+the word in the right of the clue goes in the word to the left of the clue. 
+
+Firstly, the algorithm reads in the indicator file and finds the word in the 
+clue which is an indicator. A variable is then set to determine whether the 
+word to the left goes in the word to the right or vice versa. 
+
+The algorithm then finds synonyms for each of the words in the clue and adds
+ them to a map. The synonyms are then filtered to make sure they are the 
+correct length for the end solution. Once this has been achieved the synonyms
+ are then matched up. This involves taking two synonyms for two words in the
+ clue and putting one inside the other. This is done within a loop where the 
+position of the word being contained is moved within the word acting as a 
+container. For example, for the clue above, if the synonyms `all' and `show' 
+are being matched, the loop will output the following potential solutions; 
+`sallhow', `shallow', `shoallw'. Once these potential solutions have been 
+found, they are passed to the dictionary to make sure they are valid words. 
+
+When all the potential solutions have been found, they are then filtered to
+ make sure any known letters input by the user match the potential solutions. 
+Finally, they are all passed back to the user.
+ 
+
+%%%%
+%% Implementation :: Solvers :: Reversal
+%%%
+\subsection{Reversal}
+
+The reversal algorithm is the only algorithm to make some use of the natural 
+language processing library (NLP) --- Apache OpenNLP. Although the algorithm 
+does not fully use the all capabilities of the NLP it does use it enough to 
+ensure that the algorithms are not being over worked.
+
+The algorithm will attempt to get a list of possible fodders that can be used 
+throughout the solving process. From a initial review it was clear that the 
+majority of the fodders within a reversal clue are a either a singular or plural
+noun.
+
+Apache OpenNLP has a number of methods that can tokenise a string, meaning that 
+each word in a sentence is aligned to it's type of word. For example if the 
+algorithm was given the clue:
+
+Secure weapons turned over (4)
+
+Answer: SUNG (reversal of guns)
+
+Then the only noun (or fodder) that would be returned is weapons. Although the 
+algorithm can handle multiple fodders it can not handle the rare clues in which
+the answer can not be deduced from a noun.
+
+Listing \ref{obtainFodders} illustrates the simply way in which the algorithm 
+utilises Apache OpenNLP's tokenising system to be able to pick out all nouns.
+
+\begin{lstlisting}[caption={Deducing all singular or plural nouns within the clue},
+                   label=obtainFodders]  
+for (int i = 0; i < tags.length; i++) {
+  // Obtain words that are a singular or plural noun
+  if (tags[i].equals("NN") || tags[i].equals("NNS")) {
+    fodders.add(words[i]);
+  }
+}
+\end{lstlisting}
+
+Once a list of fodders have been computed each of the fodders will have their
+synonyms computed and reversed. If the newly generated `word' can be found in 
+the dictionary, and can be matched to the given patter then it is marked as a 
+potential solution.
+
+Listing \ref{reversalAlgorthim} indicates the simplicity of the algorithm and 
+allows for an efficient approach to solving the clue.
+
+\begin{lstlisting}[caption={Core reversal algorthim deducing possbile solutions},
+                   label=reversalAlgorthim]  
+// Get all synonyms that match the reversed pattern
+Set<String> synonyms = THESAURUS.getSecondSynonyms(fodder, pattern, true);
+// Reverse all synonyms to try to create another word
+for (String synonym : synonyms) {
+  // Reverse the synonym
+  String reversedWord = WordUtils.reverseWord(synonym);
+  // Add as a solution if the reversed word is a real word
+  if (DICTIONARY.isWord(reversedWord)) {
+      // Add the solution to all possible solutions
+      collection.add(new Solution(reversedWord, NAME));
+  }
+}
+\end{lstlisting}
+
+However it must be stated that the algorithm (as with all other algorithms) does
+not have any understanding of the words it generates. For example it is unaware
+that Alpha and Beta are both types of characters. This can cause many issues for
+the reversal algorithm as it is depended upon additional/external `knowledge'.

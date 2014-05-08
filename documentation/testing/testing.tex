@@ -1,0 +1,45 @@
+% Define new types of columns used within this book
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%%%%
+%% Testing
+%%%
+\chapter{Testing}
+\label{cha:testing}
+
+The testing phase was an ongoing process to adhere to the guidelines of agile
+development which has been used throughout the project. The development phase
+was split across three iterations meaning at the end of each, JUnit tests were
+written  and run to ensure all functionality for each iteration was working
+correctly. This meant  any functionality being added in the new iteration using
+the functionality written in a previous  iteration would not be delayed as
+previous code was reliable and complete.
+
+At the end of development, functional testing and walkthroughs of the user
+interface  were completed. The functional testing took all functional
+requirements declared at the beginning of the project to ensure they were all
+fulfilled and working correctly. The walkthroughs of the user interface
+involved entering data into the system to determine whether the system would
+fall over with various valid and invalid input entered.
+
+The following chapter will document all the testing discussed above including
+descriptions of the processes completed and evidence of the system passing
+various tests with different  test strategies.
+
+% Testing Strategy
+\newpage
+\input{strategy}
+
+% Unit Tests
+\newpage
+\input{unit_tests}
+
+% Walkthrough
+\newpage
+\input{walkthrough}
+
+% Functional Testing
+\newpage
+\input{functional}
