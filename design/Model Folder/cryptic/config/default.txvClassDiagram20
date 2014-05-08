@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhs3c8iel-tk5b2w">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="__options" value="option.nlayout.recursive=true"/>
+		<reference referencedUin="jdt:e_class:src:cryptic.config.Settings">
+			<property name="bounds" value="15,15,381,441"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.config.Settings:instance">
+				<property name="sourceAnchor" value="401,455"/>
+				<property name="targetAnchor" value="396,461"/>
+				<property name="bendpoints" value="432,455,432,492,396,492"/>
+				<property name="smooth_bendpoints" value="432,455,432,492,396,492"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

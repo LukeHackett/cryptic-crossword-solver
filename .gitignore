@@ -2,7 +2,6 @@
 build/
 build.log
 
-
 # Documentation LaTeX
 documentation/*.acn
 documentation/*.acr
@@ -43,3 +42,7 @@ documentation/*.toc
 documentation/*.vrb
 documentation/*.xdy
 documentation/*.tdo
+
+# Design folder
+design/bin/
+design/.settings/

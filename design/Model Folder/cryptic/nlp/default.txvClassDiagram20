@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhsaardf5smuvti">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<reference referencedUin="jdt:e_class:src:cryptic.nlp.CoreTools">
+			<property name="bounds" value="15,15,301,241"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.nlp.NLPCategoriser">
+			<property name="bounds" value="375,15,301,241"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.nlp.NLPCategoriser:instance">
+				<property name="sourceAnchor" value="681,257"/>
+				<property name="targetAnchor" value="677,261"/>
+				<property name="bendpoints" value="710,257,710,290,677,290"/>
+				<property name="smooth_bendpoints" value="710,257,710,290,677,290"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.nlp.NLPChunker">
+			<property name="bounds" value="15,295,301,218"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.nlp.NLPChunker:nlpCore">
+				<property name="sourceAnchor" value="120,300"/>
+				<property name="targetAnchor" value="120,261"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:cryptic.nlp.NLPChunker:instance">
+				<property name="sourceAnchor" value="321,514"/>
+				<property name="targetAnchor" value="317,518"/>
+				<property name="bendpoints" value="350,514,350,547,317,547"/>
+				<property name="smooth_bendpoints" value="350,514,350,547,317,547"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:cryptic.nlp.NLPParser">
+			<property name="bounds" value="375,295,301,218"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:cryptic.nlp.NLPParser:instance">
+				<property name="sourceAnchor" value="681,514"/>
+				<property name="targetAnchor" value="677,518"/>
+				<property name="bendpoints" value="710,514,710,547,677,547"/>
+				<property name="smooth_bendpoints" value="710,514,710,547,677,547"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

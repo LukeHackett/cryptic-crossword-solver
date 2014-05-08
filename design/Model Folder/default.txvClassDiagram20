@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhhotwokmg423muz">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="visibility" value="public"/>
+		<reference referencedUin="design:view:::V-b8dyjihotwp3z3rm9btd">
+			<property name="bounds" value="35,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+		</reference>
+		<reference referencedUin="design:view:::V-jr6xbahou56tdd-yljm1n">
+			<property name="bounds" value="35,135,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V1hexuhhou6m66f-n7ajv2">
+			<property name="bounds" value="35,395,197,201"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs39gfs3r0cf3i">
+			<property name="bounds" value="255,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs39zx5z-1tqha7">
+			<property name="bounds" value="475,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjihs6cby818pcxmu">
+			<property name="bounds" value="695,15,197,79"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-jr6xbahsa8jsg2-29ahtm">
+			<property name="bounds" value="255,135,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::Vam8ynkhsa99kooxwo5dq">
+			<property name="bounds" value="255,255,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::Vam8ynkhsa9u3vsvlrsrf">
+			<property name="bounds" value="35,255,197,96"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>
