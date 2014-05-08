@@ -1,11 +1,11 @@
 compile:
-	mkdir out/
-	latexmk -bibtex -pdf main
-	cp main.pdf out/main.pdf
-	mv out/main.pdf ../pdfs/research.pdf
-	make clean
+	@echo -n "compiling research document... "
+	@latexmk -silent -quiet -bibtex -pdf main
+	@mv main.pdf ../pdfs/research.pdf
+	@echo "done!"
+	@make clean
 
 clean:
-	rm -rf out/
-	latexmk -C
-	rm main.bbl
+	@latexmk -silent -quiet -C
+	@rm -f main.bbl
+	@echo "cleaned research folder"
