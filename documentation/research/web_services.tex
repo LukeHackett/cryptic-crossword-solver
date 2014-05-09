@@ -3,21 +3,21 @@
 %%%
 \section{Web Services}
 
-Over the past decade web services have exploded into the computing space. 
-However the concepts that underlie web services are not new. Web services 
-originally evolved from the Remote Procedure Call mechanism that was found in a
-software development framework used in the 1990s \citep{kalin13}.
+Over the past decade web services have exploded into the computing space.
+However the concepts that underlie web services are not new. Web services
+originally evolved from the Remote Procedure Call (RPC) mechanism that was found
+in a software development framework used in the 1990s \citep{kalin13}.
 
-During the late 1990s, XML-RPC was developed, which was a stripped down, light 
-weight version of the Remote Procedure Call mechanism. The XML-RPC system only 
+During the late 1990s, Extensible Markup Language-Remote Procedure Call (XML-RPC) was developed, which was a stripped down, light 
+weight version of the RPC mechanism. The XML-RPC system only 
 supported a small number of data types along with a number of simple commands. 
 XML-RPC contained two key features, which are use of XML serialise/deserialise 
-for data types and the reliance on HTTP for transport XML-RPC \citep{kalin13}.
+for data types and the reliance on Hypertext Transfer Protocol (HTTP) for transport XML-RPC \citep{kalin13}.
 
 XML-RPC is designed to be as lightweight as possible, and thus can be supported
 on a wide range of devices. XML-RPC was ultimately implemented fully and became
-known as SOAP. As well as SOAP, another implementation of XML-RPC occurred, 
-which was entitled REST. Both of these technologies fall under the term `web 
+known as  Simple Object Access Protocol (SOAP). As well as SOAP, another implementation of XML-RPC occurred, 
+which was entitled Representational state transfer (REST). Both of these technologies fall under the term `web 
 services'.
 
 Since 2001 a vast range of companies have adopted the web services movement 
@@ -41,12 +41,12 @@ many providers created heavily detailed plans upon the direction of their web
 service, but failed to exactly define what a web service is.
 
 It was only until the explosion subsided that authors were able to define what 
-a web service is \citep{kalin13}. \citet{kalin13} Kalin highlighted three 
+a web service is \citep{kalin13}. \citet{kalin13} highlighted three 
 common characteristics between web service providers:
 
 \begin{enumerate}
   \item Can be thought of as a  `webified application'
-  \item Typically delivered over Hyper Text Transport Protocol (HTTP)
+  \item Typically delivered over HTTP
   \item Typically has some form of distributed nature allowing for components 
   to be deployed and executed across multiple devices.
 \end{enumerate}
@@ -78,7 +78,7 @@ into that broad definition, there are several features that are unique to a
 web service.
 
 Firstly web services heavily depend upon open, industry-standard, 
-vendor-independent protocols such as HTTP, JSON and XML. By adding networking, 
+vendor-independent protocols such as HTTP, JavaScript Object Notation (JSON) and XML. By adding networking, 
 data formatting and security features, web services can effectively lower 
 start-up costs and promote interoperability between new and existing services 
 \citep{kalin13}.
@@ -152,13 +152,11 @@ it is actively used by some of the larger vendors such as Google and Amazon
 \citep{dospinescu13}.
 
 REST relies upon the emerging architecture known as resource-oriented 
-architecture. Essentially, these resources are a number software components 
+architecture. Essentially, these resources are a number of software components 
 that can be combined together to create reusable functionality.
 
 As well as using a resource-oriented architecture, REST makes clever and 
-effective use of open standard web technologies, such as the Hypertext Transfer
-Protocol (HTTP), the Uniform Resource Identifier (URL) and the Extensible 
-Mark-up Language (XML) \citep{dospinescu13}.
+effective use of open standard web technologies, such as HTTP, the Uniform Resource Identifier (URL) and XML \citep{dospinescu13}.
 
 Although not all of the features have been implemented, (mostly because they 
 are layout properties rather than data properties) the major concepts found in
@@ -166,7 +164,7 @@ web technologies have been implemented and the most notable of these features
 are:
 
 \begin{enumerate}
-  \item Data from the client is transmitted to the server via the URI
+  \item Data from the client is transmitted to the server via the Uniform resource identifier (URI)
   \item The server will perform the operation described by the HTTP method 
   (such as GET, DELETE)
   \item The URI for each resource will contain the server name and address
@@ -227,8 +225,7 @@ Description Language, Web Servicing Addressing, XML Schema Definitions.
 All binary data that is to be transmitted must be first encoded in a supported
 format (e.g. base64), which increases processing power at both the client and
 server ends. All requests are transmitted via XML, which is much slower to
-parse and interpret than other text-based human readable data, such as 
-JavaScript Object Notation (JSON).
+parse and interpret than other text-based human readable data, such as JSON.
 
 REST on the other hand is based upon uniform interfaces. This means the various
 clients will have a small understanding of the web service, but not necessarily
@@ -317,7 +314,7 @@ using a wide range of internal server resources (CPU, Memory etc).
 A thick client is a computer system that has little dependency upon a main 
 server, or a number of servers in order to complete computational tasks. The 
 client will still require a limited connection to a server, but will not use 
-the connection as often in comparison to a thin client. A thick click will 
+the connection as often in comparison to a thin client. A thick client will 
 often be able to perform many operations without a connection to a network.
 
 An example of a thick client would be a standard desktop installation. The 
