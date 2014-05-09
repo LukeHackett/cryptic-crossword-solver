@@ -99,7 +99,7 @@ gets all word matches  within the dictionary for a given solution pattern. As
 with filtering solutions, there is  also a method to match up all words in the
 dictionary that have the same prefix as  a prefix passed in.
 
-There are also simple methods solvers can used to identify whether a single word
+There are also simple methods solvers can use to identify whether a single word
 or a  phrase is contained within the dictionary simply by checking whether the
 collection the  dictionary file has been read into contains the word or not.
 
@@ -263,9 +263,9 @@ Listing \ref{conf} illustrates how the confidence is boosted using indicators:
  }
 \end{lstlisting}
 
-The first line of code in the method above calls another method to retrieve  a
+The first line of code in the previous method calls another method to retrieve  a
 list of clue types that have an indicator in the associated indicator file which
 matches a word  within the clue passed in. Then, all the solutions found from
-all the solvers for the clue passed in  are matched against the clue types that
-have been found and if the solver the solution has come  from matches a clue
+all the solvers for the clue are passed in and are matched against the clue types that
+have been found and if the solver and the solution has come  from matches a clue
 type found, the confidence is boosted using a method in the Confidence class.
