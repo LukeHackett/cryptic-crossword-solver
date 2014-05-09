@@ -22,7 +22,7 @@ packages will be described in more detail.
 
 The architecture of the system will utilise a `plug and play' approach. This 
 approach, will allow for various numbers of solvers to be added at run time, 
-rather than a compile time.
+rather than at compile time.
 
 From a development point this will allow for the underlying system to be 
 developed and tested utilising a limited number of solvers. Once the underlying 
@@ -132,7 +132,7 @@ classes utilise the Singleton design pattern.
 The reason for this is that it is to be expected that these classes will be used
 multiple times throughout the life of the system. To prevent multiple objects 
 being created and being left in memory, the singleton design pattern was 
-selected. The pattern will ``ensure that a class only has on instance, and 
+selected. The pattern will ``ensure that a class only has one instance, and 
 provide a global point of access to it'' \citep{gof}.
 
 The Dictionary, Thesaurus and HomophoneDictionary classes provide the 
@@ -204,8 +204,8 @@ the public web service related classes.
 \subsection{Solver}
 \label{sub:solver}
 
-The solver package contains the all of the solver algorithm classes that are 
-used as part of the over all solving process. Each solver extends a main Solver
+The solver package contains all of the solver algorithm classes that are 
+used as part of the overall solving process. Each solver extends a main Solver
 class which provides a number of base methods, as well as some additional 
 methods that require each solver to override.
 
@@ -214,7 +214,7 @@ to run a class in it's own thread. A design decision was taken that the Callable
 interface was to be used, as once it has finished executing it is able to return
 an object unlike similar interfaces such as Runnable.
 
-Each of solver classes implement the Abstract Factory design pattern via the 
+Each of solver the classes implement the Abstract Factory design pattern via the 
 base class Solver. This pattern ``provides an interface for creating families of
 related objects without specifying their concrete class'' \citep{gof}.
 
