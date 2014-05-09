@@ -58,7 +58,7 @@ The \texttt{Servlet} class is able to deduce if a given request is from a JSON,
 XML or an Ajax background. For example, if a client was to make a request to the
 web  service through a web browser utilising an Ajax request, then the 
 \texttt{isAjaxRequest} method would return \texttt{true}. For illustrative 
-purposes the \texttt{isAjaxRequest} method is shown below in listing 
+purposes the \texttt{isAjaxRequest} method is shown in listing 
 \ref{isAjaxMethod}.
 
 \begin{lstlisting}[caption={isAjaxMethod deduces if a request was made by AJAX},
@@ -80,7 +80,7 @@ authenticate the response.
 
 Finally the \texttt{Servlet} class overrides the \texttt{init} method, which 
 is automatically called as part of the object construction. This method will 
-initialise resources at servlet creation (i.e. first run-time within tomcat) 
+initialise resources at servlet creation (i.e. first run-time within Tomcat) 
 rather than during the first call to the servlet. 
 
 In doing this, Tomcat will take more time initially starting up, however the 
